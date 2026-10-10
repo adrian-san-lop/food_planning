@@ -1,4 +1,4 @@
-# Mi Plan Saludable
+# Menuki — Mi Plan Saludable
 
 Aplicación web personal para consultar un menú de tres semanas, preparar recetas, registrar comidas, controlar la despensa y llevar el seguimiento del peso.
 

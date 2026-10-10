@@ -4,7 +4,7 @@ Last updated: 2026-10-10. This file is a short handoff index, not the full produ
 
 ## Product
 
-- Mi Plan Saludable is currently a personal, single-user web app, used online and published as a static GitHub Pages site.
+- Menuki (Mi Plan Saludable) is currently a personal, single-user web app, used online and published as a static GitHub Pages site.
 - The current interface is Spanish. It plans three weeks with five meal slots per day (105 planned meals per cycle), tracks recipes, shopping, pantry stock, strength training, and weight.
 - The application currently saves user state in browser `localStorage`. The owner’s Supabase project now has the initial relational schema and owner-scoped RLS policies (`supabase/`), but no Auth user or HTML integration exists yet; no app data is being written remotely and cross-device sync is not implemented. SQL was applied through the dashboard editor, which does not track repository migration history.
 - The in-page weekly backup reminder is implemented; there are no push or background notifications.

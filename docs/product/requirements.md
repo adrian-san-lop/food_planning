@@ -4,7 +4,7 @@ Estado de referencia: 10 de octubre de 2026. Este documento reúne el alcance ac
 
 ## Propósito y usuarios
 
-Mi Plan Saludable ayuda a organizar comidas de tres semanas, consultar recetas, preparar compras, controlar existencias, registrar entrenamientos y seguir el peso. La versión actual es personal, para una sola persona y requiere conexión. El propietario quiere mantener el coste de uso en cero dentro de los límites de los servicios gratuitos.
+Menuki (Mi Plan Saludable) ayuda a organizar comidas de tres semanas, consultar recetas, preparar compras, controlar existencias, registrar entrenamientos y seguir el peso. La versión actual es personal, para una sola persona y requiere conexión. El propietario quiere mantener el coste de uso en cero dentro de los límites de los servicios gratuitos.
 
 La posibilidad de que otras personas tengan gustos distintos se está considerando para el diseño futuro. **No significa que el alcance actual ya sea multiusuario o que se haya aprobado un modo de menú compartido.**
 
