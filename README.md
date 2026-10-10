@@ -13,7 +13,7 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - Las compras, consumos, reversos y correcciones nuevas se anotan como movimientos con identificador único. Si una receta supera el saldo anotado, se registra completa y se muestra el faltante.
 - Hay un recordatorio semanal dentro de la página para descargar una copia JSON. No envía notificaciones del sistema.
 - Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales.
-- La página se puede servir desde GitHub Pages, pero aún no hay base de datos, inicio de sesión ni sincronización entre dispositivos. El alojamiento web no convierte `localStorage` en almacenamiento en la nube.
+- El proyecto Supabase ya tiene un esquema relacional inicial con RLS; el HTML aún no está conectado, no hay inicio de sesión configurado y los datos siguen en `localStorage`. Por tanto, todavía no existe sincronización entre dispositivos. El alojamiento web no convierte `localStorage` en almacenamiento en la nube.
 
 ### Pasar los datos v5 a la página nueva
 
@@ -73,7 +73,7 @@ Tu usuario
 
 Ejemplo: si hay `2 ud` de plátano y registras una receta que usa `2,5 ud`, la app anota el consumo completo. El saldo queda en `−0,5 ud` y la interfaz muestra ese faltante. Si después desmarcas la comida, añade un movimiento inverso; no borra el historial ni vuelve a descontar por un reintento.
 
-Este dibujo explica el modelo previsto para sincronizar datos en una base remota. La versión actual conserva el estado en un objeto del navegador, no en tablas relacionales. La conexión remota, autenticación y reglas de acceso aún están pendientes. Si se añade Supabase, sus tablas expuestas deberán protegerse con autenticación y Row Level Security (RLS), incluso siendo una app de una sola persona. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
+El dibujo resume la separación prevista. El proyecto Supabase ya contiene las tablas relacionales iniciales y políticas RLS por propietario, definidas en [`supabase/`](supabase/README.md). El HTML aún no usa esa base: faltan configurar Auth, implementar operaciones transaccionales y conectar la aplicación. Hasta entonces, el estado sigue en el navegador. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
 
 ## Datos y copias de seguridad
 
@@ -89,7 +89,9 @@ Los datos actuales permanecen en el almacenamiento del navegador y no aparecen a
 - `AGENTS.md`: instrucciones en inglés para agentes de código.
 - `docs/product/requirements.md`: alcance y flujos del producto.
 - `docs/architecture.md`: estado actual y arquitectura prevista.
+- `docs/supabase_db_model.md`: diagrama, columnas, claves, relaciones y RLS del esquema de Supabase.
 - `docs/planner/specification.md`: catálogos, reglas aceptadas y propuestas del planificador.
 - `docs/roadmap.md`: etapas candidatas y criterios de aceptación que deben conservarse.
 - `docs/decisions/`: registro de decisiones con su estado.
 - `docs/open-questions.md`: propuestas y cuestiones que aún requieren decisión.
+- `supabase/`: migraciones SQL del esquema personal y comprobaciones de RLS/permisos; todavía no es una integración del HTML.

@@ -6,7 +6,7 @@ Last updated: 2026-10-10. This file is a short handoff index, not the full produ
 
 - Mi Plan Saludable is currently a personal, single-user web app, used online and published as a static GitHub Pages site.
 - The current interface is Spanish. It plans three weeks with five meal slots per day (105 planned meals per cycle), tracks recipes, shopping, pantry stock, strength training, and weight.
-- The application currently saves user state in browser `localStorage`. It has no verified remote database, authentication, or cross-device synchronization. A Supabase project was created by the owner, but no schema or integration has been implemented.
+- The application currently saves user state in browser `localStorage`. The owner’s Supabase project now has the initial relational schema and owner-scoped RLS policies (`supabase/`), but no Auth user or HTML integration exists yet; no app data is being written remotely and cross-device sync is not implemented. SQL was applied through the dashboard editor, which does not track repository migration history.
 - The in-page weekly backup reminder is implemented; there are no push or background notifications.
 
 ## Catalogs and planning
@@ -30,6 +30,7 @@ Last updated: 2026-10-10. This file is a short handoff index, not the full produ
 - [AGENTS.md](AGENTS.md): repository-wide instructions for coding agents.
 - [Product requirements](docs/product/requirements.md): scope and user workflows.
 - [Architecture](docs/architecture.md): implemented state and planned data boundaries.
+- [Supabase database model](docs/supabase_db_model.md): applied schema, columns, keys, relations, and RLS status.
 - [Planner specification](docs/planner/specification.md): catalog contract and accepted planner rules.
 - [Roadmap](docs/roadmap.md): candidate stages and acceptance criteria.
 - [Decision records](docs/decisions/): rationale and acceptance status.

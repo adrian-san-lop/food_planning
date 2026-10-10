@@ -1,0 +1,164 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000" role="img" aria-labelledby="title description">
+  <title id="title">Modelo relacional de Supabase de Mi Plan Saludable</title>
+  <desc id="description">Diagrama de once tablas personales, claves principales, claves foráneas y relaciones principales.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L10,4 L0,8 Z" fill="#58708d"/>
+    </marker>
+    <style>
+      .bg { fill: #f5f7fb; }
+      .title { font: 700 28px system-ui, sans-serif; fill: #18263a; }
+      .subtitle { font: 15px system-ui, sans-serif; fill: #52647a; }
+      .entity { fill: #fff; stroke: #9aabc0; stroke-width: 1.5; rx: 12; }
+      .auth { fill: #edf2f8; stroke: #71839a; stroke-width: 1.5; rx: 12; }
+      .head { fill: #e6eef8; }
+      .authhead { fill: #dce5f0; }
+      .name { font: 700 17px system-ui, sans-serif; fill: #20324a; }
+      .key { font: 13px system-ui, sans-serif; fill: #40556f; }
+      .hint { font: 12px system-ui, sans-serif; fill: #63758b; }
+      .edge { fill: none; stroke: #58708d; stroke-width: 2; marker-end: url(#arrow); }
+      .edge-dashed { fill: none; stroke: #58708d; stroke-width: 2; stroke-dasharray: 6 5; marker-end: url(#arrow); }
+      .edge-label { font: 12px system-ui, sans-serif; fill: #425875; paint-order: stroke; stroke: #f5f7fb; stroke-width: 5px; stroke-linejoin: round; }
+      .legend { font: 13px system-ui, sans-serif; fill: #43566e; }
+    </style>
+  </defs>
+
+  <rect class="bg" width="1800" height="1000"/>
+  <text class="title" x="40" y="44">Mi Plan Saludable · modelo relacional de Supabase</text>
+  <text class="subtitle" x="40" y="70">Esquema aplicado · once tablas personales con RLS · los catálogos foods.json y recipes.json permanecen fuera de PostgreSQL</text>
+
+  <!-- Relaciones dibujadas detrás de las entidades -->
+  <path class="edge" d="M195 190 L195 250"/>
+  <text class="edge-label" x="207" y="223">1 : 0..1 · user_id</text>
+
+  <path class="edge" d="M620 290 L620 380"/>
+  <text class="edge-label" x="632" y="340">1 : N · cycle_id</text>
+
+  <path class="edge" d="M735 290 L850 320 L850 695 L800 695"/>
+  <text class="edge-label" x="858" y="515">cycle_id, user_id</text>
+
+  <path class="edge" d="M800 455 L930 380"/>
+  <text class="edge-label" x="813" y="414">planned_meal_id, user_id</text>
+
+  <path class="edge" d="M1125 460 L1125 570"/>
+  <text class="edge-label" x="1138" y="520">source_completion_id, user_id</text>
+
+  <path class="edge" d="M1600 390 L1600 520"/>
+  <text class="edge-label" x="1612" y="458">session_id, user_id</text>
+
+  <path class="edge-dashed" d="M800 150 L845 150 L845 105 L620 105 L620 120"/>
+  <text class="edge-label" x="690" y="96">supersedes_cycle_id</text>
+
+  <path class="edge-dashed" d="M1320 615 L1370 615 L1370 730 L1320 730"/>
+  <text class="edge-label" x="1378" y="676">reverses_movement_id · máximo un reverso</text>
+
+  <!-- Identidad y seguimiento -->
+  <g>
+    <rect class="auth" x="40" y="90" width="310" height="100"/>
+    <rect class="authhead" x="40" y="90" width="310" height="37" rx="12"/>
+    <text class="name" x="58" y="115">auth.users</text>
+    <text class="key" x="58" y="151">PK · id</text>
+    <text class="hint" x="58" y="173">Tabla administrada por Supabase Auth</text>
+  </g>
+  <g>
+    <rect class="entity" x="40" y="250" width="310" height="120"/>
+    <rect class="head" x="40" y="250" width="310" height="37" rx="12"/>
+    <text class="name" x="58" y="275">profiles</text>
+    <text class="key" x="58" y="311">PK + FK · user_id → auth.users.id</text>
+    <text class="hint" x="58" y="337">Una fila opcional por usuario</text>
+  </g>
+  <g>
+    <rect class="entity" x="40" y="410" width="310" height="100"/>
+    <rect class="head" x="40" y="410" width="310" height="37" rx="12"/>
+    <text class="name" x="58" y="435">user_settings</text>
+    <text class="key" x="58" y="471">PK + FK · user_id → auth.users.id</text>
+    <text class="hint" x="58" y="493">Copia de seguridad y ajustes</text>
+  </g>
+  <g>
+    <rect class="entity" x="40" y="550" width="310" height="100"/>
+    <rect class="head" x="40" y="550" width="310" height="37" rx="12"/>
+    <text class="name" x="58" y="575">weight_logs</text>
+    <text class="key" x="58" y="611">PK · id · FK · user_id</text>
+    <text class="hint" x="58" y="633">Un registro por usuario y fecha</text>
+  </g>
+  <g>
+    <rect class="entity" x="40" y="690" width="310" height="100"/>
+    <rect class="head" x="40" y="690" width="310" height="37" rx="12"/>
+    <text class="name" x="58" y="715">training_logs</text>
+    <text class="key" x="58" y="751">PK · id · FK · user_id</text>
+    <text class="hint" x="58" y="773">Un registro por usuario y fecha</text>
+  </g>
+
+  <!-- Planificación -->
+  <g>
+    <rect class="entity" x="440" y="120" width="360" height="170"/>
+    <rect class="head" x="440" y="120" width="360" height="37" rx="12"/>
+    <text class="name" x="458" y="145">plan_cycles</text>
+    <text class="key" x="458" y="181">PK · id · FK · user_id</text>
+    <text class="key" x="458" y="204">FK compuesta · supersedes_cycle_id, user_id</text>
+    <text class="hint" x="458" y="232">Máximo un ciclo draft, scheduled y active por usuario</text>
+    <text class="hint" x="458" y="254">Conserva fechas, estado y versión del catálogo</text>
+  </g>
+  <g>
+    <rect class="entity" x="440" y="380" width="360" height="150"/>
+    <rect class="head" x="440" y="380" width="360" height="37" rx="12"/>
+    <text class="name" x="458" y="405">planned_meals</text>
+    <text class="key" x="458" y="441">PK · id · FK · user_id</text>
+    <text class="key" x="458" y="464">FK compuesta · cycle_id, user_id</text>
+    <text class="hint" x="458" y="492">recipe_id apunta al catálogo JSON, no a una tabla</text>
+  </g>
+  <g>
+    <rect class="entity" x="440" y="630" width="360" height="130"/>
+    <rect class="head" x="440" y="630" width="360" height="37" rx="12"/>
+    <text class="name" x="458" y="655">prep_tasks</text>
+    <text class="key" x="458" y="691">PK · cycle_id, week_index, task_key</text>
+    <text class="key" x="458" y="714">FK · user_id · FK compuesta · cycle_id, user_id</text>
+    <text class="hint" x="458" y="739">Tareas de preparación por semana del ciclo</text>
+  </g>
+
+  <!-- Registro de comidas e inventario -->
+  <g>
+    <rect class="entity" x="930" y="300" width="390" height="160"/>
+    <rect class="head" x="930" y="300" width="390" height="37" rx="12"/>
+    <text class="name" x="948" y="325">meal_completions</text>
+    <text class="key" x="948" y="361">PK · id · FK · user_id</text>
+    <text class="key" x="948" y="384">FK compuesta · planned_meal_id, user_id</text>
+    <text class="hint" x="948" y="412">Guarda snapshot de receta y versión de catálogo</text>
+    <text class="hint" x="948" y="434">Mantiene completed_at y reversed_at</text>
+  </g>
+  <g>
+    <rect class="entity" x="930" y="570" width="390" height="200"/>
+    <rect class="head" x="930" y="570" width="390" height="37" rx="12"/>
+    <text class="name" x="948" y="595">inventory_movements</text>
+    <text class="key" x="948" y="631">PK · id · FK · user_id</text>
+    <text class="key" x="948" y="654">FK compuesta · source_completion_id, user_id</text>
+    <text class="key" x="948" y="677">FK compuesta · reverses_movement_id, user_id</text>
+    <text class="hint" x="948" y="705">Libro append-only; quantity lleva signo</text>
+    <text class="hint" x="948" y="727">food_id apunta al catálogo JSON</text>
+    <text class="hint" x="948" y="749">El saldo se obtiene sumando movimientos</text>
+  </g>
+
+  <!-- Lista de compra -->
+  <g>
+    <rect class="entity" x="1430" y="250" width="340" height="140"/>
+    <rect class="head" x="1430" y="250" width="340" height="37" rx="12"/>
+    <text class="name" x="1448" y="275">shopping_sessions</text>
+    <text class="key" x="1448" y="311">PK · id · FK · user_id</text>
+    <text class="hint" x="1448" y="339">Ventana y estado de la compra</text>
+    <text class="hint" x="1448" y="361">Máximo una sesión open por usuario</text>
+  </g>
+  <g>
+    <rect class="entity" x="1430" y="520" width="340" height="160"/>
+    <rect class="head" x="1430" y="520" width="340" height="37" rx="12"/>
+    <text class="name" x="1448" y="545">shopping_session_items</text>
+    <text class="key" x="1448" y="581">PK · id · FK · user_id</text>
+    <text class="key" x="1448" y="604">FK compuesta · session_id, user_id</text>
+    <text class="hint" x="1448" y="632">Guarda envases, extras y casillas marcadas</text>
+    <text class="hint" x="1448" y="654">La cantidad necesaria se calcula desde el plan</text>
+  </g>
+
+  <line x1="40" y1="855" x2="1760" y2="855" stroke="#d1dae5" stroke-width="1"/>
+  <text class="legend" x="40" y="884">PK = clave primaria · FK = clave foránea · Las cajas personales incluyen user_id → auth.users.id para aplicar RLS por usuario.</text>
+  <text class="legend" x="40" y="910">Las relaciones de ciclo, comida, inventario y lista de compra se muestran con flechas; las líneas discontinuas indican referencias de reverso o ciclo sustituido.</text>
+  <text class="legend" x="40" y="936">El detalle completo de columnas, tipos, restricciones y claves está en las tablas de este documento.</text>
+</svg>

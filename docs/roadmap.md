@@ -7,7 +7,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - La app sigue siendo estática y personal; guarda el estado en `localStorage`.
 - Los catálogos JSON están en versión 0.2.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML.
 - La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
-- No se ha ejecutado SQL ni se ha conectado autenticación o persistencia Supabase.
+- El esquema relacional inicial de Supabase y sus políticas RLS están aplicados; el HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
 
 ## Etapas candidatas
 
@@ -31,8 +31,8 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 
 ### D. Persistencia remota, si se mantiene como prioridad
 
-- Validar esquema relacional, autenticación, políticas RLS y límites gratuitos vigentes.
-- Integrar Supabase con configuración publicable y migrar desde un backup v5/v6 sin duplicar movimientos.
+- Esquema relacional inicial y políticas RLS: aplicados; quedan pendientes operaciones transaccionales e idempotentes.
+- Configurar Auth, integrar Supabase en el HTML con clave publicable y migrar desde un backup v5/v6 sin duplicar movimientos.
 - Comprobar PC/móvil, errores de conexión y restauración antes de afirmar que hay sincronización.
 
 ### E. Compra, inventario y robustez

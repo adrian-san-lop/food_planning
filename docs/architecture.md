@@ -19,7 +19,7 @@ Navegador
 - El HTML carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
 - El estado personal y la propuesta se guardan en `localStorage`; no se envían a GitHub junto con el catálogo.
-- La cuenta y el proyecto de Supabase se crearon según el propietario; no se ha ejecutado SQL ni se ha integrado autenticación o persistencia remota.
+- El proyecto Supabase contiene el esquema relacional inicial de `supabase/migrations/` y políticas RLS por propietario. El HTML no está conectado, no hay cuenta de Auth configurada y no se guardan datos de la aplicación en remoto.
 - No existe sincronización entre dispositivos. El uso requiere conexión para visitar la página, pero los datos guardados en `localStorage` permanecen en ese navegador.
 
 ## Arquitectura objetivo
@@ -50,15 +50,15 @@ Los catálogos comunes se versionan junto al código. El estado personal (perfil
 
 No colocar datos personales o copias de seguridad en GitHub. Aunque un repositorio sea privado, GitHub Pages publica el sitio. Si se integra Supabase, las tablas de usuario necesitarán autenticación y políticas RLS; la clave `service_role` y cualquier secreto nunca deben incluirse en el navegador.
 
-## Modelo remoto propuesto, no implementado
+## Esquema remoto inicial implementado; conexión del HTML pendiente
 
-El diseño conversado contempla tablas relacionales para perfiles, registros de peso, ciclos, comidas planificadas y realizadas, compras y movimientos de inventario. No se ha validado ni creado el esquema SQL. El catálogo genérico no requiere una tabla por alimento o receta.
+El proyecto tiene tablas relacionales para perfiles, ciclos, comidas planificadas y realizadas, movimientos de inventario, peso, entrenamientos, preparación y listas de compra. El esquema se define en `supabase/migrations/`; la comprobación estructural y de permisos está en `supabase/tests/`. El catálogo genérico no requiere una tabla por alimento o receta.
 
-Entidades consideradas para validar más adelante: `profiles`, `plan_cycles`, `plan_meals`, `meal_logs`, `weight_logs`, `training_logs`, `purchases`, `purchase_items`, `inventory_movements` y `user_settings`. No son tablas existentes ni un esquema SQL aprobado.
+Las tablas actuales son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items` y `user_settings`. Las migraciones se aplicaron desde SQL Editor; Supabase todavía no registra automáticamente el historial de esos archivos.
 
 Cada ciclo futuro debería registrar la versión de catálogo usada. Las cantidades de comidas completadas deben conservarse como snapshot para que una modificación posterior de la receta no reescriba el historial. El inventario debería poder reconstruirse a partir de movimientos con IDs únicos; las correcciones y reversos se registran como eventos nuevos.
 
-Si se conecta Supabase, cada tabla con datos personales debe exigir autenticación y RLS por propietario. Operaciones de inventario deben ser idempotentes y, cuando se actualicen varias filas, transaccionales. Registrar fechas de comidas/ciclos como fechas locales y marcas de operación con zona horaria.
+Las tablas requieren Auth y aplican RLS por `auth.uid()`. El HTML aún no crea sesiones ni consulta estas tablas. Operaciones de inventario idempotentes y transaccionales, importación inicial del estado v6, configuración de Auth y pruebas entre dispositivos siguen pendientes. Registrar fechas de comidas/ciclos como fechas locales y marcas de operación con zona horaria.
 
 ## Migración y recuperación
 
