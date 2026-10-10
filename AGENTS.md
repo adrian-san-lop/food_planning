@@ -5,7 +5,7 @@ These instructions apply to the whole repository.
 ## Before making changes
 
 - Read `README.md`, `context.md`, and the relevant documents under `docs/`.
-- Before changing application behavior, inspect `plan_alimentacion_dinamico_3_semanas.html`; it is the current runtime source of truth.
+- Before changing application behavior, inspect `web/plan_alimentacion_dinamico_3_semanas.html`; it is the current runtime source of truth.
 - Check the active branch and working-tree status first. Preserve existing user changes and do not switch branches unless asked.
 - Distinguish implemented behavior from accepted design decisions, proposals, and open questions.
 
@@ -14,14 +14,14 @@ These instructions apply to the whole repository.
 - The current product is a personal, single-user, online app. Do not add offline queues or background/push notifications.
 - The weekly backup reminder is in-page only. Do not describe `localStorage` as cloud storage or synchronization.
 - Keep the UI in Spanish. Keep `AGENTS.md` and `context.md` in English; write other project documentation in Spanish unless the owner asks otherwise.
-- The HTML currently embeds its foods, recipes, and fixed three-week menus. `data/foods.json` and `data/recipes.json` are draft catalogs and are not loaded by the app yet.
-- Do not claim that dynamic planning, Supabase persistence, authentication, or device synchronization is implemented until verified in code and runtime.
+- `web/plan_alimentacion_dinamico_3_semanas.html` is the runtime app. It loads the generic food and recipe catalogs from `data/foods.json` and `data/recipes.json` over HTTP(S); the current fixed menu remains the initial plan.
+- Dynamic next-cycle proposals are implemented locally. Do not claim that Supabase persistence, authentication, or device synchronization is implemented.
 - State format v5 is the first supported import format; current state is v6. Do not add v1-v4 migrations.
 
 ## Catalogs and planner
 
 - Catalog JSON contains generic food and recipe data only. Never put personal profiles, weights, pantry balances, meal history, credentials, or backups in it.
-- Keep food IDs stable and ensure every recipe ingredient references an existing food ID. Preserve canonical units and the nutrition basis described in `docs/planner/specification.md`.
+- Keep food IDs stable and ensure every recipe ingredient references an existing food ID. Preserve the JSON Schemas, canonical units, and nutrition basis described in `docs/planner/specification.md`.
 - Follow accepted planner decisions in `docs/decisions/`. Treat items marked proposed or open as undecided; do not silently turn them into requirements.
 - The accepted planner principles are: preserve current nutrition/portion logic as a reference, favor using stock without blocking for low stock, seek variety while allowing necessary repeats, and let the user review, swap, and lock proposed meals.
 

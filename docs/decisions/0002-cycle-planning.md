@@ -10,7 +10,7 @@ El HTML actual contiene 84 recetas y un menú fijo de 105 espacios cada tres sem
 
 ## Decisión
 
-Cuando se implemente el planificador, preparar una propuesta para las siguientes tres semanas desde los catálogos. Se permiten repeticiones, pero la propuesta debe procurar incluir recetas que no aparecieron en el menú reciente y favorecer variedad.
+Preparar una propuesta para las siguientes tres semanas desde los catálogos. Se permiten repeticiones, pero la propuesta debe procurar incluir recetas que no aparecieron en el menú activo y favorecer variedad. La primera versión lo implementa como una preferencia, sin un mínimo garantizado.
 
 Se aceptan estos principios:
 
@@ -19,14 +19,14 @@ Se aceptan estos principios:
 3. Buscar variedad y evitar repeticiones cercanas; permitir repetir si el catálogo o las restricciones lo requieren.
 4. Permitir revisar, cambiar y bloquear comidas antes de confirmar.
 
-La instalación del mecanismo de generación será única; el usuario preparará/revisará una propuesta en cada renovación del ciclo. Esto describe el objetivo, no una función ya implementada.
+La instalación del mecanismo de generación es única; el usuario prepara y revisa la propuesta en cada renovación del ciclo. La primera versión está implementada en la vista del menú. La propuesta queda local y se activa al llegar la fecha confirmada.
 
 ## Consecuencias
 
-- El menú confirmado debe guardar referencias de receta y versión de catálogo.
+- El menú confirmado guarda referencias de receta y versión de catálogo.
 - Las comidas bloqueadas por el usuario se mantienen al regenerar el resto.
 - Conviene ampliar la biblioteca según las opciones que falten tras aplicar preferencias, no por una meta arbitraria de tamaño.
 
 ## Pendiente
 
-Definir “receta nueva” (nueva en ese menú o nueva en el catálogo), número mínimo de novedades, distancia para considerar repetición cercana, puntuaciones y cuándo la app pide confirmación.
+Siguen pendientes el número mínimo de recetas no usadas, la distancia exacta para considerar una repetición cercana, los umbrales/puntuaciones de producto y cualquier filtro de preferencias. La versión inicial usa ponderaciones heurísticas y revisión explícita.

@@ -7,14 +7,18 @@ Estado de referencia: 10 de octubre de 2026. Se distingue explícitamente lo que
 ```text
 Navegador
   └── GitHub Pages / HTML estático
-        └── plan_alimentacion_dinamico_3_semanas.html
-              ├── FOOD, RECIPES y MENUS fijos dentro del HTML
-              └── estado personal en localStorage
+        ├── index.html (redirección relativa)
+        ├── web/plan_alimentacion_dinamico_3_semanas.html
+        │     ├── carga data/foods.json y data/recipes.json
+        │     ├── conserva el menú fijo inicial y propone el siguiente ciclo
+        │     └── estado personal y menús confirmados en localStorage
+        └── data/*.json + esquemas JSON
 ```
 
-- `index.html` redirige de forma relativa al HTML principal.
-- El HTML contiene la fuente de datos funcional y los menús fijos.
-- `data/foods.json` y `data/recipes.json` son catálogos iniciales versionados, pero el HTML no los solicita ni los utiliza.
+- `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al HTML principal dentro de `web/`.
+- El HTML carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
+- El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
+- El estado personal y la propuesta se guardan en `localStorage`; no se envían a GitHub junto con el catálogo.
 - La cuenta y el proyecto de Supabase se crearon según el propietario; no se ha ejecutado SQL ni se ha integrado autenticación o persistencia remota.
 - No existe sincronización entre dispositivos. El uso requiere conexión para visitar la página, pero los datos guardados en `localStorage` permanecen en ese navegador.
 
@@ -38,10 +42,10 @@ Los catálogos comunes se versionan junto al código. El estado personal (perfil
 
 | Datos | Ubicación actual | Destino previsto |
 | --- | --- | --- |
-| Alimentos, nutrición aproximada y formato de compra | Constantes del HTML; también borrador en `data/foods.json` | Catálogo JSON público, versionado y cargado por la app |
-| Recetas e ingredientes | Constante `RECIPES` del HTML; también borrador en `data/recipes.json` | Catálogo JSON público, con referencias por ID estable |
-| Menú de tres semanas | `WEEK_1`–`WEEK_3` fijos en el HTML | Propuesta generada a partir de recetas compatibles; debe revisarse antes de confirmarse |
-| Perfil, peso, comidas, compras e inventario | Objeto de estado en `localStorage` | Tablas privadas de Supabase si se completa esa integración |
+| Alimentos, nutrición aproximada y formato de compra | `data/foods.json`, cargado por la app y descrito por `foods.schema.json` | Catálogo JSON público, versionado |
+| Recetas e ingredientes | `data/recipes.json`, cargado por la app y descrito por `recipes.schema.json` | Catálogo JSON público, con referencias por ID estable |
+| Menú de tres semanas | `WEEK_1`–`WEEK_3` fijos como ciclo inicial; la propuesta y el menú confirmado siguiente quedan en `localStorage` | Nuevos ciclos generados desde el catálogo, con revisión previa y versión anotada |
+| Perfil, peso, comidas, compras, inventario y menús personales | Objeto de estado en `localStorage` | Tablas privadas de Supabase si se completa esa integración |
 | Gustos/restricciones | No hay sistema general implementado | Preferencias por persona fuera del catálogo; modelo pendiente |
 
 No colocar datos personales o copias de seguridad en GitHub. Aunque un repositorio sea privado, GitHub Pages publica el sitio. Si se integra Supabase, las tablas de usuario necesitarán autenticación y políticas RLS; la clave `service_role` y cualquier secreto nunca deben incluirse en el navegador.
@@ -66,8 +70,9 @@ Si se conecta Supabase, cada tabla con datos personales debe exigir autenticaci�
 ## Versiones y operación
 
 - El estado personal actual es v6; v5 es el primer formato de importación admitido. No implementar migraciones desde v1-v4.
-- Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.2.0`), independiente de la versión del estado personal. Incluyen 83 alimentos y 107 recetas, pero el HTML todavía no los carga.
+- Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.2.0`), independiente de la versión del estado personal. Incluyen 83 alimentos y 107 recetas y se cargan desde JSON.
 - La app requiere conexión y no tendrá cola offline. No afirmar que un cambio se guardó remotamente hasta que la integración real lo confirme.
+- La vista de planificación permite proponer, editar, bloquear, regenerar y confirmar el menú del siguiente ciclo. El estado de la propuesta y el menú siguen siendo locales.
 - El recordatorio semanal de copia es un aviso dentro de la página, no una notificación del sistema.
 - El uso sin coste depende de los límites vigentes de GitHub Pages y del proveedor de base de datos; verificar límites oficiales antes de integrar o prometer capacidad.
 

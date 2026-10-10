@@ -4,8 +4,10 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 
 ## Estado actual
 
-- `index.html` es la entrada de GitHub Pages y redirige al HTML de la aplicación.
+- `index.html` es la entrada de GitHub Pages y redirige a `web/plan_alimentacion_dinamico_3_semanas.html`.
 - La app conserva las recetas y el diseño existentes; sus datos se guardan en `localStorage` del navegador.
+- La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.
+- El menú fijo actual sigue activo. La app puede preparar y guardar una propuesta editable para el siguiente ciclo de tres semanas.
 - El estado de datos actual es v6. Se convierte una copia v5 existente al abrir la app, incluyendo la conversión de piezas frescas que antes se guardaban en gramos.
 - Las importaciones admitidas son v5 y v6. No se importan datos v1-v4.
 - Las compras, consumos, reversos y correcciones nuevas se anotan como movimientos con identificador único. Si una receta supera el saldo anotado, se registra completa y se muestra el faltante.
@@ -40,14 +42,16 @@ Se aceptan fracciones de unidad, como `0,5 ud`. Los pesos comestibles por pieza 
 
 Los catálogos JSON conservan los datos genéricos que ya usa la aplicación y se han ampliado por separado:
 
-- [`data/foods.json`](data/foods.json): alimentos, unidades, valores nutricionales aproximados, peso comestible por pieza cuando aplica y formato orientativo de compra.
-- [`data/recipes.json`](data/recipes.json): recetas para una ración, ingredientes enlazados por el identificador estable del alimento, cantidades alternativas para días de fuerza cuando existen, pasos, tiempo y notas.
+- [`data/foods.json`](data/foods.json): alimentos, unidades, valores nutricionales aproximados, peso comestible por pieza cuando aplica y formato orientativo de compra. Su contrato está descrito en [`foods.schema.json`](data/foods.schema.json).
+- [`data/recipes.json`](data/recipes.json): recetas, ingredientes enlazados por el identificador estable del alimento, cantidades alternativas para días de fuerza cuando existen, pasos, tiempo y notas. Su contrato está descrito en [`recipes.schema.json`](data/recipes.schema.json).
 
-Son datos genéricos del recetario; no incluyen perfil, peso, despensa ni otros datos de uso personal. La app todavía **no carga estos ficheros**: sigue usando los catálogos incluidos en el HTML. La separación en JSON es la base para una integración posterior y no cambia el funcionamiento actual.
+Son datos genéricos del recetario; no incluyen perfil, peso, despensa ni otros datos de uso personal. La app los carga desde la misma web y comprueba unidades, referencias de ingredientes y tipos de comida antes de abrirse. Si falla la carga o la estructura no es válida, muestra un error y permite reintentar; no guarda cambios con un catálogo incompleto.
 
-Los catálogos están ahora en la versión `0.2.0`: 83 alimentos, 107 recetas y 512 referencias de ingredientes. Esta ampliación conserva los 63 alimentos y 84 recetas del HTML, añade 20 alimentos y 23 recetas, y enlaza cada receta por el ID estable de sus ingredientes. Las nuevas estimaciones nutricionales usan referencias genéricas de [USDA FoodData Central](https://fdc.nal.usda.gov/); cada alimento incluye su referencia, pero los valores y formatos de compra siguen siendo aproximados y deben ajustarse a las etiquetas y envases reales. La versión del catálogo es independiente de la versión del estado personal guardado en el navegador.
+Los catálogos están ahora en la versión `0.2.0`: 83 alimentos, 107 recetas y 512 referencias de ingredientes. Esta ampliación conserva los 63 alimentos y 84 recetas del HTML, añade 20 alimentos y 23 recetas, y enlaza cada receta por el ID estable de sus ingredientes. Las 20 incorporaciones nutricionales usan referencias genéricas de [USDA FoodData Central](https://fdc.nal.usda.gov/); las cifras heredadas del HTML no tienen una fuente detallada por alimento. Todos los valores y formatos de compra son aproximados y deben cotejarse con las etiquetas y envases reales. La versión del catálogo es independiente de la versión del estado personal guardado en el navegador.
 
-El objetivo acordado es que, una vez integrada la planificación, cada ciclo de tres semanas se proponga desde estos catálogos y sus reglas; la propuesta se podrá revisar y ajustar. La integración del planificador se realiza una vez. Después, la generación de una propuesta se repite en cada ciclo.
+En **Menú 3 semanas**, **Preparar propuesta** crea 105 espacios para el siguiente ciclo. Puedes cambiar una receta por otra del mismo tipo, bloquear comidas y volver a generar las que dejes desbloqueadas. La despensa influye en el orden de selección, pero no excluye recetas por falta de stock. La app guarda la propuesta en el navegador y la activa al llegar su fecha de inicio. No se aplican todavía preferencias de gustos ni exclusiones personales.
+
+Para abrir la aplicación desde una copia local, sírvela por HTTP; `fetch` no puede leer los catálogos al abrir el HTML como `file://`. En GitHub Pages, la entrada raíz `index.html` y las rutas relativas hacen la carga automáticamente.
 
 ## Cómo entender el modelo de datos
 
@@ -77,9 +81,10 @@ Los datos actuales permanecen en el almacenamiento del navegador y no aparecen a
 
 ## Archivos principales
 
-- `plan_alimentacion_dinamico_3_semanas.html`: aplicación completa en un único archivo.
+- `web/plan_alimentacion_dinamico_3_semanas.html`: interfaz y lógica de la aplicación.
 - `index.html`: entrada que redirige a la aplicación.
-- `data/foods.json` y `data/recipes.json`: catálogos genéricos iniciales; el HTML todavía no los carga.
+- `data/foods.json` y `data/recipes.json`: catálogos genéricos que carga la aplicación.
+- `data/foods.schema.json` y `data/recipes.schema.json`: contratos estructurales de los catálogos.
 - `context.md`: resumen breve en inglés para retomar el trabajo.
 - `AGENTS.md`: instrucciones en inglés para agentes de código.
 - `docs/product/requirements.md`: alcance y flujos del producto.

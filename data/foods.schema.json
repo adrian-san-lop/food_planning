@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Catálogo de alimentos de Mi Plan Saludable",
+  "type": "object",
+  "required": ["schemaVersion", "catalogVersion", "source", "status", "foods"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "catalogVersion": { "type": "string", "minLength": 1 },
+    "source": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "minLength": 1 },
+    "foods": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/food" },
+      "minItems": 1
+    }
+  },
+  "$defs": {
+    "food": {
+      "type": "object",
+      "required": ["id", "name", "unit", "nutrition", "purchase", "nutritionSource"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9_]*$" },
+        "name": { "type": "string", "minLength": 1 },
+        "unit": { "enum": ["g", "ml", "ud"] },
+        "nutrition": { "$ref": "#/$defs/nutrition" },
+        "approximateEdibleWeight_g_per_unit": { "type": "number", "exclusiveMinimum": 0 },
+        "purchase": { "$ref": "#/$defs/purchase" },
+        "nutritionSource": { "type": "string", "minLength": 1 }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "unit": { "const": "ud" } }, "required": ["unit"] },
+          "then": {
+            "anyOf": [
+              { "properties": { "nutrition": { "properties": { "basis": { "const": "per_unit" } }, "required": ["basis"] } } },
+              { "required": ["approximateEdibleWeight_g_per_unit"] }
+            ]
+          }
+        }
+      ]
+    },
+    "nutrition": {
+      "type": "object",
+      "required": ["basis", "kcal", "protein_g", "carbohydrates_g", "fat_g"],
+      "additionalProperties": false,
+      "properties": {
+        "basis": { "enum": ["per_100g", "per_100ml", "per_unit"] },
+        "kcal": { "type": "number", "minimum": 0 },
+        "protein_g": { "type": "number", "minimum": 0 },
+        "carbohydrates_g": { "type": "number", "minimum": 0 },
+        "fat_g": { "type": "number", "minimum": 0 }
+      }
+    },
+    "purchase": {
+      "type": "object",
+      "required": ["store", "section", "quantity", "unit", "label"],
+      "additionalProperties": false,
+      "properties": {
+        "store": { "enum": ["mercadona", "fruteria"] },
+        "section": { "type": "string", "minLength": 1 },
+        "quantity": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "enum": ["g", "ml", "ud"] },
+        "label": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

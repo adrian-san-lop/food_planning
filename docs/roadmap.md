@@ -4,29 +4,30 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 
 ## Estado actual
 
-- La app sigue siendo un HTML funcional con menú fijo y estado en `localStorage`.
-- Existe la estructura documental y los catálogos JSON están en versión 0.2.0 (83 alimentos y 107 recetas); siguen siendo borradores y la app todavía no los consume.
+- La app sigue siendo estática y personal; guarda el estado en `localStorage`.
+- Los catálogos JSON están en versión 0.2.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML.
+- La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
 - No se ha ejecutado SQL ni se ha conectado autenticación o persistencia Supabase.
 
 ## Etapas candidatas
 
-### A. Cerrar el diseño de catálogos y planificación
+### A. Cerrar el diseño de catálogos y planificación — primera versión completada
 
-- Formalizar los esquemas de `foods.json` y `recipes.json`, revisar la calidad nutricional y mantener validados IDs, unidades y referencias. La primera ampliación curada ya está en 0.2.0.
-- Registrar decisiones y resolver las preguntas que cambian el comportamiento del planificador.
+- Formalizar los esquemas de `foods.json` y `recipes.json` y validar IDs, unidades y referencias. Los valores nutricionales heredados y genéricos siguen siendo aproximados; su revisión frente a etiquetas concretas permanece pendiente.
+- Registrar las reglas aceptadas y anotar las preguntas de gustos, restricciones y umbrales que siguen abiertas.
 - Ampliar recetas con alternativas útiles según preferencias reales; evitar añadir volumen sin propósito.
 
-### B. Conectar los catálogos
+### B. Conectar los catálogos — completado
 
 - Cargar JSON desde la ubicación publicada en GitHub Pages.
-- Mostrar un error recuperable si falta un fichero o su estructura no es válida.
+- Mostrar un error con opción de reintento si falta un fichero o falla una comprobación.
 - Mantener el menú actual o un mecanismo de transición hasta que la generación dinámica esté lista.
 
-### C. Implementar la propuesta de ciclo
+### C. Implementar la propuesta de ciclo — primera versión completada
 
 - Generar 21 días y cinco espacios diarios a partir de recetas compatibles.
-- Aplicar las reglas aceptadas; añadir preferencias personales solo después de decidir su modelo.
-- Permitir revisar, cambiar y bloquear platos; guardar versión de catálogo y conservar snapshots de consumo.
+- Aplicar las reglas aceptadas con heurísticas iniciales; añadir preferencias personales solo después de decidir su modelo.
+- Permitir revisar, cambiar y bloquear platos; preservar bloqueos al regenerar; guardar versión de catálogo y cantidades consumidas.
 
 ### D. Persistencia remota, si se mantiene como prioridad
 

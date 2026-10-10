@@ -12,12 +12,15 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 
 ### Implementado en el HTML actual
 
-- Un menú fijo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios por ciclo).
+- Un ciclo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios). El primer ciclo mantiene el menú fijo existente; los siguientes pueden generarse desde el catálogo.
 - Recetas, instrucciones, fotografías orientativas y adaptación de cantidades según el perfil y los días de fuerza.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
 - Seguimiento de entrenamientos y peso.
 - Estado del usuario en `localStorage`; exportación/importación JSON y aviso semanal de copia dentro de la página.
 - Inventario negativo permitido cuando se registra una comida que supera las existencias; se muestra el faltante y desmarcar la comida revierte el consumo.
+- Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
+- Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado local con fecha y versión del catálogo.
+- Activación del siguiente menú al llegar su fecha; el ciclo anterior se archiva junto con su menú y registros.
 
 ### Perfil y nutrición
 
@@ -47,13 +50,14 @@ El aviso de renovación actual aparece dentro de la página cerca del final del 
 - Marcar días de fuerza libremente, registrar peso con fecha y consultar tendencia sin interpretar fluctuaciones puntuales como cambios de grasa.
 - Mantener la app responsive y accesible; las fotos son orientativas y deben conservar atribución/licencia al modificarse.
 
-### Objetivo acordado, aún no implementado
+### Catálogos y siguiente ciclo
 
-- Mantener una biblioteca común y versionada de alimentos y recetas en `data/foods.json` y `data/recipes.json`.
-- Al renovar un ciclo de tres semanas, formar una propuesta nueva usando las recetas compatibles de esa biblioteca. Las recetas pueden repetirse, pero la propuesta debe procurar incluir algunas que no aparecieran en el menú reciente.
-- Permitir revisar la propuesta y cambiar o bloquear comidas antes de confirmar el ciclo.
+- Mantener una biblioteca común y versionada de alimentos y recetas en `data/foods.json` y `data/recipes.json`; sus esquemas están en los ficheros `*.schema.json`.
+- Al preparar un ciclo, formar una propuesta de 105 comidas compatibles. Se permiten repeticiones y se favorecen recetas que no aparecían en el menú actual, sin un mínimo numérico.
+- Revisar y cambiar recetas dentro del mismo tipo de comida; los cambios manuales quedan bloqueados hasta que se desbloqueen. Regenerar conserva las comidas bloqueadas.
+- Guardar la propuesta localmente con su versión de catálogo y activarla en la fecha guardada.
 
-La app todavía tiene menús fijos en el HTML y **no carga** los JSON. La renovación dinámica y sus controles de usuario no deben describirse como disponibles.
+El ciclo inicial conserva el menú fijo existente. Las preferencias por gustos, las alergias y las exclusiones personales no se filtran todavía porque su modelo no está aprobado.
 
 ## Reglas funcionales aceptadas para el futuro planificador
 

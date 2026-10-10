@@ -18,9 +18,9 @@ Mantener los catálogos genéricos en `data/foods.json` y `data/recipes.json`, v
 - El catálogo no depende de una cuenta de Supabase.
 - La web publicada es pública; no incluir información personal en ella.
 - El snapshot inicial al registrar esta decisión (`catalogVersion` `0.1.0`) contenía 63 alimentos y 84 recetas extraídos del HTML. La ampliación posterior a 0.2.0 conserva esos registros y añade 20 alimentos y 23 recetas; la cifra inicial se mantiene aquí como contexto histórico.
-- El HTML aún no carga los JSON. Esta decisión de almacenamiento está aceptada; la integración de lectura no.
+- En la fecha de este registro el HTML aún no cargaba los JSON. La integración de lectura se incorporó después; véase ADR-0004.
 - Cada ciclo debe registrar la versión usada y preservar snapshots de consumo para no reescribir el historial al cambiar recetas.
 
 ## Pendiente
 
-Validar la calidad/fuente de los valores nutricionales, formalizar esquema y decidir el proceso para revisar cambios del catálogo.
+Revisar los valores nutricionales genéricos frente a etiquetas concretas y decidir el proceso para revisar cambios del catálogo. Los esquemas se formalizaron en la versión 0.2.0.

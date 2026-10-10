@@ -1,12 +1,12 @@
 # Especificación del catálogo y del planificador
 
-Estado: reglas iniciales aceptadas; el planificador y la lectura de JSON aún no están implementados. Las reglas no aceptadas se identifican como propuestas.
+Estado: carga de catálogos y primera versión del planificador implementadas. Las reglas no aceptadas se identifican como propuestas; los umbrales exactos siguen abiertos.
 
 ## Objetivo del ciclo
 
 Proponer un menú para los siguientes 21 días, con cinco espacios por día: desayuno, media mañana, comida, media tarde y cena. Son 105 comidas planificadas. La generación ocurre al preparar el siguiente ciclo; la instalación del mecanismo se hace una vez y la propuesta se repite en cada renovación. La persona revisa el resultado antes de confirmarlo.
 
-La biblioteca puede incluir recetas ya utilizadas y recetas que no aparecieron en el ciclo reciente. Se permiten repeticiones; la intención es incluir novedad sin sacrificar restricciones, variedad o viabilidad. El número mínimo de recetas nuevas por ciclo y el significado exacto de “nueva” están pendientes.
+La biblioteca puede incluir recetas ya utilizadas y recetas que no aparecieron en el menú activo. En la implementación, “no usada” se refiere al menú activo, no a la fecha de alta en el catálogo. Se permiten repeticiones; no hay un número mínimo garantizado.
 
 ## Catálogos actuales
 
@@ -37,7 +37,7 @@ Unidades admitidas: `g`, `ml` y `ud`. Huevos y la lista de frutas/verduras enter
 
 ### Recetas
 
-Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, `photoKey`, ingredientes, pasos y notas. Cada ingrediente referencia un `foodId` existente e incluye cantidad y unidad canónica. `amountOnStrengthDay` conserva la alternativa de cantidad para días de fuerza cuando la receta la tiene.
+Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, `photoKey`, ingredientes, pasos y notas. Cada ingrediente referencia un `foodId` existente e incluye cantidad y unidad canónica. `amountOnStrengthDay` conserva la alternativa de cantidad para días de fuerza cuando la receta la tiene. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app realiza además comprobaciones entre ambos ficheros.
 
 Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el contrato, mantener los IDs existentes o documentar una migración explícita; no renombrar IDs a la ligera.
 
@@ -49,19 +49,19 @@ Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el c
 4. Entregar una propuesta editable: revisar, sustituir una comida y bloquear comidas frente a una regeneración.
 5. En ciclos nuevos, procurar introducir recetas que no estuvieron en el menú reciente; la cantidad y el período de referencia están pendientes.
 
-Las cuatro primeras reglas fueron aceptadas explícitamente. La quinta recoge la intención del propietario de que los nuevos menús incluyan recetas nuevas, pero su medida concreta sigue abierta.
+Las cuatro primeras reglas fueron aceptadas explícitamente. La quinta recoge la intención de incluir recetas que no aparecieron en el menú activo; se favorecen, sin imponer un mínimo.
 
-## Flujo propuesto de generación
+## Flujo implementado de generación
 
-1. Leer y validar los catálogos y anotar su `catalogVersion`.
-2. Construir candidatos compatibles con cada espacio (tipo de comida y reglas del ciclo).
-3. Aplicar las restricciones personales que estén definidas y aprobadas.
-4. Puntuar candidatos por adecuación nutricional, variedad, uso del stock y novedad, sin hacer del stock una barrera.
-5. Completar los 105 espacios; si faltan candidatos válidos, explicar el motivo en lugar de infringir silenciosamente una restricción.
-6. Presentar la propuesta. Los cambios manuales y bloqueos se preservan si se vuelve a generar el resto.
-7. Al confirmar, guardar el plan y su versión de catálogo. Al registrar una comida, conservar cantidades/macros de ese momento.
+1. Cargar por HTTP(S) los dos JSON, comprobar versiones, IDs, unidades, referencias y tipos, y usar `catalogVersion` en la propuesta.
+2. Generar los 105 espacios desde recetas del mismo tipo que cada espacio. Todas las categorías actuales tienen candidatos.
+3. No se aplican filtros de gustos, alergias ni restricciones personales; ese modelo sigue pendiente.
+4. Muestrear combinaciones y puntuarlas con la lógica nutricional/raciones actual, variedad, menor repetición reciente, recetas no usadas en el menú actual y cobertura del stock. El stock solo aporta preferencia; no elimina candidatos. Las ponderaciones son detalles iniciales de implementación, no umbrales aprobados.
+5. Completar los cinco tipos de comida para 21 días. Se permiten repeticiones si la biblioteca lo requiere.
+6. Revisar la propuesta, cambiar cada receta por otra del mismo tipo, bloquearla o desbloquearla y regenerar el resto. Una receta seleccionada manualmente queda bloqueada inicialmente.
+7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en `localStorage`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
 
-Los pasos 2–7 son diseño previsto; faltan algoritmo, umbrales y decisiones de restricciones antes de implementarlos.
+El menú fijo actual no cambia hasta que comience el ciclo confirmado. El estado de los catálogos y el menú sigue siendo local; esta función no implica copia remota ni sincronización.
 
 ## Gustos y restricciones: propuesta pendiente
 
