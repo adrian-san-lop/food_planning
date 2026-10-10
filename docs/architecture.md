@@ -66,7 +66,7 @@ Si se conecta Supabase, cada tabla con datos personales debe exigir autenticaci�
 ## Versiones y operación
 
 - El estado personal actual es v6; v5 es el primer formato de importación admitido. No implementar migraciones desde v1-v4.
-- Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.1.0`), independiente de la versión del estado personal.
+- Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.2.0`), independiente de la versión del estado personal. Incluyen 83 alimentos y 107 recetas, pero el HTML todavía no los carga.
 - La app requiere conexión y no tendrá cola offline. No afirmar que un cambio se guardó remotamente hasta que la integración real lo confirme.
 - El recordatorio semanal de copia es un aviso dentro de la página, no una notificación del sistema.
 - El uso sin coste depende de los límites vigentes de GitHub Pages y del proveedor de base de datos; verificar límites oficiales antes de integrar o prometer capacidad.

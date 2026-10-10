@@ -5,14 +5,14 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 ## Estado actual
 
 - La app sigue siendo un HTML funcional con menú fijo y estado en `localStorage`.
-- Existe la estructura documental y hay borradores de catálogos JSON, todavía no consumidos por la app.
+- Existe la estructura documental y los catálogos JSON están en versión 0.2.0 (83 alimentos y 107 recetas); siguen siendo borradores y la app todavía no los consume.
 - No se ha ejecutado SQL ni se ha conectado autenticación o persistencia Supabase.
 
 ## Etapas candidatas
 
 ### A. Cerrar el diseño de catálogos y planificación
 
-- Revisar campos y unidades de `foods.json` y `recipes.json`; validar IDs, referencias y nutrición.
+- Formalizar los esquemas de `foods.json` y `recipes.json`, revisar la calidad nutricional y mantener validados IDs, unidades y referencias. La primera ampliación curada ya está en 0.2.0.
 - Registrar decisiones y resolver las preguntas que cambian el comportamiento del planificador.
 - Ampliar recetas con alternativas útiles según preferencias reales; evitar añadir volumen sin propósito.
 

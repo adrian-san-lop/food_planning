@@ -12,18 +12,18 @@ La biblioteca puede incluir recetas ya utilizadas y recetas que no aparecieron e
 
 Los catálogos son JSON genéricos e independientes de los datos personales:
 
-- [`foods.json`](../../data/foods.json): 63 alimentos.
-- [`recipes.json`](../../data/recipes.json): 84 recetas y 402 referencias de ingredientes.
+- [`foods.json`](../../data/foods.json): 83 alimentos.
+- [`recipes.json`](../../data/recipes.json): 107 recetas y 512 referencias de ingredientes.
 
 Distribución actual de recetas por tipo:
 
 | Tipo | Recetas actuales | Espacios por ciclo |
 | --- | ---: | ---: |
-| Desayuno | 14 | 21 |
-| Media mañana (`media`) | 14 | 21 |
-| Comida | 20 | 21 |
-| Media tarde (`tarde`) | 15 | 21 |
-| Cena | 21 | 21 |
+| Desayuno | 18 | 21 |
+| Media mañana (`media`) | 18 | 21 |
+| Comida | 25 | 21 |
+| Media tarde (`tarde`) | 20 | 21 |
+| Cena | 26 | 21 |
 
 La biblioteca permite variedad dentro de cada semana, pero no una receta diferente para cada espacio del ciclo completo en todos los tipos. Como se aceptan repeticiones, esto no bloquea el planificador. Las preferencias personales reducirán el conjunto elegible; por eso conviene ampliar la biblioteca según las carencias reales y no perseguir un número arbitrario.
 
@@ -31,7 +31,7 @@ La biblioteca permite variedad dentro de cada semana, pero no una receta diferen
 
 ### Alimentos
 
-Cada alimento usa un `id` estable, nombre, unidad canónica, datos nutricionales con base explícita, formato orientativo de compra y, si es una pieza, peso comestible aproximado. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras actuales son aproximaciones heredadas del HTML, no están verificadas frente a etiquetas de productos concretos.
+Cada alimento usa un `id` estable, nombre, unidad canónica, datos nutricionales con base explícita, formato orientativo de compra y, si es una pieza, peso comestible aproximado. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Los alimentos añadidos en la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
 
 Unidades admitidas: `g`, `ml` y `ud`. Huevos y la lista de frutas/verduras enteras de [requisitos](../product/requirements.md) usan `ud` fraccionables. La leche se compra como 1 L; café molido se mide en gramos.
 

@@ -4,7 +4,7 @@ Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados
 
 ## Catálogo y recetas
 
-- ¿Qué fuente nutricional se usará para revisar estimaciones: etiquetas de productos concretos, tablas públicas u otra fuente?
+- ¿Qué fuente nutricional se usará como referencia prioritaria para revisar todo el catálogo: etiquetas de productos concretos, tablas públicas u otra fuente? La ampliación 0.2.0 incorpora referencias genéricas de USDA FoodData Central, sin convertir esa selección inicial en una decisión global.
 - ¿Qué campos obligatorios tendrá el esquema validado de alimentos y recetas? Hoy los JSON no tienen JSON Schema.
 - ¿Qué define una receta “nueva” al renovar el ciclo: que no apareciera en el ciclo anterior o que se haya añadido recientemente al catálogo?
 - ¿Cuántas recetas nuevas por ciclo se esperan, si hay un mínimo?

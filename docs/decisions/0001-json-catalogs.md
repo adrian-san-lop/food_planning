@@ -17,7 +17,7 @@ Mantener los catálogos genéricos en `data/foods.json` y `data/recipes.json`, v
 - Los JSON se pueden revisar y cambiar con el historial de Git.
 - El catálogo no depende de una cuenta de Supabase.
 - La web publicada es pública; no incluir información personal en ella.
-- Los ficheros actuales (`catalogVersion` `0.1.0`) son borradores iniciales extraídos del HTML: 63 alimentos y 84 recetas.
+- El snapshot inicial al registrar esta decisión (`catalogVersion` `0.1.0`) contenía 63 alimentos y 84 recetas extraídos del HTML. La ampliación posterior a 0.2.0 conserva esos registros y añade 20 alimentos y 23 recetas; la cifra inicial se mantiene aquí como contexto histórico.
 - El HTML aún no carga los JSON. Esta decisión de almacenamiento está aceptada; la integración de lectura no.
 - Cada ciclo debe registrar la versión usada y preservar snapshots de consumo para no reescribir el historial al cambiar recetas.
 

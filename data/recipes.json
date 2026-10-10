@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.1.0",
-  "source": "plan_alimentacion_dinamico_3_semanas.html",
-  "status": "borrador inicial derivado del catálogo actual",
+  "catalogVersion": "0.2.0",
+  "source": "Existing recipes from plan_alimentacion_dinamico_3_semanas.html plus 23 curated recipes using foods from catalogVersion 0.2.0.",
+  "status": "Catálogo ampliado; las recetas nuevas se han redactado para el catálogo genérico y aún no las carga la aplicación.",
   "recipes": [
     {
       "id": "yogur_platano",
@@ -3497,6 +3497,946 @@
         "Tómala con nueces troceadas."
       ],
       "tip": "No requiere cocinar.",
+      "description": ""
+    },
+    {
+      "id": "tostada_tofu_revuelto",
+      "name": "Tostada de tofu revuelto con espinacas",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 12,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "tofuFirm",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggs",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 55,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.3,
+          "unit": "ud"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Desmenuza el tofu y saltéalo con las espinacas.",
+        "Añade el huevo batido y cocina hasta que cuaje.",
+        "Sirve sobre la tostada con tomate y prepara el café con leche."
+      ],
+      "tip": "Escurre el tofu antes de desmenuzarlo para que se dore mejor.",
+      "description": ""
+    },
+    {
+      "id": "avena_nocturna_chia",
+      "name": "Avena reposada con chía y frutos rojos",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "oats",
+          "amount": 35,
+          "amountOnStrengthDay": 45,
+          "unit": "g"
+        },
+        {
+          "foodId": "chiaSeeds",
+          "amount": 8,
+          "unit": "g"
+        },
+        {
+          "foodId": "skyr",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "berries",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 220,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Mezcla la avena, la chía, el skyr y 100 ml de leche; deja reposar en frío.",
+        "Al servir, añade los frutos rojos.",
+        "Usa los 120 ml de leche restantes para preparar el café."
+      ],
+      "tip": "Déjala preparada la noche anterior; la cantidad total de leche incluye la del café.",
+      "description": ""
+    },
+    {
+      "id": "skyr_chia_manzana",
+      "name": "Skyr con manzana, chía y pasas",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "foodId": "apple",
+          "amount": 0.5,
+          "unit": "ud"
+        },
+        {
+          "foodId": "chiaSeeds",
+          "amount": 8,
+          "unit": "g"
+        },
+        {
+          "foodId": "raisins",
+          "amount": 10,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta media manzana en dados.",
+        "Sirve el skyr con la manzana, la chía y las pasas.",
+        "Acompaña con café preparado con la leche indicada."
+      ],
+      "tip": "Puedes dejar la chía unos minutos sobre el skyr para que se hidrate.",
+      "description": ""
+    },
+    {
+      "id": "tostada_tempeh_tomate",
+      "name": "Tostada templada de tempeh y tomate",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 10,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "tempeh",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 55,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.4,
+          "unit": "ud"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 20,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta el tempeh en láminas y dóralo en una sartén.",
+        "Tuesta el pan y añade tomate, lechuga y tempeh.",
+        "Prepara el café con leche."
+      ],
+      "tip": "Sazona el tempeh con especias que ya tengas en casa.",
+      "description": ""
+    },
+    {
+      "id": "media_tostada_tahini_manzana",
+      "name": "Tostada fina de tahini con manzana",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 4,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "tahini",
+          "amount": 12,
+          "unit": "g"
+        },
+        {
+          "foodId": "apple",
+          "amount": 0.5,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Tuesta ligeramente el pan.",
+        "Unta una capa fina de tahini y acompaña con media manzana en láminas."
+      ],
+      "tip": "Remueve el tahini del tarro antes de servirlo.",
+      "description": ""
+    },
+    {
+      "id": "media_edamame_soja",
+      "name": "Edamame templado con salsa de soja",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 6,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "edamame",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "soySauce",
+          "amount": 5,
+          "unit": "ml"
+        }
+      ],
+      "steps": [
+        "Calienta el edamame siguiendo las instrucciones del envase.",
+        "Escúrrelo y añade una pequeña cantidad de salsa de soja."
+      ],
+      "tip": "La salsa de soja puede ser salada; ajusta la cantidad al gusto.",
+      "description": ""
+    },
+    {
+      "id": "media_skyr_chia_rojos",
+      "name": "Skyr con frutos rojos y chía",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "berries",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "chiaSeeds",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el skyr en un cuenco.",
+        "Añade los frutos rojos y espolvorea la chía."
+      ],
+      "tip": "También puedes usar frutos rojos congelados, descongelados previamente.",
+      "description": ""
+    },
+    {
+      "id": "media_cottage_zanahoria",
+      "name": "Queso cottage con zanahoria y pan",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "cottageCheese",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 0.5,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 30,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta media zanahoria en bastones.",
+        "Sirve con el queso cottage y una porción pequeña de pan."
+      ],
+      "tip": "El queso cottage se conserva refrigerado; consulta su fecha de consumo.",
+      "description": ""
+    },
+    {
+      "id": "comida_soja_berenjena_arroz",
+      "name": "Arroz con soja texturizada y berenjena",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "soyProteinTextured",
+          "amount": 45,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggplant",
+          "amount": 140,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "rice",
+          "amount": 55,
+          "amountOnStrengthDay": 65,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Hidrata la soja texturizada según las instrucciones del envase y escúrrela.",
+        "Cuece el arroz por separado.",
+        "Saltea la berenjena en dados; añade la soja y el tomate triturado y cocina hasta que esté tierno.",
+        "Sirve la mezcla sobre el arroz."
+      ],
+      "tip": "La cantidad de soja indicada es en seco, antes de hidratarla.",
+      "description": ""
+    },
+    {
+      "id": "comida_guiso_lenteja_roja",
+      "name": "Guiso rápido de lenteja roja y verduras",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "lentil",
+      "ingredients": [
+        {
+          "foodId": "redLentilsDry",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 0.5,
+          "unit": "ud"
+        },
+        {
+          "foodId": "leek",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "celery",
+          "amount": 30,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 30,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Lava las lentejas y corta el puerro, el apio y la zanahoria.",
+        "Pon las verduras y las lentejas en una cazuela con agua; cuece hasta que estén tiernas.",
+        "Añade el tomate triturado al final y sirve con el pan."
+      ],
+      "tip": "Las lentejas rojas suelen cocerse más rápido que las lentejas enteras habituales.",
+      "description": ""
+    },
+    {
+      "id": "comida_solomillo_coliflor_arroz",
+      "name": "Solomillo de cerdo con coliflor y arroz",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "porkTenderloin",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "cauliflower",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "foodId": "rice",
+          "amount": 55,
+          "amountOnStrengthDay": 65,
+          "unit": "g"
+        },
+        {
+          "foodId": "soySauce",
+          "amount": 5,
+          "unit": "ml"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el arroz y cocina la coliflor al vapor o en agua.",
+        "Corta el solomillo en medallones y dóralo con el aceite.",
+        "Añade unas gotas de salsa de soja y sirve con el arroz y la coliflor."
+      ],
+      "tip": "Cocina el cerdo completamente y evita reutilizar el plato que estuvo en contacto con la carne cruda.",
+      "description": ""
+    },
+    {
+      "id": "comida_bowl_tofu_edamame",
+      "name": "Bol de tofu, edamame y lombarda",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "tofuFirm",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "edamame",
+          "amount": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "redCabbage",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "rice",
+          "amount": 55,
+          "amountOnStrengthDay": 65,
+          "unit": "g"
+        },
+        {
+          "foodId": "soySauce",
+          "amount": 10,
+          "unit": "ml"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 4,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el arroz y calienta el edamame.",
+        "Dora el tofu en dados con el aceite.",
+        "Corta la lombarda fina y sirve todo en un bol con salsa de soja."
+      ],
+      "tip": "Si prefieres la lombarda más tierna, saltéala junto con el tofu.",
+      "description": ""
+    },
+    {
+      "id": "comida_quinoa_alubias_maiz",
+      "name": "Quinoa con alubias negras y maíz",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "quinoa",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "blackBeans",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "cornCanned",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 30,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.5,
+          "unit": "ud"
+        },
+        {
+          "foodId": "avocado",
+          "amount": 0.2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tahini",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece la quinoa y enjuaga las alubias y el maíz escurridos.",
+        "Corta el tomate y el aguacate; prepara una base con la lechuga.",
+        "Añade la quinoa, las alubias y el maíz. Mezcla el tahini con un poco de agua y úsalo como aliño."
+      ],
+      "tip": "La cantidad de alubias y maíz se refiere al producto escurrido.",
+      "description": ""
+    },
+    {
+      "id": "tarde_cottage_rojos_pipas",
+      "name": "Queso cottage con frutos rojos y pipas",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "cottageCheese",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "berries",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "pumpkinSeeds",
+          "amount": 8,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el queso cottage con los frutos rojos.",
+        "Añade las pipas de calabaza por encima."
+      ],
+      "tip": "Puedes reservar las pipas aparte para mantener su textura crujiente.",
+      "description": ""
+    },
+    {
+      "id": "tarde_apio_tahini",
+      "name": "Apio crujiente con salsa rápida de tahini",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "fruit",
+      "ingredients": [
+        {
+          "foodId": "celery",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "tahini",
+          "amount": 12,
+          "unit": "g"
+        },
+        {
+          "foodId": "soySauce",
+          "amount": 3,
+          "unit": "ml"
+        }
+      ],
+      "steps": [
+        "Lava el apio y córtalo en bastones.",
+        "Mezcla el tahini con la salsa de soja y un poco de agua.",
+        "Sirve el apio con la salsa para mojar."
+      ],
+      "tip": "Añade el agua poco a poco para ajustar la textura de la salsa.",
+      "description": ""
+    },
+    {
+      "id": "tarde_tostada_tahini_pasass",
+      "name": "Tostada de tahini y pasas",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 4,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "tahini",
+          "amount": 10,
+          "unit": "g"
+        },
+        {
+          "foodId": "raisins",
+          "amount": 12,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Tuesta el pan.",
+        "Unta el tahini y reparte las pasas por encima."
+      ],
+      "tip": "Es una opción sencilla para aprovechar el tahini abierto.",
+      "description": ""
+    },
+    {
+      "id": "tarde_tempeh_edamame",
+      "name": "Bocados de tempeh y edamame",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 10,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "tempeh",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "edamame",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "soySauce",
+          "amount": 4,
+          "unit": "ml"
+        }
+      ],
+      "steps": [
+        "Calienta el edamame y escúrrelo.",
+        "Corta el tempeh en dados y dóralo en una sartén.",
+        "Añade unas gotas de salsa de soja y sirve junto al edamame."
+      ],
+      "tip": "Ajusta la salsa de soja al gusto y a la etiqueta del producto.",
+      "description": ""
+    },
+    {
+      "id": "tarde_skyr_chia_pasass",
+      "name": "Skyr con chía y pasas",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "chiaSeeds",
+          "amount": 8,
+          "unit": "g"
+        },
+        {
+          "foodId": "raisins",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Mezcla la chía con el skyr y deja reposar unos minutos.",
+        "Añade las pasas antes de servir."
+      ],
+      "tip": "Si la mezcla queda muy espesa, puedes aligerarla con un poco de leche contabilizada aparte.",
+      "description": ""
+    },
+    {
+      "id": "cena_berenjena_rellena_ternera",
+      "name": "Berenjena rellena de ternera y tomate",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 35,
+      "photoKey": "pasta",
+      "ingredients": [
+        {
+          "foodId": "beefSirloin",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggplant",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "rice",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Parte la berenjena a lo largo y ásala hasta que la pulpa se ablande.",
+        "Cuece el arroz y corta la ternera en trozos pequeños.",
+        "Saltea la ternera, incorpora la pulpa de berenjena y el tomate, y cocina hasta que esté hecha.",
+        "Rellena la berenjena y sirve con el arroz."
+      ],
+      "tip": "La cantidad de ternera corresponde al peso en crudo.",
+      "description": ""
+    },
+    {
+      "id": "cena_solomillo_lombarda_boniato",
+      "name": "Solomillo con lombarda y boniato",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "sweet",
+      "ingredients": [
+        {
+          "foodId": "porkTenderloin",
+          "amount": 140,
+          "unit": "g"
+        },
+        {
+          "foodId": "redCabbage",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "sweetpotato",
+          "amount": 0.5,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta el boniato en dados y hornéalo o cocínalo hasta que esté tierno.",
+        "Saltea la lombarda cortada fina con el aceite y un poco de agua.",
+        "Cocina el solomillo en medallones y sirve con las verduras."
+      ],
+      "tip": "El peso de la pieza de boniato puede variar; ajusta la cantidad en la compra si lo necesitas.",
+      "description": ""
+    },
+    {
+      "id": "cena_crema_coliflor_lenteja",
+      "name": "Crema de coliflor y lenteja roja",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "soup",
+      "ingredients": [
+        {
+          "foodId": "cauliflower",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "foodId": "redLentilsDry",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "leek",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "celery",
+          "amount": 30,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 30,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Lava las lentejas y corta la coliflor, el puerro y el apio.",
+        "Cuece todo en agua hasta que las lentejas y la coliflor estén tiernas.",
+        "Tritura hasta obtener una crema y acompaña con el pan."
+      ],
+      "tip": "Ajusta la cantidad de agua al espesor que prefieras.",
+      "description": ""
+    },
+    {
+      "id": "cena_wok_tempeh_edamame",
+      "name": "Wok de tempeh, edamame y verduras",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "fajita",
+      "ingredients": [
+        {
+          "foodId": "tempeh",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "edamame",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.4,
+          "unit": "ud"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.25,
+          "unit": "ud"
+        },
+        {
+          "foodId": "noodles",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "soySauce",
+          "amount": 8,
+          "unit": "ml"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 4,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece los fideos siguiendo el tiempo del envase y calienta el edamame.",
+        "Saltea el tempeh, el calabacín y el pimiento con el aceite.",
+        "Añade los fideos, el edamame y la salsa de soja; mezcla y sirve."
+      ],
+      "tip": "Corta las verduras de tamaño parecido para que se cocinen a la vez.",
+      "description": ""
+    },
+    {
+      "id": "cena_pavo_alubias_lombarda",
+      "name": "Salteado de pavo, alubias negras y lombarda",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "turkeyMince",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "blackBeans",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "cornCanned",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "redCabbage",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "rice",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "soySauce",
+          "amount": 4,
+          "unit": "ml"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 4,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el arroz y enjuaga las alubias y el maíz escurridos.",
+        "Cocina el pavo picado en una sartén con el aceite hasta que esté hecho.",
+        "Añade la lombarda en tiras, las alubias y el maíz; saltea unos minutos y sirve con el arroz."
+      ],
+      "tip": "La cantidad de alubias y maíz es peso escurrido.",
       "description": ""
     }
   ]

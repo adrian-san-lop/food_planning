@@ -11,7 +11,7 @@ Last updated: 2026-10-10. This file is a short handoff index, not the full produ
 
 ## Catalogs and planning
 
-- Generic food and recipe catalogs are stored in `data/foods.json` and `data/recipes.json`, version `0.1.0`. They were extracted from the current HTML: 63 foods, 84 recipes, and 402 ingredient references.
+- Generic food and recipe catalogs are stored in `data/foods.json` and `data/recipes.json`, version `0.2.0`: 83 foods, 107 recipes, and 512 ingredient references. The catalogs preserve the original 63 foods and 84 recipes and add 20 foods plus 23 recipes. New food entries include generic USDA FoodData Central references and approximate nutrient values.
 - These JSON files are preparation artifacts. The app still reads embedded `FOOD`, `RECIPES`, and fixed `WEEK_1`–`WEEK_3` data from the HTML.
 - The intended feature is to propose a new three-week menu from the catalogs at each cycle. Repeats are allowed; the proposal should include recipes not used in the recent menu when suitable. The owner reviews it and can swap or lock meals.
 - Four initial planning principles are accepted. Exact scoring thresholds, dislike handling, and multi-person preference aggregation are not decided. See the planner specification and open questions.

@@ -74,7 +74,7 @@ Estos principios están aceptados. Las puntuaciones, umbrales y cantidades míni
 ## Unidades y compras
 
 - Usar `ud` para huevos y frutas/verduras enteras: plátano, manzana, kiwi, mandarina, naranja, pera, fruta de temporada, aguacate, tomate, pimiento, calabacín, cebolla, zanahoria, brócoli, pepino, patata y boniato. Se permiten fracciones; los pesos comestibles por pieza son aproximados.
-- Usar `g` para ingredientes pesados, envasados, cortados, congelados o vendidos por peso; usar `ml` para líquidos.
+- Usar `g` para ingredientes pesados, envasados, cortados, congelados o vendidos por peso; usar `ml` para líquidos. En el catálogo 0.2.0, berenjena, coliflor, lombarda, puerro y apio se registran en gramos.
 - La leche se compra en tetrabriks de 1 L. El café molido se controla en gramos y figura en los desayunos.
 - Al finalizar la compra, registrar el contenido real confirmado, no solo la cantidad planificada. Permitir ajustar el tamaño estimado del envase.
 

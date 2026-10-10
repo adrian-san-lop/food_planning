@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.1.0",
-  "source": "plan_alimentacion_dinamico_3_semanas.html",
-  "status": "borrador inicial derivado del catálogo actual",
+  "catalogVersion": "0.2.0",
+  "source": "Existing foods from plan_alimentacion_dinamico_3_semanas.html plus curated generic additions with per-item USDA FoodData Central references.",
+  "status": "Catálogo ampliado; los valores nuevos son aproximaciones genéricas y los formatos de compra son orientativos.",
   "foods": [
     {
       "id": "skyr",
@@ -1280,6 +1280,406 @@
         "label": "350 g / envase"
       },
       "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "tofuFirm",
+      "name": "Tofu firme",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 144,
+        "protein_g": 17.3,
+        "carbohydrates_g": 2.8,
+        "fat_g": 8.7
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Legumbres y refrigerados",
+        "quantity": 250,
+        "unit": "g",
+        "label": "envase de unos 250 g"
+      },
+      "nutritionSource": "USDA FoodData Central, tofu firme genérico, referencia aproximada por 100 g; no corresponde a una marca concreta. https://fdc.nal.usda.gov/food-search/?query=tofu+firm+raw"
+    },
+    {
+      "id": "tempeh",
+      "name": "Tempeh",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 192,
+        "protein_g": 20.3,
+        "carbohydrates_g": 7.6,
+        "fat_g": 10.8
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Legumbres y refrigerados",
+        "quantity": 200,
+        "unit": "g",
+        "label": "envase de unos 200 g"
+      },
+      "nutritionSource": "USDA FoodData Central, tempeh genérico, valores aproximados por 100 g. https://fdc.nal.usda.gov/food-search/?query=tempeh"
+    },
+    {
+      "id": "edamame",
+      "name": "Edamame sin vaina cocido (congelado)",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 121,
+        "protein_g": 12.1,
+        "carbohydrates_g": 8.9,
+        "fat_g": 5.2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 500,
+        "unit": "g",
+        "label": "bolsa de 500 g"
+      },
+      "nutritionSource": "USDA FoodData Central, edamame congelado preparado, referencia genérica por 100 g. https://fdc.nal.usda.gov/food-search/?query=edamame+frozen+prepared"
+    },
+    {
+      "id": "blackBeans",
+      "name": "Alubias negras cocidas, escurridas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 91,
+        "protein_g": 6,
+        "carbohydrates_g": 16.6,
+        "fat_g": 0.3
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 240,
+        "unit": "g",
+        "label": "aprox. 240 g escurridos por bote de 400 g"
+      },
+      "nutritionSource": "USDA FoodData Central, alubias negras en conserva, escurridas y enjuagadas, valores aproximados por 100 g. https://fdc.nal.usda.gov/food-search/?query=black+beans+canned+drained"
+    },
+    {
+      "id": "redLentilsDry",
+      "name": "Lentejas rojas secas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 352,
+        "protein_g": 24.6,
+        "carbohydrates_g": 63.1,
+        "fat_g": 1.1
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 500,
+        "unit": "g",
+        "label": "paquete de 500 g"
+      },
+      "nutritionSource": "USDA FoodData Central, lentejas secas genéricas, referencia aproximada por 100 g en seco. https://fdc.nal.usda.gov/food-search/?query=lentils+dry"
+    },
+    {
+      "id": "soyProteinTextured",
+      "name": "Proteína de soja texturizada seca",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 327,
+        "protein_g": 51.5,
+        "carbohydrates_g": 33.9,
+        "fat_g": 1.2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 200,
+        "unit": "g",
+        "label": "paquete de unos 200 g"
+      },
+      "nutritionSource": "USDA FoodData Central, proteína vegetal de soja texturizada seca, valores aproximados por 100 g; revisar la etiqueta del producto comprado. https://fdc.nal.usda.gov/food-search/?query=textured+vegetable+protein+dry"
+    },
+    {
+      "id": "porkTenderloin",
+      "name": "Solomillo de cerdo fresco",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 120,
+        "protein_g": 22.2,
+        "carbohydrates_g": 0,
+        "fat_g": 3.5
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 500,
+        "unit": "g",
+        "label": "bandeja de unos 500 g"
+      },
+      "nutritionSource": "USDA FoodData Central, solomillo de cerdo deshuesado crudo, valores aproximados por 100 g. https://fdc.nal.usda.gov/food-search/?query=pork+loin+tenderloin+boneless+raw"
+    },
+    {
+      "id": "beefSirloin",
+      "name": "Filete de ternera magro (corte tipo sirloin)",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 143,
+        "protein_g": 22.5,
+        "carbohydrates_g": 0,
+        "fat_g": 5.2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 400,
+        "unit": "g",
+        "label": "bandeja de unos 400 g"
+      },
+      "nutritionSource": "USDA FoodData Central, filete de ternera top sirloin crudo, referencia genérica aproximada por 100 g; los cortes locales varían. https://fdc.nal.usda.gov/food-search/?query=beef+top+sirloin+raw"
+    },
+    {
+      "id": "turkeyMince",
+      "name": "Pavo picado magro crudo",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 150,
+        "protein_g": 19.7,
+        "carbohydrates_g": 0,
+        "fat_g": 7.7
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 400,
+        "unit": "g",
+        "label": "bandeja de unos 400 g"
+      },
+      "nutritionSource": "USDA FoodData Central, pavo picado crudo 93 % magro, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=ground+turkey+93+lean+raw"
+    },
+    {
+      "id": "eggplant",
+      "name": "Berenjena fresca",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 25,
+        "protein_g": 1,
+        "carbohydrates_g": 5.9,
+        "fat_g": 0.2
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 500,
+        "unit": "g",
+        "label": "aprox. 500 g por pieza mediana"
+      },
+      "nutritionSource": "USDA FoodData Central, berenjena cruda, valores aproximados por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=eggplant+raw"
+    },
+    {
+      "id": "cauliflower",
+      "name": "Coliflor fresca",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 25,
+        "protein_g": 1.9,
+        "carbohydrates_g": 5,
+        "fat_g": 0.3
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 700,
+        "unit": "g",
+        "label": "peso comestible orientativo de una pieza"
+      },
+      "nutritionSource": "USDA FoodData Central, coliflor cruda, valores aproximados por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=cauliflower+raw"
+    },
+    {
+      "id": "redCabbage",
+      "name": "Lombarda fresca",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 31,
+        "protein_g": 1.4,
+        "carbohydrates_g": 7.4,
+        "fat_g": 0.2
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1000,
+        "unit": "g",
+        "label": "peso orientativo de una pieza pequeña"
+      },
+      "nutritionSource": "USDA FoodData Central, col lombarda cruda, valores aproximados por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=red+cabbage+raw"
+    },
+    {
+      "id": "leek",
+      "name": "Puerro fresco",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 61,
+        "protein_g": 1.5,
+        "carbohydrates_g": 14.2,
+        "fat_g": 0.3
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 300,
+        "unit": "g",
+        "label": "aprox. 2 puerros medianos"
+      },
+      "nutritionSource": "USDA FoodData Central, puerro crudo, referencia aproximada por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=leeks+raw"
+    },
+    {
+      "id": "celery",
+      "name": "Apio fresco",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 14,
+        "protein_g": 0.7,
+        "carbohydrates_g": 3,
+        "fat_g": 0.2
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 300,
+        "unit": "g",
+        "label": "peso orientativo de varios tallos"
+      },
+      "nutritionSource": "USDA FoodData Central, apio crudo, valores aproximados por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=celery+raw"
+    },
+    {
+      "id": "cornCanned",
+      "name": "Maíz dulce en conserva, escurrido",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 86,
+        "protein_g": 3.2,
+        "carbohydrates_g": 19,
+        "fat_g": 1.2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 285,
+        "unit": "g",
+        "label": "aprox. 285 g escurridos por lata"
+      },
+      "nutritionSource": "USDA FoodData Central, maíz dulce en conserva escurrido, valores genéricos aproximados por 100 g. https://fdc.nal.usda.gov/food-search/?query=sweet+corn+canned+drained"
+    },
+    {
+      "id": "chiaSeeds",
+      "name": "Semillas de chía",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 486,
+        "protein_g": 16.5,
+        "carbohydrates_g": 42.1,
+        "fat_g": 30.7
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 200,
+        "unit": "g",
+        "label": "paquete de unos 200 g"
+      },
+      "nutritionSource": "USDA FoodData Central, semillas de chía secas, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=chia+seeds+dry"
+    },
+    {
+      "id": "pumpkinSeeds",
+      "name": "Pipas de calabaza peladas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 559,
+        "protein_g": 30.2,
+        "carbohydrates_g": 10.7,
+        "fat_g": 49
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 200,
+        "unit": "g",
+        "label": "paquete de unos 200 g"
+      },
+      "nutritionSource": "USDA FoodData Central, semillas de calabaza peladas, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=pumpkin+seeds+raw"
+    },
+    {
+      "id": "tahini",
+      "name": "Tahini (pasta de sésamo)",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 595,
+        "protein_g": 17,
+        "carbohydrates_g": 21,
+        "fat_g": 53
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 300,
+        "unit": "g",
+        "label": "tarro de unos 300 g"
+      },
+      "nutritionSource": "USDA FoodData Central, tahini o pasta de sésamo, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=tahini+sesame+butter"
+    },
+    {
+      "id": "cottageCheese",
+      "name": "Queso cottage bajo en grasa",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 84,
+        "protein_g": 11,
+        "carbohydrates_g": 4.3,
+        "fat_g": 2.3
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 200,
+        "unit": "g",
+        "label": "tarrina de unos 200 g"
+      },
+      "nutritionSource": "USDA FoodData Central, queso cottage bajo en grasa, valor genérico aproximado por 100 g; puede variar según marca. https://fdc.nal.usda.gov/food-search/?query=cottage+cheese+low+fat"
+    },
+    {
+      "id": "soySauce",
+      "name": "Salsa de soja",
+      "unit": "ml",
+      "nutrition": {
+        "basis": "per_100ml",
+        "kcal": 53,
+        "protein_g": 8,
+        "carbohydrates_g": 4.9,
+        "fat_g": 0.6
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 150,
+        "unit": "ml",
+        "label": "botella pequeña de unos 150 ml"
+      },
+      "nutritionSource": "USDA FoodData Central, salsa de soja genérica; cantidades por 100 ml aproximadas a partir de la referencia nutricional por volumen. El contenido de sal depende de la marca. https://fdc.nal.usda.gov/food-search/?query=soy+sauce"
     }
   ]
 }

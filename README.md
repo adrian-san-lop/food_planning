@@ -31,21 +31,21 @@ La raíz contiene `index.html`, que es la entrada del sitio; su redirección es 
 | Unidad | Alimentos |
 | --- | --- |
 | `ud` | Huevos y frutas/verduras enteras: plátano, manzana, kiwi, mandarina, naranja, pera, fruta de temporada, aguacate, tomate, pimiento, calabacín, cebolla, zanahoria, brócoli, pepino, patata y boniato. |
-| `g` | Carnes, pescado, cereales, legumbres, frutos secos, aceite, café molido, bayas, hojas verdes, champiñones, espárragos, guisantes, judías verdes, calabaza y productos cortados, congelados o envasados. |
+| `g` | Carnes, pescado, cereales, legumbres, frutos secos, aceite, café molido, bayas, hojas verdes, champiñones, espárragos, guisantes, judías verdes, calabaza, berenjena, coliflor, lombarda, puerro, apio y productos cortados, congelados o envasados. |
 | `ml` | Leche y líquidos. La leche se propone en tetrabriks de 1 L. |
 
 Se aceptan fracciones de unidad, como `0,5 ud`. Los pesos comestibles por pieza son aproximados; la lista de compra los usa para convertir recetas en paquetes orientativos y permite editar el contenido del paquete.
 
 ## Catálogos de alimentos y recetas
 
-Se han preparado dos catálogos JSON iniciales a partir de los datos que ya usa la aplicación:
+Los catálogos JSON conservan los datos genéricos que ya usa la aplicación y se han ampliado por separado:
 
 - [`data/foods.json`](data/foods.json): alimentos, unidades, valores nutricionales aproximados, peso comestible por pieza cuando aplica y formato orientativo de compra.
 - [`data/recipes.json`](data/recipes.json): recetas para una ración, ingredientes enlazados por el identificador estable del alimento, cantidades alternativas para días de fuerza cuando existen, pasos, tiempo y notas.
 
 Son datos genéricos del recetario; no incluyen perfil, peso, despensa ni otros datos de uso personal. La app todavía **no carga estos ficheros**: sigue usando los catálogos incluidos en el HTML. La separación en JSON es la base para una integración posterior y no cambia el funcionamiento actual.
 
-La versión `0.1.0` de los catálogos conserva el contenido existente. Las cifras nutricionales y los formatos comerciales son estimaciones heredadas de la app y deben revisarse al ampliar o corregir la biblioteca. La versión del catálogo es independiente de la versión del estado personal guardado en el navegador.
+Los catálogos están ahora en la versión `0.2.0`: 83 alimentos, 107 recetas y 512 referencias de ingredientes. Esta ampliación conserva los 63 alimentos y 84 recetas del HTML, añade 20 alimentos y 23 recetas, y enlaza cada receta por el ID estable de sus ingredientes. Las nuevas estimaciones nutricionales usan referencias genéricas de [USDA FoodData Central](https://fdc.nal.usda.gov/); cada alimento incluye su referencia, pero los valores y formatos de compra siguen siendo aproximados y deben ajustarse a las etiquetas y envases reales. La versión del catálogo es independiente de la versión del estado personal guardado en el navegador.
 
 El objetivo acordado es que, una vez integrada la planificación, cada ciclo de tres semanas se proponga desde estos catálogos y sus reglas; la propuesta se podrá revisar y ajustar. La integración del planificador se realiza una vez. Después, la generación de una propuesta se repite en cada ciclo.
 
