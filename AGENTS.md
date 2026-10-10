@@ -1,34 +1,39 @@
-# AGENTS.md
+# Repository Guidance
 
-Estas instrucciones se aplican a todo el repositorio.
+These instructions apply to the whole repository.
 
-## Fuente de verdad y alcance
+## Before making changes
 
-- Antes de cambiar nada, lee `README.md`, este archivo, `context.md` y `plan_alimentacion_dinamico_3_semanas.html`.
-- Por ahora trabaja sobre `main`, como ha indicado el usuario. Revisa el estado del repositorio antes de editar y conserva cualquier cambio ajeno.
-- El HTML existente es la fuente de verdad funcional. Conserva sus recetas y la experiencia actual salvo que el usuario pida cambios concretos.
-- La interfaz y la documentación se escriben en español.
+- Read `README.md`, `context.md`, and the relevant documents under `docs/`.
+- Before changing application behavior, inspect `plan_alimentacion_dinamico_3_semanas.html`; it is the current runtime source of truth.
+- Check the active branch and working-tree status first. Preserve existing user changes and do not switch branches unless asked.
+- Distinguish implemented behavior from accepted design decisions, proposals, and open questions.
 
-## Decisiones de producto
+## Product and data boundaries
 
-- Es una app personal para una sola persona y se usa con conexión. No añadas una cola offline ni afirmes que existe sincronización remota sin comprobar una integración real.
-- GitHub Pages sirve el frontend estático. El estado sigue en `localStorage` hasta que se conecten una base de datos y autenticación.
-- No envíes notificaciones push o en segundo plano. El recordatorio de copia semanal es un aviso dentro de la página al abrirla.
-- `v5` es el primer formato admitido; no implementes migración ni importación desde `v1-v4`. El estado vigente es v6 y su migración de entrada es v5.
-- Si una comida supera el saldo anotado, registra todo el consumo y muestra el faltante. El saldo puede ser negativo. Desmarcar la comida debe añadir un reverso idempotente.
+- The current product is a personal, single-user, online app. Do not add offline queues or background/push notifications.
+- The weekly backup reminder is in-page only. Do not describe `localStorage` as cloud storage or synchronization.
+- Keep the UI in Spanish. Keep `AGENTS.md` and `context.md` in English; write other project documentation in Spanish unless the owner asks otherwise.
+- The HTML currently embeds its foods, recipes, and fixed three-week menus. `data/foods.json` and `data/recipes.json` are draft catalogs and are not loaded by the app yet.
+- Do not claim that dynamic planning, Supabase persistence, authentication, or device synchronization is implemented until verified in code and runtime.
+- State format v5 is the first supported import format; current state is v6. Do not add v1-v4 migrations.
 
-## Inventario
+## Catalogs and planner
 
-- Usa unidades `ud` para huevos y piezas enteras de fruta/verdura: plátano, manzana, kiwi, mandarina, naranja, pera, fruta de temporada, aguacate, tomate, pimiento, calabacín, cebolla, zanahoria, brócoli, pepino, patata y boniato. Permite cantidades fraccionarias.
-- Mantén gramos para ingredientes pesados, envasados, cortados, congelados o que normalmente se compran por peso; usa mililitros para líquidos.
-- La leche se compra en tetrabrik de 1 L. El café molido se controla en gramos y se incluye en los desayunos.
-- Los tamaños por pieza son aproximados y deben poder ajustarse en la compra. Al cambiar unidades, conserva los datos v5 y no reapliques sus compras/comidas históricas sobre el saldo importado.
-- Las compras, los consumos, los ajustes y sus reversos usan identificadores de operación únicos para evitar duplicados.
+- Catalog JSON contains generic food and recipe data only. Never put personal profiles, weights, pantry balances, meal history, credentials, or backups in it.
+- Keep food IDs stable and ensure every recipe ingredient references an existing food ID. Preserve canonical units and the nutrition basis described in `docs/planner/specification.md`.
+- Follow accepted planner decisions in `docs/decisions/`. Treat items marked proposed or open as undecided; do not silently turn them into requirements.
+- The accepted planner principles are: preserve current nutrition/portion logic as a reference, favor using stock without blocking for low stock, seek variety while allowing necessary repeats, and let the user review, swap, and lock proposed meals.
 
-## Privacidad y despliegue
+## Inventory and privacy
 
-- No añadas exportaciones JSON, datos personales, tokens ni claves secretas al repositorio.
-- Una web publicada con GitHub Pages es accesible por Internet. No describas `localStorage` como sincronización o copia en la nube.
-- Si se integra Supabase, usa solo configuración pública apropiada para el cliente y protege cada tabla de usuario con RLS. Nunca incluyas claves `service_role` o secretos en el HTML.
-- Mantén `index.html` como entrada raíz de GitHub Pages. Su destino debe seguir siendo relativo a la carpeta publicada.
-- Actualiza `README.md` y `context.md` cuando cambien decisiones funcionales o la arquitectura. Distingue lo implementado de lo previsto.
+- Use `ud` for eggs and the whole fruits/vegetables listed in `docs/product/requirements.md`; fractions are allowed. Use `g` for weighed/packaged ingredients and `ml` for liquids. Milk is purchased in 1 L cartons; ground coffee is measured in grams and included in breakfasts.
+- Record full recipe consumption even if it exceeds recorded stock; show the deficit and allow a negative balance. Reversals must be idempotent.
+- GitHub Pages content is public. If Supabase is integrated, use an appropriate public client key with RLS on all user tables; never expose service-role keys or secrets.
+- Keep `index.html` at the repository root with a relative destination for GitHub Pages.
+
+## Documentation
+
+- `README.md` is the user-facing entry point; `context.md` is a concise English handoff; detailed requirements and design live under `docs/`.
+- Record accepted decisions in dated decision records. Put proposals and unresolved questions in `docs/open-questions.md` until the owner accepts them.
+- Update the relevant documentation when product behavior or architecture decisions change. Do not duplicate long specifications in `AGENTS.md`.
