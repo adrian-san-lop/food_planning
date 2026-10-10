@@ -1,0 +1,3503 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": "0.1.0",
+  "source": "plan_alimentacion_dinamico_3_semanas.html",
+  "status": "borrador inicial derivado del catálogo actual",
+  "recipes": [
+    {
+      "id": "yogur_platano",
+      "name": "Yogur con granola y plátano",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "granola",
+          "amount": 30,
+          "amountOnStrengthDay": 35,
+          "unit": "g"
+        },
+        {
+          "foodId": "banana",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el yogur natural en un bol.",
+        "Corta el plátano en rodajas y añádelo.",
+        "Termina con la granola justo antes de comer para que quede crujiente.",
+        "Prepara el café con la leche indicada."
+      ],
+      "tip": "Puedes repetir este desayuno cambiando la fruta. No incluye queso.",
+      "description": ""
+    },
+    {
+      "id": "tostada_queso",
+      "name": "Tostada de queso fresco y tomate",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "cheese",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "mandarin",
+          "amount": 1.1111111111111112,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Tuesta el pan.",
+        "Añade el tomate rallado o en rodajas y el queso fresco.",
+        "Acompaña con una mandarina."
+      ],
+      "tip": "El queso solo aparece como snack o en comidas/cenas, nunca en el desayuno.",
+      "description": ""
+    },
+    {
+      "id": "arroz_pollo",
+      "name": "Arroz con pollo y verduras",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "rice",
+          "amount": 65,
+          "amountOnStrengthDay": 75,
+          "unit": "g"
+        },
+        {
+          "foodId": "chicken",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.47058823529411764,
+          "unit": "ud"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.4,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3888888888888889,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el arroz en agua siguiendo el tiempo indicado por el fabricante.",
+        "Corta pimiento, calabacín y cebolla en trozos pequeños.",
+        "Saltea las verduras con el aceite durante 6–8 minutos.",
+        "Añade el pollo en tiras, pimentón y ajo; cocínalo por completo.",
+        "Mezcla con el arroz y ajusta la sal y pimienta."
+      ],
+      "tip": "Prepara dos raciones de verduras para aprovechar en otra receta. Enfría el arroz cocido con rapidez si lo guardas.",
+      "description": ""
+    },
+    {
+      "id": "yogur_nueces",
+      "name": "Yogur alto en proteínas con nueces",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 2,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "walnuts",
+          "amount": 15,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el yogur en un cuenco.",
+        "Trocea ligeramente las nueces y mézclalas."
+      ],
+      "tip": "Una merienda muy rápida con proteínas y grasas saludables.",
+      "description": ""
+    },
+    {
+      "id": "merluza_patatas",
+      "name": "Merluza con patata y judías verdes",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 22,
+      "photoKey": "hake",
+      "ingredients": [
+        {
+          "foodId": "hake",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "potato",
+          "amount": 1,
+          "amountOnStrengthDay": 1.2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "greenbeans",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Lava y corta la patata en dados y cocínala tapada en el microondas unos 7–9 minutos.",
+        "Sazona la merluza con ajo, pimienta y limón.",
+        "Cocínala en freidora de aire a 180 °C aproximadamente 10–12 minutos, según grosor.",
+        "Cuece o cocina las judías verdes al vapor.",
+        "Sirve con el aceite de oliva repartido entre patatas y verduras."
+      ],
+      "tip": "Comprueba que el pescado esté bien hecho y ajusta el tiempo a tu aparato.",
+      "description": ""
+    },
+    {
+      "id": "huevos_pan_kiwi",
+      "name": "Huevos revueltos, tostadas y kiwi",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 12,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "kiwi",
+          "amount": 0.9444444444444444,
+          "unit": "ud"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Bate los huevos y cuájalos a fuego bajo en una sartén antiadherente.",
+        "Tuesta el pan y acompaña con tomate en rodajas.",
+        "Pela el kiwi y prepara el café con leche."
+      ],
+      "tip": "No hace falta añadir queso al desayuno. Puedes cambiar el revuelto por tortilla francesa.",
+      "description": ""
+    },
+    {
+      "id": "yogur_manzana",
+      "name": "Yogur con manzana",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "apple",
+          "amount": 1.0588235294117647,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Lava la manzana y córtala en trozos.",
+        "Mézclala con el yogur natural, o tómala por separado."
+      ],
+      "tip": "Añade canela si te apetece.",
+      "description": ""
+    },
+    {
+      "id": "lentejas_huevo",
+      "name": "Lentejas templadas con huevo",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "lentil",
+      "ingredients": [
+        {
+          "foodId": "lentils",
+          "amount": 220,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggs",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "cheese",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.4117647058823529,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.2777777777777778,
+          "unit": "ud"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 0.8,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 20,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el huevo en agua durante unos 10 minutos y enfríalo.",
+        "Enjuaga y escurre las lentejas del bote.",
+        "Pica zanahoria, cebolla y pimiento, y saltéalos 7–8 minutos con el aceite.",
+        "Incorpora las lentejas y calienta 3 minutos.",
+        "Sirve con el huevo cortado, el queso fresco y un poco de pan."
+      ],
+      "tip": "Conserva las legumbres en un recipiente adecuado tras abrir el bote, sin dejarlas varios días en la lata.",
+      "description": ""
+    },
+    {
+      "id": "hummus_zanahoria",
+      "name": "Hummus con zanahoria y pan",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "hummus",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Pela la zanahoria y córtala en bastones.",
+        "Sirve el hummus en un cuenco y acompaña con zanahoria y pan integral."
+      ],
+      "tip": "Una buena opción de snack saciante.",
+      "description": ""
+    },
+    {
+      "id": "pasta_pavo",
+      "name": "Pasta integral con pavo y calabacín",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "pasta",
+      "ingredients": [
+        {
+          "foodId": "pasta",
+          "amount": 65,
+          "amountOnStrengthDay": 75,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkey",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.48,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece la pasta integral al dente.",
+        "Corta el pavo en dados y dóralo con el aceite.",
+        "Añade calabacín picado y tomate triturado.",
+        "Cocina 6–8 minutos, añade orégano y mezcla con la pasta."
+      ],
+      "tip": "Usa especias, ajo y orégano para variar el sabor sin recurrir a salsas muy pesadas.",
+      "description": ""
+    },
+    {
+      "id": "yogur_avena_rojos",
+      "name": "Bol de yogur, avena y frutos rojos",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "oats",
+          "amount": 40,
+          "amountOnStrengthDay": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "berries",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el yogur en un bol.",
+        "Añade avena y frutos rojos (descongélalos antes si estaban congelados).",
+        "Mezcla y acompaña con café con leche."
+      ],
+      "tip": "Desayuno sin queso, aunque uses una variedad de yogur espesa.",
+      "description": ""
+    },
+    {
+      "id": "bocadillo_pavo",
+      "name": "Minibocadillo integral de pavo",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkeySlice",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.5333333333333333,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Abre el pan integral y coloca el tomate cortado.",
+        "Rellena con pavo loncheado."
+      ],
+      "tip": "Puedes sustituir el pavo loncheado por restos de pechuga de pavo cocinada.",
+      "description": ""
+    },
+    {
+      "id": "salmon_patata",
+      "name": "Salmón con brócoli y patata",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "salmon",
+      "ingredients": [
+        {
+          "foodId": "salmon",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "potato",
+          "amount": 1,
+          "amountOnStrengthDay": 1.2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "broccoli",
+          "amount": 0.625,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta la patata en dados y precocínala en microondas 7–9 minutos.",
+        "Sazona el salmón con limón y eneldo u orégano.",
+        "Cocina en freidora de aire a 180 °C unos 10–13 minutos según el grosor.",
+        "Prepara el brócoli al vapor o en microondas.",
+        "Sirve con el aceite de oliva y limón."
+      ],
+      "tip": "El pescado azul aporta grasas saludables; las patatas te ayudan a incorporar hidratos suficientes.",
+      "description": ""
+    },
+    {
+      "id": "yogur_naranja",
+      "name": "Yogur natural con naranja",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "orange",
+          "amount": 0.8888888888888888,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Pela la naranja y córtala en gajos.",
+        "Sírvela junto al yogur o cortada dentro del bol."
+      ],
+      "tip": "Prueba una pizca de canela.",
+      "description": ""
+    },
+    {
+      "id": "tortilla_atun",
+      "name": "Tortilla de atún con verduras",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 15,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tuna",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "mushroom",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Saltea champiñones y espinacas troceados con parte del aceite.",
+        "Bate los huevos y añade el atún al natural bien escurrido.",
+        "Vierte los huevos sobre la sartén y cuaja la tortilla.",
+        "Acompaña con las verduras y una tostada integral."
+      ],
+      "tip": "Escurre bien el atún para evitar que la tortilla quede acuosa.",
+      "description": ""
+    },
+    {
+      "id": "yogur_kiwi",
+      "name": "Yogur, granola y kiwi",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "granola",
+          "amount": 30,
+          "amountOnStrengthDay": 35,
+          "unit": "g"
+        },
+        {
+          "foodId": "kiwi",
+          "amount": 0.9444444444444444,
+          "unit": "ud"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Pon el yogur en un bol.",
+        "Añade el kiwi en cubos y la granola.",
+        "Prepara el café con leche."
+      ],
+      "tip": "Es el nuevo desayuno del jueves: sustituye el anterior con queso fresco.",
+      "description": ""
+    },
+    {
+      "id": "yogur_pera",
+      "name": "Yogur con pera",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "pear",
+          "amount": 1.0588235294117647,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Lava la pera y córtala en dados.",
+        "Combina con el yogur."
+      ],
+      "tip": "También puedes elegir otra fruta de temporada.",
+      "description": ""
+    },
+    {
+      "id": "ensalada_garbanzos",
+      "name": "Ensalada mediterránea de garbanzos y atún",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 10,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "chickpeas",
+          "amount": 220,
+          "unit": "g"
+        },
+        {
+          "foodId": "tuna",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.8,
+          "unit": "ud"
+        },
+        {
+          "foodId": "cucumber",
+          "amount": 0.22857142857142856,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.2777777777777778,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Enjuaga y escurre los garbanzos del bote.",
+        "Pica el tomate, el pepino y la cebolla.",
+        "Mezcla garbanzos, verduras y atún escurrido.",
+        "Aliña con aceite, limón, pimienta y comino.",
+        "Acompaña con el pan integral."
+      ],
+      "tip": "Es una comida completa sin encender los fogones.",
+      "description": ""
+    },
+    {
+      "id": "pollo_boniato",
+      "name": "Pollo con boniato, pimiento y cebolla",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 28,
+      "photoKey": "sweet",
+      "ingredients": [
+        {
+          "foodId": "chicken",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "sweetpotato",
+          "amount": 0.88,
+          "amountOnStrengthDay": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.4444444444444444,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Pela el boniato, córtalo en cubos y precocínalo 4–5 minutos en microondas.",
+        "Corta el pimiento y la cebolla.",
+        "Condimenta el pollo con pimentón, ajo y orégano.",
+        "Termina el boniato y las verduras en freidora de aire; cocina también el pollo hasta que quede completamente hecho.",
+        "Añade el aceite medido entre las preparaciones."
+      ],
+      "tip": "No sobrecargues la cesta: haz dos tandas si es necesario.",
+      "description": ""
+    },
+    {
+      "id": "yogur_rojos_nueces",
+      "name": "Yogur con granola, frutos rojos y nueces",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "granola",
+          "amount": 30,
+          "amountOnStrengthDay": 35,
+          "unit": "g"
+        },
+        {
+          "foodId": "berries",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "walnuts",
+          "amount": 10,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el yogur en un bol amplio.",
+        "Añade frutos rojos, granola y nueces troceadas.",
+        "Prepara el café con leche."
+      ],
+      "tip": "Un desayuno repetible pero con pequeñas variaciones de fruta.",
+      "description": ""
+    },
+    {
+      "id": "bocadillo_pavo_peq",
+      "name": "Bocadillo ligero de pavo",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkeySlice",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.4,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Tuesta ligeramente el pan.",
+        "Rellénalo con tomate y pavo loncheado."
+      ],
+      "tip": "Ideal si trabajas desde casa y necesitas algo rápido.",
+      "description": ""
+    },
+    {
+      "id": "pasta_pavo_champi",
+      "name": "Pasta con pavo, champiñones y pimiento",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "pasta",
+      "ingredients": [
+        {
+          "foodId": "pasta",
+          "amount": 65,
+          "amountOnStrengthDay": 75,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkey",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "mushroom",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Hierve la pasta integral.",
+        "Corta los champiñones y pimiento en trozos pequeños.",
+        "Saltea el pavo con aceite; incorpora las verduras.",
+        "Agrega tomate triturado y cocina 5–7 minutos.",
+        "Mezcla con la pasta y termina con orégano."
+      ],
+      "tip": "Puedes aprovechar parte del sofrito de otra comida.",
+      "description": ""
+    },
+    {
+      "id": "yogur_fruta",
+      "name": "Yogur con fruta de temporada",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "seasonFruit",
+          "amount": 1,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Elige una pieza de fruta de temporada de tamaño medio.",
+        "Córtala y tómala con el yogur."
+      ],
+      "tip": "Varía según lo que encuentres fresco en tu frutería.",
+      "description": ""
+    },
+    {
+      "id": "fajitas_pollo",
+      "name": "Fajitas integrales de pollo",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "fajita",
+      "ingredients": [
+        {
+          "foodId": "tortilla",
+          "amount": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "chicken",
+          "amount": 130,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.5555555555555556,
+          "unit": "ud"
+        },
+        {
+          "foodId": "hummus",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta el pollo, el pimiento y la cebolla en tiras finas.",
+        "Saltea el pollo con aceite y añade las verduras.",
+        "Calienta las tortillas integrales.",
+        "Unta un poco de hummus y reparte el relleno.",
+        "Sirve con limón y tus especias favoritas."
+      ],
+      "tip": "La fotografía es orientativa; nuestro relleno usa hummus en lugar de salsa de nata.",
+      "description": ""
+    },
+    {
+      "id": "yogur_platano_simple",
+      "name": "Yogur natural y plátano",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 2,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "banana",
+          "amount": 1,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Sirve el yogur y acompaña con un plátano en rodajas."
+      ],
+      "tip": "Sencillo para una mañana ocupada.",
+      "description": ""
+    },
+    {
+      "id": "pollo_boniato_ensalada",
+      "name": "Pollo especiado con boniato y ensalada",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 27,
+      "photoKey": "sweet",
+      "ingredients": [
+        {
+          "foodId": "chicken",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "sweetpotato",
+          "amount": 0.88,
+          "amountOnStrengthDay": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta el boniato en cubos y precocínalo 4–5 minutos en microondas.",
+        "Cocina el boniato en freidora de aire con pimentón y algo de aceite.",
+        "Cocina el pollo especiado hasta que esté completamente hecho.",
+        "Prepara una ensalada de lechuga y tomate."
+      ],
+      "tip": "Puedes usar el mismo adobo que el jueves, con limón, pimentón y ajo.",
+      "description": ""
+    },
+    {
+      "id": "griego_nueces",
+      "name": "Yogur griego natural y nueces",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 2,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "greek",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "foodId": "walnuts",
+          "amount": 15,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el yogur griego natural.",
+        "Añade las nueces troceadas."
+      ],
+      "tip": "Si eliges un yogur griego más graso, las calorías reales serán mayores: revisa la etiqueta.",
+      "description": ""
+    },
+    {
+      "id": "sardinas_tostas",
+      "name": "Tostas integrales de sardinas y tomate",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 10,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "sardines",
+          "amount": 90,
+          "unit": "g"
+        },
+        {
+          "foodId": "cheese",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Tuesta el pan integral.",
+        "Ralla o corta el tomate y repártelo sobre las tostadas.",
+        "Coloca las sardinas escurridas y el queso fresco.",
+        "Aliña con limón y un poco de aceite de oliva."
+      ],
+      "tip": "Si eliges sardinas con espinas blandas comestibles, también aportarán calcio.",
+      "description": ""
+    },
+    {
+      "id": "yogur_avena_manzana",
+      "name": "Bol de yogur, avena y manzana",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "oats",
+          "amount": 40,
+          "amountOnStrengthDay": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "apple",
+          "amount": 0.8823529411764706,
+          "unit": "ud"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el yogur en un bol.",
+        "Ralla o corta la manzana y añádela.",
+        "Incorpora la avena y la canela.",
+        "Acompaña con café con leche."
+      ],
+      "tip": "Sin queso por la mañana; el yogur se mantiene porque te gusta y te resulta cómodo.",
+      "description": ""
+    },
+    {
+      "id": "naranja_almendras",
+      "name": "Naranja y almendras",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "fruit",
+      "ingredients": [
+        {
+          "foodId": "orange",
+          "amount": 0.8888888888888888,
+          "unit": "ud"
+        },
+        {
+          "foodId": "almonds",
+          "amount": 25,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Pela la naranja.",
+        "Sirve con un puñado pequeño de almendras."
+      ],
+      "tip": "Grasas saludables, fruta y cero cocina.",
+      "description": ""
+    },
+    {
+      "id": "arroz_gambas",
+      "name": "Arroz salteado con gambas y verduras",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "shrimp",
+      "ingredients": [
+        {
+          "foodId": "rice",
+          "amount": 65,
+          "amountOnStrengthDay": 75,
+          "unit": "g"
+        },
+        {
+          "foodId": "shrimp",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.47058823529411764,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3888888888888889,
+          "unit": "ud"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.4,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el arroz en agua durante el tiempo indicado en el paquete.",
+        "Pica el pimiento, la cebolla y el calabacín.",
+        "Saltea las verduras con aceite durante 7–8 minutos.",
+        "Añade las gambas peladas, descongeladas y escurridas; cocina hasta que estén hechas.",
+        "Mezcla con arroz y termina con limón o salsa de soja reducida en sal."
+      ],
+      "tip": "Si el arroz se prepara con antelación, enfríalo rápido y refrigera.",
+      "description": ""
+    },
+    {
+      "id": "crema_tortilla",
+      "name": "Crema de calabacín con tortilla y tostada",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "soup",
+      "ingredients": [
+        {
+          "foodId": "zucchini",
+          "amount": 1.2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "potato",
+          "amount": 0.75,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.2777777777777778,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "cheese",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Hierve calabacín, patata y cebolla troceados durante 15–20 minutos.",
+        "Tritura con parte del agua de cocción y ajusta la textura.",
+        "Cuaja una tortilla francesa de dos huevos.",
+        "Sirve la crema con la tortilla, el queso fresco y pan integral."
+      ],
+      "tip": "Puedes preparar dos raciones de crema y congelar la sobrante.",
+      "description": ""
+    },
+    {
+      "id": "bacalao_pisto",
+      "name": "Bacalao con pisto y patatas",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "hake",
+      "ingredients": [
+        {
+          "foodId": "cod",
+          "amount": 190,
+          "unit": "g"
+        },
+        {
+          "foodId": "potato",
+          "amount": 1.2,
+          "amountOnStrengthDay": 1.4,
+          "unit": "ud"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.52,
+          "unit": "ud"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3888888888888889,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta la patata en dados pequeños y precocínala tapada en microondas 7 minutos.",
+        "Saltea cebolla, pimiento y calabacín en el aceite; añade tomate y cocina unos 8 minutos.",
+        "Haz el bacalao en freidora de aire a 180 °C unos 10–12 minutos según el grosor.",
+        "Sirve el pisto con bacalao y patatas."
+      ],
+      "tip": "Para acelerar el plato utiliza tomate triturado sin azúcar añadido.",
+      "description": ""
+    },
+    {
+      "id": "alubias_huevo",
+      "name": "Ensalada templada de alubias con huevo y atún",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 15,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "beans",
+          "amount": 220,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggs",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tuna",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.8,
+          "unit": "ud"
+        },
+        {
+          "foodId": "cucumber",
+          "amount": 0.22857142857142856,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.19444444444444445,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el huevo durante 10 minutos y enfríalo.",
+        "Enjuaga las alubias y mézclalas con tomate, pepino y cebolla picados.",
+        "Añade el atún y el huevo, y aliña con aceite, comino y limón.",
+        "Acompaña con pan integral."
+      ],
+      "tip": "Las legumbres de bote te ahorran mucho tiempo.",
+      "description": ""
+    },
+    {
+      "id": "pavo_arroz_tomate",
+      "name": "Pavo salteado con arroz y tomate",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "turkey",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "rice",
+          "amount": 70,
+          "amountOnStrengthDay": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3333333333333333,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el arroz.",
+        "Saltea pavo troceado con pimiento y cebolla.",
+        "Añade tomate triturado y cocina unos 6 minutos.",
+        "Sirve encima del arroz con orégano."
+      ],
+      "tip": "Puedes hacer el sofrito para dos comidas, pero guarda el arroz cocido de forma segura.",
+      "description": ""
+    },
+    {
+      "id": "gulas_gambas",
+      "name": "Gulas con gambas y espinacas",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "shrimp",
+      "ingredients": [
+        {
+          "foodId": "gulas",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "shrimp",
+          "amount": 140,
+          "unit": "g"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Saltea las gambas descongeladas y bien escurridas con ajo y aceite.",
+        "Añade las espinacas; cuando reduzcan el volumen, incorpora las gulas.",
+        "Cocina un par de minutos hasta que todo esté bien caliente.",
+        "Sirve con tostadas integrales y tomate."
+      ],
+      "tip": "Una alternativa a tu ensalada de gulas habitual, con más verduras.",
+      "description": ""
+    },
+    {
+      "id": "garbanzos_bacalao",
+      "name": "Garbanzos con espinacas y bacalao",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 22,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "chickpeas",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "cod",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3333333333333333,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sofríe la cebolla con aceite.",
+        "Añade tomate, garbanzos cocidos y espinacas, y cocina 6 minutos.",
+        "Incorpora bacalao en trozos pequeños y cocina hasta que esté hecho.",
+        "Sirve con pan integral."
+      ],
+      "tip": "Calienta suavemente el bacalao para que no se reseque.",
+      "description": ""
+    },
+    {
+      "id": "wok_pollo_fideos",
+      "name": "Wok de pollo y fideos integrales",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "pasta",
+      "ingredients": [
+        {
+          "foodId": "chicken",
+          "amount": 165,
+          "unit": "g"
+        },
+        {
+          "foodId": "noodles",
+          "amount": 65,
+          "amountOnStrengthDay": 75,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5294117647058824,
+          "unit": "ud"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 0.9,
+          "unit": "ud"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.4,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece los fideos integrales según el paquete.",
+        "Saltea zanahoria, pimiento y calabacín cortados finos.",
+        "Añade tiras de pollo y cocínalas por completo.",
+        "Mezcla con los fideos y condimenta con un chorrito opcional de soja baja en sal."
+      ],
+      "tip": "Para ahorrar tiempo, usa verdura ya lavada y cortada.",
+      "description": ""
+    },
+    {
+      "id": "quinoa_salmon",
+      "name": "Bol de quinoa con salmón y verduras",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "salmon",
+      "ingredients": [
+        {
+          "foodId": "quinoa",
+          "amount": 60,
+          "amountOnStrengthDay": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "salmon",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "cucumber",
+          "amount": 0.2857142857142857,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.8,
+          "unit": "ud"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece la quinoa lavada en agua siguiendo el envase.",
+        "Cocina el salmón en freidora de aire a 180 °C unos 10–13 minutos.",
+        "Corta pepino y tomate y prepara una cama de espinacas.",
+        "Mezcla la quinoa y las verduras, añade el salmón y aliña con aceite y limón."
+      ],
+      "tip": "Puedes reemplazar quinoa por arroz integral si te resulta más cómodo.",
+      "description": ""
+    },
+    {
+      "id": "tortilla_patata_atun",
+      "name": "Tortilla rápida de patata y atún",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "potato",
+          "amount": 1,
+          "amountOnStrengthDay": 1.2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tuna",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 90,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 35,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta la patata fina y cocínala en microondas tapada unos 8 minutos.",
+        "Bate los huevos y añade atún escurrido y la patata.",
+        "Cuaja en sartén antiadherente con el aceite.",
+        "Acompaña con ensalada y un poco de pan."
+      ],
+      "tip": "Evitas freír las patatas en abundante aceite.",
+      "description": ""
+    },
+    {
+      "id": "alubias_pavo",
+      "name": "Alubias guisadas rápidas con pavo",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 22,
+      "photoKey": "lentil",
+      "ingredients": [
+        {
+          "foodId": "beans",
+          "amount": 240,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkey",
+          "amount": 155,
+          "unit": "g"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 130,
+          "unit": "g"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3333333333333333,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Saltea cebolla, pimiento y zanahoria picados con aceite.",
+        "Añade el pavo en dados y dóralo.",
+        "Incorpora tomate triturado y alubias escurridas.",
+        "Cocina junto unos 7 minutos y ajusta con agua y pimentón."
+      ],
+      "tip": "Se conserva bien una ración en la nevera siguiendo normas de refrigeración.",
+      "description": ""
+    },
+    {
+      "id": "cuscus_merluza",
+      "name": "Merluza con cuscús y calabacín",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "hake",
+      "ingredients": [
+        {
+          "foodId": "hake",
+          "amount": 190,
+          "unit": "g"
+        },
+        {
+          "foodId": "couscous",
+          "amount": 60,
+          "amountOnStrengthDay": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.64,
+          "unit": "ud"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cubre el cuscús con agua caliente siguiendo las instrucciones y deja reposar.",
+        "Cocina merluza sazonada en freidora de aire.",
+        "Saltea calabacín y pimiento con aceite.",
+        "Suelta el cuscús con un tenedor y sirve con pescado y verduras."
+      ],
+      "tip": "Añade limón y perejil al final.",
+      "description": ""
+    },
+    {
+      "id": "pasta_atun_ensalada",
+      "name": "Pasta integral con atún y verduras",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "pasta",
+      "ingredients": [
+        {
+          "foodId": "pasta",
+          "amount": 75,
+          "amountOnStrengthDay": 85,
+          "unit": "g"
+        },
+        {
+          "foodId": "tuna",
+          "amount": 135,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.9333333333333333,
+          "unit": "ud"
+        },
+        {
+          "foodId": "cucumber",
+          "amount": 0.2857142857142857,
+          "unit": "ud"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece la pasta integral.",
+        "Corta tomate y pepino y mezcla con espinacas.",
+        "Añade el atún escurrido y la pasta templada.",
+        "Aliña con aceite y pimienta."
+      ],
+      "tip": "También queda bien fría para llevar.",
+      "description": ""
+    },
+    {
+      "id": "pollo_esparragos",
+      "name": "Pollo al limón con boniato y espárragos",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "sweet",
+      "ingredients": [
+        {
+          "foodId": "chicken",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "sweetpotato",
+          "amount": 0.88,
+          "amountOnStrengthDay": 1.04,
+          "unit": "ud"
+        },
+        {
+          "foodId": "asparagus",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta el boniato en cubos y precocínalo en microondas.",
+        "Cocínalo después en la freidora de aire hasta que quede dorado.",
+        "Cocina el pollo con ajo y limón hasta que esté completamente hecho.",
+        "Saltea los espárragos y sirve todo junto."
+      ],
+      "tip": "La misma freidora sirve para el boniato y el pollo en tandas.",
+      "description": ""
+    },
+    {
+      "id": "arroz_gambas_guisantes",
+      "name": "Arroz marinero rápido con gambas",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "shrimp",
+      "ingredients": [
+        {
+          "foodId": "rice",
+          "amount": 70,
+          "amountOnStrengthDay": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "shrimp",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "foodId": "peas",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3333333333333333,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece arroz en una olla.",
+        "Sofríe cebolla y pimiento; incorpora tomate y guisantes.",
+        "Añade las gambas descongeladas y cocina hasta que estén hechas.",
+        "Mezcla con el arroz y condimenta con pimentón suave."
+      ],
+      "tip": "Si empleas gambas congeladas, descongela antes en nevera.",
+      "description": ""
+    },
+    {
+      "id": "crema_calabaza_pavo",
+      "name": "Crema de calabaza y tortilla de pavo",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "soup",
+      "ingredients": [
+        {
+          "foodId": "pumpkin",
+          "amount": 330,
+          "unit": "g"
+        },
+        {
+          "foodId": "potato",
+          "amount": 0.6,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3333333333333333,
+          "unit": "ud"
+        },
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "turkeySlice",
+          "amount": 90,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Hierve calabaza, patata y cebolla picadas unos 15–20 minutos.",
+        "Tritura con parte del agua de cocción.",
+        "Prepara una tortilla con los huevos y el pavo loncheado.",
+        "Sirve con pan integral."
+      ],
+      "tip": "La crema queda bien congelada en raciones.",
+      "description": ""
+    },
+    {
+      "id": "pavo_curry_arroz",
+      "name": "Pavo al curry suave con arroz",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "turkey",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "rice",
+          "amount": 65,
+          "amountOnStrengthDay": 75,
+          "unit": "g"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.52,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3888888888888889,
+          "unit": "ud"
+        },
+        {
+          "foodId": "skyr",
+          "amount": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece el arroz.",
+        "Saltea cebolla, calabacín y pavo en dados con aceite.",
+        "Añade curry suave, un chorrito de agua y cocina hasta que el pavo esté hecho.",
+        "Retira del fuego y mezcla el yogur para dar cremosidad sin nata.",
+        "Acompaña con arroz."
+      ],
+      "tip": "Utiliza yogur natural sin azúcar; evita hervirlo para que no se corte.",
+      "description": ""
+    },
+    {
+      "id": "caballa_patatas",
+      "name": "Caballa en conserva con patata y tomate",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 15,
+      "photoKey": "salmon",
+      "ingredients": [
+        {
+          "foodId": "mackerel",
+          "amount": 140,
+          "unit": "g"
+        },
+        {
+          "foodId": "potato",
+          "amount": 1.1,
+          "amountOnStrengthDay": 1.3,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 30,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cocina las patatas troceadas en microondas tapadas hasta que estén tiernas.",
+        "Escurre la caballa y sirve con patata, tomate y lechuga.",
+        "Aliña con aceite medido y limón; acompaña con pan."
+      ],
+      "tip": "La caballa en conserva hace muy rápido este plato de pescado azul.",
+      "description": ""
+    },
+    {
+      "id": "lentejas_caballa",
+      "name": "Ensalada de lentejas, caballa y aguacate",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 12,
+      "photoKey": "lentil",
+      "ingredients": [
+        {
+          "foodId": "lentils",
+          "amount": 235,
+          "unit": "g"
+        },
+        {
+          "foodId": "mackerel",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "avocado",
+          "amount": 0.36666666666666664,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "cucumber",
+          "amount": 0.34285714285714286,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 20,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Enjuaga y escurre las lentejas.",
+        "Trocea aguacate, tomate y pepino.",
+        "Mezcla con la caballa escurrida.",
+        "Aliña con limón, aceite y pimienta, y acompaña con pan."
+      ],
+      "tip": "El aguacate aporta sabor y grasa; ajusta el aceite a lo indicado.",
+      "description": ""
+    },
+    {
+      "id": "cuscus_pollo",
+      "name": "Cuscús con pollo y verduras al wok",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "rice",
+      "ingredients": [
+        {
+          "foodId": "couscous",
+          "amount": 65,
+          "amountOnStrengthDay": 75,
+          "unit": "g"
+        },
+        {
+          "foodId": "chicken",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5882352941176471,
+          "unit": "ud"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 0.56,
+          "unit": "ud"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 0.8,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Hidrata el cuscús con agua caliente.",
+        "Saltea verduras en tiras finas.",
+        "Añade el pollo y cocínalo completamente.",
+        "Mezcla con cuscús y termina con comino y limón."
+      ],
+      "tip": "Puedes preparar dos raciones de verduras para otra comida.",
+      "description": ""
+    },
+    {
+      "id": "pasta_salmon_espinacas",
+      "name": "Pasta integral con salmón y espinacas",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "pasta",
+      "ingredients": [
+        {
+          "foodId": "pasta",
+          "amount": 70,
+          "amountOnStrengthDay": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "salmon",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 130,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.8,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece la pasta integral.",
+        "Haz el salmón a la plancha o en freidora de aire.",
+        "Saltea espinacas y tomate brevemente con el aceite.",
+        "Desmenuza el salmón cocinado y mezcla con la pasta y verduras."
+      ],
+      "tip": "Salmón y pasta funcionan bien cuando se acerca la vuelta a los entrenamientos.",
+      "description": ""
+    },
+    {
+      "id": "huevos_alubias",
+      "name": "Huevos al plato con alubias y tomate",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "beans",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Calienta tomate triturado y espinacas en una sartén.",
+        "Añade las alubias escurridas.",
+        "Haz dos huecos, casca los huevos, tapa y cocina hasta que cuajen.",
+        "Acompaña con pan integral."
+      ],
+      "tip": "Una cena de cuchara sin complicaciones.",
+      "description": ""
+    },
+    {
+      "id": "pollo_garbanzos",
+      "name": "Bol mediterráneo de pollo y garbanzos",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 22,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "chicken",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "chickpeas",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.8666666666666667,
+          "unit": "ud"
+        },
+        {
+          "foodId": "cucumber",
+          "amount": 0.2857142857142857,
+          "unit": "ud"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cocina el pollo troceado a la plancha con pimentón.",
+        "Escurre los garbanzos.",
+        "Lava y corta tomate, pepino y lechuga.",
+        "Monta un bol con pollo, garbanzos, verduras y aceite.",
+        "Acompaña con pan integral."
+      ],
+      "tip": "Puedes dejar el pollo hecho y montar el bol en cinco minutos.",
+      "description": ""
+    },
+    {
+      "id": "trucha_patatas",
+      "name": "Trucha con patata y judías verdes",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "hake",
+      "ingredients": [
+        {
+          "foodId": "trout",
+          "amount": 185,
+          "unit": "g"
+        },
+        {
+          "foodId": "potato",
+          "amount": 1.15,
+          "amountOnStrengthDay": 1.35,
+          "unit": "ud"
+        },
+        {
+          "foodId": "greenbeans",
+          "amount": 220,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cocina las patatas en dados al microondas.",
+        "Haz la trucha en freidora de aire u horno hasta que esté bien hecha.",
+        "Cocina judías verdes al vapor.",
+        "Sirve con limón y el aceite indicado."
+      ],
+      "tip": "La trucha se puede reemplazar por dorada o merluza, ajustando las calorías.",
+      "description": ""
+    },
+    {
+      "id": "fideos_gambas",
+      "name": "Fideuá rápida de gambas y guisantes",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "shrimp",
+      "ingredients": [
+        {
+          "foodId": "noodles",
+          "amount": 75,
+          "amountOnStrengthDay": 85,
+          "unit": "g"
+        },
+        {
+          "foodId": "shrimp",
+          "amount": 190,
+          "unit": "g"
+        },
+        {
+          "foodId": "peas",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.6470588235294118,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.3333333333333333,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomatoSauce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sofríe cebolla y pimiento con aceite y tomate.",
+        "Agrega los fideos y agua caliente según el envase.",
+        "Cuando falten pocos minutos, añade guisantes y gambas.",
+        "Cocina hasta que los fideos y las gambas estén hechos."
+      ],
+      "tip": "Versión rápida, sin caldo elaborado ni tinta.",
+      "description": ""
+    },
+    {
+      "id": "wrap_pavo",
+      "name": "Wrap integral de pavo y verduras",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "fajita",
+      "ingredients": [
+        {
+          "foodId": "tortilla",
+          "amount": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkey",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 0.5294117647058824,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.5,
+          "unit": "ud"
+        },
+        {
+          "foodId": "skyr",
+          "amount": 65,
+          "unit": "g"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta y saltea pavo, pimiento y cebolla.",
+        "Mezcla yogur natural con limón, ajo y pimienta para una salsa rápida.",
+        "Calienta la tortilla, añade lechuga y relleno.",
+        "Termina con la salsa de yogur."
+      ],
+      "tip": "Puedes preparar el relleno y montar justo antes de comer.",
+      "description": ""
+    },
+    {
+      "id": "hamburguesa_pavo",
+      "name": "Hamburguesa de pavo con patata y ensalada",
+      "mealType": "comida",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "sweet",
+      "ingredients": [
+        {
+          "foodId": "turkey",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "potato",
+          "amount": 1.15,
+          "amountOnStrengthDay": 1.35,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.8666666666666667,
+          "unit": "ud"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Forma hamburguesas con pavo picado o usa filetes de pavo como alternativa.",
+        "Precocina las patatas cortadas y termina en freidora de aire.",
+        "Cocina la hamburguesa completamente en sartén.",
+        "Monta con pan, tomate y lechuga y acompaña con patatas."
+      ],
+      "tip": "Si compras filetes, simplemente hazlos a la plancha y evita buscar carne picada.",
+      "description": ""
+    },
+    {
+      "id": "alubias_revuelto",
+      "name": "Alubias con verduras y revuelto de huevo",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "photoKey": "lentil",
+      "ingredients": [
+        {
+          "foodId": "beans",
+          "amount": 190,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "mushroom",
+          "amount": 130,
+          "unit": "g"
+        },
+        {
+          "foodId": "spinach",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Saltea champiñones y espinacas en sartén.",
+        "Añade las alubias escurridas y calienta.",
+        "Cuaja dos huevos revueltos y sirve junto a las alubias.",
+        "Acompaña con pan integral."
+      ],
+      "tip": "Cena sencilla con legumbres, verduras y proteína.",
+      "description": ""
+    },
+    {
+      "id": "tortitas_atun",
+      "name": "Crema de calabaza con tortitas de atún",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 25,
+      "photoKey": "soup",
+      "ingredients": [
+        {
+          "foodId": "pumpkin",
+          "amount": 330,
+          "unit": "g"
+        },
+        {
+          "foodId": "potato",
+          "amount": 0.65,
+          "unit": "ud"
+        },
+        {
+          "foodId": "onion",
+          "amount": 0.2777777777777778,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tuna",
+          "amount": 120,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oats",
+          "amount": 25,
+          "amountOnStrengthDay": 30,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 10,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Hierve calabaza, patata y cebolla y tritura.",
+        "Mezcla atún escurrido, huevos y avena hasta conseguir una masa densa.",
+        "Haz pequeñas tortitas en sartén antiadherente con un poco del aceite indicado.",
+        "Sirve la crema junto a las tortitas."
+      ],
+      "tip": "Puedes triturar la avena para dar mejor textura a las tortitas.",
+      "description": ""
+    },
+    {
+      "id": "yogur_cacao_kiwi",
+      "name": "Yogur, avena, kiwi y cacao",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "oats",
+          "amount": 45,
+          "amountOnStrengthDay": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "kiwi",
+          "amount": 1.1111111111111112,
+          "unit": "ud"
+        },
+        {
+          "foodId": "cocoa",
+          "amount": 8,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Mezcla yogur con avena y cacao puro.",
+        "Añade kiwi troceado.",
+        "Acompaña con café con leche."
+      ],
+      "tip": "No lleva queso; el cacao aporta sabor sin azúcar añadido.",
+      "description": ""
+    },
+    {
+      "id": "yogur_pera_nueces",
+      "name": "Yogur con pera, granola y nueces",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "granola",
+          "amount": 30,
+          "amountOnStrengthDay": 35,
+          "unit": "g"
+        },
+        {
+          "foodId": "pear",
+          "amount": 0.9705882352941176,
+          "unit": "ud"
+        },
+        {
+          "foodId": "walnuts",
+          "amount": 12,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Trocea la pera y añádela al yogur.",
+        "Completa con granola y nueces.",
+        "Prepara el café con leche."
+      ],
+      "tip": "Desayuno completo sin queso.",
+      "description": ""
+    },
+    {
+      "id": "yogur_cacao_platano",
+      "name": "Yogur con plátano, avena y cacao",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "banana",
+          "amount": 0.9166666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oats",
+          "amount": 40,
+          "amountOnStrengthDay": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "cocoa",
+          "amount": 8,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve yogur, plátano en rodajas y avena.",
+        "Espolvorea cacao y mezcla.",
+        "Prepara un café con leche."
+      ],
+      "tip": "Si quieres, puedes dejar los ingredientes secos preparados la noche anterior.",
+      "description": ""
+    },
+    {
+      "id": "tostada_huevo_pavo",
+      "name": "Tostada de huevo y pavo",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 12,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 65,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkeySlice",
+          "amount": 55,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Revuelve los huevos en una sartén.",
+        "Tuesta el pan y añade tomate y pavo loncheado.",
+        "Acompaña con el café con leche."
+      ],
+      "tip": "Otra opción salada de desayuno sin queso.",
+      "description": ""
+    },
+    {
+      "id": "yogur_frutos_almendra",
+      "name": "Yogur con frutos rojos y almendras",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "berries",
+          "amount": 150,
+          "unit": "g"
+        },
+        {
+          "foodId": "granola",
+          "amount": 30,
+          "amountOnStrengthDay": 35,
+          "unit": "g"
+        },
+        {
+          "foodId": "almonds",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve yogur con frutos rojos.",
+        "Incorpora granola y almendras picadas.",
+        "Acompaña con café con leche."
+      ],
+      "tip": "Ideal si tienes frutos rojos congelados.",
+      "description": ""
+    },
+    {
+      "id": "yogur_manzana_canela",
+      "name": "Yogur con manzana, avena y canela",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "apple",
+          "amount": 0.9411764705882353,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oats",
+          "amount": 45,
+          "amountOnStrengthDay": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "walnuts",
+          "amount": 10,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta la manzana en dados.",
+        "Añade al yogur con avena, nueces y canela.",
+        "Prepara el café con leche."
+      ],
+      "tip": "Puedes templar la manzana al microondas con canela si prefieres.",
+      "description": ""
+    },
+    {
+      "id": "tostada_aguacate_huevo",
+      "name": "Tostadas de huevo, aguacate y tomate",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 12,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "eggs",
+          "amount": 2,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 70,
+          "unit": "g"
+        },
+        {
+          "foodId": "avocado",
+          "amount": 0.3333333333333333,
+          "unit": "ud"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        },
+        {
+          "foodId": "kiwi",
+          "amount": 0.9444444444444444,
+          "unit": "ud"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Cuece o revuelve dos huevos.",
+        "Aplasta el aguacate sobre las tostadas y añade tomate.",
+        "Acompaña con kiwi y café con leche."
+      ],
+      "tip": "Sin queso en el desayuno.",
+      "description": ""
+    },
+    {
+      "id": "yogur_miel_no",
+      "name": "Yogur con granola y mandarina",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 250,
+          "unit": "g"
+        },
+        {
+          "foodId": "granola",
+          "amount": 35,
+          "amountOnStrengthDay": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "mandarin",
+          "amount": 1.5555555555555556,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oats",
+          "amount": 15,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Sirve el yogur en un bol.",
+        "Añade granola y copos de avena.",
+        "Acompaña con mandarina y café con leche."
+      ],
+      "tip": "Sin azúcar adicional ni queso.",
+      "description": ""
+    },
+    {
+      "id": "snack_tostada_huevo",
+      "name": "Tostada integral con huevo y fruta",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 12,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "eggs",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "bread",
+          "amount": 55,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.4,
+          "unit": "ud"
+        },
+        {
+          "foodId": "apple",
+          "amount": 0.8235294117647058,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Cuece el huevo diez minutos o usa uno preparado.",
+        "Colócalo sobre pan con tomate.",
+        "Acompaña con manzana."
+      ],
+      "tip": "Si tienes un huevo cocido listo, tardas dos minutos.",
+      "description": ""
+    },
+    {
+      "id": "snack_skyr_rojos",
+      "name": "Yogur con frutos rojos",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 200,
+          "unit": "g"
+        },
+        {
+          "foodId": "berries",
+          "amount": 100,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Mezcla yogur natural y frutos rojos."
+      ],
+      "tip": "Si te apetece, añade un poco de canela.",
+      "description": ""
+    },
+    {
+      "id": "snack_platano_almendras",
+      "name": "Plátano y almendras",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 2,
+      "photoKey": "fruit",
+      "ingredients": [
+        {
+          "foodId": "banana",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "almonds",
+          "amount": 25,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Lava o pela la fruta y acompaña con almendras."
+      ],
+      "tip": "Snacking sencillo sin necesidad de cocinar.",
+      "description": ""
+    },
+    {
+      "id": "snack_skyr_nueces",
+      "name": "Yogur y nueces con pera",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "walnuts",
+          "amount": 20,
+          "unit": "g"
+        },
+        {
+          "foodId": "pear",
+          "amount": 0.8823529411764706,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Trocea una pera.",
+        "Acompaña con yogur y nueces."
+      ],
+      "tip": "Puedes usar otra fruta de temporada.",
+      "description": ""
+    },
+    {
+      "id": "snack_pavo_tostada",
+      "name": "Pan integral con pavo y tomate",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 4,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkeySlice",
+          "amount": 85,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.5333333333333333,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Tuesta el pan.",
+        "Añade tomate en rodajas y pavo loncheado."
+      ],
+      "tip": "Puedes usar restos de pavo fresco hecho a la plancha.",
+      "description": ""
+    },
+    {
+      "id": "snack_yogur_platano",
+      "name": "Yogur natural con plátano",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 190,
+          "unit": "g"
+        },
+        {
+          "foodId": "banana",
+          "amount": 0.9166666666666666,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Mezcla yogur con plátano en rodajas."
+      ],
+      "tip": "Sin azúcar adicional.",
+      "description": ""
+    },
+    {
+      "id": "snack_naranja_hummus",
+      "name": "Hummus, zanahoria y naranja",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "hummus",
+          "amount": 55,
+          "unit": "g"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "orange",
+          "amount": 0.8888888888888888,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Lava y corta la zanahoria.",
+        "Sirve con hummus y una naranja de postre."
+      ],
+      "tip": "El hummus puede ser comprado en Mercadona.",
+      "description": ""
+    },
+    {
+      "id": "snack_yogur_manzana",
+      "name": "Yogur, manzana y almendras",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "apple",
+          "amount": 0.8235294117647058,
+          "unit": "ud"
+        },
+        {
+          "foodId": "almonds",
+          "amount": 15,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Corta la manzana.",
+        "Añade yogur y almendras troceadas."
+      ],
+      "tip": "Muy práctico después del gimnasio.",
+      "description": ""
+    },
+    {
+      "id": "snack_kiwi_skyr",
+      "name": "Yogur con kiwi y nueces",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 170,
+          "unit": "g"
+        },
+        {
+          "foodId": "kiwi",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "walnuts",
+          "amount": 15,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Pela el kiwi y córtalo en dados.",
+        "Mezcla con yogur y nueces."
+      ],
+      "tip": "Una forma fácil de variar fruta y lácteos.",
+      "description": ""
+    },
+    {
+      "id": "snack_hummus_pan",
+      "name": "Pan integral con hummus y tomate",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 65,
+          "unit": "g"
+        },
+        {
+          "foodId": "hummus",
+          "amount": 65,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.6666666666666666,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Tuesta el pan y unta hummus.",
+        "Añade tomate y pimienta."
+      ],
+      "tip": "Se puede preparar en cinco minutos.",
+      "description": ""
+    },
+    {
+      "id": "mandarina_almendras",
+      "name": "Mandarina con almendras",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 2,
+      "photoKey": "fruit",
+      "ingredients": [
+        {
+          "foodId": "mandarin",
+          "amount": 1.5555555555555556,
+          "unit": "ud"
+        },
+        {
+          "foodId": "almonds",
+          "amount": 16,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Pela una o dos mandarinas.",
+        "Acompaña con unas almendras naturales."
+      ],
+      "tip": "Snack muy rápido de fruta y grasas saludables.",
+      "description": ""
+    },
+    {
+      "id": "mini_pavo_tomate",
+      "name": "Minibocadillo de pavo y tomate",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "toast",
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 40,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkeySlice",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "tomato",
+          "amount": 0.5333333333333333,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Tuesta un poco de pan integral.",
+        "Rellena con pavo loncheado y tomate."
+      ],
+      "tip": "Para el apetito de media mañana sin una ración de pan muy grande.",
+      "description": ""
+    },
+    {
+      "id": "huevo_fruta",
+      "name": "Huevo cocido y fruta de temporada",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 12,
+      "photoKey": "egg",
+      "ingredients": [
+        {
+          "foodId": "eggs",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "seasonFruit",
+          "amount": 1,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Cuece un huevo 10 minutos; deja alguno preparado en nevera.",
+        "Acompaña con fruta fresca."
+      ],
+      "tip": "Si el huevo ya está cocido, tardas dos minutos.",
+      "description": ""
+    },
+    {
+      "id": "hummus_ligero",
+      "name": "Hummus con bastones de zanahoria",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "photoKey": "chickpea",
+      "ingredients": [
+        {
+          "foodId": "hummus",
+          "amount": 35,
+          "unit": "g"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 1,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Lava y corta la zanahoria.",
+        "Sírvela con el hummus."
+      ],
+      "tip": "Ideal para cambiar las meriendas de yogur.",
+      "description": ""
+    },
+    {
+      "id": "yogur_kiwi_ligero",
+      "name": "Yogur y kiwi",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 140,
+          "unit": "g"
+        },
+        {
+          "foodId": "kiwi",
+          "amount": 1,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Pela el kiwi y córtalo.",
+        "Acompaña con yogur natural."
+      ],
+      "tip": "Una porción sencilla, puedes repetirla.",
+      "description": ""
+    },
+    {
+      "id": "yogur_fruta_ligero",
+      "name": "Yogur y fruta de temporada",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "yogurt",
+      "ingredients": [
+        {
+          "foodId": "skyr",
+          "amount": 140,
+          "unit": "g"
+        },
+        {
+          "foodId": "seasonFruit",
+          "amount": 0.8333333333333334,
+          "unit": "ud"
+        }
+      ],
+      "steps": [
+        "Sirve yogur con fruta cortada."
+      ],
+      "tip": "Varía la fruta según tu frutería.",
+      "description": ""
+    },
+    {
+      "id": "pera_nueces_ligero",
+      "name": "Pera con nueces",
+      "mealType": "tarde",
+      "baseServings": 1,
+      "timeMinutes": 3,
+      "photoKey": "fruit",
+      "ingredients": [
+        {
+          "foodId": "pear",
+          "amount": 0.9411764705882353,
+          "unit": "ud"
+        },
+        {
+          "foodId": "walnuts",
+          "amount": 12,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Lava y trocea la pera.",
+        "Tómala con nueces troceadas."
+      ],
+      "tip": "No requiere cocinar.",
+      "description": ""
+    }
+  ]
+}

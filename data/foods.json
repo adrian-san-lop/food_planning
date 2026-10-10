@@ -1,0 +1,1285 @@
+{
+  "schemaVersion": 1,
+  "catalogVersion": "0.1.0",
+  "source": "plan_alimentacion_dinamico_3_semanas.html",
+  "status": "borrador inicial derivado del catálogo actual",
+  "foods": [
+    {
+      "id": "skyr",
+      "name": "Yogur natural alto en proteínas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 64,
+        "protein_g": 10,
+        "carbohydrates_g": 4,
+        "fat_g": 0.4
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "greek",
+      "name": "Yogur griego natural",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 102,
+        "protein_g": 6,
+        "carbohydrates_g": 4,
+        "fat_g": 6
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "milk",
+      "name": "Leche semidesnatada",
+      "unit": "ml",
+      "nutrition": {
+        "basis": "per_100ml",
+        "kcal": 50,
+        "protein_g": 3.4,
+        "carbohydrates_g": 4.7,
+        "fat_g": 1.6
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 1000,
+        "unit": "ml",
+        "label": "tetrabrik de 1 L"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "cheese",
+      "name": "Queso fresco",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 116,
+        "protein_g": 11.5,
+        "carbohydrates_g": 3,
+        "fat_g": 6
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 250,
+        "unit": "g",
+        "label": "250 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "granola",
+      "name": "Granola sin azúcar añadido",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 440,
+        "protein_g": 10,
+        "carbohydrates_g": 60,
+        "fat_g": 17
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 350,
+        "unit": "g",
+        "label": "350 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "oats",
+      "name": "Copos de avena",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 370,
+        "protein_g": 13,
+        "carbohydrates_g": 59,
+        "fat_g": 7
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "bread",
+      "name": "Pan integral",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 250,
+        "protein_g": 9,
+        "carbohydrates_g": 45,
+        "fat_g": 4
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 400,
+        "unit": "g",
+        "label": "400 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "rice",
+      "name": "Arroz seco",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 360,
+        "protein_g": 7,
+        "carbohydrates_g": 78,
+        "fat_g": 1
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 1000,
+        "unit": "g",
+        "label": "1000 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "pasta",
+      "name": "Pasta integral seca",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 345,
+        "protein_g": 13,
+        "carbohydrates_g": 68,
+        "fat_g": 2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "tortilla",
+      "name": "Tortilla integral de trigo",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 295,
+        "protein_g": 8,
+        "carbohydrates_g": 50,
+        "fat_g": 6
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 300,
+        "unit": "g",
+        "label": "300 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "eggs",
+      "name": "Huevos",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 72,
+        "protein_g": 6.3,
+        "carbohydrates_g": 0.4,
+        "fat_g": 5
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 6,
+        "unit": "ud",
+        "label": "media docena"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "chicken",
+      "name": "Pechuga de pollo fresca",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 110,
+        "protein_g": 23,
+        "carbohydrates_g": 0,
+        "fat_g": 2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "turkey",
+      "name": "Filetes de pavo fresco",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 108,
+        "protein_g": 24,
+        "carbohydrates_g": 0,
+        "fat_g": 1.5
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "turkeySlice",
+      "name": "Pavo loncheado",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 103,
+        "protein_g": 18,
+        "carbohydrates_g": 2.5,
+        "fat_g": 2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 150,
+        "unit": "g",
+        "label": "150 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "hake",
+      "name": "Merluza fresca/congelada",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 82,
+        "protein_g": 17,
+        "carbohydrates_g": 0,
+        "fat_g": 1
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 400,
+        "unit": "g",
+        "label": "400 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "salmon",
+      "name": "Salmón",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 205,
+        "protein_g": 20,
+        "carbohydrates_g": 0,
+        "fat_g": 13
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 350,
+        "unit": "g",
+        "label": "350 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "shrimp",
+      "name": "Gambas peladas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 80,
+        "protein_g": 18,
+        "carbohydrates_g": 1,
+        "fat_g": 1
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 400,
+        "unit": "g",
+        "label": "400 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "tuna",
+      "name": "Atún al natural (escurrido)",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 110,
+        "protein_g": 25,
+        "carbohydrates_g": 0,
+        "fat_g": 1
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 160,
+        "unit": "g",
+        "label": "pack (160 g escurridos)"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "sardines",
+      "name": "Sardinas (escurridas)",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 205,
+        "protein_g": 24,
+        "carbohydrates_g": 0,
+        "fat_g": 12
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 90,
+        "unit": "g",
+        "label": "lata (90 g escurridos)"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "lentils",
+      "name": "Lentejas cocidas escurridas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 112,
+        "protein_g": 8.8,
+        "carbohydrates_g": 18,
+        "fat_g": 0.5
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Legumbres y refrigerados",
+        "quantity": 400,
+        "unit": "g",
+        "label": "bote (~400 g escurridos)"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "chickpeas",
+      "name": "Garbanzos cocidos escurridos",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 125,
+        "protein_g": 7,
+        "carbohydrates_g": 20,
+        "fat_g": 2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Legumbres y refrigerados",
+        "quantity": 400,
+        "unit": "g",
+        "label": "bote (~400 g escurridos)"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "hummus",
+      "name": "Hummus",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 270,
+        "protein_g": 6,
+        "carbohydrates_g": 14,
+        "fat_g": 21
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Legumbres y refrigerados",
+        "quantity": 180,
+        "unit": "g",
+        "label": "180 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "tomato",
+      "name": "Tomate fresco",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 27,
+        "protein_g": 1.5,
+        "carbohydrates_g": 5.25,
+        "fat_g": 0.3
+      },
+      "approximateEdibleWeight_g_per_unit": 150,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "tomatoSauce",
+      "name": "Tomate triturado",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 33,
+        "protein_g": 1.6,
+        "carbohydrates_g": 6,
+        "fat_g": 0.3
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Legumbres y refrigerados",
+        "quantity": 400,
+        "unit": "g",
+        "label": "400 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "pepper",
+      "name": "Pimiento",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 47.6,
+        "protein_g": 1.7,
+        "carbohydrates_g": 10.2,
+        "fat_g": 0.51
+      },
+      "approximateEdibleWeight_g_per_unit": 170,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "zucchini",
+      "name": "Calabacín",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 45,
+        "protein_g": 3,
+        "carbohydrates_g": 7.75,
+        "fat_g": 0.75
+      },
+      "approximateEdibleWeight_g_per_unit": 250,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "onion",
+      "name": "Cebolla",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 72,
+        "protein_g": 1.98,
+        "carbohydrates_g": 16.2,
+        "fat_g": 0.18
+      },
+      "approximateEdibleWeight_g_per_unit": 180,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "carrot",
+      "name": "Zanahoria",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 40,
+        "protein_g": 0.9,
+        "carbohydrates_g": 9,
+        "fat_g": 0.2
+      },
+      "approximateEdibleWeight_g_per_unit": 100,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "broccoli",
+      "name": "Brócoli",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 136,
+        "protein_g": 11.2,
+        "carbohydrates_g": 26.4,
+        "fat_g": 1.6
+      },
+      "approximateEdibleWeight_g_per_unit": 400,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "greenbeans",
+      "name": "Judías verdes",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 30,
+        "protein_g": 1.8,
+        "carbohydrates_g": 5.3,
+        "fat_g": 0.2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "mushroom",
+      "name": "Champiñones",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 24,
+        "protein_g": 3,
+        "carbohydrates_g": 3.3,
+        "fat_g": 0.2
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 250,
+        "unit": "g",
+        "label": "250 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "spinach",
+      "name": "Espinacas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 24,
+        "protein_g": 2.9,
+        "carbohydrates_g": 3.6,
+        "fat_g": 0.4
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 250,
+        "unit": "g",
+        "label": "250 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "lettuce",
+      "name": "Lechuga o mezclum",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 18,
+        "protein_g": 1,
+        "carbohydrates_g": 3,
+        "fat_g": 0.2
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 150,
+        "unit": "g",
+        "label": "150 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "cucumber",
+      "name": "Pepino",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 52.5,
+        "protein_g": 2.45,
+        "carbohydrates_g": 11.9,
+        "fat_g": 0.35
+      },
+      "approximateEdibleWeight_g_per_unit": 350,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "potato",
+      "name": "Patata",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 154,
+        "protein_g": 4,
+        "carbohydrates_g": 34,
+        "fat_g": 0
+      },
+      "approximateEdibleWeight_g_per_unit": 200,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "sweetpotato",
+      "name": "Boniato",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 215,
+        "protein_g": 4,
+        "carbohydrates_g": 50,
+        "fat_g": 0.25
+      },
+      "approximateEdibleWeight_g_per_unit": 250,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "banana",
+      "name": "Plátano",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 108,
+        "protein_g": 1.32,
+        "carbohydrates_g": 26.4,
+        "fat_g": 0.36
+      },
+      "approximateEdibleWeight_g_per_unit": 120,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Frutas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "apple",
+      "name": "Manzana",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 88.4,
+        "protein_g": 0.51,
+        "carbohydrates_g": 23.8,
+        "fat_g": 0.34
+      },
+      "approximateEdibleWeight_g_per_unit": 170,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Frutas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "kiwi",
+      "name": "Kiwi",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 54.9,
+        "protein_g": 0.99,
+        "carbohydrates_g": 13.5,
+        "fat_g": 0.45
+      },
+      "approximateEdibleWeight_g_per_unit": 90,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Frutas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "mandarin",
+      "name": "Mandarina",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 42.3,
+        "protein_g": 0.72,
+        "carbohydrates_g": 10.8,
+        "fat_g": 0.27
+      },
+      "approximateEdibleWeight_g_per_unit": 90,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Frutas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "orange",
+      "name": "Naranja",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 84.6,
+        "protein_g": 1.62,
+        "carbohydrates_g": 21.6,
+        "fat_g": 0.18
+      },
+      "approximateEdibleWeight_g_per_unit": 180,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Frutas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "pear",
+      "name": "Pera",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 96.9,
+        "protein_g": 0.68,
+        "carbohydrates_g": 25.5,
+        "fat_g": 0.17
+      },
+      "approximateEdibleWeight_g_per_unit": 170,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Frutas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "berries",
+      "name": "Frutos rojos",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 50,
+        "protein_g": 1,
+        "carbohydrates_g": 11,
+        "fat_g": 0.4
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 300,
+        "unit": "g",
+        "label": "300 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "seasonFruit",
+      "name": "Fruta de temporada",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 82.5,
+        "protein_g": 0.75,
+        "carbohydrates_g": 21,
+        "fat_g": 0.3
+      },
+      "approximateEdibleWeight_g_per_unit": 150,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Frutas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "walnuts",
+      "name": "Nueces",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 650,
+        "protein_g": 15,
+        "carbohydrates_g": 14,
+        "fat_g": 65
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 200,
+        "unit": "g",
+        "label": "200 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "almonds",
+      "name": "Almendras",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 580,
+        "protein_g": 21,
+        "carbohydrates_g": 22,
+        "fat_g": 50
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 200,
+        "unit": "g",
+        "label": "200 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "oliveoil",
+      "name": "Aceite de oliva virgen extra",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 900,
+        "protein_g": 0,
+        "carbohydrates_g": 0,
+        "fat_g": 100
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "coffee",
+      "name": "Café molido",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 0,
+        "protein_g": 0,
+        "carbohydrates_g": 0,
+        "fat_g": 0
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 250,
+        "unit": "g",
+        "label": "250 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "cod",
+      "name": "Bacalao desalado / pescado blanco",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 82,
+        "protein_g": 18,
+        "carbohydrates_g": 0,
+        "fat_g": 1
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 400,
+        "unit": "g",
+        "label": "400 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "beans",
+      "name": "Alubias cocidas escurridas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 110,
+        "protein_g": 7,
+        "carbohydrates_g": 17,
+        "fat_g": 0.5
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Legumbres y refrigerados",
+        "quantity": 400,
+        "unit": "g",
+        "label": "bote (~400 g escurridos)"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "quinoa",
+      "name": "Quinoa seca",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 368,
+        "protein_g": 14,
+        "carbohydrates_g": 64,
+        "fat_g": 6
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "couscous",
+      "name": "Cuscús seco",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 365,
+        "protein_g": 12,
+        "carbohydrates_g": 73,
+        "fat_g": 1.5
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "noodles",
+      "name": "Fideos integrales secos",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 350,
+        "protein_g": 12,
+        "carbohydrates_g": 70,
+        "fat_g": 2
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Cereales y conservas",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "gulas",
+      "name": "Gulas refrigeradas",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 170,
+        "protein_g": 8,
+        "carbohydrates_g": 8,
+        "fat_g": 11
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 200,
+        "unit": "g",
+        "label": "200 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "mackerel",
+      "name": "Caballa en conserva escurrida",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 200,
+        "protein_g": 23,
+        "carbohydrates_g": 0,
+        "fat_g": 12
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 140,
+        "unit": "g",
+        "label": "140 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "trout",
+      "name": "Trucha / dorada fresca",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 145,
+        "protein_g": 21,
+        "carbohydrates_g": 0,
+        "fat_g": 7
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Carnes, pescado y huevos",
+        "quantity": 400,
+        "unit": "g",
+        "label": "400 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "pumpkin",
+      "name": "Calabaza",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 30,
+        "protein_g": 1,
+        "carbohydrates_g": 6,
+        "fat_g": 0.1
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "avocado",
+      "name": "Aguacate",
+      "unit": "ud",
+      "nutrition": {
+        "basis": "per_unit",
+        "kcal": 240,
+        "protein_g": 3,
+        "carbohydrates_g": 13.5,
+        "fat_g": 22.5
+      },
+      "approximateEdibleWeight_g_per_unit": 150,
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 1,
+        "unit": "ud",
+        "label": "unidad"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "peas",
+      "name": "Guisantes congelados",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 80,
+        "protein_g": 5,
+        "carbohydrates_g": 14,
+        "fat_g": 0.4
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 500,
+        "unit": "g",
+        "label": "500 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "asparagus",
+      "name": "Espárragos verdes",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 22,
+        "protein_g": 2.4,
+        "carbohydrates_g": 4,
+        "fat_g": 0.2
+      },
+      "purchase": {
+        "store": "fruteria",
+        "section": "Verduras y hortalizas",
+        "quantity": 250,
+        "unit": "g",
+        "label": "250 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "cocoa",
+      "name": "Cacao puro sin azúcar",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 330,
+        "protein_g": 20,
+        "carbohydrates_g": 15,
+        "fat_g": 13
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Lácteos y desayuno",
+        "quantity": 250,
+        "unit": "g",
+        "label": "250 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "raisins",
+      "name": "Pasas sin azúcar añadido",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 300,
+        "protein_g": 3,
+        "carbohydrates_g": 79,
+        "fat_g": 0.5
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 200,
+        "unit": "g",
+        "label": "200 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    },
+    {
+      "id": "peanuts",
+      "name": "Crema de cacahuete 100 %",
+      "unit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 600,
+        "protein_g": 25,
+        "carbohydrates_g": 20,
+        "fat_g": 50
+      },
+      "purchase": {
+        "store": "mercadona",
+        "section": "Congelados y despensa",
+        "quantity": 350,
+        "unit": "g",
+        "label": "350 g / envase"
+      },
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+    }
+  ]
+}

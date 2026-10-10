@@ -4,6 +4,27 @@
 > Estado de referencia: 10 de octubre de 2026. Idioma de la aplicación y documentación: español.
 > Objetivo inmediato: convertir una app HTML local de nutrición en una app web persistente, privada y sincronizada sin perder sus funcionalidades.
 
+## Decisiones vigentes (2026-10-10)
+
+Estas decisiones del usuario prevalecen sobre las propuestas históricas que siguen en este archivo, especialmente sobre el modo sin conexión, las migraciones antiguas y los avisos:
+
+- Uso personal de una sola persona y siempre con conexión. No implementar una cola offline ni prometer uso sin conexión. No enviar notificaciones push ni avisos en segundo plano.
+- La app puede mostrar un aviso dentro de la página para descargar una copia JSON cada siete días; solo aparece cuando se abre la web.
+- Empezar por la Fase 0 y trabajar en `main` por ahora. La página debe poder publicarse desde la raíz del repositorio en GitHub Pages.
+- El formato `v5` es la primera versión de datos que se admite. No implementar importación ni migración desde `v1-v4`. La migración de `v5` a versiones posteriores debe preservar sus datos.
+- Registrar todos los consumos aunque superen el saldo anotado. Mostrar el faltante y el saldo negativo; no bloquear el registro ni truncar el consumo. Revertir el movimiento al desmarcar la comida.
+- Permitir fracciones de unidad. Usar `ud` para huevos y frutas/verduras enteras: plátano, manzana, kiwi, mandarina, naranja, pera, fruta de temporada, aguacate, tomate, pimiento, calabacín, cebolla, zanahoria, brócoli, pepino, patata y boniato. Los pesos por pieza son aproximados y editables en los envases.
+- Usar `g` para productos pesados, envasados, picados, congelados o vendidos por bandeja; `ml` para líquidos. La leche se compra como tetrabrik de 1 L. Añadir café molido al inventario en gramos y a los desayunos.
+- Registrar compras, consumos, reversos y ajustes como movimientos con identificadores idempotentes. El saldo se obtiene de sumar el saldo de apertura y los movimientos.
+- GitHub Pages solo hospeda archivos estáticos. Hasta configurar e integrar una base de datos y autenticación, los datos siguen en `localStorage` del navegador y no se sincronizan entre dispositivos. No describir la sincronización como terminada.
+- Explicar en `README.md` el modelo de datos con un ejemplo simple. Mantener instrucciones generales del repositorio en `AGENTS.md`.
+- La biblioteca común de alimentos y recetas vive en ficheros JSON versionados en GitHub; no contiene perfil, peso, despensa ni historial personal. Se han creado `data/foods.json` y `data/recipes.json` como borradores iniciales derivados de la app existente. La app todavía no los carga: el HTML sigue siendo la fuente de verdad funcional hasta una integración posterior.
+- Los IDs de alimentos son estables y cada receta los referencia. Las cantidades de receta corresponden a una ración y conservan la alternativa de día de fuerza si existe. La nutrición indica su base (`100 g`, `100 ml` o `1 ud`) y las conversiones por pieza son aproximadas.
+- La versión del catálogo (`catalogVersion`) es independiente de la versión del estado personal (`v5` como primer formato admitido; el HTML vigente usa v6).
+- Una vez integrado el planificador, la implementación del flujo se hace una vez; en cada ciclo posterior de tres semanas, la app propone un menú usando los catálogos y reglas acordadas para que el usuario lo revise y ajuste.
+- Reglas iniciales aceptadas para proponer ciclos: (1) conservar el cálculo nutricional y las raciones actuales como referencia, aceptando pequeñas desviaciones; (2) favorecer recetas que aprovechen existencias sin bloquear por falta de stock; (3) buscar variedad y evitar repeticiones cercanas, permitiendo repetir si la biblioteca o las restricciones lo requieren; (4) generar una propuesta revisable con opción de cambiar platos y bloquearlos contra regeneraciones.
+- Los registros personales y eventos de uso permanecen separados del catálogo común. La arquitectura objetivo conserva tablas relacionales privadas en Supabase; el menú planificado debe guardar IDs/versiones de catálogo y cantidades de consumo congeladas para que una futura actualización del recetario no altere el historial.
+
 ## 1. Propósito del proyecto
 
 **Mi Plan Saludable** es una aplicación web personal, responsive e interactiva para organizar la alimentación, cocinar recetas sencillas, registrar entrenamientos y peso, gestionar la compra en supermercado y controlar una despensa dinámica.
@@ -148,7 +169,7 @@ Casos especificos:
 - Marcar cualquier día como entrenamiento de fuerza (no forzar lunes/miercoles/viernes).
 - Registrar peso con fecha y visualizar tendencia; no confundir oscilaciones de agua con cambios de grasa.
 - Mantener lista de tareas de preparación semanal, recetario, filtros, fotografías y ayudas.
-- Estados visuales de datos: `Sincronizado`, `Pendiente de sincronizar`, `Sin conexion`, `Error / requiere accion`.
+- Estados visuales de datos: `Cargando`, `Guardado` y `Error / requiere acción`. La app requiere conexión; no presenta cola offline.
 - Permitir exportar e importar una copia JSON de los registros.
 - Mantener accesibilidad básica (teclado, etiquetas, contraste, feedback accesible).
 
@@ -158,9 +179,7 @@ Casos especificos:
 Movil / ordenador
       |
       v
-GitHub Pages (HTML/CSS/JS, HTTPS, URL estable)
-      |
-      +--> IndexedDB (cache local + cola de cambios pendientes)
+GitHub Pages (HTML/CSS/JS + catálogos JSON públicos, HTTPS)
       |
       v
 Supabase Auth + Data API
@@ -174,7 +193,7 @@ Supabase PostgreSQL (datos privados + RLS)
 - Hosting del frontend en **GitHub Pages**, idealmente desde un repo público solo con código no sensible.
 - Backend gestionado inicialmente en **Supabase Free**, con PostgreSQL, Supabase Auth y políticas Row Level Security.
 - Cliente web con `@supabase/supabase-js`; usar clave **publishable** pública en frontend, nunca `service_role` ni clave secreta.
-- Persistencia offline con **IndexedDB** para copia de trabajo y cola de operaciones; se sincroniza al reabrir la app o recuperar conexión. `localStorage` podría quedar para preferencias triviales, no como almacenamiento principal.
+- Persistencia remota online con Supabase. No implementar cola offline ni estados de sincronización diferida. Mantener `localStorage` como almacenamiento temporal de la versión actual hasta que el backend se configure y conecte.
 - Si hace falta una operación atómica compleja (por ejemplo, completar comida y descontar ingredientes), valorar una **función Postgres/RPC transaccional** con autenticación comprobada y sin eludir indebidamente RLS.
 - Mantener exportacion/importacion JSON independiente del proveedor para facilitar restauraciones o una migración futura a PostgreSQL autogestionado.
 - No requerir framework pesado. Preferir JS modular y sencillo, con tooling/build solo si se justifica por mantenibilidad, tests o despliegue.
@@ -186,7 +205,7 @@ Supabase Free puede pausar proyectos por baja actividad durante una semana. Las 
 
 - Mostrar claramente que `nube sincronizada` no significa `copia de seguridad permanente`.
 - Facilitar copia JSON descargable y restauracion probada. Considerar recordatorios regulares de exportacion y, en una fase posterior, una estrategia de respaldo externo que **no exponga datos personales**.
-- Ante proyecto pausado, mala conexión, expiracion de sesión o error de API, no perder ni sobrescribir la cola local; mostrar estado y pasos de recuperación.
+- Ante proyecto pausado, error de red, expiración de sesión o error de API, mostrar el estado y evitar indicar que el cambio se guardó en la nube. Mantener disponible la copia JSON.
 - No buscar trucos de tráfico artificial para eludir limitaciones del plan.
 
 ## 5. Modelo de datos propuesto (diseño inicial, validar antes de migrar)
@@ -204,9 +223,9 @@ Distinguir **catálogos/versiones** de **datos personales y eventos**.
 | `purchases` | Cabecera de compra confirmada (tienda, fecha, idempotency key) |
 | `purchase_items` | Productos reales, número de paquetes, tamaño, cantidad canónica |
 | `inventory_movements` | Libro de movimientos: entradas positivas, consumos y correcciones |
-| `user_settings` | Preferencias auxiliares, avisos, unidades o versiones de ajustes |
+| `user_settings` | Preferencias auxiliares, unidades y versiones de ajustes; no notificaciones push |
 
-Se pueden guardar catálogos estáticos (`FOOD`, `RECIPES`, formatos comerciales) como JSON versionado en el propio repositorio **si resulta más simple**. No crear una tabla por cada concepto sin justificarla. Guardar la versión del catálogo/receta usada para reproducir la historia aunque cambie el menú.
+Los catálogos comunes de alimentos y recetas viven como JSON versionado en GitHub, separados de los datos privados de Supabase. `data/foods.json` y `data/recipes.json` son borradores iniciales; el HTML todavía no los carga. No crear tablas de base de datos para cada alimento o receta. Cada ciclo debe conservar la versión de catálogo usada y las cantidades registradas para que cambios futuros no reescriban el historial.
 
 ### Reglas de integridad
 
@@ -215,34 +234,28 @@ Se pueden guardar catálogos estáticos (`FOOD`, `RECIPES`, formatos comerciales
 - Inventario preferiblemente **derivado de la suma de movimientos**; no considerar `stock` y `movimientos` dos fuentes de verdad simultaneas.
 - Movimientos inmutables o compensados mediante nuevos eventos. Deshacer comida = reverso idempotente; no reejecutar acciones de stock sin comprobar estado.
 - El consumo real de ingredientes debe preservar el snapshot de porciones completadas, incluso si el perfil cambia días después.
-- Si la despensa registra menos de lo consumido, no inventar stock negativo silenciosamente: advertir/describir discrepancia o registrar consumo no cubierto segun una regla única, documentada y comprobada.
+- Si la despensa registra menos de lo consumido, registrar la cantidad completa, mostrar el faltante y permitir saldo negativo. No bloquear la comida ni truncar el consumo.
 - Separar borrador de carrito de compra confirmada.
-- Toda operación sin conexión debe tener identificador persistente para deduplicar reintentos.
+- Toda operación enviada al servidor debe tener identificador persistente para deduplicar reintentos.
 - Importacion histórica debe evitar mezclar datos de otro usuario, duplicar operaciones o sobrescribir sin previsualizacion.
 - Fechas: registrar `date` local para plan/comidas/peso; `timestamptz` para momento de creacion y sincronización.
 
-## 6. Sincronización y conflictos
+## 6. Uso conectado y conflictos
 
-Diseñar el flujo **offline-first** sin prometer sincronización al estar cerrada la web.
+La app requiere conexión. Las operaciones de inventario deben confirmarse en Supabase antes de mostrarse como guardadas. Si el servidor falla, informar del error y ofrecer conservar/exportar la copia del navegador; no afirmar que hay sincronización pendiente.
 
-1. Acción de usuario -> guardar inmediatamente en IndexedDB con `operation_id` UUID y estado `pending`.
-2. Actualizar interfaz optimistamente, diferenciando estado local y remoto.
-3. Con sesión y conexión disponibles -> enviar a Supabase.
-4. Confirmacion del servidor -> marcar `synced` y reconciliar datos; si falla, conservar pendiente para reintento.
-5. Al abrir app u obtener foco/conexión -> recuperar cambios remotos y reintentar cola local.
-
-**Conflictos:** compras y movimientos no deben fusionarse por `last write wins` porque se perderian consumos. Utilizar eventos idempotentes y operaciones transaccionales. Para ajustes de perfil y preferencias puede ser suficiente una estrategia de versión/actualización con aviso de conflicto. Documentar comportamiento con dos dispositivos y con dos pestañas del mismo navegador.
+Compras, consumos y reversos usan `operation_id` único y operaciones transaccionales para deduplicar reintentos. No fusionar inventarios con `last write wins`, porque se perderían movimientos. Para el perfil pueden usarse actualizaciones versionadas. Aunque solo haya una persona, documentar cómo se resuelven dos pestañas o dispositivos de esa cuenta.
 
 ## 7. Migración desde la app HTML local
 
-**Peligro principal: pérdida de seguimiento existente.** Antes de cualquier importacion o conversion automatica:
+**Peligro principal: pérdida de seguimiento existente.** La primera versión admitida es v5. Antes de cualquier importación o conversión:
 
-1. Mantener funcional el HTML previo y su boton `Exportar JSON`.
-2. Definir esquema y versión de exportacion nuevos; conservar compatibilidad de lectura con JSON legacy `v1-v5` si el contenido lo permite.
+1. Mantener el botón `Exportar JSON` y partir de una copia v5 del HTML existente.
+2. Definir esquema y versión de exportación nuevos; admitir JSON v5 y versiones posteriores. No implementar ni documentar compatibilidad con `v1-v4`.
 3. Validar JSON contra un esquema: ids de ingredientes conocidos, cantidades finitas, unidades, fechas correctas, límite de tamaño y estado de ciclo.
 4. Mostrar previsualizacion: perfiles, número de comidas, pesos, compras, stock y rangos de fecha encontrados.
 5. Dar opción explicita entre importar en cuenta vacia o fusionar controladamente. No realizar sobrescritura silenciosa.
-6. Crear operaciones/IDs deterministas o un `import_batch_id` para **no duplicar movimientos al importar el mismo JSON dos veces**.
+6. Crear operaciones/IDs deterministas o un `import_batch_id` para no duplicar movimientos al importar el mismo JSON dos veces.
 7. Tratar saldos `stock` legacy como **saldo inicial migrado**; no volver a aplicar compras y comidas históricas encima si esos movimientos ya están reflejados en el saldo.
 8. Conservar datos históricos y posibles archivos de ciclos erroneos como archivo consultable cuando corresponda, sin convertirlos automáticamente en el ciclo correcto.
 9. Probar restauracion y exportacion después de migrar.
@@ -285,10 +298,10 @@ No prometer importacion automatica entre origenes distintos (`file://`, `https:/
 
 ### Fase 3 - Persistencia y migración
 
-- Implementar repositorios o adaptadores de datos (local/remote), IndexedDB y cola.
+- Implementar el acceso a Supabase para una sola cuenta, sin cola offline.
 - Sincronizar perfil, ciclos, entrenamientos, pesos, comidas y preparación.
 - Importacion reversible y sin duplicados; backups probados.
-- Estados visibles de sincronización y errores recuperables.
+- Estados visibles de carga, guardado y errores recuperables.
 
 ### Fase 4 - Compras e inventario transaccional
 
@@ -300,10 +313,10 @@ No prometer importacion automatica entre origenes distintos (`file://`, `https:/
 ### Fase 5 - Robustez y documentación final
 
 - Pruebas unitarias/integracion/E2E realistas y test de restauracion JSON.
-- Accesibilidad, responsive, tiempos de carga, errores offline y sesión expirada.
+- Accesibilidad, responsive, tiempos de carga, error de conexión y sesión expirada.
 - Documentar alta de nuevo usuario, despliegue, restauracion y límites del plan gratuito.
 
-No adelantar funciones nuevas (IA, lector de tickets, escaneo de código de barras, notificaciones push o menús generados automáticamente) hasta que la persistencia y compra esten estabilizadas.
+La generación de menús de tres semanas desde los catálogos es una función acordada, pero todavía no está implementada. Antes de conectarla, revisar y ampliar la calidad de los catálogos y concretar el planificador; conservar la posibilidad de revisar, cambiar y bloquear comidas. No añadir notificaciones push, lectores de tickets ni escaneo de códigos de barras sin una petición nueva.
 
 ## 10. Pruebas de aceptacion mínimas
 
@@ -328,15 +341,17 @@ No adelantar funciones nuevas (IA, lector de tickets, escaneo de código de barr
 - Finalizar -> entra cantidad real confirmada, extras incluidos.
 - Reintentar la misma operación -> no duplica stock.
 - Completar y deshacer comida -> movimiento y reverso correctos, una sola vez.
+- Consumir por encima del stock -> registra todo el consumo, muestra el faltante y permite corregirlo; desmarcar revierte el saldo.
+- Fruta/verdura entera -> unidad con fracciones y conversión v5 a piezas; leche -> tetrabrik 1 L; café -> gramos en los desayunos.
 - Consumos externos/ajustes alteran la siguiente compra.
-- Dos dispositivos -> un inventario coherente tras sincronización; offline conserva cambios sin sobrescribirlos accidentalmente.
+- Dos dispositivos conectados a la misma cuenta -> inventario coherente tras sincronización.
 
 ### Persistencia y privacidad
 
 - Recargar pagina, reiniciar navegador, acceder desde otro equipo -> datos remotos conservados tras login.
 - Borrar datos locales -> recuperación desde nube si existe y desde JSON exportado si no existe.
-- Error de red/servidor o proyecto pausado -> cambios pendientes localmente y aviso visible; no indicar falsamente `sincronizado`.
-- Cuenta A no puede consultar, insertar, editar ni borrar registros de cuenta B.
+- Error de red/servidor o proyecto pausado -> aviso visible; no indicar falsamente `guardado`. No se prometen cambios offline.
+- Los registros remotos solo son accesibles para la cuenta autenticada, según RLS.
 - Importar dos veces el mismo backup -> no duplica compras ni movimientos.
 
 ## 11. Forma de trabajar de Codex
@@ -353,7 +368,7 @@ No adelantar funciones nuevas (IA, lector de tickets, escaneo de código de barr
 
 ### Primera tarea recomendada a Codex
 
-> Audita el repositorio tomando `context.md` y el HTML existente como referencia. Quiero migrar Mi Plan Saludable desde `localStorage` a GitHub Pages + Supabase PostgreSQL con autenticación, RLS, soporte offline e importacion de backups JSON. **No reescribas la aplicación ni cambies las recetas todavia.** Primero identifica los componentes, estado y dependencias reales, los riesgos de migración, propone un modelo de datos mínimo, tests de aceptacion y un plan incremental para las fases 0-2. Después implementa únicamente la primera fase acordada de forma verificable.
+> Trabaja sobre `main` y parte del HTML actual y del estado v5. Respeta las decisiones vigentes de este archivo: uso personal, conexión obligatoria, sin avisos en segundo plano, copias semanales dentro de la página, unidades de inventario definidas y faltantes visibles. Mantén GitHub Pages como frontend estático. No declares sincronización remota hasta conectar y comprobar Supabase; explica en `README.md` el modelo de datos con un ejemplo sencillo.
 
 ## 12. Referencias oficiales para verificar al implementar
 
