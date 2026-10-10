@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.2.0",
+  "catalogVersion": "0.3.0",
   "source": "Existing recipes from plan_alimentacion_dinamico_3_semanas.html plus 23 curated recipes using foods from catalogVersion 0.2.0.",
-  "status": "Catálogo ampliado; las recetas nuevas se han redactado para el catálogo genérico y aún no las carga la aplicación.",
+  "status": "Catálogo de recetas genéricas con cantidades base; la app adapta las raciones al perfil y a la actividad real registrada por fecha.",
   "recipes": [
     {
       "id": "yogur_platano",
@@ -20,7 +20,6 @@
         {
           "foodId": "granola",
           "amount": 30,
-          "amountOnStrengthDay": 35,
           "unit": "g"
         },
         {
@@ -96,7 +95,6 @@
         {
           "foodId": "rice",
           "amount": 65,
-          "amountOnStrengthDay": 75,
           "unit": "g"
         },
         {
@@ -177,7 +175,6 @@
         {
           "foodId": "potato",
           "amount": 1,
-          "amountOnStrengthDay": 1.2,
           "unit": "ud"
         },
         {
@@ -375,7 +372,6 @@
         {
           "foodId": "pasta",
           "amount": 65,
-          "amountOnStrengthDay": 75,
           "unit": "g"
         },
         {
@@ -424,7 +420,6 @@
         {
           "foodId": "oats",
           "amount": 40,
-          "amountOnStrengthDay": 50,
           "unit": "g"
         },
         {
@@ -498,7 +493,6 @@
         {
           "foodId": "potato",
           "amount": 1,
-          "amountOnStrengthDay": 1.2,
           "unit": "ud"
         },
         {
@@ -612,7 +606,6 @@
         {
           "foodId": "granola",
           "amount": 30,
-          "amountOnStrengthDay": 35,
           "unit": "g"
         },
         {
@@ -735,7 +728,6 @@
         {
           "foodId": "sweetpotato",
           "amount": 0.88,
-          "amountOnStrengthDay": 1,
           "unit": "ud"
         },
         {
@@ -780,7 +772,6 @@
         {
           "foodId": "granola",
           "amount": 30,
-          "amountOnStrengthDay": 35,
           "unit": "g"
         },
         {
@@ -854,7 +845,6 @@
         {
           "foodId": "pasta",
           "amount": 65,
-          "amountOnStrengthDay": 75,
           "unit": "g"
         },
         {
@@ -1009,7 +999,6 @@
         {
           "foodId": "sweetpotato",
           "amount": 0.88,
-          "amountOnStrengthDay": 1,
           "unit": "ud"
         },
         {
@@ -1122,7 +1111,6 @@
         {
           "foodId": "oats",
           "amount": 40,
-          "amountOnStrengthDay": 50,
           "unit": "g"
         },
         {
@@ -1187,7 +1175,6 @@
         {
           "foodId": "rice",
           "amount": 65,
-          "amountOnStrengthDay": 75,
           "unit": "g"
         },
         {
@@ -1295,7 +1282,6 @@
         {
           "foodId": "potato",
           "amount": 1.2,
-          "amountOnStrengthDay": 1.4,
           "unit": "ud"
         },
         {
@@ -1407,7 +1393,6 @@
         {
           "foodId": "rice",
           "amount": 70,
-          "amountOnStrengthDay": 80,
           "unit": "g"
         },
         {
@@ -1557,7 +1542,6 @@
         {
           "foodId": "noodles",
           "amount": 65,
-          "amountOnStrengthDay": 75,
           "unit": "g"
         },
         {
@@ -1601,7 +1585,6 @@
         {
           "foodId": "quinoa",
           "amount": 60,
-          "amountOnStrengthDay": 70,
           "unit": "g"
         },
         {
@@ -1655,7 +1638,6 @@
         {
           "foodId": "potato",
           "amount": 1,
-          "amountOnStrengthDay": 1.2,
           "unit": "ud"
         },
         {
@@ -1762,7 +1744,6 @@
         {
           "foodId": "couscous",
           "amount": 60,
-          "amountOnStrengthDay": 70,
           "unit": "g"
         },
         {
@@ -1801,7 +1782,6 @@
         {
           "foodId": "pasta",
           "amount": 75,
-          "amountOnStrengthDay": 85,
           "unit": "g"
         },
         {
@@ -1855,7 +1835,6 @@
         {
           "foodId": "sweetpotato",
           "amount": 0.88,
-          "amountOnStrengthDay": 1.04,
           "unit": "ud"
         },
         {
@@ -1889,7 +1868,6 @@
         {
           "foodId": "rice",
           "amount": 70,
-          "amountOnStrengthDay": 80,
           "unit": "g"
         },
         {
@@ -2001,7 +1979,6 @@
         {
           "foodId": "rice",
           "amount": 65,
-          "amountOnStrengthDay": 75,
           "unit": "g"
         },
         {
@@ -2051,7 +2028,6 @@
         {
           "foodId": "potato",
           "amount": 1.1,
-          "amountOnStrengthDay": 1.3,
           "unit": "ud"
         },
         {
@@ -2147,7 +2123,6 @@
         {
           "foodId": "couscous",
           "amount": 65,
-          "amountOnStrengthDay": 75,
           "unit": "g"
         },
         {
@@ -2196,7 +2171,6 @@
         {
           "foodId": "pasta",
           "amount": 70,
-          "amountOnStrengthDay": 80,
           "unit": "g"
         },
         {
@@ -2347,7 +2321,6 @@
         {
           "foodId": "potato",
           "amount": 1.15,
-          "amountOnStrengthDay": 1.35,
           "unit": "ud"
         },
         {
@@ -2381,7 +2354,6 @@
         {
           "foodId": "noodles",
           "amount": 75,
-          "amountOnStrengthDay": 85,
           "unit": "g"
         },
         {
@@ -2493,7 +2465,6 @@
         {
           "foodId": "potato",
           "amount": 1.15,
-          "amountOnStrengthDay": 1.35,
           "unit": "ud"
         },
         {
@@ -2610,7 +2581,6 @@
         {
           "foodId": "oats",
           "amount": 25,
-          "amountOnStrengthDay": 30,
           "unit": "g"
         },
         {
@@ -2644,7 +2614,6 @@
         {
           "foodId": "oats",
           "amount": 45,
-          "amountOnStrengthDay": 50,
           "unit": "g"
         },
         {
@@ -2692,7 +2661,6 @@
         {
           "foodId": "granola",
           "amount": 30,
-          "amountOnStrengthDay": 35,
           "unit": "g"
         },
         {
@@ -2745,7 +2713,6 @@
         {
           "foodId": "oats",
           "amount": 40,
-          "amountOnStrengthDay": 50,
           "unit": "g"
         },
         {
@@ -2840,7 +2807,6 @@
         {
           "foodId": "granola",
           "amount": 30,
-          "amountOnStrengthDay": 35,
           "unit": "g"
         },
         {
@@ -2888,7 +2854,6 @@
         {
           "foodId": "oats",
           "amount": 45,
-          "amountOnStrengthDay": 50,
           "unit": "g"
         },
         {
@@ -2983,7 +2948,6 @@
         {
           "foodId": "granola",
           "amount": 35,
-          "amountOnStrengthDay": 40,
           "unit": "g"
         },
         {
@@ -3562,7 +3526,6 @@
         {
           "foodId": "oats",
           "amount": 35,
-          "amountOnStrengthDay": 45,
           "unit": "g"
         },
         {
@@ -3838,7 +3801,6 @@
         {
           "foodId": "rice",
           "amount": 55,
-          "amountOnStrengthDay": 65,
           "unit": "g"
         },
         {
@@ -3929,7 +3891,6 @@
         {
           "foodId": "rice",
           "amount": 55,
-          "amountOnStrengthDay": 65,
           "unit": "g"
         },
         {
@@ -3977,7 +3938,6 @@
         {
           "foodId": "rice",
           "amount": 55,
-          "amountOnStrengthDay": 65,
           "unit": "g"
         },
         {

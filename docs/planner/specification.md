@@ -15,6 +15,8 @@ Los catálogos son JSON genéricos e independientes de los datos personales:
 - [`foods.json`](../../data/foods.json): 83 alimentos.
 - [`recipes.json`](../../data/recipes.json): 107 recetas y 512 referencias de ingredientes.
 
+Ambos catálogos usan actualmente `catalogVersion` `0.3.0`.
+
 Distribución actual de recetas por tipo:
 
 | Tipo | Recetas actuales | Espacios por ciclo |
@@ -31,7 +33,7 @@ La biblioteca permite variedad dentro de cada semana, pero no una receta diferen
 
 ### Alimentos
 
-Cada alimento usa un `id` estable, nombre, unidad canónica, datos nutricionales con base explícita, formato orientativo de compra y, si es una pieza, peso comestible aproximado. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Los alimentos añadidos en la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
+Cada alimento usa un `id` estable, nombre, unidad canónica, datos nutricionales con base explícita, formato orientativo de compra y, si es una pieza, peso comestible aproximado. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
 
 El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades en `ud`; si una pieza usa `per_100g`, se convierten con su peso comestible aproximado.
 
@@ -39,7 +41,7 @@ Unidades admitidas: `g`, `ml` y `ud`. Huevos y la lista de frutas/verduras enter
 
 ### Recetas
 
-Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, `photoKey`, ingredientes, pasos y notas. Cada ingrediente referencia un `foodId` existente e incluye cantidad y unidad canónica. `amountOnStrengthDay` conserva la alternativa de cantidad para días de fuerza cuando la receta la tiene. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app realiza además comprobaciones entre ambos ficheros.
+Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, `photoKey`, ingredientes, pasos y notas. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base y unidad canónica. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app realiza además comprobaciones entre ambos ficheros.
 
 Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el contrato, mantener los IDs existentes o documentar una migración explícita; no renombrar IDs a la ligera.
 
@@ -52,6 +54,19 @@ Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el c
 5. En ciclos nuevos, procurar introducir recetas que no estuvieron en el menú reciente; la cantidad y el período de referencia están pendientes.
 
 Las cuatro primeras reglas fueron aceptadas explícitamente. La quinta recoge la intención de incluir recetas que no aparecieron en el menú activo; se favorecen, sin imponer un mínimo.
+
+## Ajuste nutricional por sesiones realizadas
+
+El usuario registra la sesión después de realizarla, con fecha, actividad/esfuerzo y duración. Hay varias sesiones posibles en una fecha. No se planifican sesiones futuras ni se aprende automáticamente una agenda a partir del historial.
+
+- El perfil define la actividad habitual del día sin ejercicio. El día sin sesiones usa el objetivo base.
+- Para cada sesión se estima energía neta como `(MET − 1) × peso_kg × duración_horas`; el `1 MET` de reposo se resta porque ya está representado en el objetivo base. Las sesiones del mismo día se suman.
+- La estimación se aplica únicamente a comidas aún pendientes de esa fecha. Las cantidades y el consumo de comidas ya registradas permanecen como snapshots y no se reescriben.
+- El cálculo trata las comidas completadas como cantidades fijas y ajusta las pendientes para aproximarse al objetivo restante. Las metas diarias de proteína y grasa no aumentan por entrenar; la energía añadida se cubre principalmente ajustando porciones de hidratos, dentro de los límites existentes del escalado.
+- Añadir o eliminar una sesión recalcula las comidas pendientes de esa fecha y la compra derivada. No modifica días futuros.
+- Si se cambia el perfil o el peso utilizado, pueden recalcularse las comidas futuras pendientes; las completadas conservan sus cantidades guardadas.
+
+Los MET de las actividades incluidas son estimaciones de categorías del [2024 Adult Compendium of Physical Activities](https://pacompendium.com/adult-compendium/), incluida su [herramienta de consulta](https://pacompendium.com/compendium-calculator/). El compendio se dirige a adultos de 19–59 años y no calcula el gasto individual exacto; para edades fuera de ese rango y para sesiones concretas, los valores son orientativos. El resultado no es una medición clínica.
 
 ## Flujo implementado de generación
 
@@ -75,4 +90,4 @@ Si se incorpora un menú compartido por varias personas, falta decidir cómo com
 
 ## Datos y privacidad
 
-El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, peso, consumo y despensa pertenecen al estado privado. Hoy este estado usa `localStorage`; la persistencia remota está pendiente. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. Hoy este estado v7 usa `localStorage`; la persistencia remota está pendiente. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).

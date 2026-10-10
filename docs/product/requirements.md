@@ -4,7 +4,7 @@ Estado de referencia: 10 de octubre de 2026. Este documento reúne el alcance ac
 
 ## Propósito y usuarios
 
-Menuki (Mi Plan Saludable) ayuda a organizar comidas de tres semanas, consultar recetas, preparar compras, controlar existencias, registrar entrenamientos y seguir el peso. La versión actual es personal, para una sola persona y requiere conexión. El propietario quiere mantener el coste de uso en cero dentro de los límites de los servicios gratuitos.
+Menuki (Mi Plan Saludable) ayuda a organizar comidas de tres semanas, consultar recetas, preparar compras, controlar existencias, registrar sesiones de actividad ya realizadas y seguir el peso. La versión actual es personal, para una sola persona y requiere conexión. El propietario quiere mantener el coste de uso en cero dentro de los límites de los servicios gratuitos.
 
 La posibilidad de que otras personas tengan gustos distintos se está considerando para el diseño futuro. **No significa que el alcance actual ya sea multiusuario o que se haya aprobado un modo de menú compartido.**
 
@@ -13,9 +13,9 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 ### Implementado en el HTML actual
 
 - Un ciclo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios). El primer ciclo mantiene el menú fijo existente; los siguientes pueden generarse desde el catálogo.
-- Recetas, instrucciones, fotografías orientativas y adaptación de cantidades según el perfil y los días de fuerza.
+- Recetas, instrucciones, fotografías orientativas y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
-- Seguimiento de entrenamientos y peso.
+- Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; seguimiento del peso.
 - Estado del usuario en `localStorage`; exportación/importación JSON y aviso semanal de copia dentro de la página.
 - Inventario negativo permitido cuando se registra una comida que supera las existencias; se muestra el faltante y desmarcar la comida revierte el consumo.
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
@@ -24,9 +24,9 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 
 ### Perfil y nutrición
 
-El HTML contempla sexo o metabolismo basal manual, edad, altura, peso, actividad, objetivo, entrenamientos de fuerza y un indicador de recuperación/lesión. Usa Mifflin-St Jeor como estimación del metabolismo en reposo, objetivos aproximados de energía/macros y adaptación de raciones. No son mediciones clínicas.
+El HTML contempla sexo o metabolismo basal manual, edad, altura, peso, actividad habitual sin ejercicio, objetivo e indicador de recuperación/lesión. Usa Mifflin-St Jeor como estimación del metabolismo en reposo, objetivos aproximados de energía/macros y adaptación de raciones. No son mediciones clínicas.
 
-Las comidas pendientes pueden recalcular porciones al cambiar el perfil. Las comidas ya realizadas conservan sus cantidades registradas; no se debe reescribir su historial. El desayuno suele incluir yogur y no debe incluir queso según la preferencia vigente. No hay otras restricciones alimentarias generales definidas.
+Las comidas pendientes pueden recalcular porciones al cambiar el perfil o al registrar/quitar una sesión en esa fecha. Las comidas ya realizadas conservan sus cantidades registradas; el cálculo las trata como fijas y distribuye el objetivo restante entre comidas pendientes. El desayuno suele incluir yogur y no debe incluir queso según la preferencia vigente. No hay otras restricciones alimentarias generales definidas.
 
 ### Compra y despensa
 
@@ -47,7 +47,9 @@ El aviso de renovación actual aparece dentro de la página cerca del final del 
 
 - Platos principales normalmente sencillos, en torno a 20–30 minutos; se dispone de horno, microondas, freidora de aire y batidora. Snacks/desayunos pueden requerir menos tiempo.
 - Marcar comidas realizadas desde menú o recetario; cada consumo se aplica una sola vez. Desmarcar genera el reverso correspondiente.
-- Marcar días de fuerza libremente, registrar peso con fecha y consultar tendencia sin interpretar fluctuaciones puntuales como cambios de grasa.
+- Registrar las sesiones después de realizarlas; se permiten varias por día. La estimación neta `(MET − 1) × peso_kg × horas` se suma al objetivo base solo para esa fecha. Sin sesión registrada, se conserva el objetivo base.
+- La meta de proteína y grasa se mantiene estable ante la sesión; la energía extra se cubre principalmente con cantidades de hidratos. No se crean previsiones ni se alteran días futuros.
+- Registrar peso con fecha y consultar su tendencia sin interpretar fluctuaciones puntuales como cambios de grasa.
 - Mantener la app responsive y accesible; las fotos son orientativas y deben conservar atribución/licencia al modificarse.
 
 ### Catálogos y siguiente ciclo
@@ -58,6 +60,8 @@ El aviso de renovación actual aparece dentro de la página cerca del final del 
 - Guardar la propuesta localmente con su versión de catálogo y activarla en la fecha guardada.
 
 El ciclo inicial conserva el menú fijo existente. Las preferencias por gustos, las alergias y las exclusiones personales no se filtran todavía porque su modelo no está aprobado.
+
+Los valores MET de actividad son aproximaciones basadas en categorías del [2024 Adult Compendium](https://pacompendium.com/adult-compendium/), no mediciones individuales. No se ha aprobado el aprendizaje automático de una rutina futura a partir del historial; la posibilidad de mostrar un resumen para revisión manual sigue abierta.
 
 ## Reglas funcionales aceptadas para el futuro planificador
 
@@ -78,7 +82,7 @@ Estos principios están aceptados. Las puntuaciones, umbrales y cantidades míni
 ## Unidades y compras
 
 - Usar `ud` para huevos y frutas/verduras enteras: plátano, manzana, kiwi, mandarina, naranja, pera, fruta de temporada, aguacate, tomate, pimiento, calabacín, cebolla, zanahoria, brócoli, pepino, patata y boniato. Se permiten fracciones; los pesos comestibles por pieza son aproximados.
-- Usar `g` para ingredientes pesados, envasados, cortados, congelados o vendidos por peso; usar `ml` para líquidos. En el catálogo 0.2.0, berenjena, coliflor, lombarda, puerro y apio se registran en gramos.
+- Usar `g` para ingredientes pesados, envasados, cortados, congelados o vendidos por peso; usar `ml` para líquidos. En el catálogo 0.3.0, berenjena, coliflor, lombarda, puerro y apio se registran en gramos.
 - La leche se compra en tetrabriks de 1 L. El café molido se controla en gramos y figura en los desayunos.
 - Al finalizar la compra, registrar el contenido real confirmado, no solo la cantidad planificada. Permitir ajustar el tamaño estimado del envase.
 

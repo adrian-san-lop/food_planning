@@ -5,9 +5,11 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 ## Estado actual
 
 - La app sigue siendo estática y personal; guarda el estado en `localStorage`.
-- Los catálogos JSON están en versión 0.2.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML.
+- El estado local actual es v7; admite importaciones v5, v6 y v7. Las sesiones realizadas se guardan con fecha.
+- Los catálogos JSON están en versión 0.3.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML.
 - La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
-- El esquema relacional inicial de Supabase y sus políticas RLS están aplicados; el HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
+- El esquema relacional inicial de Supabase y sus políticas RLS están aplicados. La migración aditiva de sesiones está pendiente; el HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
+- Las sesiones reales ajustan las comidas pendientes de su misma fecha; días futuros mantienen el objetivo base y las comidas registradas conservan sus cantidades.
 
 ## Etapas candidatas
 
@@ -31,8 +33,8 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 
 ### D. Persistencia remota, si se mantiene como prioridad
 
-- Esquema relacional inicial y políticas RLS: aplicados; quedan pendientes operaciones transaccionales e idempotentes.
-- Configurar Auth, integrar Supabase en el HTML con clave publicable y migrar desde un backup v5/v6 sin duplicar movimientos.
+- Esquema relacional inicial y políticas RLS: aplicados. Aplicar la migración aditiva `activity_sessions` antes de sincronizar sesiones.
+- Configurar Auth, integrar Supabase en el HTML con clave publicable y migrar desde un backup v5-v7 sin duplicar movimientos.
 - Comprobar PC/móvil, errores de conexión y restauración antes de afirmar que hay sincronización.
 
 ### E. Compra, inventario y robustez
@@ -47,6 +49,6 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - La despensa suficiente elimina un artículo de la compra; una compra confirmada añade la cantidad real del envase.
 - Un consumo superior al stock se registra completo, muestra déficit y se revierte una sola vez al desmarcar la comida.
 - Cambiar perfil recalcula porciones futuras, no las comidas completadas.
-- Días de fuerza son configurables sin imponer días fijos de la semana.
+- Registrar múltiples sesiones reales por fecha; su estimación neta solo modifica porciones pendientes de esa fecha, principalmente hidratos. No se cambian comidas completadas ni fechas futuras.
 - El estado local no se presenta como sincronizado; los datos remotos no se declaran guardados hasta confirmación del servidor.
 - Ningún dato personal aparece en los catálogos públicos.

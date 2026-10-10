@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos y el flujo inicial del planificador ya están implementados. Supabase se pospone; no hay autenticación ni sincronización entre dispositivos.
+El esquema JSON, la carga de catálogos, la propuesta del planificador y el registro local de sesiones realizadas están implementados. El HTML todavía no tiene autenticación ni sincronización; la migración de Supabase para sesiones está preparada, pero pendiente de aplicar.
 
 ## Catálogo y recetas
 
@@ -21,12 +21,13 @@ El esquema JSON, la carga de catálogos y el flujo inicial del planificador ya e
 
 ## Planificador
 
+- Tras varias semanas, ¿conviene mostrar un resumen de la actividad registrada para que la persona revise manualmente su nivel de movimiento habitual? No se ajustará el perfil ni se predecirán sesiones automáticamente.
 - ¿Qué tolerancias nutricionales y de variedad se consideran “pequeñas” o “cercanas”?
 - ¿Cómo debería comportarse un menú bloqueado si cambia el perfil o una receta conserva el ID pero cambia de contenido en una nueva versión del catálogo?
 
 ## Persistencia e integración
 
-- Supabase queda pospuesto hasta revisar una fase posterior. No se ha ejecutado SQL ni se ha integrado autenticación o persistencia remota.
+- La integración del HTML con Supabase, Auth y sincronización queda pendiente. La migración aditiva `activity_sessions` está escrita en `supabase/migrations/`, pero todavía no se ha aplicado al proyecto.
 - ¿Qué tablas, claves y políticas RLS se aprobarán para los datos personales?
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?
 - ¿Qué navegadores y dispositivos se validarán antes de declarar lista la sincronización?

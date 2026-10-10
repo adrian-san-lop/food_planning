@@ -1,16 +1,16 @@
 # Modelo de datos de Supabase
 
-Última revisión: 10 de octubre de 2026. Este documento describe el esquema relacional aplicado al proyecto Supabase. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
+Última revisión: 10 de octubre de 2026. Este documento distingue once tablas ya aplicadas de una migración aditiva pendiente. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
 El HTML todavía no está conectado a Supabase: los datos de uso siguen en localStorage y no se ha creado una cuenta de Auth para la app. La comprobación actual valida tablas, RLS, políticas y permisos; no sustituye una prueba de acceso con una sesión autenticada.
 
 ## Diagrama entidad-relación
 
-El diagrama resume las once tablas de la aplicación, sus claves principales, referencias y relaciones centrales. La tabla auth.users pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
+El diagrama muestra las once tablas ya aplicadas y la tabla `activity_sessions` definida por una migración todavía pendiente. La tabla auth.users pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
 
 ![Diagrama entidad-relación de la base de datos de Supabase](images/supabase_db_model.svg)
 
-PK significa clave primaria y FK significa clave foránea. Las tablas de la aplicación incluyen user_id para aislar sus filas por propietario. Las líneas discontinuas muestran referencias recursivas de ciclo sustituido y reverso de inventario.
+PK significa clave primaria y FK significa clave foránea. Las tablas de la aplicación incluyen user_id para aislar sus filas por propietario. Las líneas discontinuas muestran referencias opcionales o aún no aplicadas; la relación naranja identifica la migración pendiente de `activity_sessions`.
 
 ## Convenciones
 
@@ -21,6 +21,7 @@ PK significa clave primaria y FK significa clave foránea. Las tablas de la apli
 - Los IDs food_id y recipe_id son identificadores de los catálogos JSON. No tienen FK SQL porque esos catálogos no se duplican en PostgreSQL.
 - Las cantidades de inventario y compra usan g, ml o ud. En el inventario, quantity lleva signo: entradas positivas y consumos/salidas negativas.
 - La tabla de movimientos es append-only para el rol de la aplicación: puede leer e insertar, pero no actualizar ni borrar.
+- `training_logs` y `profiles.training_bonus_kcal` son heredados; el nuevo registro y cálculo de actividad usarán `activity_sessions` cuando se aplique la migración.
 
 ## Tablas y columnas
 
@@ -44,7 +45,7 @@ Una fila opcional por usuario con los parámetros usados por el cálculo nutrici
 | height_cm | numeric(5,1) | No | Entre 125 y 220 cm. |
 | reference_weight_kg | numeric(5,1) | No | Entre 35 y 250 kg. |
 | activity_level | text | No | DEFAULT 'low'; very_low, low, medium o high. |
-| training_bonus_kcal | smallint | No | DEFAULT 0; entre 0 y 400. |
+| training_bonus_kcal | smallint | No | DEFAULT 0; entre 0 y 400. Campo heredado, ya no usado por el cálculo local. |
 | goal | text | No | DEFAULT 'maintain'; maintain, recomp, fat_loss o muscle_gain. |
 | injury_recovery | boolean | No | DEFAULT false. |
 | auto_portions | boolean | No | DEFAULT true. |
@@ -142,12 +143,30 @@ Reglas principales: meal exige quantity negativa y source_completion_id; purchas
 
 ### training_logs
 
+Tabla heredada del diseño inicial; permite como máximo una marca por usuario y fecha. No almacena tipo ni duración y no se usa en el cálculo local actual.
+
 | Columna | Tipo | Nulable | Clave o regla |
 | --- | --- | --- | --- |
 | id | uuid | No | PK; DEFAULT gen_random_uuid(). |
 | user_id | uuid | No | FK → auth.users.id; ON DELETE CASCADE. |
 | training_date | date | No | UNIQUE junto con user_id: un registro por fecha y usuario. |
 | created_at | timestamptz | No | DEFAULT now(). |
+
+### activity_sessions — migración pendiente
+
+Registra sesiones ya realizadas, permite varias por usuario y fecha y conserva la actividad/MET usada como snapshot. La migración aditiva todavía no está aplicada al proyecto y el HTML no escribe en esta tabla.
+
+| Columna | Tipo | Nulable | Clave o regla |
+| --- | --- | --- | --- |
+| id | uuid | No | PK; DEFAULT gen_random_uuid(). |
+| user_id | uuid | No | FK → auth.users.id; ON DELETE CASCADE. |
+| session_date | date | No | Fecha local en que ocurrió la sesión. |
+| activity_code | text | No | Código de actividad; longitud recortada entre 1 y 80 caracteres. |
+| duration_minutes | smallint | No | Entre 1 y 600 minutos. |
+| met_value | numeric(4,2) | No | MET snapshot, entre 1 y 20. |
+| created_at | timestamptz | No | DEFAULT now(). |
+
+Índice: `(user_id, session_date DESC, created_at DESC)`. RLS permite al usuario autenticado seleccionar, insertar y borrar solo sus filas; no se concede UPDATE. Para corregir una sesión se elimina y se vuelve a insertar.
 
 ### prep_tasks
 
@@ -210,7 +229,8 @@ Guarda la selección, envase y estado marcado de cada artículo de la compra. La
 | --- | --- | --- | --- |
 | auth.users | profiles | 1 a 0..1 | profiles.user_id es PK y FK a auth.users.id. |
 | auth.users | user_settings | 1 a 0..1 | user_settings.user_id es PK y FK a auth.users.id. |
-| auth.users | plan_cycles, planned_meals, meal_completions, inventory_movements, weight_logs, training_logs, prep_tasks, shopping_sessions, shopping_session_items | 1 a N por tabla | Cada tabla tiene FK user_id → auth.users.id para propiedad y RLS. |
+| auth.users | plan_cycles, planned_meals, meal_completions, inventory_movements, weight_logs, training_logs, prep_tasks, shopping_sessions, shopping_session_items | 1 a N por tabla | Tablas iniciales aplicadas; cada una tiene FK user_id → auth.users.id para propiedad y RLS. |
+| auth.users | activity_sessions | 1 a N | FK user_id → auth.users.id; relación incluida en migración pendiente. |
 | plan_cycles | planned_meals | 1 a N | FK compuesta planned_meals (cycle_id, user_id). |
 | plan_cycles | prep_tasks | 1 a N | FK compuesta prep_tasks (cycle_id, user_id). |
 | plan_cycles | plan_cycles | 0..1 ciclo anterior a 0..N ciclos sucesores | FK compuesta (supersedes_cycle_id, user_id); el enlace es opcional. |
@@ -223,10 +243,10 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 
 ## Seguridad y estado de validación
 
-- RLS está habilitado en las once tablas personales y sus políticas filtran por auth.uid() = user_id.
+- RLS está habilitado en las once tablas aplicadas y sus políticas filtran por auth.uid() = user_id. La migración pendiente habilita RLS y define políticas equivalentes para `activity_sessions`.
 - El rol anon no tiene permisos de lectura, inserción, actualización ni borrado en estas tablas.
 - El rol authenticated recibe solo los permisos de tabla previstos; inventory_movements permite lectura e inserción, sin actualización ni borrado.
-- La migración estructural y la migración correctiva de permisos se aplicaron desde SQL Editor. La consulta estructural terminó sin errores y un resumen de catálogo mostró las once tablas con RLS activado.
+- La migración estructural y la migración correctiva de permisos se aplicaron desde SQL Editor. La consulta estructural terminó sin errores y un resumen de catálogo mostró las once tablas con RLS activado. La tercera migración de sesiones aún no se ha aplicado ni comprobado en el proyecto.
 - Aún no se ha probado el aislamiento entre dos sesiones reales de Auth. La conexión del HTML, el usuario de Auth y las funciones transaccionales/idempotentes para completar comidas, reversos y compras siguen pendientes.
 - SQL Editor no registra por sí solo el historial de archivos de migración. Los archivos locales describen el orden aplicado, pero aún no existe una operación de Supabase CLI que los registre en su tabla de versiones.
 
@@ -234,5 +254,6 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 
 - Esquema inicial: [20261010130000_initial_schema.sql](../supabase/migrations/20261010130000_initial_schema.sql).
 - Permisos mínimos: [20261010131500_least_privilege_grants.sql](../supabase/migrations/20261010131500_least_privilege_grants.sql).
+- Sesiones realizadas (pendiente): [20261010140000_actual_activity_sessions.sql](../supabase/migrations/20261010140000_actual_activity_sessions.sql).
 - Comprobación estructural: [001_schema_check.sql](../supabase/tests/001_schema_check.sql).
 - Guía de Supabase: [supabase/README.md](../supabase/README.md).
