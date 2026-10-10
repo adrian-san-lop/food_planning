@@ -486,7 +486,6 @@ function applyMovement(move){if(!move?.operationId||!FOOD[move.foodId]||!Number.
 function setInventoryBalance(id,value,kind='adjustment'){const current=Number(state.stock[id]||0),delta=roundAmount(Number(value)-current);if(!delta)return false;return applyMovement({operationId:newOperationId(),foodId:id,quantity:delta,kind,createdAt:new Date().toISOString()})}
 let visibleWeek=0,selectedDay=0,view='inicio',shopStore='merc',shopRange='7',recipeFilter='todos',recipeSearch='',pantryFilter='used',pantrySearch='',modalCtx=null,plannerProposal=null,toastTimer;
 function alignCurrentDay(){const off=dateDiff(dateFromISO(state.start),today());if(off>=0&&off<21){visibleWeek=Math.floor(off/7);selectedDay=off%7}else if(off>=21){visibleWeek=2;selectedDay=6}else{visibleWeek=0;selectedDay=0}}
-alignCurrentDay();
 function dateAt(week,day){return addDays(dateFromISO(state.start),week*7+day)}
 function dateISOAt(week,day){return isoDate(dateAt(week,day))}
 function mealKey(week,day,slot){return dateISOAt(week,day)+'#'+slot}
