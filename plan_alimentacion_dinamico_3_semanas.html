@@ -323,7 +323,7 @@ async function loadCatalogs(){
  const [foodDoc,recipeDoc]=await Promise.all(responses.map(r=>r.json()));
  const clean=validateCatalogDocuments(foodDoc,recipeDoc);
  FOOD_META=clean.foods;
- FOOD=Object.fromEntries(Object.values(clean.foods).map(f=>{const n=f.nutrition;let factor=1;if(n.basis==='per_100g'||n.basis==='per_100ml')factor=f.unit==='ud'?Number(f.approximateEdibleWeight_g_per_unit)/100:.01;return [f.id,[f.name,f.unit,n.kcal*factor,n.protein_g*factor,n.carbohydrates_g*factor,n.fat_g*factor]]}));
+ FOOD=Object.fromEntries(Object.values(clean.foods).map(f=>{const n=f.nutrition;let factor=1;if(n.basis==='per_100g'&&f.unit==='ud')factor=Number(f.approximateEdibleWeight_g_per_unit)/100;return [f.id,[f.name,f.unit,n.kcal*factor,n.protein_g*factor,n.carbohydrates_g*factor,n.fat_g*factor]]}));
  RECIPES=clean.recipes.map(r=>({id:r.id,name:r.name,type:r.mealType,time:Number(r.timeMinutes),pic:r.photoKey,ingredients:r.ingredients.map(i=>({id:i.foodId,rest:Number(i.amount)/Number(r.baseServings||1),gym:i.amountOnStrengthDay==null?null:Number(i.amountOnStrengthDay)/Number(r.baseServings||1)})),steps:r.steps.slice(),tip:r.tip||'',intro:r.description||''}));
  REC=Object.fromEntries(RECIPES.map(r=>[r.id,r]));
  CATALOG=Object.fromEntries(Object.values(clean.foods).map(f=>[f.id,[f.purchase.store==='fruteria'?'fruit':'merc',f.purchase.section,Number(f.purchase.quantity)]]));

@@ -33,6 +33,8 @@ La biblioteca permite variedad dentro de cada semana, pero no una receta diferen
 
 Cada alimento usa un `id` estable, nombre, unidad canónica, datos nutricionales con base explícita, formato orientativo de compra y, si es una pieza, peso comestible aproximado. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Los alimentos añadidos en la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
 
+El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades en `ud`; si una pieza usa `per_100g`, se convierten con su peso comestible aproximado.
+
 Unidades admitidas: `g`, `ml` y `ud`. Huevos y la lista de frutas/verduras enteras de [requisitos](../product/requirements.md) usan `ud` fraccionables. La leche se compra como 1 L; café molido se mide en gramos.
 
 ### Recetas
