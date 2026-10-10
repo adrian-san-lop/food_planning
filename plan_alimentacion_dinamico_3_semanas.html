@@ -317,7 +317,7 @@ function validateCatalogDocuments(foodDoc,recipeDoc){
  return {foods:foodRows,recipes:recipeDoc.recipes};
 }
 async function loadCatalogs(){
- const paths=['../data/foods.json','../data/recipes.json'].map(path=>new URL(path,location.href));
+ const paths=['./data/foods.json','./data/recipes.json'].map(path=>new URL(path,location.href));
  const responses=await Promise.all(paths.map(url=>fetch(url,{cache:'no-cache'})));
  if(responses.some(r=>!r.ok))throw new Error('No se han podido descargar los catálogos. Abre la app desde GitHub Pages o desde un servidor web.');
  const [foodDoc,recipeDoc]=await Promise.all(responses.map(r=>r.json()));

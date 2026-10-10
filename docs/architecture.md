@@ -8,14 +8,14 @@ Estado de referencia: 10 de octubre de 2026. Se distingue explícitamente lo que
 Navegador
   └── GitHub Pages / HTML estático
         ├── index.html (redirección relativa)
-        ├── web/plan_alimentacion_dinamico_3_semanas.html
+        ├── plan_alimentacion_dinamico_3_semanas.html
         │     ├── carga data/foods.json y data/recipes.json
         │     ├── conserva el menú fijo inicial y propone el siguiente ciclo
         │     └── estado personal y menús confirmados en localStorage
         └── data/*.json + esquemas JSON
 ```
 
-- `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al HTML principal dentro de `web/`.
+- `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al HTML principal, también en la raíz.
 - El HTML carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
 - El estado personal y la propuesta se guardan en `localStorage`; no se envían a GitHub junto con el catálogo.
