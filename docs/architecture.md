@@ -1,6 +1,6 @@
 # Arquitectura
 
-Estado de referencia: 11 de octubre de 2026. Se distingue explícitamente lo que existe en el repositorio de lo que está previsto.
+Estado de referencia: 11 de octubre de 2026. El esquema y el cliente de sincronización están implementados en el repositorio; el HTML modificado aún debe publicarse para que GitHub Pages active el flujo.
 
 ## Arquitectura actual
 
@@ -12,20 +12,26 @@ Navegador
         │     ├── carga data/foods.json y data/recipes.json
         │     ├── conserva el menú fijo inicial y propone el siguiente ciclo
         │     ├── registra sesiones realizadas y adapta las comidas pendientes de esa fecha
-        │     └── estado personal y menús confirmados en localStorage (formato v8)
+        │     ├── Supabase Auth (correo y contraseña)
+        │     ├── sincroniza el estado personal en tablas relacionales por user_id
+        │     └── conserva una copia de trabajo local (formato v8)
         └── data/*.json + esquemas JSON
+              Supabase PostgreSQL + RLS
 ```
 
 - `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al HTML principal, también en la raíz.
 - El HTML carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
-- El estado personal y la propuesta se guardan en `localStorage`; no se envían a GitHub junto con el catálogo.
+- `localStorage` conserva una copia de trabajo. La fuente común para una cuenta inicializada son las tablas privadas de Supabase; el indicador de la app distingue cambios sincronizados de cambios locales pendientes o en conflicto.
 - Los alimentos separan medida de receta (`recipeUnit`) y medida de inventario (`unit`). Frutas y verduras enteras se pesan en gramos en recetas y se cuentan por piezas en despensa y compra; una conversión por peso comestible aproximado conecta ambas.
 - Las sesiones se registran después de realizarse. Su energía neta estimada se aplica solo a la fecha de la sesión y a comidas aún pendientes; no cambia días futuros ni cantidades ya registradas.
-- El proyecto Supabase contiene once tablas iniciales y políticas RLS por propietario. La migración aditiva `activity_sessions` está preparada en `supabase/migrations/`, pero está pendiente de aplicar. El HTML no está conectado, no hay cuenta de Auth configurada y no se guardan datos de la aplicación en remoto.
-- No existe sincronización entre dispositivos. El uso requiere conexión para visitar la página, pero los datos guardados en `localStorage` permanecen en ese navegador.
+- Supabase conserva identidad en `auth.users` y los datos personales en sus tablas relacionales con RLS. El perfil se guarda en `profiles`; las credenciales no se copian a tablas públicas.
+- La migración `20261011120000_menuki_cloud_sync.sql` añade la operación transaccional e idempotente de sincronización, control de revisión para evitar sobrescribir cambios recientes y metadatos de ciclos/sesiones. No se almacena el estado completo como JSON en una columna.
+- Reiniciar toda la cuenta o restaurar una copia JSON requiere una confirmación específica y usa `reset_menuki_state`, que reemplaza las filas propias en la misma transacción; la sincronización habitual no borra el historial.
+- El primer acceso de una cuenta sin inicializar importa su estado local una sola vez. Los dispositivos siguientes leen el estado remoto. No hay cola offline; la app requiere conexión para sincronizar y muestra cuándo conserva cambios locales pendientes.
+- Los snapshots de ingredientes mantienen retención indefinida y no se purgan automáticamente. Vigilar el crecimiento de la base al añadir usuarios, con revisión alrededor de 350 MB.
 
-## Arquitectura objetivo
+## Sincronización de datos personales
 
 ```text
 Móvil / ordenador
@@ -34,12 +40,10 @@ Móvil / ordenador
 GitHub Pages (HTML, JavaScript y catálogos genéricos JSON)
        │
        ├── lectura de foods.json y recipes.json para proponer ciclos
-       │
-       └── cuando se implemente ──► Supabase Auth + API
-                                      └── PostgreSQL privado + RLS
+       └── sesión Auth + API ──────► PostgreSQL privado + RLS
 ```
 
-Los catálogos comunes se versionan junto al código. El estado personal (perfil, preferencias, peso, planificación, compras y despensa) se mantiene fuera de esos JSON. El estado actual sigue en `localStorage`; la persistencia privada remota y el inicio de sesión siguen pendientes.
+Los catálogos comunes se versionan junto al código. El estado personal (perfil, peso, ciclos, comidas, compras, despensa y sesiones) se mantiene fuera de esos JSON y se guarda en sus tablas relacionales, siempre con `user_id = auth.uid()`. El JSON enviado al procedimiento solo transporta datos entre el navegador y la función; PostgreSQL no conserva una columna con el estado completo.
 
 ## Separación de datos
 
@@ -47,26 +51,28 @@ Los catálogos comunes se versionan junto al código. El estado personal (perfil
 | --- | --- | --- |
 | Alimentos, nutrición aproximada y formato de compra | `data/foods.json`, cargado por la app y descrito por `foods.schema.json` | Catálogo JSON público, versionado |
 | Recetas e ingredientes | `data/recipes.json`, cargado por la app y descrito por `recipes.schema.json` | Catálogo JSON público, con referencias por ID estable |
-| Menú de tres semanas | `WEEK_1`–`WEEK_3` fijos como ciclo inicial; la propuesta y el menú confirmado siguiente quedan en `localStorage` | Nuevos ciclos generados desde el catálogo, con revisión previa y versión anotada |
-| Perfil, peso, comidas, compras, inventario y menús personales | Objeto de estado en `localStorage` | Tablas privadas de Supabase si se completa esa integración |
-| Sesiones de actividad realizadas | `activitySessions` dentro del estado local v8; incluida en la copia JSON | Tabla personal `activity_sessions` definida en una migración pendiente |
+| Menú de tres semanas | Menú fijo inicial y ciclos guardados con su versión de catálogo | `plan_cycles` y `planned_meals`; propuesta, bloqueos y ciclo activo se sincronizan |
+| Perfil y seguimiento | Copia de trabajo en el navegador | `profiles`, `weight_logs` y `user_settings`, vinculados por `user_id` |
+| Sesiones de actividad realizadas | Copia de trabajo en el navegador y exportación JSON | `activity_sessions`, con fecha, tipo, duración y MET |
+| Comidas e inventario | Copia de trabajo en el navegador | `meal_completions`, `meal_completion_ingredients` y `inventory_movements` |
+| Preparación y compra | Copia de trabajo en el navegador | `prep_tasks`, `shopping_sessions` y `shopping_session_items` |
 | Gustos/restricciones | No hay sistema general implementado | Preferencias por persona fuera del catálogo; modelo pendiente |
 
-No colocar datos personales o copias de seguridad en GitHub. Aunque un repositorio sea privado, GitHub Pages publica el sitio. Si se integra Supabase, las tablas de usuario necesitarán autenticación y políticas RLS; la clave `service_role` y cualquier secreto nunca deben incluirse en el navegador.
+No colocar datos personales o copias de seguridad en GitHub. Aunque un repositorio sea privado, GitHub Pages publica el sitio. Las tablas personales usan RLS; la clave pública del proyecto puede aparecer en el navegador, pero una clave `service_role` o cualquier otro secreto nunca debe incluirse ahí.
 
-## Esquema remoto inicial aplicado; migración de actividad y conexión del HTML pendientes
+## Esquema remoto y conexión del HTML
 
 El proyecto tiene tablas relacionales para perfiles, ciclos, comidas planificadas y realizadas, movimientos de inventario, peso, entrenamientos, preparación y listas de compra. El esquema se define en `supabase/migrations/`; la comprobación estructural y de permisos está en `supabase/tests/`. El catálogo genérico no requiere una tabla por alimento o receta.
 
-Las once tablas aplicadas son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items` y `user_settings`. `activity_sessions` está definida en una tercera migración aditiva todavía no aplicada; acepta varias sesiones por fecha. `training_logs` y `profiles.training_bonus_kcal` quedan como columnas/tabla heredadas y no se usarán para el nuevo cálculo. Las migraciones iniciales se aplicaron desde SQL Editor; Supabase todavía no registra automáticamente el historial de esos archivos.
+Las trece tablas aplicadas son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `meal_completion_ingredients`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items`, `user_settings` y `activity_sessions`. `meal_completion_ingredients` conserva una fila por ingrediente realmente usado, sin caducidad temporal ni purga programada. `training_logs` y `profiles.training_bonus_kcal` quedan como tabla/campo heredados y no se usarán para el nuevo cálculo. Las migraciones se aplicaron desde SQL Editor; Supabase todavía no registra automáticamente el historial de esos archivos.
 
-Cada ciclo futuro debería registrar la versión de catálogo usada. Las cantidades de comidas completadas deben conservarse como snapshot para que una modificación posterior de la receta no reescriba el historial. El inventario debería poder reconstruirse a partir de movimientos con IDs únicos; las correcciones y reversos se registran como eventos nuevos.
+Cada ciclo futuro debería registrar la versión de catálogo usada. La decisión ADR-0008 define snapshots inmutables por ingrediente con cantidad y unidad de receta, mientras que los movimientos del inventario conservan las cantidades en unidades de inventario. El inventario debería poder reconstruirse a partir de movimientos con IDs únicos; las correcciones y reversos se registran como eventos nuevos.
 
-Las tablas requieren Auth y aplican RLS por `auth.uid()`. El HTML aún no crea sesiones ni consulta estas tablas. Operaciones de inventario idempotentes y transaccionales, importación inicial del estado v8, configuración de Auth y pruebas entre dispositivos siguen pendientes. Registrar fechas de comidas, ciclos y sesiones como fechas locales y marcas de operación con zona horaria.
+Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada en ADR-0009 es correo + contraseña, registro libre y sin confirmación del correo. El HTML ya integra Auth y sincronización relacional. La migración añade una función `SECURITY DEFINER` que toma el propietario de `auth.uid()`, aplica la sincronización de forma transaccional y verifica `sync_revision`; su ejecución está concedida solo a `authenticated`. La prueba de aislamiento con dos cuentas y la comprobación de PC/móvil siguen pendientes. La migración ya está aplicada; publica el HTML antes de usar la sincronización. Revisar el tamaño global y por tabla conforme se incorporen usuarios; al acercarse a 350 MB, estudiar el crecimiento. No purgar snapshots automáticamente.
 
 ## Migración y recuperación
 
-- El navegador no comparte automáticamente `localStorage` entre `file://`, GitHub Pages y otros orígenes. La migración entre orígenes necesita exportación e importación explícitas.
+- Supabase sincroniza la cuenta entre dispositivos cuando se inicia sesión y hay conexión. La copia local no se sincroniza si falla la petición; la app lo indica y permite exportarla o resolver un conflicto.
 - Aceptar v5 como primer archivo importable y v8 como estado actual; admitir v5-v8, sin importar v1-v4. Tratar el stock v5 como saldo de apertura y no sumar otra vez sobre él compras/comidas que ya estén reflejadas. Al actualizar v5, convertir las cantidades antiguas en gramos a unidades de inventario; al actualizar v6/v7, conservar movimientos y stock, y convertir los snapshots históricos de consumo a unidades de receta.
 - La exportación/importación de datos personales es distinta de los catálogos de GitHub. No subir copias personales al repositorio.
 - El recordatorio semanal ayuda a descargar una copia, pero ni GitHub Pages ni la sincronización remota sustituyen una copia de seguridad comprobada.
@@ -75,8 +81,8 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. El HTML aún no crea s
 
 - El estado personal actual es v8; v5 es el primer formato de importación admitido. Se aceptan v5-v8; no implementar migraciones desde v1-v4.
 - Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.5.0`), independiente de la versión del estado personal. Incluyen 83 alimentos y 107 recetas y se cargan desde JSON. `food.unit` expresa inventario/compra y `food.recipeUnit` la unidad de receta. `recoveryTags` son marcadores cualitativos para selección de menú, no valores medidos de micronutrientes.
-- La app requiere conexión y no tendrá cola offline. No afirmar que un cambio se guardó remotamente hasta que la integración real lo confirme.
-- La vista de planificación permite proponer, editar, bloquear, regenerar y confirmar el menú del siguiente ciclo. El estado de la propuesta y el menú siguen siendo locales.
+- La app requiere conexión y no mantiene cola offline. No afirmar que un cambio se guardó remotamente hasta que la función RPC responda con éxito.
+- La vista de planificación permite proponer, editar, bloquear, regenerar y confirmar el menú del siguiente ciclo. La propuesta y el menú se sincronizan en `plan_cycles` y `planned_meals`.
 - El historial de actividad describe sesiones ya realizadas; no es un calendario de previsiones ni un mecanismo de aprendizaje automático del perfil.
 - El recordatorio semanal de copia es un aviso dentro de la página, no una notificación del sistema.
 - El uso sin coste depende de los límites vigentes de GitHub Pages y del proveedor de base de datos; verificar límites oficiales antes de integrar o prometer capacidad.
@@ -88,4 +94,6 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. El HTML aún no crea s
 - [Decisiones registradas](decisions/)
 - [Decisión de ajuste por actividad realizada](decisions/0005-actual-activity-session-nutrition.md)
 - [Decisión de separar las unidades de receta e inventario](decisions/0006-recipe-and-inventory-units.md)
+- [Decisión de conservar snapshots de ingredientes completados](decisions/0008-meal-completion-ingredient-snapshots.md)
+- [Decisión de sincronizar el estado personal con Supabase](decisions/0010-supabase-relational-state-sync.md)
 - [Preguntas abiertas](open-questions.md)

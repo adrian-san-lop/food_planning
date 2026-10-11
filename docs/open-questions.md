@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador y el registro local de sesiones realizadas están implementados. El HTML todavía no tiene autenticación ni sincronización; la migración de Supabase para sesiones está preparada, pero pendiente de aplicar.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. La migración está aplicada en Supabase; falta publicar el nuevo HTML y validar el primer traspaso y la sincronización entre dispositivos. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
@@ -27,8 +27,9 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador y el regi
 
 ## Persistencia e integración
 
-- La integración del HTML con Supabase, Auth y sincronización queda pendiente. La migración aditiva `activity_sessions` está escrita en `supabase/migrations/`, pero todavía no se ha aplicado al proyecto.
-- Antes de conectar comidas con Supabase, decidir cómo guardar el snapshot de cantidades usadas por ingrediente en `recipeUnit`. El esquema actual conserva el evento y la receta, y los movimientos de despensa en unidad de inventario, pero no persiste las cantidades de receta por ingrediente.
-- ¿Qué tablas, claves y políticas RLS se aprobarán para los datos personales?
+- Publicar el HTML actualizado para activar la sincronización y completar la primera importación local v8 a Supabase.
+- Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
+- Verificar en GitHub Pages la sincronización entre PC y móvil, conflictos, errores de red, reversos y restauración desde una copia.
+- Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?
 - ¿Qué navegadores y dispositivos se validarán antes de declarar lista la sincronización?

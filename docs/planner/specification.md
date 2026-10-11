@@ -84,9 +84,9 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 4. Muestrear combinaciones y puntuarlas con la lógica nutricional/raciones actual, variedad, menor repetición reciente, recetas no usadas en el menú actual y cobertura del stock. Si Recuperación ósea está activa, la puntuación también favorece las etiquetas cualitativas descritas arriba. El stock solo aporta preferencia; no elimina candidatos. Las ponderaciones son detalles iniciales de implementación, no umbrales aprobados.
 5. Completar los cinco tipos de comida para 21 días. Se permiten repeticiones si la biblioteca lo requiere.
 6. Revisar la propuesta, cambiar cada receta por otra del mismo tipo, bloquearla o desbloquearla y regenerar el resto. Una receta seleccionada manualmente queda bloqueada inicialmente.
-7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en `localStorage`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
+7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en el estado local v8; el sincronizador lo persiste en `plan_cycles` y `planned_meals`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
 
-El menú fijo actual no cambia hasta que comience el ciclo confirmado. El estado de los catálogos y el menú sigue siendo local; esta función no implica copia remota ni sincronización.
+El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
 ## Gustos y restricciones: propuesta pendiente
 
@@ -98,4 +98,4 @@ Si se incorpora un menú compartido por varias personas, falta decidir cómo com
 
 ## Datos y privacidad
 
-El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. Hoy este estado v8 usa `localStorage`; la persistencia remota está pendiente. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v8 conserva una copia local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).

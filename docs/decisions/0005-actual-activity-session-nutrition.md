@@ -16,7 +16,7 @@ No siempre se sabe de antemano si se hará ejercicio. Un calendario de entrenami
 - Mantener estables las metas diarias de proteína y grasa ante una sesión. Cubrir principalmente la energía extra con porciones de hidratos, dentro de los límites de adaptación existentes.
 - No prever entrenamientos futuros ni cambiar otros días. El historial tampoco modifica automáticamente el perfil o el menú futuro. Más adelante se podrá decidir si se ofrece un resumen para que la persona revise su actividad habitual; esa propuesta sigue abierta.
 - Usar cantidades base genéricas en `recipes.json`; retirar las alternativas `amountOnStrengthDay`. La sesión real, no una marca genérica de “día de fuerza”, gobierna el cálculo.
-- Mantener las sesiones en estado local v7 y exportación JSON. La nueva tabla remota es aditiva y requiere aplicar una migración independiente; el HTML aún no está conectado a Supabase.
+- Mantener las sesiones en el estado local v7 y exportación JSON. La migración aditiva creó `activity_sessions`; el sincronizador del HTML ahora lee y escribe esa tabla con un `client_id` estable.
 
 ## Valores MET orientativos incluidos
 
@@ -45,4 +45,4 @@ Son referencias poblacionales aproximadas, no mediciones individuales ni valores
 
 ## Pendiente
 
-Decidir si, tras acumular varias semanas, se mostrará un resumen manual de actividad habitual. Aplicar y validar la migración Supabase antes de integrar la sincronización remota.
+Decidir si, tras acumular varias semanas, se mostrará un resumen manual de actividad habitual. La publicación de la sincronización y su prueba con sesiones reales de Auth siguen pendientes.

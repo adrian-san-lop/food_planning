@@ -1,5 +1,5 @@
--- Read-only structural checks for the initial schema.
--- Run after applying the migration in Supabase SQL Editor.
+-- Read-only structural checks for the complete schema described by current migrations.
+-- Run after applying all migration files in Supabase SQL Editor.
 
 do $$
 declare
@@ -9,13 +9,15 @@ declare
     'plan_cycles',
     'planned_meals',
     'meal_completions',
+    'meal_completion_ingredients',
     'inventory_movements',
     'weight_logs',
     'training_logs',
     'prep_tasks',
     'shopping_sessions',
     'shopping_session_items',
-    'user_settings'
+    'user_settings',
+    'activity_sessions'
   ];
 begin
   foreach table_name in array required_tables
@@ -67,6 +69,11 @@ begin
   if has_table_privilege('authenticated', 'public.inventory_movements', 'update')
      or has_table_privilege('authenticated', 'public.inventory_movements', 'delete') then
     raise exception 'Inventory movements must remain append-only for the app role';
+  end if;
+
+  if has_table_privilege('authenticated', 'public.meal_completion_ingredients', 'update')
+     or has_table_privilege('authenticated', 'public.meal_completion_ingredients', 'delete') then
+    raise exception 'Meal completion ingredient snapshots must remain append-only for the app role';
   end if;
 
   raise notice 'Schema check passed: required tables, RLS, own-row policies, and grants are present.';
