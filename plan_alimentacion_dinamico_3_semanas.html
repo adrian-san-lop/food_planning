@@ -550,7 +550,7 @@ function cleanState(obj){
   s.purchases=Array.isArray(obj.purchases)?obj.purchases.slice(-2500).filter(p=>p&&FOOD[p.id]&&Number.isFinite(Number(p.amount))&&Number(p.amount)>0).map(p=>({...p,amount:fromV5?roundAmount(recipeToStockAmount(p.id,+p.amount)):+p.amount})):[];
   s.prep=obj.prep&&typeof obj.prep==='object'?obj.prep:{};
   s.archives=Array.isArray(obj.archives)?obj.archives.slice(-6).map(a=>a&&a.done&&typeof a.done==='object'?({...a,done:normalizeDoneEntries(a.done,obj.v)}):a):[];
-  s.activeMenus=validMenuSnapshot(obj.activeMenus)?cloneMenus(obj.activeMenus):null;
+  s.activeMenus=validMenuSnapshot(obj.activeMenus,true)?cloneMenus(obj.activeMenus):null;
   s.activeMenuCatalogVersion=s.activeMenus&&typeof obj.activeMenuCatalogVersion==='string'?obj.activeMenuCatalogVersion:null;
   s.activeMenuGeneratedAt=typeof obj.activeMenuGeneratedAt==='string'?obj.activeMenuGeneratedAt:null;
   s.activeMenuConfirmedAt=typeof obj.activeMenuConfirmedAt==='string'?obj.activeMenuConfirmedAt:null;
@@ -624,12 +624,14 @@ function planLockAt(locked,week,day,slot){return !!locked?.[week]?.[day]?.[slot]
 async function buildCloudSnapshot(source=state){
  const definitions=[];
  const addCycle=(kind,key,start,menus,version,options={})=>{
-  if(!dateFromISO(start)||!validMenuSnapshot(menus))throw Error('Hay un menú guardado incompleto o incompatible; conserva una copia y revisa su ciclo antes de sincronizar.');
+  // The fixed menu intentionally interchanges the two snack slots; accept that
+  // same compatibility when validating the active and archived cycles for sync.
+  if(!dateFromISO(start)||!validMenuSnapshot(menus,true))throw Error('Hay un menú guardado incompleto o incompatible; conserva una copia y revisa su ciclo antes de sincronizar.');
   definitions.push({kind,key,start,menus:cloneMenus(menus),version:version||catalogVersion,...options});
  };
  const activeMenus=source.activeMenus?cloneMenus(source.activeMenus):cloneMenus(FIXED_MENUS);
  addCycle('active','current',source.start,activeMenus,source.activeMenuCatalogVersion||catalogVersion,{prep:source.prep||{},done:source.done||{},generatedAt:source.activeMenuGeneratedAt||null,confirmedAt:source.activeMenuConfirmedAt||null,recoveryFocus:!!source.activeMenuRecoveryFocus});
- for(const [i,a] of (source.archives||[]).entries())if(a&&dateFromISO(a.start)&&validMenuSnapshot(a.menus))addCycle('archived','archive:'+a.start+':'+(a.archivedAt||i),a.start,a.menus,a.catalogVersion||catalogVersion,{prep:a.prep||{},done:a.done||{},archivedAt:a.archivedAt||new Date(a.start+'T12:00:00Z').toISOString(),generatedAt:a.generatedAt||null,confirmedAt:a.confirmedAt||null,recoveryFocus:!!a.recoveryFocus});
+ for(const [i,a] of (source.archives||[]).entries())if(a&&dateFromISO(a.start)&&validMenuSnapshot(a.menus,true))addCycle('archived','archive:'+a.start+':'+(a.archivedAt||i),a.start,a.menus,a.catalogVersion||catalogVersion,{prep:a.prep||{},done:a.done||{},archivedAt:a.archivedAt||new Date(a.start+'T12:00:00Z').toISOString(),generatedAt:a.generatedAt||null,confirmedAt:a.confirmedAt||null,recoveryFocus:!!a.recoveryFocus});
  if(source.nextMenu)addCycle('scheduled','next:'+source.nextMenu.start+':'+(source.nextMenu.generatedAt||''),source.nextMenu.start,source.nextMenu.menus,source.nextMenu.catalogVersion,{locked:source.nextMenu.locked,generatedAt:source.nextMenu.generatedAt||null,confirmedAt:source.nextMenu.confirmedAt||null,recoveryFocus:!!source.nextMenu.recoveryFocus});
  if(source.plannerDraft)addCycle('draft','draft:'+source.plannerDraft.start+':'+(source.plannerDraft.generatedAt||''),source.plannerDraft.start,source.plannerDraft.menus,source.plannerDraft.catalogVersion,{locked:source.plannerDraft.locked,generatedAt:source.plannerDraft.generatedAt||null,confirmedAt:source.plannerDraft.confirmedAt||null,recoveryFocus:!!source.plannerDraft.recoveryFocus});
 
@@ -729,7 +731,7 @@ function stateFromCloud(data){
  for(const cycle of data.cycles){
   const menus=Array.from({length:3},()=>Array.from({length:7},()=>Array(5).fill(null))),locks=Array.from({length:3},()=>Array.from({length:7},()=>Array(5).fill(false))),start=dateFromISO(cycle.start_date);
   for(const row of mealRowsByCycle.get(cycle.id)||[]){const offset=dateDiff(start,dateFromISO(row.meal_date));if(offset<0||offset>=21||row.slot<0||row.slot>4)continue;const week=Math.floor(offset/7),day=offset%7;menus[week][day][row.slot]=row.recipe_id;locks[week][day][row.slot]=!!row.is_locked}
-  if((cycle.status!=='archived'||visibleArchivedIds.has(cycle.id))&&!validMenuSnapshot(menus))throw Error('Hay un ciclo de Supabase incompleto o una receta que falta en el catálogo. No he sustituido los datos de este navegador.');
+  if((cycle.status!=='archived'||visibleArchivedIds.has(cycle.id))&&!validMenuSnapshot(menus,true))throw Error('Hay un ciclo de Supabase incompleto o una receta que falta en el catálogo. No he sustituido los datos de este navegador.');
   cycleInfo.set(cycle.id,cycle);menuOf.set(cycle.id,menus);locksOf.set(cycle.id,locks);
  }
  const active=data.cycles.find(x=>x.status==='active');if(!active)throw Error('La cuenta sincronizada no tiene un ciclo activo. No he sustituido los datos de este navegador.');
