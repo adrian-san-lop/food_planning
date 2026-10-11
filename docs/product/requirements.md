@@ -18,7 +18,8 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 - Recetas, instrucciones, fotografías orientativas y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
 - Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; seguimiento del peso.
-- Estado de trabajo en `localStorage` y persistencia remota autenticada en Supabase; exportación/importación JSON y aviso semanal de copia dentro de la página.
+- Estado de trabajo en `localStorage` y sincronización automática autenticada con Supabase. Se pueden restaurar archivos JSON v5-v8; no hay recordatorio periódico de copia.
+- En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Despensa; Perfil, Peso, Recetas y Guía están bajo **Más**. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
 - Inventario negativo permitido cuando se registra una comida que supera las existencias; se muestra el faltante y desmarcar la comida revierte el consumo.
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
 - Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado local con fecha y versión del catálogo.
@@ -96,5 +97,5 @@ Estos principios están aceptados. Las puntuaciones, umbrales y cantidades míni
 
 - Los catálogos son datos genéricos; no deben contener perfiles, pesos, preferencias personales, despensa, comidas completadas ni copias de seguridad.
 - GitHub Pages es alojamiento estático y de acceso público. Los datos personales no se guardan en el repositorio; Supabase los separa por `auth.uid()` y RLS. `localStorage` es una copia de trabajo, no la sincronización entre dispositivos.
-- No añadir colas offline, avisos en segundo plano ni notificaciones push. El aviso semanal de copia solo aparece dentro de la página.
+- No añadir colas offline, avisos en segundo plano ni notificaciones push. La sincronización se inicia automáticamente al guardar cambios; la interfaz solo ofrece reintento manual cuando falla.
 - El inicio de sesión y la sincronización relacional están implementados en el HTML y el esquema. La publicación del HTML actualizado, la prueba RLS con dos cuentas y la verificación PC/móvil siguen pendientes; véase [arquitectura](../architecture.md).

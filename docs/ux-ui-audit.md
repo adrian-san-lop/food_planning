@@ -14,13 +14,13 @@ La experiencia cambia con el tamaño de pantalla: en escritorio las secciones se
 
 ## Estado de las mejoras de prioridad alta
 
-Las tres propuestas de prioridad alta están implementadas en el HTML de la rama `docs/ux-audit-pc-mobile`; la migración que guarda la confirmación del perfil también se aplicó en Supabase. Aún no se han publicado en GitHub Pages ni validado con un usuario nuevo y dos copias divergentes.
+Las tres propuestas de prioridad alta están en `dev`; la migración que guarda la confirmación del perfil también se aplicó en Supabase. La publicación y las comprobaciones con usuario nuevo y dos copias divergentes siguen pendientes.
 
 - **Primera visita y perfil:** Inicio guía por cinco pasos y dirige a revisar los valores genéricos. El perfil queda marcado como revisado al guardarlo; esa marca se sincroniza con Supabase.
 - **Conflicto de copias:** un panel resume perfil, menú, comidas realizadas, movimientos de despensa, pesos, sesiones, compra y fechas de actualización, y explica qué se reemplaza o integra antes de elegir entre la copia local y Supabase.
 - **Planificación y registro:** las comidas futuras aparecen como planificadas y el control para registrarlas está deshabilitado hasta la fecha correspondiente.
 
-Las observaciones siguientes describen lo que se encontró antes de estas mejoras. Las propuestas de prioridad media y baja continúan pendientes.
+Las observaciones siguientes describen lo que se encontró antes de estas mejoras. Las propuestas de prioridad media y baja se han implementado en la rama de esta iteración; faltan la publicación y la validación en un teléfono físico.
 
 ## Alcance y método
 
@@ -82,11 +82,13 @@ Las observaciones siguientes describen lo que se encontró antes de estas mejora
 
 ## Cambios que el propietario ya propone
 
-Estos puntos quedan registrados como propuestas de la siguiente iteración. No se han implementado en esta auditoría.
+El propietario aceptó aplicar estos cambios. Están implementados localmente en la rama `chore/ux-mobile-shopping`.
 
 - **Eliminar la exportación y las referencias a exportar copias de la interfaz.** El botón de exportación y los avisos repetidos de descarga compiten con el uso diario. Revisar también las menciones de exportación en la guía.
 - **Retirar el botón de sincronización manual si la sincronización automática cubre el uso normal.** El botón actual no se limita a la primera carga: también permite pedir una sincronización manual, mientras la app programa sincronizaciones automáticas tras los cambios. Si se retira, la interfaz debería explicar con claridad si los cambios están guardados y mostrar una acción para reintentar cuando falle. La decisión inicial entre copia local y Supabase es un caso distinto y debe conservar instrucciones claras.
 - **Quitar «Guardar al salir del campo» de cada producto de la despensa.** La acción debe sentirse directa; cualquier confirmación de guardado puede ser discreta y aparecer solo tras un cambio.
+- **Facilitar compras largas en móvil.** Añadir búsqueda por producto y mantener visibles el progreso de artículos marcados y el acceso a finalizar la compra.
+- **Agrupar la navegación secundaria en móvil.** Mantener Inicio, Menú, Compra y Despensa en la barra inferior; colocar Recetas, Peso, Guía y Perfil bajo **Más**. La barra lateral de PC conserva los ocho destinos.
 
 ## Propuestas para mejorar el recorrido
 
@@ -118,11 +120,11 @@ Así la decisión se puede tomar con confianza sin que el usuario tenga que cono
 
 ### 4. Hacer más manejable la compra en móvil
 
-Mantener visible un resumen breve —artículos marcados y pendientes— y facilitar el acceso a **Finalizar compra** durante el recorrido. Añadir búsqueda o filtros útiles si la lista completa resulta difícil de manejar. Explicar junto al control que marcar un artículo no actualiza la despensa hasta finalizar.
+La compra ahora ofrece búsqueda por producto, un resumen fijo de artículos marcados y pendientes y un botón **Finalizar compra** accesible durante el recorrido en móvil. Se explica que marcar un envase no actualiza la despensa; finalizar la compra añade los artículos marcados.
 
 ### 5. Simplificar la navegación móvil
 
-Dar prioridad a Inicio, Menú, Compra y Despensa. Evaluar si Perfil, Peso, Recetas y Guía pueden agruparse bajo **Más**, con una etiqueta legible y un orden estable. Confirmar la decisión en teléfonos reales y con sus áreas seguras antes de cambiar la navegación.
+La barra inferior mantiene Inicio, Menú, Compra y Despensa como destinos principales. Perfil, Peso, Recetas y Guía aparecen bajo **Más**, en un orden estable. La decisión ya está implementada; queda comprobar el menú y las áreas seguras en teléfonos reales.
 
 ### 6. Separar planificación y registro
 
@@ -135,17 +137,17 @@ Marcar con claridad qué comidas son futuras y cuáles ya se pueden registrar. E
 | Alta | Guiar la primera visita y pedir que se revise el perfil | Sin ello, los objetivos pueden parecer personalizados aunque no se hayan confirmado los datos. | Publicada. |
 | Alta | Aclarar qué hace cada opción al resolver un conflicto entre copias | El usuario puede temer perder información o seleccionar la copia equivocada. | Publicada. |
 | Alta | Diferenciar el menú planificado de una comida registrada | Evita descontar despensa antes del consumo. | Implementada en rama; Publicada. |
-| Media | Eliminar los avisos y controles de copia/sincronización según la propuesta del propietario | Reduce ruido en Inicio y en móvil. | Pendiente. |
-| Media | Mejorar el recorrido de compra con lista larga en móvil | La compra es una tarea frecuente y se realiza mientras se consulta la pantalla. | Pendiente. |
-| Media | Eliminar el texto repetido de guardado en despensa | Libera espacio sin añadir información útil. | Pendiente. |
-| Baja | Revisar el número y tamaño de destinos de navegación en móvil | Puede mejorar la lectura, pero debe validarse en dispositivos reales. | Pendiente. |
+| Media | Eliminar los avisos y controles de copia/sincronización según la propuesta del propietario | Reduce ruido en Inicio y en móvil. | Implementada en rama; publicación pendiente. |
+| Media | Mejorar el recorrido de compra con lista larga en móvil | La compra es una tarea frecuente y se realiza mientras se consulta la pantalla. | Implementada en rama; prueba en teléfono pendiente. |
+| Media | Eliminar el texto repetido de guardado en despensa | Libera espacio sin añadir información útil. | Implementada en rama; publicación pendiente. |
+| Baja | Revisar el número y tamaño de destinos de navegación en móvil | Puede mejorar la lectura, pero debe validarse en dispositivos reales. | Implementada en rama; prueba en teléfono pendiente. |
 
 ## Qué falta validar
 
 - Hacer un recorrido desde una cuenta realmente nueva y verificar que la guía dirige al perfil, desaparece después de confirmarlo y la marca se conserva tras iniciar sesión en otro dispositivo.
 - Preparar dos copias divergentes y verificar los resúmenes, las consecuencias descritas y el resultado de cada opción.
 - Confirmar que una comida futura no se puede registrar desde Inicio, el menú semanal ni el detalle de receta y que el control se habilita cuando llega la fecha.
-- Probar compra, navegación y áreas seguras en un teléfono físico.
-- Verificar qué mensajes aparecen cuando la sincronización automática funciona y cuando falla.
+- Probar en un teléfono físico la búsqueda, el contador, el botón fijo de compra, el menú **Más** y las áreas seguras.
+- Verificar que el estado de sincronización se actualiza, que **Reintentar** aparece solo tras un error y que los conflictos siguen mostrando las dos opciones.
 
-La auditoría original describe observaciones de la interfaz publicada el 11 de octubre de 2026. Las tres propuestas altas ya se implementaron localmente; las demás propuestas siguen sin implementarse.
+La auditoría original describe observaciones de la interfaz publicada el 11 de octubre de 2026. Las tres mejoras altas y las cuatro de prioridad media/baja están implementadas en ramas locales; quedan pendientes su publicación y las comprobaciones en dispositivos reales.

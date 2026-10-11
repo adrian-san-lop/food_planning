@@ -27,7 +27,7 @@ Navegador
 - En la primera visita, una guía breve recomienda revisar el perfil antes de confiar en objetivos calculados con valores de ejemplo. La marca se guarda localmente y en `profiles.profile_confirmed`.
 - Cuando la copia local y Supabase divergen, la interfaz muestra el estado del perfil, el inicio del menú, comidas realizadas, movimientos de despensa, pesos, sesiones, artículos de compra y fechas de actualización. Explica que usar Supabase reemplaza la copia local pendiente; subir la local reemplaza perfil, menú y compra remotos e integra los registros por identificador. No elige ni reemplaza datos en silencio.
 - Las comidas de fechas futuras se muestran como planificadas y no se pueden registrar como consumidas antes de que llegue ese día.
-- `localStorage` conserva una copia de trabajo. La fuente común para una cuenta inicializada son las tablas privadas de Supabase; el indicador de la app distingue cambios sincronizados de cambios locales pendientes o en conflicto.
+- `localStorage` conserva una copia de trabajo. La fuente común para una cuenta inicializada son las tablas privadas de Supabase; los cambios se sincronizan automáticamente y el indicador muestra si están guardados, pendientes o en conflicto. La acción de reintento solo aparece tras un error.
 - Los alimentos separan medida de receta (`recipeUnit`) y medida de inventario (`unit`). Frutas y verduras enteras se pesan en gramos en recetas y se cuentan por piezas en despensa y compra; una conversión por peso comestible aproximado conecta ambas.
 - Las sesiones se registran después de realizarse. Su energía neta estimada se aplica solo a la fecha de la sesión y a comidas aún pendientes; no cambia días futuros ni cantidades ya registradas.
 - Supabase conserva identidad en `auth.users` y los datos personales en sus tablas relacionales con RLS. El perfil se guarda en `profiles`; las credenciales no se copian a tablas públicas.
@@ -58,7 +58,7 @@ Los catálogos comunes se versionan junto al código. El estado personal (perfil
 | Recetas e ingredientes | `data/recipes.json`, cargado por la app y descrito por `recipes.schema.json` | Catálogo JSON público, con referencias por ID estable |
 | Menú de tres semanas | Menú fijo inicial y ciclos guardados con su versión de catálogo | `plan_cycles` y `planned_meals`; propuesta, bloqueos y ciclo activo se sincronizan |
 | Perfil y seguimiento | Copia de trabajo en el navegador | `profiles`, `weight_logs` y `user_settings`, vinculados por `user_id` |
-| Sesiones de actividad realizadas | Copia de trabajo en el navegador y exportación JSON | `activity_sessions`, con fecha, tipo, duración y MET |
+| Sesiones de actividad realizadas | Copia de trabajo en el navegador | `activity_sessions`, con fecha, tipo, duración y MET |
 | Comidas e inventario | Copia de trabajo en el navegador | `meal_completions`, `meal_completion_ingredients` y `inventory_movements` |
 | Preparación y compra | Copia de trabajo en el navegador | `prep_tasks`, `shopping_sessions` y `shopping_session_items` |
 | Gustos/restricciones | No hay sistema general implementado | Preferencias por persona fuera del catálogo; modelo pendiente |
@@ -77,10 +77,9 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada 
 
 ## Migración y recuperación
 
-- Supabase sincroniza la cuenta entre dispositivos cuando se inicia sesión y hay conexión. La copia local no se sincroniza si falla la petición; la app lo indica y permite exportarla o resolver un conflicto.
+- Supabase sincroniza la cuenta entre dispositivos cuando se inicia sesión y hay conexión. Si una petición falla, la copia local se conserva y la interfaz permite reintentar. Los conflictos entre copias requieren una elección explícita.
 - Aceptar v5 como primer archivo importable y v8 como estado actual; admitir v5-v8, sin importar v1-v4. Tratar el stock v5 como saldo de apertura y no sumar otra vez sobre él compras/comidas que ya estén reflejadas. Al actualizar v5, convertir las cantidades antiguas en gramos a unidades de inventario; al actualizar v6/v7, conservar movimientos y stock, y convertir los snapshots históricos de consumo a unidades de receta.
-- La exportación/importación de datos personales es distinta de los catálogos de GitHub. No subir copias personales al repositorio.
-- El recordatorio semanal ayuda a descargar una copia, pero ni GitHub Pages ni la sincronización remota sustituyen una copia de seguridad comprobada.
+- La restauración de JSON personales es distinta de los catálogos de GitHub. No subir datos personales al repositorio.
 
 ## Versiones y operación
 
@@ -89,7 +88,7 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada 
 - La app requiere conexión y no mantiene cola offline. No afirmar que un cambio se guardó remotamente hasta que la función RPC responda con éxito.
 - La vista de planificación permite proponer, editar, bloquear, regenerar y confirmar el menú del siguiente ciclo. La propuesta y el menú se sincronizan en `plan_cycles` y `planned_meals`.
 - El historial de actividad describe sesiones ya realizadas; no es un calendario de previsiones ni un mecanismo de aprendizaje automático del perfil.
-- El recordatorio semanal de copia es un aviso dentro de la página, no una notificación del sistema.
+- En móvil, la navegación principal incluye Inicio, Menú, Compra y Despensa; Perfil, Peso, Recetas y Guía se agrupan bajo **Más**. La compra ofrece búsqueda y un resumen fijo con acceso a finalizar.
 - El uso sin coste depende de los límites vigentes de GitHub Pages y del proveedor de base de datos; verificar límites oficiales antes de integrar o prometer capacidad.
 
 ## Referencias de implementación
@@ -101,4 +100,5 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada 
 - [Decisión de separar las unidades de receta e inventario](decisions/0006-recipe-and-inventory-units.md)
 - [Decisión de conservar snapshots de ingredientes completados](decisions/0008-meal-completion-ingredient-snapshots.md)
 - [Decisión de sincronizar el estado personal con Supabase](decisions/0010-supabase-relational-state-sync.md)
+- [Decisión de simplificar sincronización y uso móvil](decisions/0012-mobile-shopping-and-sync-ui.md)
 - [Preguntas abiertas](open-questions.md)
