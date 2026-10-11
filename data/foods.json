@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.3.0",
+  "catalogVersion": "0.4.0",
   "source": "Existing foods from plan_alimentacion_dinamico_3_semanas.html plus curated generic additions with per-item USDA FoodData Central references.",
   "status": "Catálogo ampliado; los valores nuevos son aproximaciones genéricas y los formatos de compra son orientativos.",
   "foods": [
@@ -8,6 +8,7 @@
       "id": "skyr",
       "name": "Yogur natural alto en proteínas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 64,
@@ -28,6 +29,7 @@
       "id": "greek",
       "name": "Yogur griego natural",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 102,
@@ -48,6 +50,7 @@
       "id": "milk",
       "name": "Leche semidesnatada",
       "unit": "ml",
+      "recipeUnit": "ml",
       "nutrition": {
         "basis": "per_100ml",
         "kcal": 50,
@@ -68,6 +71,7 @@
       "id": "cheese",
       "name": "Queso fresco",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 116,
@@ -88,6 +92,7 @@
       "id": "granola",
       "name": "Granola sin azúcar añadido",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 440,
@@ -108,6 +113,7 @@
       "id": "oats",
       "name": "Copos de avena",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 370,
@@ -128,6 +134,7 @@
       "id": "bread",
       "name": "Pan integral",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 250,
@@ -148,6 +155,7 @@
       "id": "rice",
       "name": "Arroz seco",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 360,
@@ -168,6 +176,7 @@
       "id": "pasta",
       "name": "Pasta integral seca",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 345,
@@ -188,6 +197,7 @@
       "id": "tortilla",
       "name": "Tortilla integral de trigo",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 295,
@@ -208,6 +218,7 @@
       "id": "eggs",
       "name": "Huevos",
       "unit": "ud",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_unit",
         "kcal": 72,
@@ -228,6 +239,7 @@
       "id": "chicken",
       "name": "Pechuga de pollo fresca",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 110,
@@ -248,6 +260,7 @@
       "id": "turkey",
       "name": "Filetes de pavo fresco",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 108,
@@ -268,6 +281,7 @@
       "id": "turkeySlice",
       "name": "Pavo loncheado",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 103,
@@ -288,6 +302,7 @@
       "id": "hake",
       "name": "Merluza fresca/congelada",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 82,
@@ -308,6 +323,7 @@
       "id": "salmon",
       "name": "Salmón",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 205,
@@ -328,6 +344,7 @@
       "id": "shrimp",
       "name": "Gambas peladas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 80,
@@ -348,6 +365,7 @@
       "id": "tuna",
       "name": "Atún al natural (escurrido)",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 110,
@@ -368,6 +386,7 @@
       "id": "sardines",
       "name": "Sardinas (escurridas)",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 205,
@@ -388,6 +407,7 @@
       "id": "lentils",
       "name": "Lentejas cocidas escurridas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 112,
@@ -408,6 +428,7 @@
       "id": "chickpeas",
       "name": "Garbanzos cocidos escurridos",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 125,
@@ -428,6 +449,7 @@
       "id": "hummus",
       "name": "Hummus",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 270,
@@ -448,12 +470,13 @@
       "id": "tomato",
       "name": "Tomate fresco",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 27,
-        "protein_g": 1.5,
-        "carbohydrates_g": 5.25,
-        "fat_g": 0.3
+        "basis": "per_100g",
+        "kcal": 18,
+        "protein_g": 1,
+        "carbohydrates_g": 3.5,
+        "fat_g": 0.2
       },
       "approximateEdibleWeight_g_per_unit": 150,
       "purchase": {
@@ -469,6 +492,7 @@
       "id": "tomatoSauce",
       "name": "Tomate triturado",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 33,
@@ -489,12 +513,13 @@
       "id": "pepper",
       "name": "Pimiento",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 47.6,
-        "protein_g": 1.7,
-        "carbohydrates_g": 10.2,
-        "fat_g": 0.51
+        "basis": "per_100g",
+        "kcal": 28,
+        "protein_g": 1,
+        "carbohydrates_g": 6,
+        "fat_g": 0.3
       },
       "approximateEdibleWeight_g_per_unit": 170,
       "purchase": {
@@ -510,12 +535,13 @@
       "id": "zucchini",
       "name": "Calabacín",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 45,
-        "protein_g": 3,
-        "carbohydrates_g": 7.75,
-        "fat_g": 0.75
+        "basis": "per_100g",
+        "kcal": 18,
+        "protein_g": 1.2,
+        "carbohydrates_g": 3.1,
+        "fat_g": 0.3
       },
       "approximateEdibleWeight_g_per_unit": 250,
       "purchase": {
@@ -531,12 +557,13 @@
       "id": "onion",
       "name": "Cebolla",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 72,
-        "protein_g": 1.98,
-        "carbohydrates_g": 16.2,
-        "fat_g": 0.18
+        "basis": "per_100g",
+        "kcal": 40,
+        "protein_g": 1.1,
+        "carbohydrates_g": 9,
+        "fat_g": 0.1
       },
       "approximateEdibleWeight_g_per_unit": 180,
       "purchase": {
@@ -552,8 +579,9 @@
       "id": "carrot",
       "name": "Zanahoria",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
+        "basis": "per_100g",
         "kcal": 40,
         "protein_g": 0.9,
         "carbohydrates_g": 9,
@@ -573,12 +601,13 @@
       "id": "broccoli",
       "name": "Brócoli",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 136,
-        "protein_g": 11.2,
-        "carbohydrates_g": 26.4,
-        "fat_g": 1.6
+        "basis": "per_100g",
+        "kcal": 34,
+        "protein_g": 2.8,
+        "carbohydrates_g": 6.6,
+        "fat_g": 0.4
       },
       "approximateEdibleWeight_g_per_unit": 400,
       "purchase": {
@@ -594,6 +623,7 @@
       "id": "greenbeans",
       "name": "Judías verdes",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 30,
@@ -614,6 +644,7 @@
       "id": "mushroom",
       "name": "Champiñones",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 24,
@@ -634,6 +665,7 @@
       "id": "spinach",
       "name": "Espinacas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 24,
@@ -654,6 +686,7 @@
       "id": "lettuce",
       "name": "Lechuga o mezclum",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 18,
@@ -674,12 +707,13 @@
       "id": "cucumber",
       "name": "Pepino",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 52.5,
-        "protein_g": 2.45,
-        "carbohydrates_g": 11.9,
-        "fat_g": 0.35
+        "basis": "per_100g",
+        "kcal": 15,
+        "protein_g": 0.7,
+        "carbohydrates_g": 3.4,
+        "fat_g": 0.1
       },
       "approximateEdibleWeight_g_per_unit": 350,
       "purchase": {
@@ -695,11 +729,12 @@
       "id": "potato",
       "name": "Patata",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 154,
-        "protein_g": 4,
-        "carbohydrates_g": 34,
+        "basis": "per_100g",
+        "kcal": 77,
+        "protein_g": 2,
+        "carbohydrates_g": 17,
         "fat_g": 0
       },
       "approximateEdibleWeight_g_per_unit": 200,
@@ -716,12 +751,13 @@
       "id": "sweetpotato",
       "name": "Boniato",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 215,
-        "protein_g": 4,
-        "carbohydrates_g": 50,
-        "fat_g": 0.25
+        "basis": "per_100g",
+        "kcal": 86,
+        "protein_g": 1.6,
+        "carbohydrates_g": 20,
+        "fat_g": 0.1
       },
       "approximateEdibleWeight_g_per_unit": 250,
       "purchase": {
@@ -737,12 +773,13 @@
       "id": "banana",
       "name": "Plátano",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 108,
-        "protein_g": 1.32,
-        "carbohydrates_g": 26.4,
-        "fat_g": 0.36
+        "basis": "per_100g",
+        "kcal": 90,
+        "protein_g": 1.1,
+        "carbohydrates_g": 22,
+        "fat_g": 0.3
       },
       "approximateEdibleWeight_g_per_unit": 120,
       "purchase": {
@@ -758,12 +795,13 @@
       "id": "apple",
       "name": "Manzana",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 88.4,
-        "protein_g": 0.51,
-        "carbohydrates_g": 23.8,
-        "fat_g": 0.34
+        "basis": "per_100g",
+        "kcal": 52,
+        "protein_g": 0.3,
+        "carbohydrates_g": 14,
+        "fat_g": 0.2
       },
       "approximateEdibleWeight_g_per_unit": 170,
       "purchase": {
@@ -779,12 +817,13 @@
       "id": "kiwi",
       "name": "Kiwi",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 54.9,
-        "protein_g": 0.99,
-        "carbohydrates_g": 13.5,
-        "fat_g": 0.45
+        "basis": "per_100g",
+        "kcal": 61,
+        "protein_g": 1.1,
+        "carbohydrates_g": 15,
+        "fat_g": 0.5
       },
       "approximateEdibleWeight_g_per_unit": 90,
       "purchase": {
@@ -800,12 +839,13 @@
       "id": "mandarin",
       "name": "Mandarina",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 42.3,
-        "protein_g": 0.72,
-        "carbohydrates_g": 10.8,
-        "fat_g": 0.27
+        "basis": "per_100g",
+        "kcal": 47,
+        "protein_g": 0.8,
+        "carbohydrates_g": 12,
+        "fat_g": 0.3
       },
       "approximateEdibleWeight_g_per_unit": 90,
       "purchase": {
@@ -821,12 +861,13 @@
       "id": "orange",
       "name": "Naranja",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 84.6,
-        "protein_g": 1.62,
-        "carbohydrates_g": 21.6,
-        "fat_g": 0.18
+        "basis": "per_100g",
+        "kcal": 47,
+        "protein_g": 0.9,
+        "carbohydrates_g": 12,
+        "fat_g": 0.1
       },
       "approximateEdibleWeight_g_per_unit": 180,
       "purchase": {
@@ -842,12 +883,13 @@
       "id": "pear",
       "name": "Pera",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 96.9,
-        "protein_g": 0.68,
-        "carbohydrates_g": 25.5,
-        "fat_g": 0.17
+        "basis": "per_100g",
+        "kcal": 57,
+        "protein_g": 0.4,
+        "carbohydrates_g": 15,
+        "fat_g": 0.1
       },
       "approximateEdibleWeight_g_per_unit": 170,
       "purchase": {
@@ -863,6 +905,7 @@
       "id": "berries",
       "name": "Frutos rojos",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 50,
@@ -883,12 +926,13 @@
       "id": "seasonFruit",
       "name": "Fruta de temporada",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 82.5,
-        "protein_g": 0.75,
-        "carbohydrates_g": 21,
-        "fat_g": 0.3
+        "basis": "per_100g",
+        "kcal": 55,
+        "protein_g": 0.5,
+        "carbohydrates_g": 14,
+        "fat_g": 0.2
       },
       "approximateEdibleWeight_g_per_unit": 150,
       "purchase": {
@@ -904,6 +948,7 @@
       "id": "walnuts",
       "name": "Nueces",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 650,
@@ -924,6 +969,7 @@
       "id": "almonds",
       "name": "Almendras",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 580,
@@ -944,6 +990,7 @@
       "id": "oliveoil",
       "name": "Aceite de oliva virgen extra",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 900,
@@ -964,6 +1011,7 @@
       "id": "coffee",
       "name": "Café molido",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 0,
@@ -984,6 +1032,7 @@
       "id": "cod",
       "name": "Bacalao desalado / pescado blanco",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 82,
@@ -1004,6 +1053,7 @@
       "id": "beans",
       "name": "Alubias cocidas escurridas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 110,
@@ -1024,6 +1074,7 @@
       "id": "quinoa",
       "name": "Quinoa seca",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 368,
@@ -1044,6 +1095,7 @@
       "id": "couscous",
       "name": "Cuscús seco",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 365,
@@ -1064,6 +1116,7 @@
       "id": "noodles",
       "name": "Fideos integrales secos",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 350,
@@ -1084,6 +1137,7 @@
       "id": "gulas",
       "name": "Gulas refrigeradas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 170,
@@ -1104,6 +1158,7 @@
       "id": "mackerel",
       "name": "Caballa en conserva escurrida",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 200,
@@ -1124,6 +1179,7 @@
       "id": "trout",
       "name": "Trucha / dorada fresca",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 145,
@@ -1144,6 +1200,7 @@
       "id": "pumpkin",
       "name": "Calabaza",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 30,
@@ -1164,12 +1221,13 @@
       "id": "avocado",
       "name": "Aguacate",
       "unit": "ud",
+      "recipeUnit": "g",
       "nutrition": {
-        "basis": "per_unit",
-        "kcal": 240,
-        "protein_g": 3,
-        "carbohydrates_g": 13.5,
-        "fat_g": 22.5
+        "basis": "per_100g",
+        "kcal": 160,
+        "protein_g": 2,
+        "carbohydrates_g": 9,
+        "fat_g": 15
       },
       "approximateEdibleWeight_g_per_unit": 150,
       "purchase": {
@@ -1185,6 +1243,7 @@
       "id": "peas",
       "name": "Guisantes congelados",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 80,
@@ -1205,6 +1264,7 @@
       "id": "asparagus",
       "name": "Espárragos verdes",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 22,
@@ -1225,6 +1285,7 @@
       "id": "cocoa",
       "name": "Cacao puro sin azúcar",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 330,
@@ -1245,6 +1306,7 @@
       "id": "raisins",
       "name": "Pasas sin azúcar añadido",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 300,
@@ -1265,6 +1327,7 @@
       "id": "peanuts",
       "name": "Crema de cacahuete 100 %",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 600,
@@ -1285,6 +1348,7 @@
       "id": "tofuFirm",
       "name": "Tofu firme",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 144,
@@ -1305,6 +1369,7 @@
       "id": "tempeh",
       "name": "Tempeh",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 192,
@@ -1325,6 +1390,7 @@
       "id": "edamame",
       "name": "Edamame sin vaina cocido (congelado)",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 121,
@@ -1345,6 +1411,7 @@
       "id": "blackBeans",
       "name": "Alubias negras cocidas, escurridas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 91,
@@ -1365,6 +1432,7 @@
       "id": "redLentilsDry",
       "name": "Lentejas rojas secas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 352,
@@ -1385,6 +1453,7 @@
       "id": "soyProteinTextured",
       "name": "Proteína de soja texturizada seca",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 327,
@@ -1405,6 +1474,7 @@
       "id": "porkTenderloin",
       "name": "Solomillo de cerdo fresco",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 120,
@@ -1425,6 +1495,7 @@
       "id": "beefSirloin",
       "name": "Filete de ternera magro (corte tipo sirloin)",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 143,
@@ -1445,6 +1516,7 @@
       "id": "turkeyMince",
       "name": "Pavo picado magro crudo",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 150,
@@ -1465,6 +1537,7 @@
       "id": "eggplant",
       "name": "Berenjena fresca",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 25,
@@ -1485,6 +1558,7 @@
       "id": "cauliflower",
       "name": "Coliflor fresca",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 25,
@@ -1505,6 +1579,7 @@
       "id": "redCabbage",
       "name": "Lombarda fresca",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 31,
@@ -1525,6 +1600,7 @@
       "id": "leek",
       "name": "Puerro fresco",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 61,
@@ -1545,6 +1621,7 @@
       "id": "celery",
       "name": "Apio fresco",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 14,
@@ -1565,6 +1642,7 @@
       "id": "cornCanned",
       "name": "Maíz dulce en conserva, escurrido",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 86,
@@ -1585,6 +1663,7 @@
       "id": "chiaSeeds",
       "name": "Semillas de chía",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 486,
@@ -1605,6 +1684,7 @@
       "id": "pumpkinSeeds",
       "name": "Pipas de calabaza peladas",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 559,
@@ -1625,6 +1705,7 @@
       "id": "tahini",
       "name": "Tahini (pasta de sésamo)",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 595,
@@ -1645,6 +1726,7 @@
       "id": "cottageCheese",
       "name": "Queso cottage bajo en grasa",
       "unit": "g",
+      "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 84,
@@ -1665,6 +1747,7 @@
       "id": "soySauce",
       "name": "Salsa de soja",
       "unit": "ml",
+      "recipeUnit": "ml",
       "nutrition": {
         "basis": "per_100ml",
         "kcal": 53,

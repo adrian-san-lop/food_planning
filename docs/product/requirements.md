@@ -81,8 +81,9 @@ Estos principios están aceptados. Las puntuaciones, umbrales y cantidades míni
 
 ## Unidades y compras
 
-- Usar `ud` para huevos y frutas/verduras enteras: plátano, manzana, kiwi, mandarina, naranja, pera, fruta de temporada, aguacate, tomate, pimiento, calabacín, cebolla, zanahoria, brócoli, pepino, patata y boniato. Se permiten fracciones; los pesos comestibles por pieza son aproximados.
-- Usar `g` para ingredientes pesados, envasados, cortados, congelados o vendidos por peso; usar `ml` para líquidos. En el catálogo 0.3.0, berenjena, coliflor, lombarda, puerro y apio se registran en gramos.
+- Separar la medida de receta de la unidad de inventario y compra. Todas las frutas y verduras enteras listadas abajo se pesan en gramos en recetas y se cuentan en `ud` en la despensa y la compra; sus pesos comestibles por pieza son aproximados y permiten convertir entre ambas medidas.
+- Usar `ud` en recetas e inventario para huevos; `g` para alimentos sólidos pesados, incluidos frutas y verduras; y `ml` para líquidos. Se permiten fracciones de `ud` en el inventario de piezas enteras.
+- Frutas y verduras enteras con compra/inventario por unidad: plátano, manzana, kiwi, mandarina, naranja, pera, fruta de temporada, aguacate, tomate, pimiento, calabacín, cebolla, zanahoria, brócoli, pepino, patata y boniato. Las verduras troceadas, congeladas o vendidas al peso se controlan en gramos.
 - La leche se compra en tetrabriks de 1 L. El café molido se controla en gramos y figura en los desayunos.
 - Al finalizar la compra, registrar el contenido real confirmado, no solo la cantidad planificada. Permitir ajustar el tamaño estimado del envase.
 

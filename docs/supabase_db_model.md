@@ -1,6 +1,6 @@
 # Modelo de datos de Supabase
 
-Última revisión: 10 de octubre de 2026. Este documento distingue once tablas ya aplicadas de una migración aditiva pendiente. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
+Última revisión: 11 de octubre de 2026. Este documento distingue once tablas ya aplicadas de una migración aditiva pendiente. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
 El HTML todavía no está conectado a Supabase: los datos de uso siguen en localStorage y no se ha creado una cuenta de Auth para la app. La comprobación actual valida tablas, RLS, políticas y permisos; no sustituye una prueba de acceso con una sesión autenticada.
 
@@ -19,7 +19,7 @@ PK significa clave primaria y FK significa clave foránea. Las tablas de la apli
 - TIMESTAMPTZ almacena marcas temporales con zona horaria. Los campos DATE representan fechas de calendario sin hora.
 - Los campos updated_at tienen DEFAULT now() al insertar. No hay triggers que los actualicen automáticamente en cada modificación.
 - Los IDs food_id y recipe_id son identificadores de los catálogos JSON. No tienen FK SQL porque esos catálogos no se duplican en PostgreSQL.
-- Las cantidades de inventario y compra usan g, ml o ud. En el inventario, quantity lleva signo: entradas positivas y consumos/salidas negativas.
+- Las cantidades de inventario y compra usan la unidad `unit` del alimento (g, ml o ud); las recetas usan `recipeUnit`. En el inventario, quantity lleva signo: entradas positivas y consumos/salidas negativas. Para frutas y verduras enteras, los movimientos y compras usan `ud`, aunque las cantidades de receta estén en gramos.
 - La tabla de movimientos es append-only para el rol de la aplicación: puede leer e insertar, pero no actualizar ni borrar.
 - `training_logs` y `profiles.training_bonus_kcal` son heredados; el nuevo registro y cálculo de actividad usarán `activity_sessions` cuando se aplique la migración.
 
@@ -91,7 +91,7 @@ Restricción UNIQUE (cycle_id, meal_date, slot): no puede haber dos recetas en e
 
 ### meal_completions
 
-Conserva el evento de completar una comida, el ID de receta usado en ese momento y cuándo se revirtió. Los registros no se borran al desmarcar una comida.
+Conserva el evento de completar una comida, el ID de receta usado en ese momento y cuándo se revirtió. Los registros no se borran al desmarcar una comida. Esta tabla no guarda cantidades por ingrediente; los movimientos vinculados registran el consumo en la unidad de inventario del alimento.
 
 | Columna | Tipo | Nulable | Clave o regla |
 | --- | --- | --- | --- |
@@ -106,6 +106,8 @@ Conserva el evento de completar una comida, el ID de receta usado en ese momento
 | created_at | timestamptz | No | DEFAULT now(). |
 
 Un índice único parcial permite como máximo una finalización no revertida por comida planificada y usuario. La lógica transaccional que crea o revierte el evento aún debe implementarse en la capa de aplicación o en funciones de base de datos.
+
+Antes de integrar el HTML, decidir si se añadirá un snapshot de cantidades por ingrediente en unidad de receta. Lo necesitaríamos para conservar y volver a mostrar el peso realmente usado aunque cambie el catálogo; no debe confundirse con `inventory_movements.quantity`, que permanece en unidad de inventario.
 
 ### inventory_movements
 

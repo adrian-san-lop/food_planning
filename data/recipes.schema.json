@@ -40,7 +40,7 @@
       "properties": {
         "foodId": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9_]*$" },
         "amount": { "type": "number", "exclusiveMinimum": 0 },
-        "unit": { "enum": ["g", "ml", "ud"] }
+        "unit": { "enum": ["g", "ml", "ud"], "description": "Recipe measurement unit; must match the referenced food's recipeUnit." }
       }
     }
   }

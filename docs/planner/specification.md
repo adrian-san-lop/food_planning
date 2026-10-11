@@ -15,7 +15,7 @@ Los catálogos son JSON genéricos e independientes de los datos personales:
 - [`foods.json`](../../data/foods.json): 83 alimentos.
 - [`recipes.json`](../../data/recipes.json): 107 recetas y 512 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.3.0`.
+Ambos catálogos usan actualmente `catalogVersion` `0.4.0`.
 
 Distribución actual de recetas por tipo:
 
@@ -33,15 +33,15 @@ La biblioteca permite variedad dentro de cada semana, pero no una receta diferen
 
 ### Alimentos
 
-Cada alimento usa un `id` estable, nombre, unidad canónica, datos nutricionales con base explícita, formato orientativo de compra y, si es una pieza, peso comestible aproximado. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
+Cada alimento usa un `id` estable, nombre, unidad de inventario (`unit`), unidad de receta (`recipeUnit`), datos nutricionales con base explícita, formato orientativo de compra y, si se compra por pieza pero se cocina por peso, peso comestible aproximado por pieza. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
 
-El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades en `ud`; si una pieza usa `per_100g`, se convierten con su peso comestible aproximado.
+El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades de receta en `ud`; los alimentos que se cocinan por peso usan `per_100g`. Para piezas compradas por unidad, la receta se convierte a inventario usando su peso comestible aproximado, y la conversión inversa se usa para la compra planificada.
 
-Unidades admitidas: `g`, `ml` y `ud`. Huevos y la lista de frutas/verduras enteras de [requisitos](../product/requirements.md) usan `ud` fraccionables. La leche se compra como 1 L; café molido se mide en gramos.
+Unidades admitidas: `g`, `ml` y `ud`. Las frutas y verduras enteras de [requisitos](../product/requirements.md) usan `recipeUnit: g` y `unit: ud`; los huevos usan `ud` en ambas medidas; los líquidos usan `ml`. La leche se compra como 1 L; café molido se mide en gramos.
 
 ### Recetas
 
-Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, `photoKey`, ingredientes, pasos y notas. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base y unidad canónica. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app realiza además comprobaciones entre ambos ficheros.
+Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, `photoKey`, ingredientes, pasos y notas. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra el peso de receta, pero informa el stock y los faltantes en unidad de inventario. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
 
 Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el contrato, mantener los IDs existentes o documentar una migración explícita; no renombrar IDs a la ligera.
 
@@ -90,4 +90,4 @@ Si se incorpora un menú compartido por varias personas, falta decidir cómo com
 
 ## Datos y privacidad
 
-El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. Hoy este estado v7 usa `localStorage`; la persistencia remota está pendiente. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. Hoy este estado v8 usa `localStorage`; la persistencia remota está pendiente. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).

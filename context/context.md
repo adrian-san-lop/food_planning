@@ -1,6 +1,6 @@
 # Project Context
 
-Last updated: 2026-10-10. This file is a short handoff index, not the full product specification. Detailed decisions and unresolved proposals are linked below.
+Last updated: 2026-10-11. This file is a short handoff index, not the full product specification. Detailed decisions and unresolved proposals are linked below.
 
 ## Product
 
@@ -11,7 +11,7 @@ Last updated: 2026-10-10. This file is a short handoff index, not the full produ
 
 ## Catalogs and planning
 
-- Generic food and recipe catalogs are stored in `data/foods.json` and `data/recipes.json`, version `0.3.0`: 83 foods, 107 recipes, and 512 ingredient references. The catalogs preserve the original 63 foods and 84 recipes and add 20 foods plus 23 recipes. New food entries include generic USDA FoodData Central references and approximate nutrient values. Recipe entries use generic base quantities; there is no per-strength-day alternative. Their contracts are in `data/foods.schema.json` and `data/recipes.schema.json`.
+- Generic food and recipe catalogs are stored in `data/foods.json` and `data/recipes.json`, version `0.4.0`: 83 foods, 107 recipes, and 512 ingredient references. The catalogs preserve the original 63 foods and 84 recipes and add 20 foods plus 23 recipes. Whole fruit and vegetables are weighed in recipe grams and tracked in pantry/purchases as units; nutrition and portions use the recipe measure. Eggs remain units and liquids use millilitres. Their contracts are in `data/foods.schema.json` and `data/recipes.schema.json`.
 - The HTML loads both JSON catalogs over HTTP(S), checks IDs, units, ingredient references, and meal types, and maps them into the existing runtime model. The fixed `WEEK_1`–`WEEK_3` menu remains the initial cycle.
 - The user can generate a 105-meal proposal for the next cycle, review and swap recipes within the same meal type, lock selections, regenerate unlocked meals, and save the proposal in `localStorage`. The proposal records its catalog version and activates when its start date arrives. Stock is a soft preference; there is no minimum count of unused recipes, taste filter, or allergy filter.
 - Four initial planning principles are accepted. Exact scoring thresholds, dislike handling, and multi-person preference aggregation are not decided. See the planner specification and open questions.
@@ -20,8 +20,8 @@ Last updated: 2026-10-10. This file is a short handoff index, not the full produ
 ## Data and safety rules
 
 - Keep public generic catalogs separate from personal profiles and activity data.
-- State format v5 is the oldest supported import; the current state format is v7. Accept v5-v7 and do not support v1-v4.
-- Use fractional `ud` for eggs and the specified whole produce; `g` for weighed foods and ground coffee; `ml` for liquids. Milk is purchased in 1 L cartons.
+- State format v5 is the oldest supported import; the current state format is v8. Accept v5-v8 and do not support v1-v4. Migration converts old recipe usage snapshots while preserving stock movements in their historical inventory units.
+- `food.unit` is the pantry/purchase unit and `food.recipeUnit` is the recipe unit. Whole produce uses recipe `g` and pantry/purchase `ud`; eggs use `ud`, solids are weighed in `g`, and liquids use `ml`. Milk is purchased in 1 L cartons.
 - If a logged meal consumes more than recorded stock, record the full consumption and show the deficit. Reversals must not be applied twice.
 - Legacy strength-day flags may remain in imported state but are inert; fixed-menu third-amount overrides were removed. New activity sessions are local-only and included in JSON exports.
 - Supabase has eleven initial tables applied. The additive `activity_sessions` migration is prepared but not applied, and the HTML has no Supabase Auth or synchronization integration.

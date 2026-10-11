@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.3.0",
+  "catalogVersion": "0.4.0",
   "source": "Existing recipes from plan_alimentacion_dinamico_3_semanas.html plus 23 curated recipes using foods from catalogVersion 0.2.0.",
   "status": "Catálogo de recetas genéricas con cantidades base; la app adapta las raciones al perfil y a la actividad real registrada por fecha.",
   "recipes": [
@@ -24,8 +24,8 @@
         },
         {
           "foodId": "banana",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "milk",
@@ -67,13 +67,13 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "mandarin",
-          "amount": 1.1111111111111112,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -104,18 +104,18 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.47058823529411764,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         },
         {
           "foodId": "zucchini",
-          "amount": 0.4,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.3888888888888889,
-          "unit": "ud"
+          "amount": 70,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -174,8 +174,8 @@
         },
         {
           "foodId": "potato",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 200,
+          "unit": "g"
         },
         {
           "foodId": "greenbeans",
@@ -218,13 +218,13 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "kiwi",
-          "amount": 0.9444444444444444,
-          "unit": "ud"
+          "amount": 85,
+          "unit": "g"
         },
         {
           "foodId": "milk",
@@ -260,8 +260,8 @@
         },
         {
           "foodId": "apple",
-          "amount": 1.0588235294117647,
-          "unit": "ud"
+          "amount": 180,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -296,18 +296,18 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.4117647058823529,
-          "unit": "ud"
+          "amount": 70,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.2777777777777778,
-          "unit": "ud"
+          "amount": 50,
+          "unit": "g"
         },
         {
           "foodId": "carrot",
-          "amount": 0.8,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         },
         {
           "foodId": "bread",
@@ -345,8 +345,8 @@
         },
         {
           "foodId": "carrot",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "bread",
@@ -386,8 +386,8 @@
         },
         {
           "foodId": "zucchini",
-          "amount": 0.48,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -466,8 +466,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.5333333333333333,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -492,13 +492,13 @@
         },
         {
           "foodId": "potato",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 200,
+          "unit": "g"
         },
         {
           "foodId": "broccoli",
-          "amount": 0.625,
-          "unit": "ud"
+          "amount": 250,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -531,8 +531,8 @@
         },
         {
           "foodId": "orange",
-          "amount": 0.8888888888888888,
-          "unit": "ud"
+          "amount": 160,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -610,8 +610,8 @@
         },
         {
           "foodId": "kiwi",
-          "amount": 0.9444444444444444,
-          "unit": "ud"
+          "amount": 85,
+          "unit": "g"
         },
         {
           "foodId": "milk",
@@ -647,8 +647,8 @@
         },
         {
           "foodId": "pear",
-          "amount": 1.0588235294117647,
-          "unit": "ud"
+          "amount": 180,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -678,18 +678,18 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.8,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "cucumber",
-          "amount": 0.22857142857142856,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.2777777777777778,
-          "unit": "ud"
+          "amount": 50,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -727,18 +727,18 @@
         },
         {
           "foodId": "sweetpotato",
-          "amount": 0.88,
-          "unit": "ud"
+          "amount": 220,
+          "unit": "g"
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.4444444444444444,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -823,8 +823,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.4,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -864,8 +864,8 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -898,8 +898,8 @@
         },
         {
           "foodId": "seasonFruit",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 150,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -929,13 +929,13 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.5555555555555556,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "hummus",
@@ -973,8 +973,8 @@
         },
         {
           "foodId": "banana",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -998,8 +998,8 @@
         },
         {
           "foodId": "sweetpotato",
-          "amount": 0.88,
-          "unit": "ud"
+          "amount": 220,
+          "unit": "g"
         },
         {
           "foodId": "lettuce",
@@ -1008,8 +1008,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1077,8 +1077,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1115,8 +1115,8 @@
         },
         {
           "foodId": "apple",
-          "amount": 0.8823529411764706,
-          "unit": "ud"
+          "amount": 150,
+          "unit": "g"
         },
         {
           "foodId": "milk",
@@ -1148,8 +1148,8 @@
       "ingredients": [
         {
           "foodId": "orange",
-          "amount": 0.8888888888888888,
-          "unit": "ud"
+          "amount": 160,
+          "unit": "g"
         },
         {
           "foodId": "almonds",
@@ -1184,18 +1184,18 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.47058823529411764,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.3888888888888889,
-          "unit": "ud"
+          "amount": 70,
+          "unit": "g"
         },
         {
           "foodId": "zucchini",
-          "amount": 0.4,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1223,18 +1223,18 @@
       "ingredients": [
         {
           "foodId": "zucchini",
-          "amount": 1.2,
-          "unit": "ud"
+          "amount": 300,
+          "unit": "g"
         },
         {
           "foodId": "potato",
-          "amount": 0.75,
-          "unit": "ud"
+          "amount": 150,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.2777777777777778,
-          "unit": "ud"
+          "amount": 50,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1281,23 +1281,23 @@
         },
         {
           "foodId": "potato",
-          "amount": 1.2,
-          "unit": "ud"
+          "amount": 240,
+          "unit": "g"
         },
         {
           "foodId": "zucchini",
-          "amount": 0.52,
-          "unit": "ud"
+          "amount": 130,
+          "unit": "g"
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.3888888888888889,
-          "unit": "ud"
+          "amount": 70,
+          "unit": "g"
         },
         {
           "foodId": "tomatoSauce",
@@ -1344,18 +1344,18 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.8,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "cucumber",
-          "amount": 0.22857142857142856,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.19444444444444445,
-          "unit": "ud"
+          "amount": 35,
+          "unit": "g"
         },
         {
           "foodId": "bread",
@@ -1402,13 +1402,13 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.3333333333333333,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1455,8 +1455,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1503,8 +1503,8 @@
         },
         {
           "foodId": "onion",
-          "amount": 0.3333333333333333,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         },
         {
           "foodId": "bread",
@@ -1546,18 +1546,18 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.5294117647058824,
-          "unit": "ud"
+          "amount": 90,
+          "unit": "g"
         },
         {
           "foodId": "carrot",
-          "amount": 0.9,
-          "unit": "ud"
+          "amount": 90,
+          "unit": "g"
         },
         {
           "foodId": "zucchini",
-          "amount": 0.4,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1594,13 +1594,13 @@
         },
         {
           "foodId": "cucumber",
-          "amount": 0.2857142857142857,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "tomato",
-          "amount": 0.8,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "spinach",
@@ -1637,8 +1637,8 @@
         },
         {
           "foodId": "potato",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 200,
+          "unit": "g"
         },
         {
           "foodId": "tuna",
@@ -1652,8 +1652,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "bread",
@@ -1695,13 +1695,13 @@
         },
         {
           "foodId": "carrot",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "tomatoSauce",
@@ -1710,8 +1710,8 @@
         },
         {
           "foodId": "onion",
-          "amount": 0.3333333333333333,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1748,13 +1748,13 @@
         },
         {
           "foodId": "zucchini",
-          "amount": 0.64,
-          "unit": "ud"
+          "amount": 160,
+          "unit": "g"
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -1791,13 +1791,13 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.9333333333333333,
-          "unit": "ud"
+          "amount": 140,
+          "unit": "g"
         },
         {
           "foodId": "cucumber",
-          "amount": 0.2857142857142857,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "spinach",
@@ -1834,8 +1834,8 @@
         },
         {
           "foodId": "sweetpotato",
-          "amount": 0.88,
-          "unit": "ud"
+          "amount": 220,
+          "unit": "g"
         },
         {
           "foodId": "asparagus",
@@ -1882,13 +1882,13 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.3333333333333333,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         },
         {
           "foodId": "tomatoSauce",
@@ -1925,13 +1925,13 @@
         },
         {
           "foodId": "potato",
-          "amount": 0.6,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.3333333333333333,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         },
         {
           "foodId": "eggs",
@@ -1983,13 +1983,13 @@
         },
         {
           "foodId": "zucchini",
-          "amount": 0.52,
-          "unit": "ud"
+          "amount": 130,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.3888888888888889,
-          "unit": "ud"
+          "amount": 70,
+          "unit": "g"
         },
         {
           "foodId": "skyr",
@@ -2027,13 +2027,13 @@
         },
         {
           "foodId": "potato",
-          "amount": 1.1,
-          "unit": "ud"
+          "amount": 220,
+          "unit": "g"
         },
         {
           "foodId": "tomato",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 150,
+          "unit": "g"
         },
         {
           "foodId": "lettuce",
@@ -2079,18 +2079,18 @@
         },
         {
           "foodId": "avocado",
-          "amount": 0.36666666666666664,
-          "unit": "ud"
+          "amount": 55,
+          "unit": "g"
         },
         {
           "foodId": "tomato",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 150,
+          "unit": "g"
         },
         {
           "foodId": "cucumber",
-          "amount": 0.34285714285714286,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -2132,18 +2132,18 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.5882352941176471,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "zucchini",
-          "amount": 0.56,
-          "unit": "ud"
+          "amount": 140,
+          "unit": "g"
         },
         {
           "foodId": "carrot",
-          "amount": 0.8,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -2185,8 +2185,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.8,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -2271,13 +2271,13 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.8666666666666667,
-          "unit": "ud"
+          "amount": 130,
+          "unit": "g"
         },
         {
           "foodId": "cucumber",
-          "amount": 0.2857142857142857,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "lettuce",
@@ -2320,8 +2320,8 @@
         },
         {
           "foodId": "potato",
-          "amount": 1.15,
-          "unit": "ud"
+          "amount": 230,
+          "unit": "g"
         },
         {
           "foodId": "greenbeans",
@@ -2368,13 +2368,13 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.6470588235294118,
-          "unit": "ud"
+          "amount": 110,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.3333333333333333,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         },
         {
           "foodId": "tomatoSauce",
@@ -2416,13 +2416,13 @@
         },
         {
           "foodId": "pepper",
-          "amount": 0.5294117647058824,
-          "unit": "ud"
+          "amount": 90,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.5,
-          "unit": "ud"
+          "amount": 90,
+          "unit": "g"
         },
         {
           "foodId": "skyr",
@@ -2464,13 +2464,13 @@
         },
         {
           "foodId": "potato",
-          "amount": 1.15,
-          "unit": "ud"
+          "amount": 230,
+          "unit": "g"
         },
         {
           "foodId": "tomato",
-          "amount": 0.8666666666666667,
-          "unit": "ud"
+          "amount": 130,
+          "unit": "g"
         },
         {
           "foodId": "lettuce",
@@ -2560,13 +2560,13 @@
         },
         {
           "foodId": "potato",
-          "amount": 0.65,
-          "unit": "ud"
+          "amount": 130,
+          "unit": "g"
         },
         {
           "foodId": "onion",
-          "amount": 0.2777777777777778,
-          "unit": "ud"
+          "amount": 50,
+          "unit": "g"
         },
         {
           "foodId": "tuna",
@@ -2618,8 +2618,8 @@
         },
         {
           "foodId": "kiwi",
-          "amount": 1.1111111111111112,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "cocoa",
@@ -2665,8 +2665,8 @@
         },
         {
           "foodId": "pear",
-          "amount": 0.9705882352941176,
-          "unit": "ud"
+          "amount": 165,
+          "unit": "g"
         },
         {
           "foodId": "walnuts",
@@ -2707,8 +2707,8 @@
         },
         {
           "foodId": "banana",
-          "amount": 0.9166666666666666,
-          "unit": "ud"
+          "amount": 110,
+          "unit": "g"
         },
         {
           "foodId": "oats",
@@ -2764,8 +2764,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "milk",
@@ -2848,8 +2848,8 @@
         },
         {
           "foodId": "apple",
-          "amount": 0.9411764705882353,
-          "unit": "ud"
+          "amount": 160,
+          "unit": "g"
         },
         {
           "foodId": "oats",
@@ -2900,18 +2900,18 @@
         },
         {
           "foodId": "avocado",
-          "amount": 0.3333333333333333,
-          "unit": "ud"
+          "amount": 50,
+          "unit": "g"
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "kiwi",
-          "amount": 0.9444444444444444,
-          "unit": "ud"
+          "amount": 85,
+          "unit": "g"
         },
         {
           "foodId": "milk",
@@ -2952,8 +2952,8 @@
         },
         {
           "foodId": "mandarin",
-          "amount": 1.5555555555555556,
-          "unit": "ud"
+          "amount": 140,
+          "unit": "g"
         },
         {
           "foodId": "oats",
@@ -2999,13 +2999,13 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.4,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         },
         {
           "foodId": "apple",
-          "amount": 0.8235294117647058,
-          "unit": "ud"
+          "amount": 140,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3051,8 +3051,8 @@
       "ingredients": [
         {
           "foodId": "banana",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 120,
+          "unit": "g"
         },
         {
           "foodId": "almonds",
@@ -3086,8 +3086,8 @@
         },
         {
           "foodId": "pear",
-          "amount": 0.8823529411764706,
-          "unit": "ud"
+          "amount": 150,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3117,8 +3117,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.5333333333333333,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3143,8 +3143,8 @@
         },
         {
           "foodId": "banana",
-          "amount": 0.9166666666666666,
-          "unit": "ud"
+          "amount": 110,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3168,13 +3168,13 @@
         },
         {
           "foodId": "carrot",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "orange",
-          "amount": 0.8888888888888888,
-          "unit": "ud"
+          "amount": 160,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3199,8 +3199,8 @@
         },
         {
           "foodId": "apple",
-          "amount": 0.8235294117647058,
-          "unit": "ud"
+          "amount": 140,
+          "unit": "g"
         },
         {
           "foodId": "almonds",
@@ -3230,8 +3230,8 @@
         },
         {
           "foodId": "kiwi",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 90,
+          "unit": "g"
         },
         {
           "foodId": "walnuts",
@@ -3266,8 +3266,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.6666666666666666,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3287,8 +3287,8 @@
       "ingredients": [
         {
           "foodId": "mandarin",
-          "amount": 1.5555555555555556,
-          "unit": "ud"
+          "amount": 140,
+          "unit": "g"
         },
         {
           "foodId": "almonds",
@@ -3323,8 +3323,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.5333333333333333,
-          "unit": "ud"
+          "amount": 80,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3349,8 +3349,8 @@
         },
         {
           "foodId": "seasonFruit",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 150,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3375,8 +3375,8 @@
         },
         {
           "foodId": "carrot",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3401,8 +3401,8 @@
         },
         {
           "foodId": "kiwi",
-          "amount": 1,
-          "unit": "ud"
+          "amount": 90,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3427,8 +3427,8 @@
         },
         {
           "foodId": "seasonFruit",
-          "amount": 0.8333333333333334,
-          "unit": "ud"
+          "amount": 125,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3447,8 +3447,8 @@
       "ingredients": [
         {
           "foodId": "pear",
-          "amount": 0.9411764705882353,
-          "unit": "ud"
+          "amount": 160,
+          "unit": "g"
         },
         {
           "foodId": "walnuts",
@@ -3493,8 +3493,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.3,
-          "unit": "ud"
+          "amount": 45,
+          "unit": "g"
         },
         {
           "foodId": "milk",
@@ -3577,8 +3577,8 @@
         },
         {
           "foodId": "apple",
-          "amount": 0.5,
-          "unit": "ud"
+          "amount": 85,
+          "unit": "g"
         },
         {
           "foodId": "chiaSeeds",
@@ -3629,8 +3629,8 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.4,
-          "unit": "ud"
+          "amount": 60,
+          "unit": "g"
         },
         {
           "foodId": "lettuce",
@@ -3676,8 +3676,8 @@
         },
         {
           "foodId": "apple",
-          "amount": 0.5,
-          "unit": "ud"
+          "amount": 85,
+          "unit": "g"
         }
       ],
       "steps": [
@@ -3759,8 +3759,8 @@
         },
         {
           "foodId": "carrot",
-          "amount": 0.5,
-          "unit": "ud"
+          "amount": 50,
+          "unit": "g"
         },
         {
           "foodId": "bread",
@@ -3833,8 +3833,8 @@
         },
         {
           "foodId": "carrot",
-          "amount": 0.5,
-          "unit": "ud"
+          "amount": 50,
+          "unit": "g"
         },
         {
           "foodId": "leek",
@@ -3989,13 +3989,13 @@
         },
         {
           "foodId": "tomato",
-          "amount": 0.5,
-          "unit": "ud"
+          "amount": 75,
+          "unit": "g"
         },
         {
           "foodId": "avocado",
-          "amount": 0.2,
-          "unit": "ud"
+          "amount": 30,
+          "unit": "g"
         },
         {
           "foodId": "tahini",
@@ -4231,8 +4231,8 @@
         },
         {
           "foodId": "sweetpotato",
-          "amount": 0.5,
-          "unit": "ud"
+          "amount": 125,
+          "unit": "g"
         },
         {
           "foodId": "oliveoil",
@@ -4315,13 +4315,13 @@
         },
         {
           "foodId": "zucchini",
-          "amount": 0.4,
-          "unit": "ud"
+          "amount": 100,
+          "unit": "g"
         },
         {
           "foodId": "pepper",
-          "amount": 0.25,
-          "unit": "ud"
+          "amount": 42.5,
+          "unit": "g"
         },
         {
           "foodId": "noodles",

@@ -8,7 +8,7 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - La app conserva las recetas y el diseño existentes; sus datos se guardan en `localStorage` del navegador.
 - La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.
 - El menú fijo actual sigue activo. La app puede preparar y guardar una propuesta editable para el siguiente ciclo de tres semanas.
-- El estado actual es v7. La app importa copias v5, v6 y v7; las copias v5 convierten las piezas frescas que antes se guardaban en gramos.
+- El estado actual es v8. La app importa copias v5 a v8; la migración adapta los consumos históricos a gramos de receta y conserva despensa y movimientos en las unidades de inventario correspondientes.
 - Las antiguas marcas de fuerza se conservan como datos heredados, pero ya no afectan al cálculo. No se importan datos v1-v4.
 - Las compras, consumos, reversos y correcciones nuevas se anotan como movimientos con identificador único. Si una receta supera el saldo anotado, se registra completa y se muestra el faltante.
 - Hay un recordatorio semanal dentro de la página para descargar una copia JSON. No envía notificaciones del sistema.
@@ -16,9 +16,9 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.
 - El proyecto Supabase tiene once tablas iniciales con RLS. Hay una migración aditiva pendiente para sesiones de actividad; el HTML aún no está conectado y no hay inicio de sesión ni sincronización entre dispositivos. Los datos siguen en `localStorage`.
 
-### Pasar los datos v5 a la página nueva
+### Importar datos entre instalaciones
 
-El navegador no comparte automáticamente el almacenamiento del HTML local con la dirección `https://…github.io`. En la versión v5, descarga una copia JSON con **Exportar copia**; luego abre la página de GitHub Pages y usa **Importar copia JSON**. La importación admitida comienza en v5; los formatos anteriores no se convierten.
+El navegador no comparte automáticamente el almacenamiento del HTML local con la dirección `https://…github.io`. Descarga una copia JSON con **Exportar copia** en la instalación de origen y usa **Importar copia JSON** en la de destino. La importación admitida comienza en v5; los formatos anteriores no se convierten.
 
 ## Publicar en GitHub Pages
 
@@ -31,24 +31,24 @@ La raíz contiene `index.html`, que es la entrada del sitio, y `plan_alimentacio
 
 ## Inventario y unidades
 
-| Unidad | Alimentos |
+| Dónde se mide | Unidad y alcance |
 | --- | --- |
-| `ud` | Huevos y frutas/verduras enteras: plátano, manzana, kiwi, mandarina, naranja, pera, fruta de temporada, aguacate, tomate, pimiento, calabacín, cebolla, zanahoria, brócoli, pepino, patata y boniato. |
-| `g` | Carnes, pescado, cereales, legumbres, frutos secos, aceite, café molido, bayas, hojas verdes, champiñones, espárragos, guisantes, judías verdes, calabaza, berenjena, coliflor, lombarda, puerro, apio y productos cortados, congelados o envasados. |
-| `ml` | Leche y líquidos. La leche se propone en tetrabriks de 1 L. |
+| Recetas | `g` para ingredientes sólidos, incluidas frutas y verduras enteras; `ud` para huevos; `ml` para líquidos. |
+| Despensa y compras | `ud` para huevos y frutas/verduras enteras; `g` para sólidos que se compran al peso o en paquetes por peso; `ml` para líquidos. |
+| Conversión | El catálogo incluye un peso comestible aproximado por pieza para convertir gramos de receta en unidades de inventario y compra. |
 
-Se aceptan fracciones de unidad, como `0,5 ud`. Los pesos comestibles por pieza son aproximados; la lista de compra los usa para convertir recetas en paquetes orientativos y permite editar el contenido del paquete.
+Se aceptan fracciones de unidad en inventario, como `0,5 ud`. El peso por pieza es aproximado; puedes ajustarlo en el catálogo. La leche se compra en tetrabriks de 1 L y el café molido se pesa en gramos.
 
 ## Catálogos de alimentos y recetas
 
 Los catálogos JSON conservan los datos genéricos que ya usa la aplicación y se han ampliado por separado:
 
-- [`data/foods.json`](data/foods.json): alimentos, unidades, valores nutricionales aproximados, peso comestible por pieza cuando aplica y formato orientativo de compra. Su contrato está descrito en [`foods.schema.json`](data/foods.schema.json).
-- [`data/recipes.json`](data/recipes.json): recetas, ingredientes enlazados por el identificador estable del alimento, cantidades base, pasos, tiempo y notas. La app adapta las cantidades según el perfil y las sesiones reales del día. Su contrato está descrito en [`recipes.schema.json`](data/recipes.schema.json).
+- [`data/foods.json`](data/foods.json): alimentos, unidad de receta, unidad de inventario/compra, valores nutricionales aproximados, peso comestible por pieza cuando aplica y formato orientativo de compra. Su contrato está descrito en [`foods.schema.json`](data/foods.schema.json).
+- [`data/recipes.json`](data/recipes.json): recetas, ingredientes enlazados por el identificador estable del alimento, cantidades base en la unidad de receta, pasos, tiempo y notas. La app adapta las cantidades según el perfil y las sesiones reales del día. Su contrato está descrito en [`recipes.schema.json`](data/recipes.schema.json).
 
 Son datos genéricos del recetario; no incluyen perfil, peso, despensa ni otros datos de uso personal. La app los carga desde la misma web y comprueba unidades, referencias de ingredientes y tipos de comida antes de abrirse. Si falla la carga o la estructura no es válida, muestra un error y permite reintentar; no guarda cambios con un catálogo incompleto.
 
-Los catálogos están en la versión `0.3.0`: 83 alimentos, 107 recetas y 512 referencias de ingredientes. Esta ampliación conserva los 63 alimentos y 84 recetas del HTML, añade 20 alimentos y 23 recetas, y enlaza cada receta por el ID estable de sus ingredientes. Las 20 incorporaciones nutricionales usan referencias genéricas de [USDA FoodData Central](https://fdc.nal.usda.gov/); las cifras heredadas del HTML no tienen una fuente detallada por alimento. Todos los valores y formatos de compra son aproximados y deben cotejarse con las etiquetas y envases reales. La versión del catálogo es independiente de la versión del estado personal guardado en el navegador.
+Los catálogos están en la versión `0.4.0`: 83 alimentos, 107 recetas y 512 referencias de ingredientes. Esta versión cambia la medida de receta para 17 frutas y verduras enteras: ahora se expresan en gramos y su compra/despensa sigue en unidades. Las cantidades nutricionales por pieza se expresan por 100 g usando el peso comestible aproximado del catálogo. La ampliación anterior conserva los 63 alimentos y 84 recetas del HTML, añade 20 alimentos y 23 recetas y enlaza cada receta por el ID estable de sus ingredientes. Las 20 incorporaciones nutricionales usan referencias genéricas de [USDA FoodData Central](https://fdc.nal.usda.gov/); las cifras heredadas del HTML no tienen una fuente detallada por alimento. Todos los valores y formatos de compra son aproximados y deben cotejarse con las etiquetas y envases reales. La versión del catálogo es independiente de la versión del estado personal guardado en el navegador.
 
 ### Registro de actividad
 
@@ -76,7 +76,7 @@ Tu usuario
     └── reverso: movimiento que compensa una acción anterior
 ```
 
-Ejemplo: si hay `2 ud` de plátano y registras una receta que usa `2,5 ud`, la app anota el consumo completo. El saldo queda en `−0,5 ud` y la interfaz muestra ese faltante. Si después desmarcas la comida, añade un movimiento inverso; no borra el historial ni vuelve a descontar por un reintento.
+Ejemplo: si hay `2 ud` de brócoli y registras una receta que usa `250 g`, con un peso comestible estimado de `400 g/ud`, la app muestra `250 g` en la receta y descuenta aproximadamente `0,63 ud` del inventario. Si el saldo no alcanza, registra el consumo completo y muestra el déficit en unidades. Al desmarcar la comida, añade un movimiento inverso en la misma unidad de inventario; no borra el historial ni vuelve a descontar por un reintento.
 
 El dibujo resume la separación prevista. El proyecto Supabase ya contiene las once tablas iniciales y políticas RLS por propietario. La migración para sesiones reales está preparada en [`supabase/`](supabase/README.md), pero pendiente de aplicar. El HTML aún no usa esa base: faltan configurar Auth, implementar operaciones transaccionales y conectar la aplicación. Hasta entonces, el estado sigue en el navegador. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
 

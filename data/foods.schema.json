@@ -18,24 +18,39 @@
   "$defs": {
     "food": {
       "type": "object",
-      "required": ["id", "name", "unit", "nutrition", "purchase", "nutritionSource"],
+      "required": ["id", "name", "unit", "recipeUnit", "nutrition", "purchase", "nutritionSource"],
       "additionalProperties": false,
       "properties": {
         "id": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9_]*$" },
         "name": { "type": "string", "minLength": 1 },
-        "unit": { "enum": ["g", "ml", "ud"] },
+        "unit": { "enum": ["g", "ml", "ud"], "description": "Unit used for pantry balances, stock movements, and purchase package contents." },
+        "recipeUnit": { "enum": ["g", "ml", "ud"], "description": "Unit used to measure this food in recipe ingredients." },
         "nutrition": { "$ref": "#/$defs/nutrition" },
-        "approximateEdibleWeight_g_per_unit": { "type": "number", "exclusiveMinimum": 0 },
+        "approximateEdibleWeight_g_per_unit": { "type": "number", "exclusiveMinimum": 0, "description": "Approximate edible grams per piece, used to convert between recipe grams and pantry units." },
         "purchase": { "$ref": "#/$defs/purchase" },
         "nutritionSource": { "type": "string", "minLength": 1 }
       },
+      "oneOf": [
+        { "properties": { "unit": { "const": "g" }, "recipeUnit": { "const": "g" } }, "required": ["unit", "recipeUnit"] },
+        { "properties": { "unit": { "const": "ml" }, "recipeUnit": { "const": "ml" } }, "required": ["unit", "recipeUnit"] },
+        { "properties": { "unit": { "const": "ud" }, "recipeUnit": { "const": "ud" } }, "required": ["unit", "recipeUnit"] },
+        { "properties": { "unit": { "const": "ud" }, "recipeUnit": { "const": "g" } }, "required": ["unit", "recipeUnit", "approximateEdibleWeight_g_per_unit"] }
+      ],
       "allOf": [
         {
-          "if": { "properties": { "unit": { "const": "ud" } }, "required": ["unit"] },
+          "if": { "properties": { "recipeUnit": { "const": "g" } }, "required": ["recipeUnit"] },
+          "then": { "properties": { "nutrition": { "properties": { "basis": { "const": "per_100g" } }, "required": ["basis"] } } }
+        },
+        {
+          "if": { "properties": { "recipeUnit": { "const": "ml" } }, "required": ["recipeUnit"] },
+          "then": { "properties": { "nutrition": { "properties": { "basis": { "const": "per_100ml" } }, "required": ["basis"] } } }
+        },
+        {
+          "if": { "properties": { "recipeUnit": { "const": "ud" } }, "required": ["recipeUnit"] },
           "then": {
             "anyOf": [
               { "properties": { "nutrition": { "properties": { "basis": { "const": "per_unit" } }, "required": ["basis"] } } },
-              { "required": ["approximateEdibleWeight_g_per_unit"] }
+              { "properties": { "nutrition": { "properties": { "basis": { "const": "per_100g" } }, "required": ["basis"] } }, "required": ["approximateEdibleWeight_g_per_unit"] }
             ]
           }
         }
