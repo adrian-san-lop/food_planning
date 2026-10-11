@@ -2,39 +2,86 @@
 
 ## Alcance
 
-El HTML todavía no está conectado a Supabase. Esta carpeta define el esquema relacional y las comprobaciones para revisarlos antes de integrar autenticación o modificar la aplicación.
+El HTML usa Supabase Auth para iniciar sesión y sincroniza los datos personales con las tablas relacionales existentes. Los catálogos genéricos `data/foods.json` y `data/recipes.json` permanecen en GitHub. El JSON que viaja en la llamada de sincronización es solo un formato de transporte: PostgreSQL no guarda el estado completo en una columna JSON.
 
-Los catálogos genéricos `data/foods.json` y `data/recipes.json` permanecen en GitHub. La base remota está preparada para los datos de uso personal, pero todavía no contiene registros de la aplicación. No se guarda el estado completo en una sola columna JSON.
+Las credenciales pertenecen a Supabase Auth (`auth.users`). `public.profiles` guarda parámetros nutricionales y se relaciona con la cuenta mediante `user_id`; no almacena correo ni contraseña.
 
 ## Migraciones
 
-Los dos primeros archivos de `migrations/` se aplicaron al proyecto configurado desde **SQL Editor**. La segunda migración revoca primero los permisos predeterminados de Supabase y luego concede únicamente las operaciones necesarias. La tercera migración, `20261010140000_actual_activity_sessions.sql`, está preparada pero **pendiente de aplicar**; añade el registro de varias sesiones realizadas por fecha y conserva las tablas/filas anteriores. Para un proyecto nuevo, revisa y aplica los tres archivos en orden.
+Los seis archivos de `migrations/` están aplicados al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para las acciones confirmadas de reiniciar/restaurar. Aplicar estas migraciones no borró ni convirtió filas existentes. Para un proyecto nuevo, revisa y aplica los seis archivos en orden. No vuelvas a ejecutar una migración ya aplicada en el proyecto existente.
 
-Para repetir el control estructural, ejecuta `tests/001_schema_check.sql`. Si una tabla, política o permiso esperado falta, la consulta termina con un error. Estas comprobaciones no crean usuarios ni insertan datos personales.
+La migración crea `sync_menuki_state(jsonb, bigint)`: el cliente transmite el snapshot, la función obtiene el propietario mediante `auth.uid()`, guarda los registros en las tablas normalizadas y comprueba `sync_revision` para rechazar copias desactualizadas. La primera sincronización importa una sola vez el estado local si la cuenta no tiene ya registros; no sobrescribe silenciosamente filas remotas. La app no mantiene una cola offline.
 
-Las migraciones son aditivas y no contienen `DROP`, `TRUNCATE` ni borrados. No vuelvas a ejecutar un archivo ya aplicado: el SQL Editor no administra el historial de migraciones del repositorio.
+El reinicio y la restauración de una copia JSON son operaciones explícitas distintas: tras confirmarlas en la app, `reset_menuki_state` reemplaza los registros personales y guarda el nuevo snapshot dentro de la misma transacción. El reinicio no se ejecuta en sincronizaciones ordinarias.
 
-## Estructura inicial
+Para revisar el esquema inicial, ejecuta `tests/001_schema_check.sql`. Es una comprobación estructural; no demuestra el aislamiento con dos sesiones autenticadas ni el recorrido completo de sincronización.
 
-- `profiles`: parámetros escalares del perfil, una fila por usuario de Supabase Auth.
-- `plan_cycles` y `planned_meals`: ciclos y sus 105 comidas; conservan estado, fechas y versión del catálogo.
-- `meal_completions`: eventos de comidas marcadas y su reverso; la operación idempotente en la app queda pendiente.
-- `inventory_movements`: libro de movimientos append-only; el saldo se calcula sumando cantidades con signo.
-- `weight_logs` y `prep_tasks`: seguimiento personal y preparación.
-- `training_logs`: tabla heredada con una marca por fecha; no representa sesiones y no se usa para el cálculo actual.
-- `activity_sessions`: migración pendiente para guardar varias sesiones reales con fecha, actividad, duración y MET de referencia. Tiene RLS por usuario; no se usa desde el HTML mientras no exista integración remota.
-- `shopping_sessions` y `shopping_session_items`: selección de productos, envases y casillas de la compra para que también se conserve entre dispositivos.
-- `user_settings`: fecha de la última copia de seguridad.
+SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Los archivos locales describen las seis migraciones aplicadas; no vuelvas a ejecutar los scripts solo para registrarlos.
 
-Los IDs de alimentos y recetas son texto y se resuelven contra los catálogos JSON; no se duplican esos catálogos en tablas.
+## Tablas utilizadas
 
-Consulta [docs/supabase_db_model.md](../docs/supabase_db_model.md) para el diagrama entidad-relación, las columnas, claves, relaciones y políticas.
+- `profiles`: parámetros del perfil nutricional, una fila por cuenta.
+- `plan_cycles` y `planned_meals`: menús, ciclos, fechas y recetas.
+- `meal_completions` y `meal_completion_ingredients`: comidas completadas/revertidas y cantidades consumidas como snapshots.
+- `inventory_movements`: libro de entradas y salidas; el saldo se deriva de sus movimientos.
+- `weight_logs`, `activity_sessions` y `training_logs`: pesos, sesiones reales y marcas heredadas.
+- `prep_tasks`: preparación semanal.
+- `shopping_sessions` y `shopping_session_items`: lista, cantidades de envases y elementos marcados.
+- `user_settings`: copia registrada, inicialización y revisión de sincronización.
 
-## Pendiente antes de conectar el HTML
+Los IDs de alimentos y recetas se resuelven contra los catálogos JSON; no se duplican esos catálogos en tablas. Consulta [docs/supabase_db_model.md](../docs/supabase_db_model.md) para columnas, claves, relaciones y políticas.
 
-- Crear/probar la cuenta única de Auth y confirmar que cada tabla solo permite filas de `auth.uid()`.
-- Añadir operaciones de base de datos para registrar comidas, reversos y compras de varias líneas de forma idempotente y transaccional.
-- Aplicar la tercera migración antes de sincronizar sesiones. Importar una sola vez el estado local v7 (se aceptan copias v5-v7), evitando sobrescribir datos remotos o duplicar movimientos.
-- Probar persistencia desde dos dispositivos/sesiones autenticadas antes de retirar `localStorage` como fuente principal.
+## Pendiente de validar
+
+- Publicar el HTML actualizado en GitHub Pages. La migración está en Supabase, pero la versión publicada no sincronizará hasta incluir el nuevo HTML.
+- Ejecutar la prueba de aislamiento con dos cuentas de Auth: lectura, inserción y referencias entre propietarios distintos.
+- Probar en la web publicada los cambios desde PC y móvil, los conflictos y la recuperación ante un error de red.
+- Definir una copia externa periódica y revisar el crecimiento de almacenamiento.
+
+## Prueba de aislamiento entre usuarios (pendiente de ejecutar)
+
+El control `tests/001_schema_check.sql` solo confirma que existen las tablas, RLS, políticas y permisos. No demuestra que una sesión real del usuario A quede aislada de la del usuario B.
+
+Cuando Auth esté configurado, la prueba manual debe usar dos cuentas temporales y peticiones realizadas con la sesión autenticada de cada una:
+
+1. Con A, crear filas sintéticas propias en las tablas personales y enlazar sus ciclos, comidas, snapshots y movimientos usando IDs de A.
+2. Con B, consultar esas mismas tablas sin filtrar por propietario. No debe aparecer ninguna fila de A; B sí debe poder leer sus propias filas.
+3. Con B, intentar insertar una fila indicando el `user_id` de A. RLS debe rechazarla.
+4. Con B, intentar enlazar una fila propia con el ciclo/comida/sesión de A. La operación debe fallar por las políticas o las claves foráneas compuestas.
+5. Cerrar sesión y comprobar que el rol no autenticado no puede leer ni modificar datos personales.
+6. Repetir las verificaciones para todas las tablas y limpiar los datos y cuentas temporales.
+
+Las peticiones de la prueba deben pasar por el cliente de Supabase con el JWT de cada usuario, no por un contexto administrativo que no represente esa sesión. Auth está configurado; queda ejecutar la prueba con dos sesiones.
 
 La clave `publishable` y la URL del proyecto pueden utilizarse en cliente. Nunca colocar una clave `secret`/`service_role` ni la contraseña de base de datos en el HTML o en el repositorio.
+
+## Retención y seguimiento de tamaño
+
+Los snapshots de ingredientes no caducan y no hay una tarea programada que los borre. Se conservan mientras exista la comida completada y la cuenta; el borrado de la cuenta elimina sus datos relacionados en cascada. La retención es indefinida por antigüedad, no una promesa de conservar datos tras borrar la cuenta.
+
+Al activar la sincronización multiusuario, toma una medida inicial y revisa el crecimiento mensualmente y tras importaciones grandes. Al acercarse a 350 MB del límite Free de 500 MB, revisa qué tablas ocupan más y decide una acción explícita; no se borran snapshots automáticamente. El umbral inicia una revisión, no una purga.
+
+La lectura SQL anterior a la cuarta migración fue de **11.622.067 bytes** (aprox. 11 MB, con 12 tablas); el panel mostró **11 MB** redondeados después de la cuarta migración. Las migraciones quinta y sexta no importaron registros de la app. El tamaño debe volver a medirse cuando se active la sincronización; la cifra es una referencia inicial, no una garantía de espacio disponible, e incluye estructuras del proyecto y puede cambiar con extensiones y uso de PostgreSQL.
+
+Consulta global de solo lectura:
+
+```sql
+select
+  sum(pg_database_size(datname))::bigint as database_bytes,
+  pg_size_pretty(sum(pg_database_size(datname))) as database_size
+from pg_database;
+```
+
+Desglose de las tablas públicas, incluidos índices y otros objetos asociados:
+
+```sql
+select
+  relname as table_name,
+  pg_total_relation_size(relid) as total_bytes,
+  pg_size_pretty(pg_total_relation_size(relid)) as total_size
+from pg_catalog.pg_statio_user_tables
+where schemaname = 'public'
+order by pg_total_relation_size(relid) desc;
+```
+
+La primera consulta suma las bases PostgreSQL del proyecto y se puede comparar con Database Size en el panel. La segunda ayuda a localizar qué tablas crecen. Supabase actualiza las métricas del informe a diario; database size y disk usage son medidas distintas, porque el disco también incluye WAL y archivos del sistema. Consulta [Understanding Database and Disk Size](https://supabase.com/docs/guides/platform/database-size) para interpretar ambas.

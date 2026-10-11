@@ -19,13 +19,13 @@ La conclusión operativa es que ahora hay dos versiones distintas: una con el tr
 | `origin/main`, commit `0bf612e` | Contiene `plan_alimentacion_dinamico_3_semanas.html`, no `menuki.html`. El HTML incluye formulario de inicio/registro y lógica de Supabase Auth. Su `index.html` redirige al nombre antiguo. |
 | Historial de `main` | El formulario se incorporó en `6b117cb` (`feat/login-page`); después, `3ac62e4` añadió la integración de estado con Supabase. Esos commits no aparecen en la línea de `dev` que termina en `1a92aa2`. |
 | Página revisada | La URL abierta fue `https://adrian-san-lop.github.io/food_planning/menuki.html`. Se abrió directamente la aplicación, sin acceso. Su apartado de privacidad indicaba almacenamiento en el navegador, coherente con la versión local de `dev`. No se introdujeron las credenciales de prueba porque no había formulario. |
-| README | La instrucción versionada indica publicar `main` desde la raíz. No demuestra que esa sea la configuración activa en GitHub ahora. |
+| README en el momento de la auditoría | Indicaba publicar `main` desde la raíz, pero esa instrucción no coincidía con la configuración que el propietario había seleccionado en GitHub. |
 
-### Qué falta comprobar para cerrar el diagnóstico de publicación
+### Aclaración posterior sobre la publicación
 
-Revisar en GitHub **Settings → Pages → Build and deployment** la rama y carpeta configuradas, y comprobar la URL publicada que muestra esa pantalla. Si está publicado `dev / (root)`, la ausencia del login coincide directamente con el contenido de `dev`. Si se publica `main / (root)`, el `index.html` actual apunta al HTML antiguo, que sí incluye acceso; en ese caso habría que investigar si la URL abierta corresponde a una publicación anterior o a otra fuente de despliegue.
+Después de la auditoría, el propietario confirmó que configuró GitHub Pages para publicar desde `dev`. Esto explica el comportamiento observado: en ese momento `dev` tenía `menuki.html` sin el login que sí estaba en `main`.
 
-La comparación de ramas es concluyente sobre el código disponible en cada una. La fuente que Pages está sirviendo en este momento queda pendiente de esa comprobación en GitHub.
+Durante la integración en curso, Git trasladó el HTML de `main` a `menuki.html` sin conflicto de contenido; la copia de trabajo ahora incluye Supabase Auth y la sincronización. El cambio todavía debe llegar a `dev` y publicarse allí para que el login aparezca en la web. Esta auditoría documenta el estado observado antes de esa publicación.
 
 ## Observaciones de uso
 

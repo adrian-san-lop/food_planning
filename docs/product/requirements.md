@@ -16,7 +16,7 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 - Recetas, instrucciones, fotografías orientativas y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
 - Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; seguimiento del peso.
-- Estado del usuario en `localStorage`; exportación/importación JSON y aviso semanal de copia dentro de la página.
+- Estado de trabajo en `localStorage` y persistencia remota autenticada en Supabase; exportación/importación JSON y aviso semanal de copia dentro de la página.
 - Inventario negativo permitido cuando se registra una comida que supera las existencias; se muestra el faltante y desmarcar la comida revierte el consumo.
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
 - Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado local con fecha y versión del catálogo.
@@ -57,7 +57,7 @@ El aviso de renovación actual aparece dentro de la página cerca del final del 
 - Mantener una biblioteca común y versionada de alimentos y recetas en `data/foods.json` y `data/recipes.json`; sus esquemas están en los ficheros `*.schema.json`.
 - Al preparar un ciclo, formar una propuesta de 105 comidas compatibles. Se permiten repeticiones y se favorecen recetas que no aparecían en el menú actual, sin un mínimo numérico.
 - Revisar y cambiar recetas dentro del mismo tipo de comida; los cambios manuales quedan bloqueados hasta que se desbloqueen. Regenerar conserva las comidas bloqueadas.
-- Guardar la propuesta localmente con su versión de catálogo y activarla en la fecha guardada.
+- Guardar la propuesta con su versión de catálogo en Supabase y activarla en la fecha guardada.
 - Con Recuperación ósea activa, dar preferencia cualitativa a recetas con fuentes catalogadas de calcio y vitamina D y con frutas/verduras que aporten vitamina C; presentar presencia por día como referencia, no como objetivo nutricional cuantificado. El ciclo actual no se sustituye al cambiar el perfil.
 
 El ciclo inicial conserva el menú fijo existente. Las preferencias por gustos, las alergias y las exclusiones personales no se filtran todavía porque su modelo no está aprobado.
@@ -91,6 +91,6 @@ Estos principios están aceptados. Las puntuaciones, umbrales y cantidades míni
 ## Privacidad y continuidad
 
 - Los catálogos son datos genéricos; no deben contener perfiles, pesos, preferencias personales, despensa, comidas completadas ni copias de seguridad.
-- GitHub Pages es alojamiento estático y de acceso público. `localStorage` no sincroniza entre dispositivos.
+- GitHub Pages es alojamiento estático y de acceso público. Los datos personales no se guardan en el repositorio; Supabase los separa por `auth.uid()` y RLS. `localStorage` es una copia de trabajo, no la sincronización entre dispositivos.
 - No añadir colas offline, avisos en segundo plano ni notificaciones push. El aviso semanal de copia solo aparece dentro de la página.
-- La arquitectura remota y autenticada está pendiente; las decisiones técnicas actuales están en [arquitectura](../architecture.md).
+- El inicio de sesión y la sincronización relacional están implementados en el HTML y el esquema. La publicación del HTML actualizado, la prueba RLS con dos cuentas y la verificación PC/móvil siguen pendientes; véase [arquitectura](../architecture.md).
