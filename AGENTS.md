@@ -6,8 +6,19 @@ These instructions apply to the whole repository.
 
 - Read `README.md`, `context/context.md`, and the relevant documents under `docs/`.
 - Before changing application behavior, inspect `plan_alimentacion_dinamico_3_semanas.html`; it is the current runtime source of truth.
-- Check the active branch and working-tree status first. Preserve existing user changes and do not switch branches unless asked.
+- Check the active branch and working-tree status first. Preserve existing user changes and follow the Git workflow below when starting a new task.
 - Distinguish implemented behavior from accepted design decisions, proposals, and open questions.
+
+## Git workflow
+
+- Work in the existing repository checkout. Do not create or use Git worktrees for repository tasks.
+- Continue on the current task branch when resuming that same unfinished task. Before a new task, require a clean working tree, including untracked files. If it is dirty, report the paths and wait for the owner to decide how to handle them; never stash, commit, discard, or transfer changes automatically.
+- Use `dev` as the base for task branches. Fetch `origin` when its current state matters, switch to `dev` in this checkout, and require local `dev` to match `origin/dev`. Fast-forward only when possible; if branches have diverged, stop for review instead of resetting or rebasing automatically.
+- Create task branches with `./scripts/new-branch.ps1 -Name "docs/<description>"`, `fix/<description>`, or `chore/<description>`. The script requires a clean checkout and does not fetch from the network.
+- Task branches are proposed to `dev` through a pull request. Promoting `dev` to `main` is a separate pull request. GitHub Pages publishes from `main`.
+- Never commit or push unless the owner explicitly asks. For commits, use `./scripts/commit.ps1` with explicit `-Path` values, or `-All` only when all changes are explicitly approved. `-Yes` skips the script's confirmation and is allowed only when the owner explicitly authorized that commit; without it, retain the interactive confirmation.
+- Push only after explicit authorization, using `./scripts/push-origin.ps1 -Yes` for a task branch. Direct pushes to `main` or `dev` additionally require explicit authorization and `-AllowProtectedBranch`. Without `-Yes`, retain the interactive confirmation.
+- Do not merge, rebase, force-push, delete branches, or stash changes automatically.
 
 ## Product and data boundaries
 

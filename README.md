@@ -22,6 +22,37 @@ Al iniciar sesión en otro dispositivo, Menuki carga los datos de tu cuenta desd
 
 Usa **Exportar copia** para descargar un respaldo independiente y **Importar copia JSON** para restaurar uno. La importación admitida comienza en v5; los formatos anteriores no se convierten. El archivo contiene datos del perfil y del seguimiento: guárdalo fuera del repositorio.
 
+## Flujo de trabajo con Git
+
+El trabajo nuevo parte de una rama `dev` limpia y se realiza en una rama de tarea dentro de este mismo checkout. No se crean worktrees. Si hay cambios pendientes —también archivos sin seguimiento—, consérvalos y decide cómo resolverlos antes de empezar otra tarea; no los guardes, descartes ni muevas automáticamente.
+
+1. Comprueba `git status --short --branch` y la rama activa.
+2. Cuando el estado remoto importe, actualiza las referencias con `git fetch origin`.
+3. Cambia a `dev` con `git switch dev` y, si está por detrás, actualízala solo mediante avance rápido: `git pull --ff-only origin dev`. Si `dev` local y `origin/dev` han divergido, detente y revisa la diferencia; no uses reset ni rebase automático.
+4. Crea una rama para la tarea con el script, que comprueba que el árbol está limpio y que `dev` coincide con `origin/dev` cuando esa referencia existe:
+
+   ```powershell
+   .\scripts\new-branch.ps1 -Name "docs/descripcion"
+   ```
+
+   Usa el prefijo `docs/`, `fix/` o `chore/` según el trabajo. El script no consulta la red; el `fetch` se hace por separado.
+5. Revisa el alcance y los cambios. Para crear un commit, autorízalo explícitamente y selecciona rutas concretas:
+
+   ```powershell
+   .\scripts\commit.ps1 -Message "docs: actualizar guia" -Path README.md, AGENTS.md
+   ```
+
+   `-All` incluye todos los cambios. Úsalo solo si has revisado y aprobado todo ese contenido. Sin `-Yes`, el script pide confirmación interactiva; `-Yes` la omite y solo debe pasarse cuando ya se haya autorizado ese commit.
+6. Publica la rama solo cuando se haya autorizado expresamente:
+
+   ```powershell
+   .\scripts\push-origin.ps1 -Yes
+   ```
+
+   La rama de tarea se propone a `dev` mediante un pull request. La promoción de `dev` a `main` se realiza en otro pull request. Los envíos directos a `main` o `dev` requieren autorización expresa y `-AllowProtectedBranch`. GitHub Pages sigue publicando desde `main`.
+
+Los scripts de commit y publicación mantienen su confirmación interactiva si se omite `-Yes`. No fuerzan el envío ni crean pull requests automáticamente.
+
 ## Publicar en GitHub Pages
 
 1. En GitHub, abre **Settings → Pages**.
@@ -94,6 +125,8 @@ Los datos confirmados se guardan en Supabase y en la copia de trabajo local. Des
 - `data/foods.schema.json` y `data/recipes.schema.json`: contratos estructurales de los catálogos.
 - `context/context.md`: resumen breve en inglés para retomar el trabajo.
 - `AGENTS.md`: instrucciones en inglés para agentes de código.
+- `.codex/git-branch/`, `.codex/git-commit/` y `.codex/git-push/`: skills del flujo Git del repositorio.
+- `scripts/new-branch.ps1`, `scripts/commit.ps1` y `scripts/push-origin.ps1`: automatizan la creación de ramas, commits y publicación con comprobaciones de seguridad.
 - `docs/product/requirements.md`: alcance y flujos del producto.
 - `docs/architecture.md`: estado actual y arquitectura prevista.
 - `docs/supabase_db_model.md`: diagrama, columnas, claves, relaciones y RLS del esquema de Supabase.
