@@ -74,7 +74,7 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. El HTML aún no crea s
 ## Versiones y operación
 
 - El estado personal actual es v8; v5 es el primer formato de importación admitido. Se aceptan v5-v8; no implementar migraciones desde v1-v4.
-- Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.4.0`), independiente de la versión del estado personal. Incluyen 83 alimentos y 107 recetas y se cargan desde JSON. `food.unit` expresa inventario/compra y `food.recipeUnit` la unidad de receta.
+- Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.5.0`), independiente de la versión del estado personal. Incluyen 83 alimentos y 107 recetas y se cargan desde JSON. `food.unit` expresa inventario/compra y `food.recipeUnit` la unidad de receta. `recoveryTags` son marcadores cualitativos para selección de menú, no valores medidos de micronutrientes.
 - La app requiere conexión y no tendrá cola offline. No afirmar que un cambio se guardó remotamente hasta que la integración real lo confirme.
 - La vista de planificación permite proponer, editar, bloquear, regenerar y confirmar el menú del siguiente ciclo. El estado de la propuesta y el menú siguen siendo locales.
 - El historial de actividad describe sesiones ya realizadas; no es un calendario de previsiones ni un mecanismo de aprendizaje automático del perfil.

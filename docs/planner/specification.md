@@ -15,7 +15,7 @@ Los catálogos son JSON genéricos e independientes de los datos personales:
 - [`foods.json`](../../data/foods.json): 83 alimentos.
 - [`recipes.json`](../../data/recipes.json): 107 recetas y 512 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.4.0`.
+Ambos catálogos usan actualmente `catalogVersion` `0.5.0`.
 
 Distribución actual de recetas por tipo:
 
@@ -34,6 +34,8 @@ La biblioteca permite variedad dentro de cada semana, pero no una receta diferen
 ### Alimentos
 
 Cada alimento usa un `id` estable, nombre, unidad de inventario (`unit`), unidad de receta (`recipeUnit`), datos nutricionales con base explícita, formato orientativo de compra y, si se compra por pieza pero se cocina por peso, peso comestible aproximado por pieza. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
+
+Algunos alimentos llevan `recoveryTags` (`calcium`, `vitamin_d`, `vitamin_c`) para marcar fuentes alimentarias relevantes cuando está activa la recuperación ósea. Son etiquetas cualitativas de selección: el catálogo no contiene cantidades de esos micronutrientes y la app no calcula objetivos ni ingestas de calcio o vitaminas.
 
 El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades de receta en `ud`; los alimentos que se cocinan por peso usan `per_100g`. Para piezas compradas por unidad, la receta se convierte a inventario usando su peso comestible aproximado, y la conversión inversa se usa para la compra planificada.
 
@@ -55,6 +57,12 @@ Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el c
 
 Las cuatro primeras reglas fueron aceptadas explícitamente. La quinta recoge la intención de incluir recetas que no aparecieron en el menú activo; se favorecen, sin imponer un mínimo.
 
+## Recuperación ósea
+
+La casilla **Recuperación ósea activa** conserva el ajuste prudente de energía ya existente y cambia la puntuación de los menús que se generen o regeneren: favorece recetas que incorporen alimentos etiquetados como fuentes de calcio, vitamina D y vitamina C. La proteína sigue tratándose con el objetivo de macronutrientes ya existente. La revisión de la propuesta muestra en cuántos de los 21 días hay ingredientes etiquetados de cada tipo; esto indica presencia, no cantidades nutricionales ni cumplimiento de una recomendación diaria.
+
+La estrategia se basa en orientación del NHS para fracturas y huesos sanos, y en las fichas de calcio y vitamina D de NIH ODS. Estas fuentes respaldan una dieta equilibrada con proteína, calcio y vitamina D, pero no permiten afirmar que un menú concreto acelere la consolidación de una fractura. La etiqueta de vitamina C añade variedad de frutas y verduras; no expresa una dosis ni un objetivo específico para la fractura. Obtener vitamina D solo de los alimentos puede ser difícil; la app no prescribe suplementos ni fija micronutrientes sin evaluación individual. El ciclo activo y las comidas ya registradas no se sustituyen al cambiar esta casilla. Véase [ADR-0007](../decisions/0007-bone-recovery-menu-preference.md).
+
 ## Ajuste nutricional por sesiones realizadas
 
 El usuario registra la sesión después de realizarla, con fecha, actividad/esfuerzo y duración. Hay varias sesiones posibles en una fecha. No se planifican sesiones futuras ni se aprende automáticamente una agenda a partir del historial.
@@ -73,7 +81,7 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 1. Cargar por HTTP(S) los dos JSON, comprobar versiones, IDs, unidades, referencias y tipos, y usar `catalogVersion` en la propuesta.
 2. Generar los 105 espacios desde recetas del mismo tipo que cada espacio. Todas las categorías actuales tienen candidatos.
 3. No se aplican filtros de gustos, alergias ni restricciones personales; ese modelo sigue pendiente.
-4. Muestrear combinaciones y puntuarlas con la lógica nutricional/raciones actual, variedad, menor repetición reciente, recetas no usadas en el menú actual y cobertura del stock. El stock solo aporta preferencia; no elimina candidatos. Las ponderaciones son detalles iniciales de implementación, no umbrales aprobados.
+4. Muestrear combinaciones y puntuarlas con la lógica nutricional/raciones actual, variedad, menor repetición reciente, recetas no usadas en el menú actual y cobertura del stock. Si Recuperación ósea está activa, la puntuación también favorece las etiquetas cualitativas descritas arriba. El stock solo aporta preferencia; no elimina candidatos. Las ponderaciones son detalles iniciales de implementación, no umbrales aprobados.
 5. Completar los cinco tipos de comida para 21 días. Se permiten repeticiones si la biblioteca lo requiere.
 6. Revisar la propuesta, cambiar cada receta por otra del mismo tipo, bloquearla o desbloquearla y regenerar el resto. Una receta seleccionada manualmente queda bloqueada inicialmente.
 7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en `localStorage`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.

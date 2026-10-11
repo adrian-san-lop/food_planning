@@ -6,7 +6,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 
 - La app sigue siendo estática y personal; guarda el estado en `localStorage`.
 - El estado local actual es v8; admite importaciones v5-v8. Las sesiones realizadas se guardan con fecha.
-- Los catálogos JSON están en versión 0.4.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML. Las recetas pesan frutas/verduras enteras en gramos; inventario y compras las cuentan por unidades.
+- Los catálogos JSON están en versión 0.5.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML. Las recetas pesan frutas/verduras enteras en gramos; inventario y compras las cuentan por unidades. Recuperación ósea usa etiquetas cualitativas de alimentos para favorecer fuentes de calcio, vitamina D y vitamina C en propuestas futuras.
 - La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
 - El esquema relacional inicial de Supabase y sus políticas RLS están aplicados. La migración aditiva de sesiones está pendiente; el HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
 - Las sesiones reales ajustan las comidas pendientes de su misma fecha; días futuros mantienen el objetivo base y las comidas registradas conservan sus cantidades.

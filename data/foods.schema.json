@@ -26,6 +26,12 @@
         "unit": { "enum": ["g", "ml", "ud"], "description": "Unit used for pantry balances, stock movements, and purchase package contents." },
         "recipeUnit": { "enum": ["g", "ml", "ud"], "description": "Unit used to measure this food in recipe ingredients." },
         "nutrition": { "$ref": "#/$defs/nutrition" },
+        "recoveryTags": {
+          "type": "array",
+          "description": "Qualitative markers for food sources relevant to bone recovery; not measured nutrient amounts or medical targets.",
+          "items": { "enum": ["calcium", "vitamin_d", "vitamin_c"] },
+          "uniqueItems": true
+        },
         "approximateEdibleWeight_g_per_unit": { "type": "number", "exclusiveMinimum": 0, "description": "Approximate edible grams per piece, used to convert between recipe grams and pantry units." },
         "purchase": { "$ref": "#/$defs/purchase" },
         "nutritionSource": { "type": "string", "minLength": 1 }
