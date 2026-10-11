@@ -23,11 +23,12 @@ These instructions apply to the whole repository.
 ## Product and data boundaries
 
 - The current product is a personal, single-user, online app. Do not add offline queues or background/push notifications.
-- The weekly backup reminder is in-page only. Do not describe `localStorage` as cloud storage or synchronization.
+- Supabase sync runs automatically after changes while the app is online. Keep a compact status, offer retry only after a sync error, and retain explicit conflict choices. Do not add manual sync controls to normal use or background/push notifications. Do not describe `localStorage` as cloud storage or synchronization.
 - Keep the UI in Spanish. Keep `AGENTS.md` and `context.md` in English; write other project documentation in Spanish unless the owner asks otherwise.
 - `menuki.html` is the runtime app. It loads the generic food and recipe catalogs from `data/foods.json` and `data/recipes.json` over HTTP(S); the current fixed menu remains the initial plan.
 - Supabase Auth manages accounts, and personal data, including next-cycle proposals, syncs to relational Supabase tables. `localStorage` is a browser working copy. The configured project has the authentication and cloud-sync migrations applied; changes reach GitHub Pages after publication.
 - State format v5 is the first supported import format; current state is v8. Accept v5-v8 imports and do not add v1-v4 migrations.
+- Do not add JSON export/download controls or periodic backup reminders. Keep the supported v5-v8 JSON restore flow.
 
 ## Catalogs and planner
 

@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones están aplicadas en Supabase, incluida la marca de perfil revisado; falta publicar el nuevo HTML y validar la primera visita y el primer traspaso. Las tres mejoras UX de prioridad alta están implementadas en la rama actual, pero todavía no están en GitHub Pages. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones están aplicadas en Supabase. Las mejoras UX de prioridad alta están en `dev`; las mejoras de prioridad media y baja de compra, navegación y guardado están implementadas en `chore/ux-mobile-shopping`, pendientes de publicación y validación en teléfono. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
