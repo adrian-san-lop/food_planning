@@ -40,4 +40,4 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 - [Actual activity-session nutrition decision](docs/decisions/0005-actual-activity-session-nutrition.md): same-date, post-session calculation and its limits.
 - [Open questions](docs/open-questions.md): proposals and decisions still needed.
 
-Before editing, check the active branch and working tree, then verify current behavior in `plan_alimentacion_dinamico_3_semanas.html`. Do not infer implementation from plans in the documentation.
+Before editing, check the active branch and working tree, then verify current behavior in `menuki.html`. Do not infer implementation from plans in the documentation.

@@ -4,7 +4,7 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 
 ## Estado actual
 
-- `index.html` es la entrada de GitHub Pages y redirige a `plan_alimentacion_dinamico_3_semanas.html` en la raíz.
+- `index.html` es la entrada de GitHub Pages y redirige a `menuki.html` en la raíz.
 - La app conserva las recetas y el diseño existentes; sus datos se guardan en `localStorage` del navegador.
 - La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.
 - El menú fijo actual sigue activo. La app puede preparar y guardar una propuesta editable para el siguiente ciclo de tres semanas.
@@ -27,7 +27,7 @@ El navegador no comparte automáticamente el almacenamiento del HTML local con l
 3. Selecciona la rama `main` y la carpeta `/(root)`, y guarda.
 4. Espera a que termine la publicación y abre la dirección que muestra GitHub en esa misma sección.
 
-La raíz contiene `index.html`, que es la entrada del sitio, y `plan_alimentacion_dinamico_3_semanas.html`, que contiene la aplicación. La redirección es relativa y funciona también cuando GitHub Pages publica el repositorio bajo una subruta. GitHub indica que el archivo de entrada debe estar en la raíz de la carpeta publicada. La página publicada es accesible por Internet, aunque el repositorio sea privado, así que no se deben incluir copias de seguridad ni datos personales en el repositorio. [Crear un sitio de GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) · [Elegir la fuente de publicación](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+La raíz contiene `index.html`, que es la entrada del sitio, y `menuki.html`, que contiene la aplicación. La redirección es relativa y funciona también cuando GitHub Pages publica el repositorio bajo una subruta. GitHub indica que el archivo de entrada debe estar en la raíz de la carpeta publicada. La página publicada es accesible por Internet, aunque el repositorio sea privado, así que no se deben incluir copias de seguridad ni datos personales en el repositorio. [Crear un sitio de GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) · [Elegir la fuente de publicación](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
 ## Inventario y unidades
 
@@ -86,7 +86,7 @@ Los datos actuales permanecen en el almacenamiento del navegador y no aparecen a
 
 ## Archivos principales
 
-- `plan_alimentacion_dinamico_3_semanas.html`: interfaz y lógica de la aplicación.
+- `menuki.html`: interfaz y lógica de la aplicación.
 - `index.html`: entrada que redirige a la aplicación.
 - `data/foods.json` y `data/recipes.json`: catálogos genéricos que carga la aplicación.
 - `data/foods.schema.json` y `data/recipes.schema.json`: contratos estructurales de los catálogos.

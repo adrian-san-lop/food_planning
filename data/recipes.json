@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "catalogVersion": "0.5.0",
-  "source": "Existing recipes from plan_alimentacion_dinamico_3_semanas.html plus 23 curated recipes using foods from catalogVersion 0.2.0.",
+  "source": "Existing recipes from menuki.html plus 23 curated recipes using foods from catalogVersion 0.2.0.",
   "status": "Catálogo de recetas genéricas con cantidades base; la app adapta las raciones al perfil y a la actividad real registrada por fecha.",
   "recipes": [
     {

@@ -8,7 +8,7 @@ Estado de referencia: 11 de octubre de 2026. Se distingue explícitamente lo que
 Navegador
   └── GitHub Pages / HTML estático
         ├── index.html (redirección relativa)
-        ├── plan_alimentacion_dinamico_3_semanas.html
+        ├── menuki.html
         │     ├── carga data/foods.json y data/recipes.json
         │     ├── conserva el menú fijo inicial y propone el siguiente ciclo
         │     ├── registra sesiones realizadas y adapta las comidas pendientes de esa fecha
