@@ -6,19 +6,21 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 
 - `index.html` es la entrada de GitHub Pages y redirige a `menuki.html` en la raíz.
 - El usuario inicia sesión con Supabase Auth; los datos personales se sincronizan en tablas relacionales y `localStorage` mantiene una copia de trabajo del navegador.
+- En la primera visita, Inicio indica por dónde empezar. Las cifras genéricas del perfil se marcan como ejemplos hasta que el usuario las revise y guarde.
+- Si la copia local y Supabase tienen cambios diferentes, Menuki resume su contenido y explica qué reemplaza cada opción antes de pedir una elección.
 - La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.
 - El menú fijo actual sigue activo. La app puede preparar y guardar una propuesta editable para el siguiente ciclo de tres semanas.
 - El estado actual es v8. La app importa copias v5 a v8; la migración adapta los consumos históricos a gramos de receta y conserva despensa y movimientos en las unidades de inventario correspondientes.
 - Las antiguas marcas de fuerza se conservan como datos heredados, pero ya no afectan al cálculo. No se importan datos v1-v4.
 - Las compras, consumos, reversos y correcciones nuevas se anotan como movimientos con identificador único. Si una receta supera el saldo anotado, se registra completa y se muestra el faltante.
 - Hay un recordatorio semanal dentro de la página para descargar una copia JSON. No envía notificaciones del sistema.
-- Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales.
+- Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales. Las comidas futuras aparecen como planificadas y solo se pueden registrar cuando llega su fecha.
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.
-- Supabase tiene trece tablas con RLS y una función transaccional para sincronizar el estado por cuenta. Auth guarda la identidad y las credenciales; `public.profiles` guarda únicamente parámetros nutricionales. La migración de sincronización ya está aplicada; publica el HTML actualizado para activar el flujo en GitHub Pages.
+- Supabase tiene trece tablas con RLS y una función transaccional para sincronizar el estado por cuenta. Auth guarda la identidad y las credenciales; `public.profiles` guarda parámetros nutricionales y la confirmación de revisión. Las siete migraciones están aplicadas; publica el HTML actualizado para activar los cambios en GitHub Pages.
 
 ### Sincronización y copias de seguridad
 
-Al iniciar sesión en otro dispositivo, Menuki carga los datos de tu cuenta desde Supabase. La primera vez que una cuenta sin inicializar entra en una instalación con datos locales, importa esa copia una sola vez. La app conserva `localStorage` como copia de trabajo; si muestra un conflicto, no reemplaza silenciosamente los datos locales.
+Al iniciar sesión en otro dispositivo, Menuki carga los datos de tu cuenta desde Supabase. La primera vez que una cuenta sin inicializar entra en una instalación con datos locales, importa esa copia una sola vez. La app conserva `localStorage` como copia de trabajo; si muestra un conflicto, resume ambas copias y no reemplaza datos sin tu elección explícita.
 
 Usa **Exportar copia** para descargar un respaldo independiente y **Importar copia JSON** para restaurar uno. La importación admitida comienza en v5; los formatos anteriores no se convierten. El archivo contiene datos del perfil y del seguimiento: guárdalo fuera del repositorio.
 

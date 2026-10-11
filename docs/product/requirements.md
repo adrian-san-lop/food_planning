@@ -1,6 +1,6 @@
 # Requisitos del producto
 
-Estado de referencia: 10 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
+Estado de referencia: 11 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
 
 ## Propósito y usuarios
 
@@ -13,6 +13,8 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 ### Implementado en el HTML actual
 
 - Un ciclo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios). El primer ciclo mantiene el menú fijo existente; los siguientes pueden generarse desde el catálogo.
+- En una primera visita, Inicio explica los pasos básicos y dirige al perfil. Los valores de ejemplo no se consideran revisados hasta que la persona guarda el perfil explícitamente.
+- Si las copias local y remota han cambiado por separado, la app resume el estado de revisión del perfil, la fecha de inicio del menú, comidas realizadas, movimientos de despensa, pesos, sesiones, artículos de compra y última actualización antes de pedir qué copia conservar. Explica que usar Supabase reemplaza la copia local pendiente; subir la local reemplaza perfil, menú y compra remotos e integra los registros por identificador.
 - Recetas, instrucciones, fotografías orientativas y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
 - Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; seguimiento del peso.
@@ -25,6 +27,8 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 ### Perfil y nutrición
 
 El HTML contempla sexo o metabolismo basal manual, edad, altura, peso, actividad habitual sin ejercicio, objetivo e indicador de recuperación ósea. Usa Mifflin-St Jeor como estimación del metabolismo en reposo, objetivos aproximados de energía/macros y adaptación de raciones. No son mediciones clínicas. Con Recuperación ósea activa, las propuestas nuevas favorecen alimentos marcados como fuentes de calcio, vitamina D y vitamina C; no se calculan cantidades de micronutrientes ni se prescriben suplementos.
+
+El perfil empieza con valores genéricos de ejemplo. Hasta que la persona lo revise y lo guarde, Inicio y el propio perfil lo indican; la confirmación se conserva en `profiles.profile_confirmed` y se sincroniza entre dispositivos. Los perfiles existentes también requieren una revisión explícita después de aplicar esta mejora.
 
 Las comidas pendientes pueden recalcular porciones al cambiar el perfil o al registrar/quitar una sesión en esa fecha. Las comidas ya realizadas conservan sus cantidades registradas; el cálculo las trata como fijas y distribuye el objetivo restante entre comidas pendientes. El desayuno suele incluir yogur y no debe incluir queso según la preferencia vigente. No hay otras restricciones alimentarias generales definidas.
 
@@ -46,7 +50,7 @@ El aviso de renovación actual aparece dentro de la página cerca del final del 
 ### Cocina y seguimiento
 
 - Platos principales normalmente sencillos, en torno a 20–30 minutos; se dispone de horno, microondas, freidora de aire y batidora. Snacks/desayunos pueden requerir menos tiempo.
-- Marcar comidas realizadas desde menú o recetario; cada consumo se aplica una sola vez. Desmarcar genera el reverso correspondiente.
+- Marcar comidas realizadas desde menú o recetario solo cuando llegue su fecha; las futuras aparecen como planificadas y no descuentan despensa. Cada consumo se aplica una sola vez y desmarcar genera el reverso correspondiente.
 - Registrar las sesiones después de realizarlas; se permiten varias por día. La estimación neta `(MET − 1) × peso_kg × horas` se suma al objetivo base solo para esa fecha. Sin sesión registrada, se conserva el objetivo base.
 - La meta de proteína y grasa se mantiene estable ante la sesión; la energía extra se cubre principalmente con cantidades de hidratos. No se crean previsiones ni se alteran días futuros.
 - Registrar peso con fecha y consultar su tendencia sin interpretar fluctuaciones puntuales como cambios de grasa.

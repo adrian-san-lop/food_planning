@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. La migración está aplicada en Supabase; falta publicar el nuevo HTML y validar el primer traspaso y la sincronización entre dispositivos. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones están aplicadas en Supabase, incluida la marca de perfil revisado; falta publicar el nuevo HTML y validar la primera visita y el primer traspaso. Las tres mejoras UX de prioridad alta están implementadas en la rama actual, pero todavía no están en GitHub Pages. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
@@ -27,7 +27,7 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 
 ## Persistencia e integración
 
-- Publicar el HTML actualizado para activar la sincronización y completar la primera importación local v8 a Supabase.
+- Publicar el HTML actualizado para activar la guía de primera visita, la elección explicada ante conflictos y el bloqueo de registro anticipado; completar después la primera importación local v8 a Supabase.
 - Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
 - Verificar en GitHub Pages la sincronización entre PC y móvil, conflictos, errores de red, reversos y restauración desde una copia.
 - Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
