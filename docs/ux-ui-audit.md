@@ -132,10 +132,10 @@ Marcar con claridad qué comidas son futuras y cuáles ya se pueden registrar. E
 
 | Prioridad | Mejora | Motivo | Estado |
 | --- | --- | --- | --- |
-| Alta | Guiar la primera visita y pedir que se revise el perfil | Sin ello, los objetivos pueden parecer personalizados aunque no se hayan confirmado los datos. | Implementada en rama; pendiente publicar y validar. |
-| Alta | Aclarar qué hace cada opción al resolver un conflicto entre copias | El usuario puede temer perder información o seleccionar la copia equivocada. | Implementada en rama; pendiente publicar y validar. |
-| Alta | Diferenciar el menú planificado de una comida registrada | Evita descontar despensa antes del consumo. | Implementada en rama; pendiente publicar y validar. |
-| Media | Simplificar los avisos y controles de copia/sincronización según la propuesta del propietario | Reduce ruido en Inicio y en móvil. | Pendiente. |
+| Alta | Guiar la primera visita y pedir que se revise el perfil | Sin ello, los objetivos pueden parecer personalizados aunque no se hayan confirmado los datos. | Publicada. |
+| Alta | Aclarar qué hace cada opción al resolver un conflicto entre copias | El usuario puede temer perder información o seleccionar la copia equivocada. | Publicada. |
+| Alta | Diferenciar el menú planificado de una comida registrada | Evita descontar despensa antes del consumo. | Implementada en rama; Publicada. |
+| Media | Eliminar los avisos y controles de copia/sincronización según la propuesta del propietario | Reduce ruido en Inicio y en móvil. | Pendiente. |
 | Media | Mejorar el recorrido de compra con lista larga en móvil | La compra es una tarea frecuente y se realiza mientras se consulta la pantalla. | Pendiente. |
 | Media | Eliminar el texto repetido de guardado en despensa | Libera espacio sin añadir información útil. | Pendiente. |
 | Baja | Revisar el número y tamaño de destinos de navegación en móvil | Puede mejorar la lectura, pero debe validarse en dispositivos reales. | Pendiente. |
