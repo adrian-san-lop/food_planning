@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1110" viewBox="0 0 1800 1110" role="img" aria-labelledby="title description">
   <title id="title">Modelo relacional de Supabase de Mi Plan Saludable</title>
-  <desc id="description">Once tablas personales ya aplicadas y una tabla activity_sessions definida en una migración pendiente, con claves principales, claves foráneas y relaciones principales.</desc>
+  <desc id="description">Doce tablas personales ya aplicadas y una tabla meal_completion_ingredients definida en una migración pendiente. Incluye claves principales, claves foráneas y relaciones principales.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L10,4 L0,8 Z" fill="#58708d"/>
@@ -31,7 +31,7 @@
 
   <rect class="bg" width="1800" height="1110"/>
   <text class="title" x="40" y="44">Mi Plan Saludable · modelo relacional de Supabase</text>
-  <text class="subtitle" x="40" y="70">Once tablas aplicadas con RLS · activity_sessions pendiente de migración · los catálogos JSON permanecen fuera de PostgreSQL</text>
+  <text class="subtitle" x="40" y="70">Doce tablas aplicadas con RLS · snapshots de ingredientes pendientes · los catálogos JSON permanecen fuera de PostgreSQL</text>
 
   <!-- Relaciones dibujadas detrás de las entidades -->
   <path class="edge" d="M195 190 L195 250"/>
@@ -46,13 +46,16 @@
   <path class="edge" d="M800 455 L930 380"/>
   <text class="edge-label" x="813" y="414">planned_meal_id, user_id</text>
 
-  <path class="edge" d="M1125 460 L1125 570"/>
-  <text class="edge-label" x="1138" y="520">source_completion_id, user_id</text>
+  <path class="edge-pending" d="M1125 460 L1125 500"/>
+  <text class="edge-label" x="1138" y="488">completion_id, user_id</text>
+
+  <path class="edge" d="M1300 455 L1380 500 L1380 740 L1320 740"/>
+  <text class="edge-label" x="950" y="690">source_completion_id, user_id</text>
 
   <path class="edge" d="M1600 390 L1600 520"/>
   <text class="edge-label" x="1612" y="458">session_id, user_id</text>
 
-  <path class="edge-pending" d="M350 150 L400 150 L400 895 L350 895"/>
+  <path class="edge" d="M350 150 L400 150 L400 895 L350 895"/>
 
   <path class="edge-dashed" d="M800 150 L845 150 L845 105 L620 105 L620 120"/>
   <text class="edge-label" x="690" y="96">supersedes_cycle_id</text>
@@ -97,9 +100,9 @@
     <text class="hint" x="58" y="773">Un registro por usuario y fecha</text>
   </g>
   <g>
-    <rect class="entity pending" x="40" y="810" width="310" height="175"/>
-    <rect class="pendinghead" x="40" y="810" width="310" height="37" rx="12"/>
-    <text class="name" x="58" y="835">activity_sessions · pendiente</text>
+    <rect class="entity" x="40" y="810" width="310" height="175"/>
+    <rect class="head" x="40" y="810" width="310" height="37" rx="12"/>
+    <text class="name" x="58" y="835">activity_sessions</text>
     <text class="key" x="58" y="870">PK · id</text>
     <text class="key" x="58" y="893">FK · user_id → auth.users.id</text>
     <text class="key" x="58" y="916">session_date · activity_code</text>
@@ -145,15 +148,24 @@
     <text class="hint" x="948" y="434">Mantiene completed_at y reversed_at</text>
   </g>
   <g>
-    <rect class="entity" x="930" y="570" width="390" height="200"/>
-    <rect class="head" x="930" y="570" width="390" height="37" rx="12"/>
-    <text class="name" x="948" y="595">inventory_movements</text>
-    <text class="key" x="948" y="631">PK · id · FK · user_id</text>
-    <text class="key" x="948" y="654">FK compuesta · source_completion_id, user_id</text>
-    <text class="key" x="948" y="677">FK compuesta · reverses_movement_id, user_id</text>
-    <text class="hint" x="948" y="705">Libro append-only; quantity lleva signo</text>
-    <text class="hint" x="948" y="727">food_id apunta al catálogo JSON</text>
-    <text class="hint" x="948" y="749">El saldo se obtiene sumando movimientos</text>
+    <rect class="entity pending" x="930" y="500" width="390" height="150"/>
+    <rect class="pendinghead" x="930" y="500" width="390" height="37" rx="12"/>
+    <text class="name" x="948" y="525">meal_completion_ingredients · pendiente</text>
+    <text class="key" x="948" y="561">PK · completion_id, ingredient_index</text>
+    <text class="key" x="948" y="584">FK compuesta · completion_id, user_id</text>
+    <text class="hint" x="948" y="609">food_id + nombre snapshot · quantity + recipe_unit</text>
+    <text class="hint" x="948" y="632">Una fila inmutable por ingrediente usado</text>
+  </g>
+  <g>
+    <rect class="entity" x="930" y="700" width="390" height="200"/>
+    <rect class="head" x="930" y="700" width="390" height="37" rx="12"/>
+    <text class="name" x="948" y="725">inventory_movements</text>
+    <text class="key" x="948" y="761">PK · id · FK · user_id</text>
+    <text class="key" x="948" y="784">FK compuesta · source_completion_id, user_id</text>
+    <text class="key" x="948" y="807">FK compuesta · reverses_movement_id, user_id</text>
+    <text class="hint" x="948" y="835">Libro append-only; quantity lleva signo</text>
+    <text class="hint" x="948" y="857">food_id apunta al catálogo JSON</text>
+    <text class="hint" x="948" y="879">El saldo se obtiene sumando movimientos</text>
   </g>
 
   <!-- Lista de compra -->
@@ -177,6 +189,6 @@
 
   <line x1="40" y1="1005" x2="1760" y2="1005" stroke="#d1dae5" stroke-width="1"/>
   <text class="legend" x="40" y="1034">PK = clave primaria · FK = clave foránea · Las cajas personales incluyen user_id → auth.users.id para aplicar RLS por usuario.</text>
-  <text class="legend" x="40" y="1060">La relación naranja discontinua apunta a activity_sessions, definida en una migración pendiente. Las otras flechas muestran relaciones aplicadas.</text>
+  <text class="legend" x="40" y="1060">La línea naranja discontinua indica meal_completion_ingredients, definida en una migración pendiente.</text>
   <text class="legend" x="40" y="1086">El detalle completo de columnas, tipos, restricciones y claves está en las tablas de este documento.</text>
 </svg>

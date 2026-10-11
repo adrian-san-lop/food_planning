@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador y el registro local de sesiones realizadas están implementados. El HTML todavía no tiene autenticación ni sincronización; la migración de Supabase para sesiones está preparada, pero pendiente de aplicar.
+El esquema JSON, la carga de catálogos, la propuesta del planificador y el registro local de sesiones realizadas están implementados. El HTML todavía no tiene autenticación ni sincronización. La tabla remota de sesiones ya está aplicada; la migración aditiva de snapshots de comidas sigue pendiente.
 
 ## Catálogo y recetas
 
@@ -27,8 +27,10 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador y el regi
 
 ## Persistencia e integración
 
-- La integración del HTML con Supabase, Auth y sincronización queda pendiente. La migración aditiva `activity_sessions` está escrita en `supabase/migrations/`, pero todavía no se ha aplicado al proyecto.
-- Antes de conectar comidas con Supabase, decidir cómo guardar el snapshot de cantidades usadas por ingrediente en `recipeUnit`. El esquema actual conserva el evento y la receta, y los movimientos de despensa en unidad de inventario, pero no persiste las cantidades de receta por ingrediente.
-- ¿Qué tablas, claves y políticas RLS se aprobarán para los datos personales?
+- La integración del HTML con Supabase, Auth y sincronización queda pendiente. `activity_sessions` ya está aplicada; la migración aditiva de `meal_completion_ingredients` está escrita, pero todavía no se ha aplicado al proyecto.
+- Pendiente decidir si el registro permitirá altas abiertas o solo cuentas creadas/invitadas por el propietario, y qué método de acceso se usará.
+- Pendiente implementar y ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas y comprobar lecturas, altas y referencias entre filas de propietarios distintos.
+- Pendiente diseñar operaciones transaccionales e idempotentes para completar/revertir comidas y guardar sus snapshots junto con los movimientos.
+- Pendiente diseñar la importación inicial del estado local v8 y la persistencia remota desde varios dispositivos.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?
 - ¿Qué navegadores y dispositivos se validarán antes de declarar lista la sincronización?

@@ -1,16 +1,16 @@
 # Modelo de datos de Supabase
 
-Última revisión: 11 de octubre de 2026. Este documento distingue once tablas ya aplicadas de una migración aditiva pendiente. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
+Última revisión: 11 de octubre de 2026. Este documento distingue doce tablas ya aplicadas de una migración aditiva pendiente. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
 El HTML todavía no está conectado a Supabase: los datos de uso siguen en localStorage y no se ha creado una cuenta de Auth para la app. La comprobación actual valida tablas, RLS, políticas y permisos; no sustituye una prueba de acceso con una sesión autenticada.
 
 ## Diagrama entidad-relación
 
-El diagrama muestra las once tablas ya aplicadas y la tabla `activity_sessions` definida por una migración todavía pendiente. La tabla auth.users pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
+El diagrama muestra las doce tablas ya aplicadas y la tabla `meal_completion_ingredients`, definida por una migración todavía pendiente. La tabla auth.users pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
 
 ![Diagrama entidad-relación de la base de datos de Supabase](images/supabase_db_model.svg)
 
-PK significa clave primaria y FK significa clave foránea. Las tablas de la aplicación incluyen user_id para aislar sus filas por propietario. Las líneas discontinuas muestran referencias opcionales o aún no aplicadas; la relación naranja identifica la migración pendiente de `activity_sessions`.
+PK significa clave primaria y FK significa clave foránea. Las tablas de la aplicación incluyen user_id para aislar sus filas por propietario. Las líneas discontinuas muestran referencias opcionales o aún no aplicadas; el naranja identifica relaciones incluidas en migraciones pendientes.
 
 ## Convenciones
 
@@ -91,7 +91,7 @@ Restricción UNIQUE (cycle_id, meal_date, slot): no puede haber dos recetas en e
 
 ### meal_completions
 
-Conserva el evento de completar una comida, el ID de receta usado en ese momento y cuándo se revirtió. Los registros no se borran al desmarcar una comida. Esta tabla no guarda cantidades por ingrediente; los movimientos vinculados registran el consumo en la unidad de inventario del alimento.
+Conserva el evento de completar una comida, el ID de receta usado en ese momento y cuándo se revirtió. Los registros no se borran al desmarcar una comida. Las cantidades por ingrediente se guardan en `meal_completion_ingredients`; los movimientos vinculados registran el consumo en la unidad de inventario del alimento.
 
 | Columna | Tipo | Nulable | Clave o regla |
 | --- | --- | --- | --- |
@@ -105,9 +105,24 @@ Conserva el evento de completar una comida, el ID de receta usado en ese momento
 | reversed_at | timestamptz | Sí | Nulo mientras el evento no se haya revertido. |
 | created_at | timestamptz | No | DEFAULT now(). |
 
-Un índice único parcial permite como máximo una finalización no revertida por comida planificada y usuario. La lógica transaccional que crea o revierte el evento aún debe implementarse en la capa de aplicación o en funciones de base de datos.
+Un índice único parcial permite como máximo una finalización no revertida por comida planificada y usuario. La lógica transaccional que crea o revierte el evento, su snapshot y los movimientos aún debe implementarse en funciones de base de datos o en otra operación transaccional.
 
-Antes de integrar el HTML, decidir si se añadirá un snapshot de cantidades por ingrediente en unidad de receta. Lo necesitaríamos para conservar y volver a mostrar el peso realmente usado aunque cambie el catálogo; no debe confundirse con `inventory_movements.quantity`, que permanece en unidad de inventario.
+### meal_completion_ingredients — migración pendiente
+
+Guarda una fila inmutable por ingrediente de una comida completada. Conserva la cantidad realmente registrada en la unidad de receta, separada del movimiento de inventario que descuenta el stock en la unidad de despensa. Así, una receta puede guardar `250 g` de brócoli mientras el movimiento de inventario guarda, por ejemplo, `-0,63 ud`.
+
+| Columna | Tipo | Nulable | Clave o regla |
+| --- | --- | --- | --- |
+| completion_id | uuid | No | PK compuesta con ingredient_index; junto con user_id, FK → meal_completions (id, user_id); ON DELETE CASCADE. |
+| ingredient_index | smallint | No | PK compuesta; índice desde cero según el orden de ingredientes de la receta; no negativo. |
+| user_id | uuid | No | FK → auth.users.id; ON DELETE CASCADE; RLS compara con auth.uid(). |
+| food_id | text | No | ID estable de foods.json; no es una FK SQL. |
+| ingredient_name_snapshot | text | No | Nombre mostrado al registrar, entre 1 y 160 caracteres tras recortar espacios. |
+| quantity | numeric(14,4) | No | Cantidad positiva realmente usada, expresada en recipe_unit. |
+| recipe_unit | text | No | g, ml o ud. |
+| created_at | timestamptz | No | DEFAULT now(). |
+
+La tabla permite varias líneas para un mismo food_id, porque conserva el índice de línea original. RLS permite SELECT e INSERT de filas propias; el rol de la aplicación no recibe UPDATE ni DELETE. La reversión de la comida conserva estos snapshots y crea movimientos inversos; no los modifica.
 
 ### inventory_movements
 
@@ -154,9 +169,9 @@ Tabla heredada del diseño inicial; permite como máximo una marca por usuario y
 | training_date | date | No | UNIQUE junto con user_id: un registro por fecha y usuario. |
 | created_at | timestamptz | No | DEFAULT now(). |
 
-### activity_sessions — migración pendiente
+### activity_sessions — aplicada
 
-Registra sesiones ya realizadas, permite varias por usuario y fecha y conserva la actividad/MET usada como snapshot. La migración aditiva todavía no está aplicada al proyecto y el HTML no escribe en esta tabla.
+Registra sesiones ya realizadas, permite varias por usuario y fecha y conserva la actividad/MET usada como snapshot. La tercera migración aditiva se aplicó al proyecto el 11 de octubre de 2026; el HTML todavía no escribe en esta tabla.
 
 | Columna | Tipo | Nulable | Clave o regla |
 | --- | --- | --- | --- |
@@ -232,23 +247,25 @@ Guarda la selección, envase y estado marcado de cada artículo de la compra. La
 | auth.users | profiles | 1 a 0..1 | profiles.user_id es PK y FK a auth.users.id. |
 | auth.users | user_settings | 1 a 0..1 | user_settings.user_id es PK y FK a auth.users.id. |
 | auth.users | plan_cycles, planned_meals, meal_completions, inventory_movements, weight_logs, training_logs, prep_tasks, shopping_sessions, shopping_session_items | 1 a N por tabla | Tablas iniciales aplicadas; cada una tiene FK user_id → auth.users.id para propiedad y RLS. |
-| auth.users | activity_sessions | 1 a N | FK user_id → auth.users.id; relación incluida en migración pendiente. |
+| auth.users | activity_sessions | 1 a N | FK user_id → auth.users.id; tabla aplicada con RLS. |
+| auth.users | meal_completion_ingredients | 1 a N | FK user_id → auth.users.id; relación incluida en migración pendiente. |
 | plan_cycles | planned_meals | 1 a N | FK compuesta planned_meals (cycle_id, user_id). |
 | plan_cycles | prep_tasks | 1 a N | FK compuesta prep_tasks (cycle_id, user_id). |
 | plan_cycles | plan_cycles | 0..1 ciclo anterior a 0..N ciclos sucesores | FK compuesta (supersedes_cycle_id, user_id); el enlace es opcional. |
 | planned_meals | meal_completions | 1 a N registros históricos | FK compuesta meal_completions (planned_meal_id, user_id); solo uno puede quedar sin revertir. |
+| meal_completions | meal_completion_ingredients | 1 a N líneas | FK compuesta (completion_id, user_id); relación incluida en la cuarta migración pendiente; cada línea conserva cantidad y unidad de receta. |
 | meal_completions | inventory_movements | 1 a N movimientos | FK compuesta inventory_movements (source_completion_id, user_id); se usa para los consumos de la comida. |
 | inventory_movements | inventory_movements | 1 a 0..1 reverso | FK compuesta (reverses_movement_id, user_id) y un índice único por movimiento revertido. |
 | shopping_sessions | shopping_session_items | 1 a N | FK compuesta shopping_session_items (session_id, user_id). |
 
-Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de planned_meals/prep_tasks con ciclos y de shopping_session_items con sesiones usan ON DELETE CASCADE. Las FKs de comidas completadas, movimientos enlazados y ciclo sustituido usan ON DELETE RESTRICT para conservar la trazabilidad; una referencia restrictiva descendiente también puede impedir el borrado de un padre.
+Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de planned_meals/prep_tasks con ciclos, `shopping_session_items` con sesiones y `meal_completion_ingredients` con comidas completadas usan ON DELETE CASCADE. Las FKs de comidas completadas, movimientos enlazados y ciclo sustituido usan ON DELETE RESTRICT para conservar la trazabilidad; una referencia restrictiva descendiente también puede impedir el borrado de un padre.
 
 ## Seguridad y estado de validación
 
-- RLS está habilitado en las once tablas aplicadas y sus políticas filtran por auth.uid() = user_id. La migración pendiente habilita RLS y define políticas equivalentes para `activity_sessions`.
+- RLS está habilitado en las doce tablas aplicadas y sus políticas filtran por auth.uid() = user_id. La migración pendiente de snapshots también habilita RLS para `meal_completion_ingredients`.
 - El rol anon no tiene permisos de lectura, inserción, actualización ni borrado en estas tablas.
 - El rol authenticated recibe solo los permisos de tabla previstos; inventory_movements permite lectura e inserción, sin actualización ni borrado.
-- La migración estructural y la migración correctiva de permisos se aplicaron desde SQL Editor. La consulta estructural terminó sin errores y un resumen de catálogo mostró las once tablas con RLS activado. La tercera migración de sesiones aún no se ha aplicado ni comprobado en el proyecto.
+- Las migraciones inicial, correctiva de permisos y de sesiones se aplicaron desde SQL Editor. Una consulta de solo lectura confirmó que `activity_sessions` tiene RLS, policies SELECT/INSERT/DELETE propias, ningún permiso para `anon`, y permisos SELECT/INSERT/DELETE para `authenticated`. La cuarta migración de snapshots sigue pendiente.
 - Aún no se ha probado el aislamiento entre dos sesiones reales de Auth. La conexión del HTML, el usuario de Auth y las funciones transaccionales/idempotentes para completar comidas, reversos y compras siguen pendientes.
 - SQL Editor no registra por sí solo el historial de archivos de migración. Los archivos locales describen el orden aplicado, pero aún no existe una operación de Supabase CLI que los registre en su tabla de versiones.
 
@@ -256,6 +273,7 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 
 - Esquema inicial: [20261010130000_initial_schema.sql](../supabase/migrations/20261010130000_initial_schema.sql).
 - Permisos mínimos: [20261010131500_least_privilege_grants.sql](../supabase/migrations/20261010131500_least_privilege_grants.sql).
-- Sesiones realizadas (pendiente): [20261010140000_actual_activity_sessions.sql](../supabase/migrations/20261010140000_actual_activity_sessions.sql).
+- Sesiones realizadas (aplicada): [20261010140000_actual_activity_sessions.sql](../supabase/migrations/20261010140000_actual_activity_sessions.sql).
+- Snapshots de ingredientes (pendiente): [20261011100000_meal_completion_ingredient_snapshots.sql](../supabase/migrations/20261011100000_meal_completion_ingredient_snapshots.sql).
 - Comprobación estructural: [001_schema_check.sql](../supabase/tests/001_schema_check.sql).
 - Guía de Supabase: [supabase/README.md](../supabase/README.md).

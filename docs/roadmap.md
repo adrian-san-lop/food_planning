@@ -8,7 +8,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - El estado local actual es v8; admite importaciones v5-v8. Las sesiones realizadas se guardan con fecha.
 - Los catálogos JSON están en versión 0.5.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML. Las recetas pesan frutas/verduras enteras en gramos; inventario y compras las cuentan por unidades. Recuperación ósea usa etiquetas cualitativas de alimentos para favorecer fuentes de calcio, vitamina D y vitamina C en propuestas futuras.
 - La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
-- El esquema relacional inicial de Supabase y sus políticas RLS están aplicados. La migración aditiva de sesiones está pendiente; el HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
+- El esquema de Supabase tiene doce tablas con RLS aplicadas, incluida la de sesiones reales. La migración aditiva para snapshots de ingredientes está preparada y pendiente; el HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
 - Las sesiones reales ajustan las comidas pendientes de su misma fecha; días futuros mantienen el objetivo base y las comidas registradas conservan sus cantidades.
 
 ## Etapas candidatas
@@ -31,10 +31,13 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - Aplicar las reglas aceptadas con heurísticas iniciales; añadir preferencias personales solo después de decidir su modelo.
 - Permitir revisar, cambiar y bloquear platos; preservar bloqueos al regenerar; guardar versión de catálogo y cantidades consumidas.
 
-### D. Persistencia remota, si se mantiene como prioridad
+### D. Persistencia remota y Auth — diseño y preparación en curso
 
-- Esquema relacional inicial y políticas RLS: aplicados. Aplicar la migración aditiva `activity_sessions` antes de sincronizar sesiones.
-- Configurar Auth, integrar Supabase en el HTML con clave publicable y migrar desde un backup v5-v8 sin duplicar movimientos.
+- Esquema inicial y RLS: aplicados según el registro del proyecto. La migración aditiva `activity_sessions` se aplicó y se verificaron su RLS y permisos; `meal_completion_ingredient_snapshots` sigue pendiente.
+- Definición de snapshots de ingredientes: aceptada y documentada en ADR-0007; aplicar la migración antes de conectar comidas completadas.
+- Método de Auth y política de altas: pendiente de decidir. Autenticación, integración HTML y operaciones transaccionales: pendientes.
+- Prueba de aislamiento con dos usuarios: pendiente; debe cubrir lectura, inserción y referencias cruzadas con cuentas reales.
+- Importar el estado local v8 una sola vez: pendiente de que Auth, esquema y aislamiento estén resueltos.
 - Comprobar PC/móvil, errores de conexión y restauración antes de afirmar que hay sincronización.
 
 ### E. Compra, inventario y robustez

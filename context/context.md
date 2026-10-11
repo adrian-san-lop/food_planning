@@ -24,7 +24,7 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 - `food.unit` is the pantry/purchase unit and `food.recipeUnit` is the recipe unit. Whole produce uses recipe `g` and pantry/purchase `ud`; eggs use `ud`, solids are weighed in `g`, and liquids use `ml`. Milk is purchased in 1 L cartons.
 - If a logged meal consumes more than recorded stock, record the full consumption and show the deficit. Reversals must not be applied twice.
 - Legacy strength-day flags may remain in imported state but are inert; fixed-menu third-amount overrides were removed. New activity sessions are local-only and included in JSON exports.
-- Supabase has eleven initial tables applied. The additive `activity_sessions` migration is prepared but not applied, and the HTML has no Supabase Auth or synchronization integration.
+- Supabase has twelve tables with RLS applied, including `activity_sessions`. The additive `meal_completion_ingredients` migration is prepared but not applied. ADR-0007 accepts immutable per-ingredient completion snapshots in recipe units, separate from inventory movements. The HTML has no Supabase Auth or synchronization integration; account creation, two-user RLS validation, transactional operations, and one-time v8 import remain pending.
 - No offline queue. Do not claim the current `localStorage` state is synchronized or backed up in the cloud.
 
 ## Source-of-truth map
@@ -38,6 +38,7 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 - [Roadmap](docs/roadmap.md): candidate stages and acceptance criteria.
 - [Decision records](docs/decisions/): rationale and acceptance status.
 - [Actual activity-session nutrition decision](docs/decisions/0005-actual-activity-session-nutrition.md): same-date, post-session calculation and its limits.
+- [Meal completion ingredient snapshot decision](docs/decisions/0007-meal-completion-ingredient-snapshots.md): immutable recipe-unit quantities, separate from inventory movements.
 - [Open questions](docs/open-questions.md): proposals and decisions still needed.
 
 Before editing, check the active branch and working tree, then verify current behavior in `plan_alimentacion_dinamico_3_semanas.html`. Do not infer implementation from plans in the documentation.

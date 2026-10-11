@@ -14,7 +14,7 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - Hay un recordatorio semanal dentro de la página para descargar una copia JSON. No envía notificaciones del sistema.
 - Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales.
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.
-- El proyecto Supabase tiene once tablas iniciales con RLS. Hay una migración aditiva pendiente para sesiones de actividad; el HTML aún no está conectado y no hay inicio de sesión ni sincronización entre dispositivos. Los datos siguen en `localStorage`.
+- El proyecto Supabase tiene doce tablas con RLS, incluida `activity_sessions`. Queda pendiente aplicar la migración aditiva de snapshots de ingredientes; el HTML aún no está conectado y no hay inicio de sesión ni sincronización entre dispositivos. Los datos siguen en `localStorage`.
 
 ### Importar datos entre instalaciones
 
@@ -78,7 +78,7 @@ Tu usuario
 
 Ejemplo: si hay `2 ud` de brócoli y registras una receta que usa `250 g`, con un peso comestible estimado de `400 g/ud`, la app muestra `250 g` en la receta y descuenta aproximadamente `0,63 ud` del inventario. Si el saldo no alcanza, registra el consumo completo y muestra el déficit en unidades. Al desmarcar la comida, añade un movimiento inverso en la misma unidad de inventario; no borra el historial ni vuelve a descontar por un reintento.
 
-El dibujo resume la separación prevista. El proyecto Supabase ya contiene las once tablas iniciales y políticas RLS por propietario. La migración para sesiones reales está preparada en [`supabase/`](supabase/README.md), pero pendiente de aplicar. El HTML aún no usa esa base: faltan configurar Auth, implementar operaciones transaccionales y conectar la aplicación. Hasta entonces, el estado sigue en el navegador. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
+El dibujo resume la separación prevista. El proyecto Supabase tiene doce tablas con políticas RLS por propietario; queda pendiente una migración aditiva para snapshots de ingredientes. El HTML aún no usa esa base: faltan decidir el método de acceso, probar el aislamiento con dos usuarios, implementar operaciones transaccionales y conectar la aplicación. Hasta entonces, el estado sigue en el navegador. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
 
 ## Datos y copias de seguridad
 
