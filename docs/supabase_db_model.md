@@ -2,7 +2,7 @@
 
 Última revisión: 11 de octubre de 2026. El proyecto tiene trece tablas aplicadas; las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
-El HTML y Supabase Auth están integrados en el repositorio; la migración de sincronización también está aplicada al proyecto. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta publicar este HTML y probar el flujo real entre dispositivos y el aislamiento con dos cuentas autenticadas.
+El HTML y Supabase Auth están integrados en el repositorio; las siete migraciones también están aplicadas al proyecto. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta publicar este HTML y probar el flujo real entre dispositivos y el aislamiento con dos cuentas autenticadas.
 
 ## Diagrama entidad-relación
 
@@ -54,6 +54,7 @@ Una fila opcional por usuario con los parámetros usados por el cálculo nutrici
 | manual_rmr_kcal | smallint | No | DEFAULT 1600; entre 800 y 3500. |
 | created_at | timestamptz | No | DEFAULT now(). |
 | updated_at | timestamptz | No | DEFAULT now(); la base no lo actualiza automáticamente. |
+| profile_confirmed | boolean | No | DEFAULT false; el usuario revisó y guardó el perfil usado para los cálculos. |
 
 ### plan_cycles
 
@@ -272,7 +273,7 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 - RLS está habilitado en las trece tablas aplicadas y sus políticas filtran por auth.uid() = user_id.
 - El rol anon no tiene permisos de lectura, inserción, actualización ni borrado en estas tablas.
 - El rol authenticated recibe solo los permisos de tabla previstos; inventory_movements permite lectura e inserción, sin actualización ni borrado.
-- Las seis migraciones se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el reinicio/restauración transaccional. Ambas funciones son `SECURITY DEFINER`, derivan el propietario de `auth.uid()` y solo conceden ejecución a `authenticated`.
+- Las siete migraciones se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el reinicio/restauración transaccional; la séptima añadió `profiles.profile_confirmed` y actualizó `sync_menuki_state` para guardar la confirmación y conservarla si un cliente antiguo no envía ese campo. Ambas funciones son `SECURITY DEFINER`, derivan el propietario de `auth.uid()` y solo conceden ejecución a `authenticated`.
 - Consultas previas confirmaron que `activity_sessions` y `meal_completion_ingredients` tienen RLS y permisos mínimos; los snapshots no conceden UPDATE ni DELETE a `authenticated`. La aplicación del SQL de sincronización devolvió éxito; no se ha probado todavía con dos sesiones autenticadas ni desde GitHub Pages.
 - El HTML ya contiene inicio de sesión y sincronización; la publicación, el primer traspaso de datos local a remoto y la prueba entre PC/móvil siguen pendientes.
 - SQL Editor no registra por sí solo el historial de archivos de migración. Los archivos locales describen el orden aplicado, pero aún no existe una operación de Supabase CLI que los registre en su tabla de versiones.
@@ -285,5 +286,6 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 - Snapshots de ingredientes (aplicada): [20261011100000_meal_completion_ingredient_snapshots.sql](../supabase/migrations/20261011100000_meal_completion_ingredient_snapshots.sql).
 - Sincronización relacional (aplicada): [20261011120000_menuki_cloud_sync.sql](../supabase/migrations/20261011120000_menuki_cloud_sync.sql).
 - Reinicio/restauración confirmados (aplicada): [20261011130000_menuki_cloud_reset.sql](../supabase/migrations/20261011130000_menuki_cloud_reset.sql).
+- Confirmación de revisión del perfil (aplicada): [20261011150000_profile_confirmation.sql](../supabase/migrations/20261011150000_profile_confirmation.sql).
 - Comprobación estructural: [001_schema_check.sql](../supabase/tests/001_schema_check.sql).
 - Guía de Supabase: [supabase/README.md](../supabase/README.md).

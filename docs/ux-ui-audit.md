@@ -1,62 +1,151 @@
-# Auditoría UX/UI y diagnóstico del acceso
+# Auditoría UX/UI de Menuki
 
-**Fecha:** 11 de octubre de 2026  
-**Alcance:** inspección manual de la aplicación publicada y comparación de los archivos de ejecución de las ramas `dev` y `main`. Esta auditoría no cambia el comportamiento de la aplicación.
+- **Fecha:** 11 de octubre de 2026
+- **Aplicación revisada:** [Menuki en GitHub Pages](https://adrian-san-lop.github.io/food_planning/menuki.html)
+- **Alcance:** recorrido de primera visita y tareas habituales en escritorio y en vista móvil adaptable. Las observaciones describen la versión publicada durante la auditoría; el estado de implementación posterior se indica a continuación.
 
 ## Resumen
 
-La versión inspeccionada abre directamente el plan, sin pedir iniciar sesión. La comparación del repositorio explica por qué: el archivo actual `menuki.html` de `dev` no contiene la pantalla de acceso ni autenticación Supabase. En cambio, `main` conserva el HTML anterior, que sí contiene ambas.
+La app ofrece las secciones necesarias para consultar el menú, gestionar la despensa, preparar la compra y revisar el perfil. El problema principal es que, al iniciar sesión, no guía al usuario por un primer recorrido ni le indica si debe completar el perfil. La pantalla de inicio invita a explorar el menú, mientras muestra datos de perfil ya rellenados cuyo estado no se explica.
 
-Por tanto, el acceso no parece haberse eliminado del historial: quedó en la línea de `main` y no llegó al archivo renombrado de `dev`. Las ramas también tienen entradas distintas (`index.html` redirige a nombres de HTML diferentes). La fuente configurada actualmente en **Settings → Pages** no se pudo verificar desde el repositorio, así que no se puede afirmar qué rama está publicando GitHub Pages.
+La primera visita también presenta una decisión sobre datos locales y Supabase, además de avisos y controles de copia. Todo ello compite con la pregunta más inmediata de un usuario nuevo: «¿Qué tengo que hacer para que el menú se adapte a mí y cómo empiezo?».
 
-La conclusión operativa es que ahora hay dos versiones distintas: una con el trabajo posterior de autenticación y sincronización en `main`, y otra con el HTML renombrado y sin ese trabajo en `dev`. Antes de continuar los cambios de UX/UI, conviene reconciliar ambos historiales y decidir cuál será el archivo de ejecución que se publica.
+La experiencia cambia con el tamaño de pantalla: en escritorio las secciones se encuentran en una barra lateral; en móvil pasan a una barra inferior con ocho opciones. La compra y la despensa siguen siendo recorridos largos en móvil.
 
-## Evidencia sobre el inicio de sesión
+## Estado de las mejoras de prioridad alta
 
-| Evidencia | Hallazgo |
-| --- | --- |
-| `origin/dev`, commit `1a92aa2` | Contiene `menuki.html` y un `index.html` que redirige a `./menuki.html`. La búsqueda del HTML no encuentra el formulario ni las llamadas de autenticación (`supabase.auth`, `getSession`, inicio de sesión). |
-| `origin/main`, commit `0bf612e` | Contiene `plan_alimentacion_dinamico_3_semanas.html`, no `menuki.html`. El HTML incluye formulario de inicio/registro y lógica de Supabase Auth. Su `index.html` redirige al nombre antiguo. |
-| Historial de `main` | El formulario se incorporó en `6b117cb` (`feat/login-page`); después, `3ac62e4` añadió la integración de estado con Supabase. Esos commits no aparecen en la línea de `dev` que termina en `1a92aa2`. |
-| Página revisada | La URL abierta fue `https://adrian-san-lop.github.io/food_planning/menuki.html`. Se abrió directamente la aplicación, sin acceso. Su apartado de privacidad indicaba almacenamiento en el navegador, coherente con la versión local de `dev`. No se introdujeron las credenciales de prueba porque no había formulario. |
-| README en el momento de la auditoría | Indicaba publicar `main` desde la raíz, pero esa instrucción no coincidía con la configuración que el propietario había seleccionado en GitHub. |
+Las tres propuestas de prioridad alta están implementadas en el HTML de la rama `docs/ux-audit-pc-mobile`; la migración que guarda la confirmación del perfil también se aplicó en Supabase. Aún no se han publicado en GitHub Pages ni validado con un usuario nuevo y dos copias divergentes.
 
-### Aclaración posterior sobre la publicación
+- **Primera visita y perfil:** Inicio guía por cinco pasos y dirige a revisar los valores genéricos. El perfil queda marcado como revisado al guardarlo; esa marca se sincroniza con Supabase.
+- **Conflicto de copias:** un panel resume perfil, menú, comidas realizadas, movimientos de despensa, pesos, sesiones, compra y fechas de actualización, y explica qué se reemplaza o integra antes de elegir entre la copia local y Supabase.
+- **Planificación y registro:** las comidas futuras aparecen como planificadas y el control para registrarlas está deshabilitado hasta la fecha correspondiente.
 
-Después de la auditoría, el propietario confirmó que configuró GitHub Pages para publicar desde `dev`. Esto explica el comportamiento observado: en ese momento `dev` tenía `menuki.html` sin el login que sí estaba en `main`.
+Las observaciones siguientes describen lo que se encontró antes de estas mejoras. Las propuestas de prioridad media y baja continúan pendientes.
 
-Durante la integración en curso, Git trasladó el HTML de `main` a `menuki.html` sin conflicto de contenido; la copia de trabajo ahora incluye Supabase Auth y la sincronización. El cambio todavía debe llegar a `dev` y publicarse allí para que el login aparezca en la web. Esta auditoría documenta el estado observado antes de esa publicación.
+## Alcance y método
 
-## Observaciones de uso
+- Se inició sesión en la página publicada con la cuenta de prueba facilitada por el propietario.
+- Se recorrieron las pantallas disponibles sin registrar comidas, peso, sesiones, compras ni cambios de perfil o despensa.
+- Se revisó el escritorio a 1280 × 720 y la vista adaptable móvil a 390 × 844. La vista móvil se simuló en el navegador; no equivale a una prueba en un teléfono físico.
+- Al entrar, la app avisó de que había datos locales sin copia en Supabase y ofreció **Usar versión de Supabase** o **Subir esta copia**. No se eligió ninguna opción, porque la primera puede reemplazar la copia local y la segunda puede subirla.
+- La sesión y la navegación fueron las únicas acciones realizadas en la cuenta. No se verificó la sincronización después de resolver esa decisión inicial.
 
-La inspección permitió recorrer Inicio, Perfil, Menú, Recetas, Compra, Despensa, Peso y Guía; abrir una receta y el formulario de actividad; buscar recetas y revisar la lista de compra y los filtros de despensa. No se registró ninguna comida, sesión, peso, compra ni propuesta de menú. Los cambios exploratorios en los campos se restituyeron antes de guardar. La prueba se hizo en la página abierta y en una ventana de escritorio; no equivale a una validación en un teléfono físico.
+## Recorrido de primera visita observado
 
-### Hallazgos y mejoras sugeridas
+1. El usuario inicia sesión y entra en la aplicación, sin un paso de bienvenida o configuración inicial.
+2. Aparece una decisión entre los datos de Supabase y los datos locales. Los botones indican qué copia se selecciona, pero no explican de forma visible qué contiene cada una ni qué se reemplazará.
+3. La pantalla de inicio presenta el menú y una invitación a explorarlo. No prioriza revisar el perfil ni aclara que los datos ya visibles deban confirmarse.
+4. En el perfil se muestran valores como edad, altura, peso y gasto en reposo. La pantalla no permite distinguir claramente si son datos confirmados por el usuario o valores iniciales.
+5. La despensa puede rellenarse producto por producto. La compra presenta los artículos calculados para los próximos siete días y requiere pulsar **Finalizar compra** para actualizar el stock.
+6. El usuario puede volver al menú y registrar las comidas. La aplicación no presenta estos pasos como una secuencia ni muestra un progreso de configuración.
 
-1. **Explicar el estado de los datos desde el primer uso.** La aplicación observada no pidió acceso y describe el almacenamiento local. El perfil inicial muestra valores genéricos, pero no resulta evidente en pantalla que sean ejemplos. Conviene identificar claramente el modo actual de almacenamiento y etiquetar el perfil de ejemplo durante el alta inicial.
-2. **Evitar registrar comidas futuras.** En el menú se podían usar los controles de registro para días posteriores. La acción puede descontar inventario antes de haber comido. La interfaz debería diferenciar comida planificada de comida realizada y evitar o confirmar explícitamente el registro anticipado.
-3. **Aclarar las cifras nutricionales.** Una receta aparecía con 460 kcal y 33 g de proteína en el catálogo, mientras que en el menú se mostraba con 447 kcal y 28 g. La adaptación de la ración puede explicar la diferencia, pero la vista no deja suficientemente claro qué valor corresponde a la receta base y cuál a la ración personalizada.
-4. **Simplificar la compra.** La semana revisada generaba 48 productos pendientes. La lista era larga y no se apreciaba una búsqueda; la diferencia entre marcar un producto y finalizar la compra requiere una explicación más visible, porque marcarlo no actualiza por sí solo la despensa.
-5. **Reducir la carga de navegación móvil.** La navegación presenta ocho destinos a la vez. En la vista disponible las etiquetas se veían pequeñas; falta probar en varios anchos de teléfono antes de decidir si agrupar destinos secundarios.
-6. **Dar menos protagonismo al recordatorio de copia.** El aviso semanal de copia aparecía con mucho peso visual y repetido en distintas secciones. Puede ser más discreto sin ocultar cómo hacer una copia cuando el usuario la necesite.
-7. **Hacer explícito el comportamiento de las propuestas.** Abrir el planificador crea y guarda un borrador; cerrar el diálogo no ofrece una acción clara para descartarlo. Conviene explicar que el borrador se conserva y ofrecer una salida deliberada para descartarlo.
-8. **Usar un nombre neutral para el esfuerzo.** El formulario de actividad parte de “Fuerza · rutina habitual”, aunque existen actividades como carrera, surf o fútbol. Un valor inicial neutral evitaría orientar al usuario hacia una actividad concreta.
-9. **Acortar la guía de uso.** La guía reúne instrucciones de usuario y detalles técnicos de formatos y migraciones. Para el uso cotidiano sería más fácil encontrar tareas frecuentes si se priorizaran instrucciones breves y se separaran los detalles de mantenimiento.
+**Resultado:** alguien que nunca ha usado Menuki puede explorar pantallas, pero debe deducir por su cuenta qué datos revisar primero y qué significa cada paso.
 
-### Aspectos que ya ayudan
+## Versión para PC
 
-- Las secciones principales se distinguen bien y mantienen el idioma y el estilo visual de Menuki.
-- Las tarjetas del menú muestran tipo de comida, tiempo y resumen nutricional.
-- El detalle de una receta reúne ingredientes, cantidades, faltantes de despensa e instrucciones.
-- La despensa ofrece búsqueda y filtros de stock/déficit.
-- La lista de compra diferencia los productos de la despensa y ofrece una acción para finalizar la compra.
+**Tamaño revisado:** 1280 × 720.
 
-## Orden propuesto para continuar
+### Lo que funciona
 
-1. Confirmar la fuente de GitHub Pages y cuál es la versión que debe considerarse válida.
-2. Comparar los cambios de autenticación y persistencia de `main` con el HTML de `dev`, conservando el cambio de nombre a `menuki.html` y evitando reemplazar trabajo posterior por una versión antigua.
-3. Tras unificar el archivo que se publica, repetir la prueba de acceso con la cuenta de prueba y verificar el estado de persistencia antes de cambiar la UX/UI.
-4. Priorizar primero las mejoras que afectan a la confianza y a la acción: claridad sobre almacenamiento/perfil de ejemplo, registro de comidas futuras, lista de compra y valores nutricionales.
-5. Probar navegación y legibilidad en móvil real antes de reorganizar destinos.
+- La barra lateral mantiene visibles las ocho áreas principales y permite cambiar de sección sin perder el contexto.
+- La vista amplia separa bien los bloques de contenido y las tarjetas del menú muestran el tipo de comida y el resumen nutricional.
+- La despensa incluye búsqueda y filtros por menús, stock y déficit.
+- En la compra se entiende que marcar artículos prepara la lista y que **Finalizar compra** actualiza la despensa.
 
-Este orden es una recomendación derivada de la auditoría, no una modificación funcional ni una decisión de producto aprobada.
+### Fricciones encontradas
+
+1. **No hay una acción principal para empezar.** La portada dirige a «Explorar mis 3 semanas»; revisar o completar el perfil queda como opción secundaria. No se indica si el perfil es opcional, incompleto o ya validado.
+2. **Los datos de perfil parecen definitivos.** Se ven valores rellenados sin una marca visible que indique su procedencia o si el usuario los confirmó. Esto puede hacer que se confíe en objetivos calculados con datos que quizá no se han revisado.
+3. **La portada mezcla tareas y mantenimiento.** El estado de la cuenta, las opciones de copia, el selector de semana y el recordatorio de copia aparecen junto al contenido del plan. La acción para entender o configurar la aplicación no destaca.
+4. **La navegación no explica el orden recomendado.** Perfil, menú, compra y despensa están al mismo nivel; quien llega por primera vez no sabe por dónde comenzar.
+5. **El detalle de la compra queda al final de una lista larga.** Con 48 productos pendientes en la cuenta revisada, conviene mantener el resumen y la acción para finalizar a mano mientras se recorre la lista.
+6. **Se puede confundir un día planificado con una comida ya realizada.** El plan comenzaba el 13 de octubre y algunas acciones de registro aparecían disponibles para fechas futuras. Debe quedar claro cuándo se consumió la comida antes de descontar existencias.
+
+## Versión para móvil
+
+**Tamaño revisado:** 390 × 844, mediante vista adaptable del navegador.
+
+### Lo que funciona
+
+- La barra inferior permite cambiar de sección sin abrir un menú lateral.
+- Las tarjetas se ajustan al ancho reducido y conservan nombres, cantidades y acciones principales.
+- La compra separa los artículos por establecimiento y categoría, lo que ayuda a recorrerla en tienda.
+
+### Fricciones encontradas
+
+1. **Ocho destinos compiten en la barra inferior.** Las etiquetas son pequeñas y ocupan casi todo el ancho. Perfil, peso y guía tienen la misma presencia que Inicio, Menú y Compra.
+2. **La primera pantalla exige mucho desplazamiento.** La cuenta, la decisión de datos, el aviso de copia y la presentación del plan ocupan espacio antes de llegar a la acción que orienta al usuario.
+3. **La compra es un recorrido largo.** La lista tenía 48 productos pendientes y el botón para finalizar aparece después de los artículos. En un móvil usado mientras se compra, interesa poder consultar el progreso y finalizar sin volver al extremo de la página.
+4. **Los títulos y textos se parten en muchas líneas.** En despensa y guía, los encabezados largos reducen el espacio disponible para las tareas y los campos.
+5. **La despensa repite una indicación bajo cada campo.** El texto «Guardar al salir del campo» se repite en los productos; ocupa espacio y no ayuda a decidir qué cantidad introducir.
+6. **La sincronización y las copias distraen del uso.** Los avisos y controles de cuenta ocupan una parte visible de la pantalla, incluso cuando la tarea es revisar el menú o la compra.
+
+## Cambios que el propietario ya propone
+
+Estos puntos quedan registrados como propuestas de la siguiente iteración. No se han implementado en esta auditoría.
+
+- **Eliminar la exportación y las referencias a exportar copias de la interfaz.** El botón de exportación y los avisos repetidos de descarga compiten con el uso diario. Revisar también las menciones de exportación en la guía.
+- **Retirar el botón de sincronización manual si la sincronización automática cubre el uso normal.** El botón actual no se limita a la primera carga: también permite pedir una sincronización manual, mientras la app programa sincronizaciones automáticas tras los cambios. Si se retira, la interfaz debería explicar con claridad si los cambios están guardados y mostrar una acción para reintentar cuando falle. La decisión inicial entre copia local y Supabase es un caso distinto y debe conservar instrucciones claras.
+- **Quitar «Guardar al salir del campo» de cada producto de la despensa.** La acción debe sentirse directa; cualquier confirmación de guardado puede ser discreta y aparecer solo tras un cambio.
+
+## Propuestas para mejorar el recorrido
+
+### 1. Dar una bienvenida breve y un primer paso claro
+
+Después del acceso, presentar una tarjeta de inicio con una secuencia sencilla:
+
+1. **Revisa tu perfil** para ajustar los datos que afectan a los objetivos.
+2. **Comprueba el menú** y entiende cómo cambiar una propuesta.
+3. **Configura la despensa** o indica que prefieres hacerlo más tarde.
+4. **Consulta la compra de la semana** y finalízala cuando hayas comprado.
+5. **Registra las comidas** a medida que las completes.
+
+Mostrar el paso actual y permitir saltar tareas que no sean necesarias todavía. El perfil no debería parecer completo por tener campos rellenados: distinguir los valores iniciales de los confirmados y explicar qué datos afectan a los cálculos.
+
+### 2. Reducir la carga de Inicio
+
+Priorizar una sola acción relevante, por ejemplo **Revisar mi perfil** si aún no está confirmado, o **Ver el menú de hoy** cuando ya lo esté. Dejar los detalles de sincronización y mantenimiento en un estado compacto o en Ajustes.
+
+### 3. Aclarar la elección cuando hay dos copias
+
+Si aparecen **Usar versión de Supabase** y **Subir esta copia**, explicar antes de elegir:
+
+- qué datos hay en cada copia y cuándo se actualizaron;
+- qué datos se conservarán y cuáles podrían reemplazarse;
+- cuál es la opción recomendada para esta cuenta.
+
+Así la decisión se puede tomar con confianza sin que el usuario tenga que conocer cómo está implementada la sincronización.
+
+### 4. Hacer más manejable la compra en móvil
+
+Mantener visible un resumen breve —artículos marcados y pendientes— y facilitar el acceso a **Finalizar compra** durante el recorrido. Añadir búsqueda o filtros útiles si la lista completa resulta difícil de manejar. Explicar junto al control que marcar un artículo no actualiza la despensa hasta finalizar.
+
+### 5. Simplificar la navegación móvil
+
+Dar prioridad a Inicio, Menú, Compra y Despensa. Evaluar si Perfil, Peso, Recetas y Guía pueden agruparse bajo **Más**, con una etiqueta legible y un orden estable. Confirmar la decisión en teléfonos reales y con sus áreas seguras antes de cambiar la navegación.
+
+### 6. Separar planificación y registro
+
+Marcar con claridad qué comidas son futuras y cuáles ya se pueden registrar. El registro debería corresponder a una comida completada y avisar del efecto sobre la despensa antes de descontar ingredientes.
+
+## Prioridad recomendada
+
+| Prioridad | Mejora | Motivo | Estado |
+| --- | --- | --- | --- |
+| Alta | Guiar la primera visita y pedir que se revise el perfil | Sin ello, los objetivos pueden parecer personalizados aunque no se hayan confirmado los datos. | Implementada en rama; pendiente publicar y validar. |
+| Alta | Aclarar qué hace cada opción al resolver un conflicto entre copias | El usuario puede temer perder información o seleccionar la copia equivocada. | Implementada en rama; pendiente publicar y validar. |
+| Alta | Diferenciar el menú planificado de una comida registrada | Evita descontar despensa antes del consumo. | Implementada en rama; pendiente publicar y validar. |
+| Media | Simplificar los avisos y controles de copia/sincronización según la propuesta del propietario | Reduce ruido en Inicio y en móvil. | Pendiente. |
+| Media | Mejorar el recorrido de compra con lista larga en móvil | La compra es una tarea frecuente y se realiza mientras se consulta la pantalla. | Pendiente. |
+| Media | Eliminar el texto repetido de guardado en despensa | Libera espacio sin añadir información útil. | Pendiente. |
+| Baja | Revisar el número y tamaño de destinos de navegación en móvil | Puede mejorar la lectura, pero debe validarse en dispositivos reales. | Pendiente. |
+
+## Qué falta validar
+
+- Hacer un recorrido desde una cuenta realmente nueva y verificar que la guía dirige al perfil, desaparece después de confirmarlo y la marca se conserva tras iniciar sesión en otro dispositivo.
+- Preparar dos copias divergentes y verificar los resúmenes, las consecuencias descritas y el resultado de cada opción.
+- Confirmar que una comida futura no se puede registrar desde Inicio, el menú semanal ni el detalle de receta y que el control se habilita cuando llega la fecha.
+- Probar compra, navegación y áreas seguras en un teléfono físico.
+- Verificar qué mensajes aparecen cuando la sincronización automática funciona y cuando falla.
+
+La auditoría original describe observaciones de la interfaz publicada el 11 de octubre de 2026. Las tres propuestas altas ya se implementaron localmente; las demás propuestas siguen sin implementarse.

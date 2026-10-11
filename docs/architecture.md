@@ -11,7 +11,9 @@ Navegador
         ├── menuki.html
         │     ├── carga data/foods.json y data/recipes.json
         │     ├── conserva el menú fijo inicial y propone el siguiente ciclo
+        │     ├── guía la primera visita y pide confirmar el perfil
         │     ├── registra sesiones realizadas y adapta las comidas pendientes de esa fecha
+        │     ├── deja las comidas futuras como planificadas
         │     ├── Supabase Auth (correo y contraseña)
         │     ├── sincroniza el estado personal en tablas relacionales por user_id
         │     └── conserva una copia de trabajo local (formato v8)
@@ -22,11 +24,14 @@ Navegador
 - `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al HTML principal, también en la raíz.
 - El HTML carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
+- En la primera visita, una guía breve recomienda revisar el perfil antes de confiar en objetivos calculados con valores de ejemplo. La marca se guarda localmente y en `profiles.profile_confirmed`.
+- Cuando la copia local y Supabase divergen, la interfaz muestra el estado del perfil, el inicio del menú, comidas realizadas, movimientos de despensa, pesos, sesiones, artículos de compra y fechas de actualización. Explica que usar Supabase reemplaza la copia local pendiente; subir la local reemplaza perfil, menú y compra remotos e integra los registros por identificador. No elige ni reemplaza datos en silencio.
+- Las comidas de fechas futuras se muestran como planificadas y no se pueden registrar como consumidas antes de que llegue ese día.
 - `localStorage` conserva una copia de trabajo. La fuente común para una cuenta inicializada son las tablas privadas de Supabase; el indicador de la app distingue cambios sincronizados de cambios locales pendientes o en conflicto.
 - Los alimentos separan medida de receta (`recipeUnit`) y medida de inventario (`unit`). Frutas y verduras enteras se pesan en gramos en recetas y se cuentan por piezas en despensa y compra; una conversión por peso comestible aproximado conecta ambas.
 - Las sesiones se registran después de realizarse. Su energía neta estimada se aplica solo a la fecha de la sesión y a comidas aún pendientes; no cambia días futuros ni cantidades ya registradas.
 - Supabase conserva identidad en `auth.users` y los datos personales en sus tablas relacionales con RLS. El perfil se guarda en `profiles`; las credenciales no se copian a tablas públicas.
-- La migración `20261011120000_menuki_cloud_sync.sql` añade la operación transaccional e idempotente de sincronización, control de revisión para evitar sobrescribir cambios recientes y metadatos de ciclos/sesiones. No se almacena el estado completo como JSON en una columna.
+- La migración `20261011120000_menuki_cloud_sync.sql` añade la operación transaccional e idempotente de sincronización, control de revisión para evitar sobrescribir cambios recientes y metadatos de ciclos/sesiones. La migración `20261011150000_profile_confirmation.sql` añade la confirmación del perfil y actualiza la sincronización para guardarla sin borrar una confirmación al recibir clientes antiguos. No se almacena el estado completo como JSON en una columna.
 - Reiniciar toda la cuenta o restaurar una copia JSON requiere una confirmación específica y usa `reset_menuki_state`, que reemplaza las filas propias en la misma transacción; la sincronización habitual no borra el historial.
 - El primer acceso de una cuenta sin inicializar importa su estado local una sola vez. Los dispositivos siguientes leen el estado remoto. No hay cola offline; la app requiere conexión para sincronizar y muestra cuándo conserva cambios locales pendientes.
 - Los snapshots de ingredientes mantienen retención indefinida y no se purgan automáticamente. Vigilar el crecimiento de la base al añadir usuarios, con revisión alrededor de 350 MB.
@@ -64,11 +69,11 @@ No colocar datos personales o copias de seguridad en GitHub. Aunque un repositor
 
 El proyecto tiene tablas relacionales para perfiles, ciclos, comidas planificadas y realizadas, movimientos de inventario, peso, entrenamientos, preparación y listas de compra. El esquema se define en `supabase/migrations/`; la comprobación estructural y de permisos está en `supabase/tests/`. El catálogo genérico no requiere una tabla por alimento o receta.
 
-Las trece tablas aplicadas son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `meal_completion_ingredients`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items`, `user_settings` y `activity_sessions`. `meal_completion_ingredients` conserva una fila por ingrediente realmente usado, sin caducidad temporal ni purga programada. `training_logs` y `profiles.training_bonus_kcal` quedan como tabla/campo heredados y no se usarán para el nuevo cálculo. Las migraciones se aplicaron desde SQL Editor; Supabase todavía no registra automáticamente el historial de esos archivos.
+Las trece tablas aplicadas son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `meal_completion_ingredients`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items`, `user_settings` y `activity_sessions`. `profiles.profile_confirmed` es una marca booleana; no añade otra tabla. `meal_completion_ingredients` conserva una fila por ingrediente realmente usado, sin caducidad temporal ni purga programada. `training_logs` y `profiles.training_bonus_kcal` quedan como tabla/campo heredados y no se usarán para el nuevo cálculo. Las siete migraciones están aplicadas desde SQL Editor; Supabase todavía no registra automáticamente el historial de esos archivos.
 
 Cada ciclo futuro debería registrar la versión de catálogo usada. La decisión ADR-0008 define snapshots inmutables por ingrediente con cantidad y unidad de receta, mientras que los movimientos del inventario conservan las cantidades en unidades de inventario. El inventario debería poder reconstruirse a partir de movimientos con IDs únicos; las correcciones y reversos se registran como eventos nuevos.
 
-Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada en ADR-0009 es correo + contraseña, registro libre y sin confirmación del correo. El HTML ya integra Auth y sincronización relacional. La migración añade una función `SECURITY DEFINER` que toma el propietario de `auth.uid()`, aplica la sincronización de forma transaccional y verifica `sync_revision`; su ejecución está concedida solo a `authenticated`. La prueba de aislamiento con dos cuentas y la comprobación de PC/móvil siguen pendientes. La migración ya está aplicada; publica el HTML antes de usar la sincronización. Revisar el tamaño global y por tabla conforme se incorporen usuarios; al acercarse a 350 MB, estudiar el crecimiento. No purgar snapshots automáticamente.
+Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada en ADR-0009 es correo + contraseña, registro libre y sin confirmación del correo. El HTML ya integra Auth y sincronización relacional. La función `SECURITY DEFINER` toma el propietario de `auth.uid()`, aplica la sincronización de forma transaccional y verifica `sync_revision`; su ejecución está concedida solo a `authenticated`. La prueba de aislamiento con dos cuentas y la comprobación de PC/móvil siguen pendientes. La séptima migración está aplicada; publica el HTML actualizado antes de comprobar el recorrido en GitHub Pages. Revisar el tamaño global y por tabla conforme se incorporen usuarios; al acercarse a 350 MB, estudiar el crecimiento. No purgar snapshots automáticamente.
 
 ## Migración y recuperación
 
