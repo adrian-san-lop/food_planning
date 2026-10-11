@@ -71,27 +71,58 @@ dialog{border:0;max-width:900px;width:calc(100% - 32px);max-height:min(91vh,920p
 <style>
 .catalog-overlay{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:24px;background:rgba(247,248,241,.96);text-align:center}.catalog-overlay[hidden]{display:none}.catalog-overlay>div{max-width:520px;padding:28px 32px;background:#fff;border:1px solid #e2e8df;border-radius:20px;box-shadow:0 15px 45px rgba(30,69,55,.12)}.catalog-overlay strong{font:700 22px Georgia,serif;color:#244f3f}.catalog-overlay p{margin:10px 0 0;color:#64756a;line-height:1.6}.catalog-overlay.error strong{color:#9e4d40}.catalog-overlay .btn{margin-top:16px}#plannerDialog{width:min(1100px,calc(100vw - 24px));max-width:none;max-height:92vh;padding:0;border:0;border-radius:22px;box-shadow:0 22px 70px rgba(13,35,27,.3);overflow:auto}#plannerDialog::backdrop{background:rgba(18,36,29,.58)}.planner-content{padding:28px}.planner-intro{padding:0 42px 14px 0}.planner-intro h2{margin-bottom:8px;font:700 28px Georgia,serif}.planner-intro p{color:#65766b;line-height:1.6}.planner-summary{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 18px}.planner-summary span{padding:8px 11px;background:#edf4ed;border-radius:10px;font-size:12px;font-weight:700}.planner-day{margin:14px 0;padding:14px;border:1px solid #e5eae2;border-radius:16px}.planner-day h3{margin:0 0 10px;font-size:15px}.planner-meal{display:grid;grid-template-columns:120px minmax(200px,1fr) 90px 110px;gap:9px;align-items:center;padding:8px 0;border-top:1px solid #edf0eb}.planner-meal:first-of-type{border-top:0}.planner-meal select{min-width:0;width:100%;padding:8px;border:1px solid #d9e2d8;border-radius:9px;background:white}.planner-meal small{color:#728176}.planner-meal .btn{justify-content:center;padding:7px 9px;font-size:12px}.planner-actions{position:sticky;bottom:0;display:flex;justify-content:flex-end;gap:9px;flex-wrap:wrap;padding:14px 0 0;background:linear-gradient(transparent,#fff 18%)}.planner-card{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px 0;padding:18px 20px}.planner-card h3{margin:0 0 5px}.planner-card p{margin:0;color:#65766b;line-height:1.5}.planner-card .btn{flex:none}@media(max-width:720px){.planner-content{padding:22px 14px}.planner-meal{grid-template-columns:1fr 96px;gap:7px}.planner-meal .planner-slot{grid-column:1/-1;font-size:11px;color:#728176}.planner-meal select{grid-column:1}.planner-meal .planner-lock{grid-column:2;grid-row:2}.planner-meal small{grid-column:1/-1}.planner-card{align-items:flex-start;flex-direction:column}.planner-card .btn{width:100%;justify-content:center}}</style>
 <style>.brand{display:block;width:100%;padding:0}.brand-logo{display:block;width:100%;height:62px;object-fit:cover;object-position:center;border-radius:10px}.brand-sub{text-align:center;margin-top:2px}.topbar-heading{display:flex;align-items:center;gap:9px}.topbar-brand-mark{display:none}@media(max-width:850px){.topbar-brand-mark{display:block;width:32px;height:32px;object-fit:cover;border-radius:9px;flex:none}}</style>
+<style>
+[hidden]{display:none!important}
+.auth-shell{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at top,#e6f0e6 0%,var(--bg) 65%)}
+.auth-card{width:min(100%,460px);padding:34px;background:var(--white);border:1px solid var(--line);border-radius:24px;box-shadow:0 20px 60px rgba(31,61,44,.09)}
+.auth-logo{display:block;width:min(220px,70%);height:56px;object-fit:cover;object-position:center;margin:0 auto 25px}
+.auth-heading{text-align:center}.auth-heading .eyebrow{justify-content:center;margin-bottom:9px}.auth-heading h1{font:500 31px Georgia,serif;letter-spacing:-.6px;margin:0 0 9px}.auth-heading p{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:20px}
+.auth-local-note{padding:13px 15px;margin:17px 0 19px;border-radius:13px;background:#f0f5ed;border:1px solid #e1eadf;color:#596d5e;font-size:11px;line-height:1.55}.auth-local-note strong{display:block;color:var(--accent-dark);font-size:12px;margin-bottom:3px}.auth-local-note p{margin:0}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;margin-bottom:17px;border-radius:12px;background:#f0f3ed}.auth-tabs button{padding:10px 8px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-size:12px;font-weight:700}.auth-tabs button[aria-selected="true"]{background:white;color:var(--accent-dark);box-shadow:0 1px 5px rgba(31,61,44,.08)}
+.auth-form{display:grid;gap:13px}.auth-field{display:grid;gap:7px;color:var(--ink-soft);font-size:12px;font-weight:700}.auth-field input{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:11px;background:#fbfcf8;color:var(--ink);outline-offset:2px}.auth-field input:focus{border-color:var(--accent)}.auth-submit{width:100%;justify-content:center;margin-top:3px;padding:12px 14px}
+.auth-links{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}.auth-link{padding:6px 0;border:0;background:transparent;color:var(--accent);font-size:11px;font-weight:700;text-decoration:underline;text-underline-offset:3px}.auth-alert{padding:11px 13px;margin:13px 0 0;border-radius:11px;background:#eef5ec;color:#45694f;font-size:12px;line-height:1.55}.auth-alert.error{background:#fff0eb;color:#9b4e40}.auth-alert[hidden]{display:none!important}.auth-foot{text-align:center;margin:18px 0 0;color:#8a968c;font-size:10px;line-height:1.5}
+.auth-account{display:flex;align-items:center;justify-content:flex-end;gap:9px;margin:-10px 0 12px;color:var(--muted);font-size:11px}.auth-account-email{max-width:min(46vw,360px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.auth-account .btn{padding:7px 10px;font-size:11px}
+@media(max-width:580px){.auth-shell{padding:15px}.auth-card{padding:27px 20px;border-radius:20px}.auth-heading h1{font-size:28px}.auth-account{margin:-7px 0 10px}.auth-account-email{max-width:42vw}.auth-account .btn{padding:7px 9px}}
+</style>
 </head>
 <body>
 <div class="catalog-overlay" id="catalogStatus" role="status" aria-live="polite"><div><strong>Cargando catálogos…</strong><p>La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.</p></div></div>
-<div class="app" inert>
+<section class="auth-shell" id="authShell" hidden aria-labelledby="authTitle">
+ <div class="auth-card">
+  <img class="auth-logo" src="./docs/images/menuki_name_logo.png" alt="Menuki · Mi plan saludable">
+  <div class="auth-heading"><div class="eyebrow">TU ESPACIO PERSONAL</div><h1 id="authTitle">Accede a Menuki</h1><p id="authDescription">Entra con tu correo y contraseña para abrir la aplicación.</p></div>
+  <div class="auth-local-note"><strong>Sobre tus datos</strong><p>La cuenta solo controla el acceso. Tus menús, despensa y registros siguen guardándose en este navegador; la sincronización entre dispositivos aún no está activa.</p></div>
+  <div class="auth-tabs" id="authTabs" role="tablist" aria-label="Acceso a Menuki"><button type="button" data-auth-mode="login" role="tab" aria-selected="true">Iniciar sesión</button><button type="button" data-auth-mode="signup" role="tab" aria-selected="false">Crear cuenta</button></div>
+  <form class="auth-form" id="authForm">
+   <label class="auth-field" id="authEmailField" for="authEmail">Correo electrónico<input id="authEmail" name="email" type="email" autocomplete="email" required></label>
+   <label class="auth-field" id="authPasswordField" for="authPassword">Contraseña<input id="authPassword" name="password" type="password" autocomplete="current-password" minlength="6" required></label>
+   <button class="btn btn-primary auth-submit" id="authSubmit" type="submit">Iniciar sesión</button>
+  </form>
+  <div class="auth-links"><button type="button" class="auth-link" id="authForgot">¿Has olvidado la contraseña?</button><button type="button" class="auth-link" id="authBack" hidden>Volver al inicio de sesión</button></div>
+  <div class="auth-alert" id="authAlert" role="status" aria-live="polite" hidden></div>
+  <p class="auth-foot">Puedes crear una cuenta con correo y contraseña. No se solicita nombre de usuario.</p>
+ </div>
+</section>
+<div class="app" inert hidden>
  <aside class="sidebar" aria-label="Navegación principal">
    <div class="brand"><img class="brand-logo" src="./docs/images/menuki_name_logo.png" alt="Menuki"><div class="brand-sub">Mi plan saludable</div></div>
    <div><div class="small-kicker">Tu espacio</div><nav id="sideNav" class="side-nav"></nav></div>
-   <div class="sidebar-bottom"><div class="tip-side"><div class="tip-emoji">🌱</div><strong>Pequeños hábitos,<br>grandes cambios.</strong><p>Come variado, cuida tu recuperación y deja que el progreso llegue con constancia.</p></div><div class="privacy">🔒 Tus registros se guardan en este navegador. No hay cuentas, servidores ni suscripción.</div></div>
+   <div class="sidebar-bottom"><div class="tip-side"><div class="tip-emoji">🌱</div><strong>Pequeños hábitos,<br>grandes cambios.</strong><p>Come variado, cuida tu recuperación y deja que el progreso llegue con constancia.</p></div><div class="privacy">🔒 La cuenta da acceso a la app. Tus datos de planificación siguen en este navegador y todavía no se sincronizan.</div></div>
  </aside>
  <main class="main">
+  <div class="auth-account" id="authAccount" hidden><span class="auth-account-email" id="authAccountEmail"></span><button class="btn" id="authSignOut" type="button">Cerrar sesión</button></div>
   <header class="topbar"><div class="topbar-heading"><img class="topbar-brand-mark" src="./docs/images/menuki_logo.png" alt=""><div><div class="top-title">MENUKI</div><div class="top-sub">Mi plan nutricional · 5 comidas · 21 días</div></div></div><div class="top-actions"><div class="week-pager"><button class="btn btn-quiet icon-btn" data-action="prev-week" aria-label="Semana anterior" title="Semana anterior">‹</button><span id="weekLabel" class="week-label"></span><button class="btn btn-quiet icon-btn" data-action="next-week" aria-label="Semana siguiente" title="Semana siguiente">›</button></div><button class="btn" data-action="export" title="Descarga una copia de seguridad"><span class="icon" data-icon="download"></span> Exportar</button></div></header>
   <div id="viewRoot" aria-live="polite"></div>
  </main>
 </div>
-<nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil"></nav>
+ <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" hidden></nav>
 <dialog id="recipeDialog" aria-label="Detalles de la receta"><button type="button" class="dialog-close" data-action="close-modal" aria-label="Cerrar">✕</button><div id="modalContent"></div></dialog>
 <dialog id="plannerDialog" aria-label="Propuesta del siguiente menú"><button type="button" class="dialog-close" data-action="planner-close" aria-label="Cerrar">✕</button><div id="plannerContent"></div></dialog>
 <dialog id="activityDialog" aria-label="Registrar una sesión de actividad"><button type="button" class="dialog-close" data-action="activity-close" aria-label="Cerrar">✕</button><div class="dialog-body activity-dialog-body"><div class="eyebrow">SEGUIMIENTO DE ACTIVIDAD</div><h2>Registrar sesión realizada</h2><p>Regístrala después de hacerla. La estimación solo ajusta el objetivo y las comidas pendientes de esa fecha.</p><form id="activityForm" class="activity-form"><label>Fecha<input id="activityDate" name="date" type="date" data-change="activity-date" required></label><label>Actividad y esfuerzo<select id="activityType" name="activityId" required></select></label><label>Duración (minutos)<input id="activityDuration" name="durationMinutes" type="number" min="1" max="600" step="1" required placeholder="45"></label><div id="activityDateSessions"></div><div class="dialog-actions"><button class="btn btn-primary" type="submit">Guardar sesión</button><button class="btn" type="button" data-action="activity-close">Cerrar</button></div></form></div></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="importInput" accept="application/json,.json" hidden>
-<script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script>
 
 'use strict';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
@@ -336,7 +367,13 @@ function recipeRecoveryTags(recipe){const tags=new Set();for(const item of recip
 function recoveryRecipeScore(recipe,profile=state.profile){if(!profile?.injury)return 0;const tags=recipeRecoveryTags(recipe);return (tags.has('calcium')?1.15:0)+(tags.has('vitamin_d')?1.2:0)+(tags.has('vitamin_c')?0.45:0)}
 function recoveryDayScore(recipes,profile=state.profile){if(!profile?.injury)return 0;const counts={calcium:0,vitamin_d:0,vitamin_c:0};for(const recipe of recipes)for(const tag of recipeRecoveryTags(recipe))counts[tag]++;return (counts.calcium?1.5:0)+(counts.vitamin_d?1.5:0)+(counts.vitamin_c?1:0)+(counts.calcium>1?0.35:0)}
 function plannerRecoveryCoverage(menus){const totals={calcium:0,vitamin_d:0,vitamin_c:0};for(const week of menus)for(const day of week){const tags=new Set(day.flatMap(id=>[...recipeRecoveryTags(REC[id])]));for(const tag of Object.keys(totals))if(tags.has(tag))totals[tag]++}return totals}
-const KEY='mi_plan_saludable_v3_13oct'; // Misma clave: conserva compras, despensa y evolución
+const SUPABASE_URL='https://vkcedxvnmbmrmwvanznx.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY='sb_publishable_agL7NqBqKBDiBMUmIw78MQ_rBvvT_Dr';
+const LOCAL_STATE_KEY='mi_plan_saludable_v3_13oct';
+let KEY=LOCAL_STATE_KEY; // El estado sigue en el navegador y se separa por cuenta
+let supabaseClient=null,authMode='login',authBusy=false,authMessage='',authMessageType='info';
+let authSessionUserId=null,currentUserId=null,appReadyUserId=null,openingUserId=null;
+let passwordRecoveryActive=false,catalogsLoaded=false,catalogsPromise=null;
 const FIRST_CYCLE_START='2026-10-13';
 const WEEK_TITLES=['Equilibrio y primeras recetas','Más variedad sin complicaciones','Nuevas ideas para terminar fuerte'];
 let persistent=true;
@@ -644,7 +681,91 @@ function swapPlannerRecipe(el){if(!plannerProposal)return;const w=Number(el.data
 function togglePlannerLock(button){if(!plannerProposal)return;const w=Number(button.dataset.week),d=Number(button.dataset.day),s=Number(button.dataset.slot);plannerProposal.locked[w][d][s]=!plannerProposal.locked[w][d][s];persistPlannerDraft();renderPlannerReview()}
 function savePlannerProposal(){if(!plannerProposal||!validMenuSnapshot(plannerProposal.menus)){showToast('La propuesta no es válida');return}state.nextMenu={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice())),confirmedAt:new Date().toISOString()};state.plannerDraft=null;save();const advanced=activateScheduledCycleIfDue();document.getElementById('plannerDialog').close();render();showToast(advanced?'El nuevo ciclo ya está activo':'Siguiente menú guardado para el '+formatDate(dateFromISO(state.nextMenu?.start||state.start),{day:'numeric',month:'long'}))}
 function activateScheduledCycleIfDue(){if(!state?.nextMenu)return false;const scheduled=dateFromISO(state.nextMenu.start);if(!scheduled||scheduled>today())return false;const next=state.nextMenu;state.archives.push({start:state.start,done:state.done,legacyStrengthDays:state.legacyStrengthDays,prep:state.prep,menus:cloneMenus(MENUS),catalogVersion:state.activeMenuCatalogVersion||catalogVersion,archivedAt:new Date().toISOString()});state.archives=state.archives.slice(-6);state.start=next.start;state.activeMenus=cloneMenus(next.menus);state.activeMenuCatalogVersion=next.catalogVersion;state.done={};state.legacyStrengthDays={};state.prep={};state.cart={};state.nextMenu=null;state.plannerDraft=null;MENUS=state.activeMenus;alignCurrentDay();save();return true}
-function startApp(){const app=document.querySelector('.app'),overlay=document.getElementById('catalogStatus');app.inert=true;loadCatalogs().then(()=>{state=load();MENUS=state.activeMenus?cloneMenus(state.activeMenus):cloneMenus(FIXED_MENUS);lastSeenDate=isoDate(today());const advanced=activateScheduledCycleIfDue();alignCurrentDay();app.inert=false;overlay.hidden=true;render();if(advanced)showToast('Ha comenzado el menú de tu siguiente ciclo');if(!persistent)showToast('No se puede guardar en este navegador. Exporta una copia de tus datos.')}).catch(error=>{overlay.classList.add('error');overlay.setAttribute('role','alert');overlay.innerHTML='<div><strong>No se pudieron cargar los catálogos</strong><p>'+escapeHTML(error.message||'Comprueba la conexión y vuelve a cargar la página.')+'</p><button type="button" class="btn btn-primary" onclick="location.reload()">Reintentar</button></div>'})}
+ function authRedirectUrl(){return window.location.origin+window.location.pathname}
+ function renderAuthScreen(mode=authMode,message=authMessage,level=authMessageType){
+  authMode=mode;authMessage=message||'';authMessageType=level||'info';
+  const shell=document.getElementById('authShell'),app=document.querySelector('.app'),mobile=document.getElementById('mobileNav'),overlay=document.getElementById('catalogStatus');
+  app.hidden=true;app.inert=true;mobile.hidden=true;overlay.hidden=true;shell.hidden=false;
+  const recovery=mode==='recovery',reset=mode==='reset',isSignup=mode==='signup';
+  const titles={login:'Accede a Menuki',signup:'Crea tu cuenta',reset:'Recupera tu contraseña',recovery:'Elige una contraseña nueva'};
+  const descriptions={login:'Entra con tu correo y contraseña para abrir la aplicación.',signup:'Regístrate con tu correo y contraseña para usar Menuki.',reset:'Te enviaremos un enlace para crear una contraseña nueva.',recovery:'Escribe la nueva contraseña de tu cuenta.'};
+  document.getElementById('authTitle').textContent=titles[mode]||titles.login;
+  document.getElementById('authDescription').textContent=descriptions[mode]||descriptions.login;
+  document.getElementById('authTabs').hidden=reset||recovery;
+  document.querySelectorAll('[data-auth-mode]').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.authMode===mode)));
+  document.getElementById('authEmailField').hidden=recovery;
+  document.getElementById('authPasswordField').hidden=reset;
+  const email=document.getElementById('authEmail'),password=document.getElementById('authPassword');
+  email.required=!recovery;password.required=!reset;
+  password.autocomplete=(isSignup||recovery)?'new-password':'current-password';
+  document.getElementById('authPasswordField').firstChild.textContent=recovery?'Nueva contraseña':'Contraseña';
+  document.getElementById('authSubmit').textContent=authBusy?'Procesando…':({login:'Iniciar sesión',signup:'Crear cuenta',reset:'Enviar enlace',recovery:'Guardar contraseña'}[mode]||'Continuar');
+  document.getElementById('authSubmit').disabled=authBusy;
+  document.getElementById('authForgot').hidden=mode!=='login';
+  document.getElementById('authBack').hidden=!(reset||recovery);
+  const alert=document.getElementById('authAlert');alert.hidden=!authMessage;alert.className='auth-alert'+(authMessageType==='error'?' error':'');alert.textContent=authMessage;
+ }
+ function showLoadingOverlay(title,detail){const overlay=document.getElementById('catalogStatus');overlay.classList.remove('error');overlay.setAttribute('role','status');overlay.innerHTML='<div><strong>'+escapeHTML(title)+'</strong><p>'+escapeHTML(detail)+'</p></div>';overlay.hidden=false}
+ function selectUserLocalState(userId){
+  const userKey=LOCAL_STATE_KEY+':user:'+userId;KEY=userKey;
+  try{if(!localStorage.getItem(userKey)){const previous=localStorage.getItem(LOCAL_STATE_KEY);if(previous){localStorage.setItem(userKey,previous);localStorage.removeItem(LOCAL_STATE_KEY)}}}catch(error){persistent=false}
+ }
+ function ensureCatalogs(){if(catalogsLoaded)return Promise.resolve();if(!catalogsPromise)catalogsPromise=loadCatalogs().then(()=>{catalogsLoaded=true}).catch(error=>{catalogsPromise=null;throw error});return catalogsPromise}
+ async function openAuthenticatedApp(user){
+  if(!user?.id||passwordRecoveryActive)return;
+  const id=user.id;authSessionUserId=id;
+  if(currentUserId!==id){currentUserId=id;appReadyUserId=null;state=undefined;persistent=true;selectUserLocalState(id)}
+  if(appReadyUserId===id){document.getElementById('authShell').hidden=true;document.querySelector('.app').hidden=false;document.querySelector('.app').inert=false;document.getElementById('mobileNav').hidden=false;return}
+  if(openingUserId===id)return;openingUserId=id;
+  showLoadingOverlay('Cargando catálogos…','La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.');
+  try{
+   await ensureCatalogs();if(authSessionUserId!==id||currentUserId!==id)return;
+   state=load();MENUS=state.activeMenus?cloneMenus(state.activeMenus):cloneMenus(FIXED_MENUS);lastSeenDate=isoDate(today());const advanced=activateScheduledCycleIfDue();alignCurrentDay();
+   const app=document.querySelector('.app'),account=document.getElementById('authAccount');document.getElementById('authShell').hidden=true;app.hidden=false;app.inert=false;document.getElementById('mobileNav').hidden=false;account.hidden=false;document.getElementById('authAccountEmail').textContent=user.email||'Sesión iniciada';appReadyUserId=id;render();
+   if(advanced)showToast('Ha comenzado el menú de tu siguiente ciclo');if(!persistent)showToast('No se puede guardar en este navegador. Exporta una copia de tus datos.')
+  }catch(error){if(authSessionUserId!==id)return;const overlay=document.getElementById('catalogStatus');overlay.classList.add('error');overlay.setAttribute('role','alert');overlay.innerHTML='<div><strong>No se pudieron cargar los catálogos</strong><p>'+escapeHTML(error.message||'Comprueba la conexión y vuelve a cargar la página.')+'</p><button type="button" class="btn btn-primary" onclick="location.reload()">Reintentar</button></div>'}
+  finally{if(openingUserId===id)openingUserId=null}
+ }
+ function closeAuthenticatedApp(){authSessionUserId=null;currentUserId=null;appReadyUserId=null;passwordRecoveryActive=false;state=undefined;KEY=LOCAL_STATE_KEY;document.getElementById('authAccount').hidden=true;document.getElementById('viewRoot').innerHTML='';document.getElementById('mobileNav').innerHTML='';document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());renderAuthScreen('login')}
+ function handleAuthStateChange(event,session){
+  if(event==='PASSWORD_RECOVERY'){passwordRecoveryActive=true;renderAuthScreen('recovery');return}
+  if(event==='SIGNED_OUT'){closeAuthenticatedApp();return}
+  if(session?.user){authSessionUserId=session.user.id;if(passwordRecoveryActive){renderAuthScreen('recovery');return}openAuthenticatedApp(session.user)}
+  else if(event==='INITIAL_SESSION')renderAuthScreen('login');
+ }
+ function authErrorMessage(error){const message=String(error?.message||'');if(/invalid login credentials/i.test(message))return'El correo o la contraseña no son correctos.';if(/email not confirmed/i.test(message))return'El proyecto aún solicita confirmar el correo. Desactiva esa opción en Supabase Auth para aplicar la configuración acordada.';if(/user already registered|already been registered/i.test(message))return'Ya existe una cuenta con ese correo. Inicia sesión.';if(/password.*(minimum|least|length)|password should/i.test(message))return'La contraseña no cumple los requisitos configurados en Supabase.';return message?'No se pudo completar la operación: '+message:'No se pudo completar la operación. Comprueba la conexión e inténtalo de nuevo.'}
+ async function handleAuthSubmit(event){
+  event.preventDefault();if(authBusy||!supabaseClient)return;
+  const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
+  authBusy=true;renderAuthScreen(authMode,'','info');
+  try{
+   if(authMode==='login'){
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;if(!data.session)throw Error('No se recibió una sesión de acceso.');passwordRecoveryActive=false;await openAuthenticatedApp(data.user);
+   }else if(authMode==='signup'){
+    const {data,error}=await supabaseClient.auth.signUp({email,password});if(error)throw error;if(!data.session){authBusy=false;renderAuthScreen('signup','No se inició sesión al crear la cuenta. Comprueba que la confirmación de correo está desactivada en Supabase Auth; si la cuenta ya existía, inicia sesión.','error');return}passwordRecoveryActive=false;await openAuthenticatedApp(data.user);
+   }else if(authMode==='reset'){
+    const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:authRedirectUrl()});if(error)throw error;authBusy=false;renderAuthScreen('reset','Si existe una cuenta con ese correo, recibirás un enlace para cambiar la contraseña.');return;
+   }else if(authMode==='recovery'){
+    const {error}=await supabaseClient.auth.updateUser({password});if(error)throw error;passwordRecoveryActive=false;const {data,error:sessionError}=await supabaseClient.auth.getSession();if(sessionError)throw sessionError;if(data.session){authSessionUserId=data.session.user.id;await openAuthenticatedApp(data.session.user)}else renderAuthScreen('login','Contraseña actualizada. Inicia sesión con la nueva contraseña.');
+   }
+  }catch(error){renderAuthScreen(authMode,authErrorMessage(error),'error')}
+  finally{authBusy=false;const shell=document.getElementById('authShell');if(!shell.hidden)renderAuthScreen(authMode,authMessage,authMessageType)}
+ }
+ async function signOutOfApp(){if(!supabaseClient)return;const button=document.getElementById('authSignOut');button.disabled=true;try{const {error}=await supabaseClient.auth.signOut();if(error)throw error;closeAuthenticatedApp()}catch(error){showToast(authErrorMessage(error))}finally{button.disabled=false}}
+ function startApp(){
+  const app=document.querySelector('.app');app.hidden=true;app.inert=true;document.getElementById('mobileNav').hidden=true;
+  document.querySelectorAll('[data-auth-mode]').forEach(button=>button.addEventListener('click',()=>renderAuthScreen(button.dataset.authMode,'')));
+  document.getElementById('authForm').addEventListener('submit',handleAuthSubmit);
+  document.getElementById('authForgot').addEventListener('click',()=>renderAuthScreen('reset',''));
+  document.getElementById('authBack').addEventListener('click',()=>{passwordRecoveryActive=false;renderAuthScreen('login')});
+  document.getElementById('authSignOut').addEventListener('click',signOutOfApp);
+  const overlay=document.getElementById('catalogStatus');showLoadingOverlay('Comprobando acceso…','Conectando con Supabase Auth.');
+  const query=new URLSearchParams(location.search),fragment=new URLSearchParams(location.hash.slice(1));passwordRecoveryActive=query.get('type')==='recovery'||fragment.get('type')==='recovery';
+  if(!window.supabase?.createClient){renderAuthScreen('login','No se pudo cargar el servicio de acceso. Comprueba la conexión y vuelve a abrir la página.','error');return}
+  try{supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(error){renderAuthScreen('login','No se pudo iniciar el servicio de acceso. Recarga la página e inténtalo de nuevo.','error');return}
+  supabaseClient.auth.onAuthStateChange((event,session)=>{setTimeout(()=>handleAuthStateChange(event,session),0)});
+  supabaseClient.auth.getSession().then(({data,error})=>{if(error)throw error;if(passwordRecoveryActive){renderAuthScreen('recovery');return}if(data.session)return openAuthenticatedApp(data.session.user);renderAuthScreen('login')}).catch(error=>renderAuthScreen('login','No se pudo comprobar la sesión. Comprueba la conexión e inténtalo de nuevo. '+String(error?.message||''),'error'));
+ }
 function plannerCard(){const saved=state.plannerDraft||state.nextMenu,date=saved?.start||nextCycleStart(),label=formatDate(dateFromISO(date),{day:'numeric',month:'long',year:'numeric'}),description=saved?(state.plannerDraft?'Tienes una propuesta sin confirmar.':'El siguiente menú está guardado y se activará al comenzar este ciclo.'):'Prepara ahora una propuesta revisable para las tres semanas siguientes.';return '<section class="planner-card panel"><div><div class="eyebrow">PRÓXIMO CICLO · DESDE '+label.toLocaleUpperCase('es-ES')+'</div><h3>'+ (saved?'Menú preparado':'Genera tu siguiente menú')+'</h3><p>'+description+' La generación usa el catálogo JSON v'+escapeHTML(catalogVersion)+'.</p></div><button class="btn '+(saved?'':'btn-primary')+'" data-action="planner-open">'+(state.plannerDraft?'Continuar revisión':state.nextMenu?'Revisar menú guardado':'Preparar propuesta')+'</button></section>'}
 function weekView(){
  const days=MENUS[visibleWeek];

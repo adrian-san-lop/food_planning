@@ -8,7 +8,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - El estado local actual es v8; admite importaciones v5-v8. Las sesiones realizadas se guardan con fecha.
 - Los catálogos JSON están en versión 0.5.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML. Las recetas pesan frutas/verduras enteras en gramos; inventario y compras las cuentan por unidades. Recuperación ósea usa etiquetas cualitativas de alimentos para favorecer fuentes de calcio, vitamina D y vitamina C en propuestas futuras.
 - La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
-- El esquema de Supabase tiene doce tablas con RLS aplicadas, incluida la de sesiones reales. La migración aditiva para snapshots de ingredientes está preparada y pendiente; el HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
+- El esquema de Supabase tiene trece tablas con RLS aplicadas, incluidas las sesiones y los snapshots de ingredientes. Los snapshots tienen retención indefinida y no se purgan automáticamente; revisar el crecimiento global y por tabla al añadir usuarios y alrededor de 350 MB. El HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
 - Las sesiones reales ajustan las comidas pendientes de su misma fecha; días futuros mantienen el objetivo base y las comidas registradas conservan sus cantidades.
 
 ## Etapas candidatas
@@ -33,9 +33,9 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 
 ### D. Persistencia remota y Auth — diseño y preparación en curso
 
-- Esquema inicial y RLS: aplicados según el registro del proyecto. La migración aditiva `activity_sessions` se aplicó y se verificaron su RLS y permisos; `meal_completion_ingredient_snapshots` sigue pendiente.
-- Definición de snapshots de ingredientes: aceptada y documentada en ADR-0007; aplicar la migración antes de conectar comidas completadas.
-- Método de Auth y política de altas: pendiente de decidir. Autenticación, integración HTML y operaciones transaccionales: pendientes.
+- Esquema inicial, RLS, `activity_sessions` y `meal_completion_ingredients`: aplicados. La migración de snapshots se verificó estructuralmente; la validación de aislamiento con dos cuentas sigue pendiente.
+- Retención de snapshots: indefinida, sin purga automática. Revisar tamaño total y por tabla al incorporar usuarios; decidir cualquier cambio de retención solo tras analizar el uso real.
+- Método de Auth aceptado en ADR-0008: correo + contraseña, registro libre y sin confirmación del correo. Configuración de Supabase Auth, integración HTML y operaciones transaccionales: pendientes.
 - Prueba de aislamiento con dos usuarios: pendiente; debe cubrir lectura, inserción y referencias cruzadas con cuentas reales.
 - Importar el estado local v8 una sola vez: pendiente de que Auth, esquema y aislamiento estén resueltos.
 - Comprobar PC/móvil, errores de conexión y restauración antes de afirmar que hay sincronización.

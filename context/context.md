@@ -6,7 +6,7 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 
 - Menuki (Mi Plan Saludable) is currently a personal, single-user web app, used online and published as a static GitHub Pages site.
 - The current interface is Spanish. It plans three weeks with five meal slots per day (105 planned meals per cycle), tracks recipes, shopping, pantry stock, completed activity sessions, and weight.
-- The application currently saves user state in browser `localStorage`. The owner’s Supabase project now has the initial relational schema and owner-scoped RLS policies (`supabase/`), but no Auth user or HTML integration exists yet; no app data is being written remotely and cross-device sync is not implemented. SQL was applied through the dashboard editor, which does not track repository migration history.
+- The application currently saves user state in browser `localStorage`. The owner’s Supabase project has thirteen relational tables with owner-scoped RLS, including immutable recipe-unit ingredient snapshots. Snapshots have indefinite retention while the parent completion and account exist; no timed purge is configured. Monitor total and per-table database size as users are added, reviewing around 350 MB of the 500 MB Free quota. No Auth user or HTML integration exists yet; no app data is being written remotely and cross-device sync is not implemented. SQL was applied through the dashboard editor, which does not track repository migration history.
 - The in-page weekly backup reminder is implemented; there are no push or background notifications.
 
 ## Catalogs and planning
@@ -24,7 +24,7 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 - `food.unit` is the pantry/purchase unit and `food.recipeUnit` is the recipe unit. Whole produce uses recipe `g` and pantry/purchase `ud`; eggs use `ud`, solids are weighed in `g`, and liquids use `ml`. Milk is purchased in 1 L cartons.
 - If a logged meal consumes more than recorded stock, record the full consumption and show the deficit. Reversals must not be applied twice.
 - Legacy strength-day flags may remain in imported state but are inert; fixed-menu third-amount overrides were removed. New activity sessions are local-only and included in JSON exports.
-- Supabase has twelve tables with RLS applied, including `activity_sessions`. The additive `meal_completion_ingredients` migration is prepared but not applied. ADR-0007 accepts immutable per-ingredient completion snapshots in recipe units, separate from inventory movements. The HTML has no Supabase Auth or synchronization integration; account creation, two-user RLS validation, transactional operations, and one-time v8 import remain pending.
+- Supabase has thirteen tables with RLS applied, including `activity_sessions` and `meal_completion_ingredients`. ADR-0007 accepts immutable per-ingredient completion snapshots in recipe units, separate from inventory movements, with indefinite retention and no scheduled purge. Track database size as users are added; review near 350 MB. ADR-0008 accepts email + password, open registration, and no email confirmation. Auth configuration and HTML integration are still pending, along with two-user RLS validation, transactional operations, and one-time v8 import.
 - No offline queue. Do not claim the current `localStorage` state is synchronized or backed up in the cloud.
 
 ## Source-of-truth map

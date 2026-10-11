@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador y el registro local de sesiones realizadas están implementados. El HTML todavía no tiene autenticación ni sincronización. La tabla remota de sesiones ya está aplicada; la migración aditiva de snapshots de comidas sigue pendiente.
+El esquema JSON, la carga de catálogos, la propuesta del planificador y el registro local de sesiones realizadas están implementados. El HTML todavía no tiene autenticación ni sincronización. Las tablas remotas de sesiones y snapshots de comidas están aplicadas; la retención de snapshots es indefinida y el tamaño se vigilará al añadir usuarios.
 
 ## Catálogo y recetas
 
@@ -27,10 +27,11 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador y el regi
 
 ## Persistencia e integración
 
-- La integración del HTML con Supabase, Auth y sincronización queda pendiente. `activity_sessions` ya está aplicada; la migración aditiva de `meal_completion_ingredients` está escrita, pero todavía no se ha aplicado al proyecto.
-- Pendiente decidir si el registro permitirá altas abiertas o solo cuentas creadas/invitadas por el propietario, y qué método de acceso se usará.
+- La integración del HTML con Supabase, Auth y sincronización queda pendiente. `activity_sessions` y `meal_completion_ingredients` ya están aplicadas.
+- La política de Auth ya está decidida en [ADR-0008](decisions/0008-email-password-auth.md): correo + contraseña, registro libre y sin confirmación de correo. Falta configurarla en Supabase e implementarla en el HTML.
 - Pendiente implementar y ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas y comprobar lecturas, altas y referencias entre filas de propietarios distintos.
 - Pendiente diseñar operaciones transaccionales e idempotentes para completar/revertir comidas y guardar sus snapshots junto con los movimientos.
 - Pendiente diseñar la importación inicial del estado local v8 y la persistencia remota desde varios dispositivos.
+- Revisar mensualmente el tamaño total y por tabla cuando se active la sincronización multiusuario y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?
 - ¿Qué navegadores y dispositivos se validarán antes de declarar lista la sincronización?

@@ -1,6 +1,6 @@
 # ADR-0007 — Guardar snapshots de ingredientes de comidas completadas
 
-- Estado: Aceptada; migración preparada, pendiente de aplicar en Supabase
+- Estado: Aceptada; retención indefinida sin purga automática. Migración aplicada en Supabase.
 - Fecha: 2026-10-11
 - Alcance: historial de comidas completadas y movimientos de despensa
 
@@ -16,12 +16,14 @@ Si cambia una receta o una etiqueta del catálogo, el historial debe poder mostr
 - Guardar la referencia estable `food_id`, el nombre mostrado al registrar, el índice original de línea, la cantidad positiva realmente usada y la unidad de receta (`g`, `ml` o `ud`). El índice empieza en cero y permite conservar ingredientes repetidos del mismo alimento en líneas distintas.
 - Relacionar cada línea con `meal_completions` mediante `(completion_id, user_id)`, con borrado en cascada si se elimina el evento padre. Cada usuario solo puede leer e insertar sus propias filas mediante RLS.
 - Hacer los snapshots inmutables para el rol de la aplicación: sin permisos de UPDATE o DELETE. Revertir una comida modifica el evento y añade movimientos inversos; no elimina ni cambia las cantidades históricas.
+- Conservar los snapshots sin caducidad temporal mientras exista la comida completada y la cuenta. No programar purgas por antigüedad. El borrado de una cuenta sigue eliminando sus datos relacionados en cascada.
+- Vigilar manualmente el tamaño total y por tabla a medida que se incorporen usuarios. Revisar el crecimiento al alcanzar aproximadamente 350 MB del límite Free de 500 MB; ese umbral inicia una revisión, no un borrado automático.
 - Mantener `inventory_movements` en unidades de inventario. La tabla de snapshots no es otra fuente de saldo.
 - Crear el evento, las líneas de snapshot y los movimientos de inventario en una única operación transaccional e idempotente cuando se implemente la conexión. Esa operación aún no está implementada.
 
 ## Consecuencias
 
 - La migración aditiva `20261011100000_meal_completion_ingredient_snapshots.sql` crea la tabla, RLS y permisos mínimos. No modifica ni convierte las filas existentes.
-- La migración es el cuarto archivo, después de `activity_sessions`, que ya se aplicó al proyecto; este snapshot sigue pendiente de aplicar.
+- La migración es el cuarto archivo, después de `activity_sessions`; se aplicó al proyecto el 11 de octubre de 2026 y se verificaron tabla, RLS y permisos.
 - El HTML todavía no utiliza Supabase. La aplicación de esta migración no activa autenticación, sincronización ni persistencia remota.
 - Los registros completados antes de aplicar la migración no tendrán filas de ingredientes salvo que se planifique una importación histórica aparte.

@@ -38,7 +38,7 @@ revoke all on table public.meal_completion_ingredients from anon, authenticated,
 grant select, insert on public.meal_completion_ingredients to authenticated;
 
 comment on table public.meal_completion_ingredients is
-  'Immutable ingredient-line snapshots for completed meals. Quantities use recipe_unit; inventory_movements retain inventory units.';
+  'Immutable ingredient-line snapshots for completed meals. Quantities use recipe_unit; inventory_movements retain inventory units. No time-based expiry or scheduled purge is configured; retain while the parent completion and account exist.';
 comment on column public.meal_completion_ingredients.ingredient_index is
   'Zero-based position in the recipe ingredient list used at completion time.';
 comment on column public.meal_completion_ingredients.ingredient_name_snapshot is

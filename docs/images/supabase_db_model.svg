@@ -1,29 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1110" viewBox="0 0 1800 1110" role="img" aria-labelledby="title description">
   <title id="title">Modelo relacional de Supabase de Mi Plan Saludable</title>
-  <desc id="description">Doce tablas personales ya aplicadas y una tabla meal_completion_ingredients definida en una migración pendiente. Incluye claves principales, claves foráneas y relaciones principales.</desc>
+  <desc id="description">Trece tablas personales aplicadas con RLS. Incluye claves principales, claves foráneas y relaciones principales.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L10,4 L0,8 Z" fill="#58708d"/>
-    </marker>
-    <marker id="arrow-pending" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
-      <path d="M0,0 L10,4 L0,8 Z" fill="#c47b25"/>
     </marker>
     <style>
       .bg { fill: #f5f7fb; }
       .title { font: 700 28px system-ui, sans-serif; fill: #18263a; }
       .subtitle { font: 15px system-ui, sans-serif; fill: #52647a; }
       .entity { fill: #fff; stroke: #9aabc0; stroke-width: 1.5; rx: 12; }
-      .pending { stroke: #c47b25; stroke-dasharray: 7 5; }
       .auth { fill: #edf2f8; stroke: #71839a; stroke-width: 1.5; rx: 12; }
       .head { fill: #e6eef8; }
-      .pendinghead { fill: #fff0dc; }
       .authhead { fill: #dce5f0; }
       .name { font: 700 17px system-ui, sans-serif; fill: #20324a; }
       .key { font: 13px system-ui, sans-serif; fill: #40556f; }
       .hint { font: 12px system-ui, sans-serif; fill: #63758b; }
       .edge { fill: none; stroke: #58708d; stroke-width: 2; marker-end: url(#arrow); }
       .edge-dashed { fill: none; stroke: #58708d; stroke-width: 2; stroke-dasharray: 6 5; marker-end: url(#arrow); }
-      .edge-pending { fill: none; stroke: #c47b25; stroke-width: 2; stroke-dasharray: 7 5; marker-end: url(#arrow-pending); }
       .edge-label { font: 12px system-ui, sans-serif; fill: #425875; paint-order: stroke; stroke: #f5f7fb; stroke-width: 5px; stroke-linejoin: round; }
       .legend { font: 13px system-ui, sans-serif; fill: #43566e; }
     </style>
@@ -31,7 +25,7 @@
 
   <rect class="bg" width="1800" height="1110"/>
   <text class="title" x="40" y="44">Mi Plan Saludable · modelo relacional de Supabase</text>
-  <text class="subtitle" x="40" y="70">Doce tablas aplicadas con RLS · snapshots de ingredientes pendientes · los catálogos JSON permanecen fuera de PostgreSQL</text>
+  <text class="subtitle" x="40" y="70">Trece tablas aplicadas con RLS · snapshots de ingredientes sin caducidad · los catálogos JSON permanecen fuera de PostgreSQL</text>
 
   <!-- Relaciones dibujadas detrás de las entidades -->
   <path class="edge" d="M195 190 L195 250"/>
@@ -46,7 +40,7 @@
   <path class="edge" d="M800 455 L930 380"/>
   <text class="edge-label" x="813" y="414">planned_meal_id, user_id</text>
 
-  <path class="edge-pending" d="M1125 460 L1125 500"/>
+  <path class="edge" d="M1125 460 L1125 500"/>
   <text class="edge-label" x="1138" y="488">completion_id, user_id</text>
 
   <path class="edge" d="M1300 455 L1380 500 L1380 740 L1320 740"/>
@@ -148,9 +142,9 @@
     <text class="hint" x="948" y="434">Mantiene completed_at y reversed_at</text>
   </g>
   <g>
-    <rect class="entity pending" x="930" y="500" width="390" height="150"/>
-    <rect class="pendinghead" x="930" y="500" width="390" height="37" rx="12"/>
-    <text class="name" x="948" y="525">meal_completion_ingredients · pendiente</text>
+    <rect class="entity" x="930" y="500" width="390" height="150"/>
+    <rect class="head" x="930" y="500" width="390" height="37" rx="12"/>
+    <text class="name" x="948" y="525">meal_completion_ingredients</text>
     <text class="key" x="948" y="561">PK · completion_id, ingredient_index</text>
     <text class="key" x="948" y="584">FK compuesta · completion_id, user_id</text>
     <text class="hint" x="948" y="609">food_id + nombre snapshot · quantity + recipe_unit</text>
@@ -189,6 +183,6 @@
 
   <line x1="40" y1="1005" x2="1760" y2="1005" stroke="#d1dae5" stroke-width="1"/>
   <text class="legend" x="40" y="1034">PK = clave primaria · FK = clave foránea · Las cajas personales incluyen user_id → auth.users.id para aplicar RLS por usuario.</text>
-  <text class="legend" x="40" y="1060">La línea naranja discontinua indica meal_completion_ingredients, definida en una migración pendiente.</text>
+  <text class="legend" x="40" y="1060">Los snapshots de ingredientes se conservan sin caducidad temporal; no hay purga automática.</text>
   <text class="legend" x="40" y="1086">El detalle completo de columnas, tipos, restricciones y claves está en las tablas de este documento.</text>
 </svg>

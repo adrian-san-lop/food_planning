@@ -22,7 +22,7 @@ Navegador
 - El estado personal y la propuesta se guardan en `localStorage`; no se envían a GitHub junto con el catálogo.
 - Los alimentos separan medida de receta (`recipeUnit`) y medida de inventario (`unit`). Frutas y verduras enteras se pesan en gramos en recetas y se cuentan por piezas en despensa y compra; una conversión por peso comestible aproximado conecta ambas.
 - Las sesiones se registran después de realizarse. Su energía neta estimada se aplica solo a la fecha de la sesión y a comidas aún pendientes; no cambia días futuros ni cantidades ya registradas.
-- El proyecto Supabase tiene doce tablas con políticas RLS por propietario, incluida `activity_sessions`. La migración aditiva `meal_completion_ingredients` está preparada, pero pendiente de aplicar. El HTML no está conectado, no hay cuenta de Auth configurada y no se guardan datos de la aplicación en remoto.
+- El proyecto Supabase tiene trece tablas con políticas RLS por propietario, incluida `activity_sessions` y `meal_completion_ingredients`. Los snapshots de ingredientes se conservan sin caducidad temporal y no hay purga automática; se vigilará el tamaño de la base al incorporar usuarios. El HTML no está conectado, no hay cuenta de Auth configurada y no se guardan datos de la aplicación en remoto.
 - No existe sincronización entre dispositivos. El uso requiere conexión para visitar la página, pero los datos guardados en `localStorage` permanecen en ese navegador.
 
 ## Arquitectura objetivo
@@ -50,20 +50,20 @@ Los catálogos comunes se versionan junto al código. El estado personal (perfil
 | Menú de tres semanas | `WEEK_1`–`WEEK_3` fijos como ciclo inicial; la propuesta y el menú confirmado siguiente quedan en `localStorage` | Nuevos ciclos generados desde el catálogo, con revisión previa y versión anotada |
 | Perfil, peso, comidas, compras, inventario y menús personales | Objeto de estado en `localStorage` | Tablas privadas de Supabase si se completa esa integración |
 | Sesiones de actividad realizadas | `activitySessions` dentro del estado local v8; incluida en la copia JSON | Tabla personal `activity_sessions` ya aplicada; el HTML aún no escribe en ella |
-| Ingredientes de comidas completadas | Snapshots locales en las comidas registradas | `meal_completion_ingredients` en unidad de receta, definida en una migración pendiente; los movimientos conservan unidad de inventario |
+| Ingredientes de comidas completadas | Snapshots locales en las comidas registradas | `meal_completion_ingredients` aplicada, en unidad de receta y sin caducidad; los movimientos conservan unidad de inventario |
 | Gustos/restricciones | No hay sistema general implementado | Preferencias por persona fuera del catálogo; modelo pendiente |
 
 No colocar datos personales o copias de seguridad en GitHub. Aunque un repositorio sea privado, GitHub Pages publica el sitio. Si se integra Supabase, las tablas de usuario necesitarán autenticación y políticas RLS; la clave `service_role` y cualquier secreto nunca deben incluirse en el navegador.
 
-## Esquema remoto inicial y sesiones aplicados; snapshot de ingredientes y conexión del HTML pendientes
+## Esquema remoto y snapshots aplicados; conexión del HTML pendiente
 
 El proyecto tiene tablas relacionales para perfiles, ciclos, comidas planificadas y realizadas, movimientos de inventario, peso, entrenamientos, preparación y listas de compra. El esquema se define en `supabase/migrations/`; la comprobación estructural y de permisos está en `supabase/tests/`. El catálogo genérico no requiere una tabla por alimento o receta.
 
-Las doce tablas aplicadas son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items`, `user_settings` y `activity_sessions`. La cuarta migración aditiva `meal_completion_ingredients` está preparada, pero todavía no aplicada; conserva una fila por ingrediente realmente usado en una comida. `training_logs` y `profiles.training_bonus_kcal` quedan como tabla/campo heredados y no se usarán para el nuevo cálculo. Las migraciones iniciales y la de sesiones se aplicaron desde SQL Editor; Supabase todavía no registra automáticamente el historial de esos archivos.
+Las trece tablas aplicadas son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `meal_completion_ingredients`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items`, `user_settings` y `activity_sessions`. `meal_completion_ingredients` conserva una fila por ingrediente realmente usado, sin caducidad temporal ni purga programada. `training_logs` y `profiles.training_bonus_kcal` quedan como tabla/campo heredados y no se usarán para el nuevo cálculo. Las migraciones se aplicaron desde SQL Editor; Supabase todavía no registra automáticamente el historial de esos archivos.
 
 Cada ciclo futuro debería registrar la versión de catálogo usada. La decisión ADR-0007 define snapshots inmutables por ingrediente con cantidad y unidad de receta, mientras que los movimientos del inventario conservan las cantidades en unidades de inventario. El inventario debería poder reconstruirse a partir de movimientos con IDs únicos; las correcciones y reversos se registran como eventos nuevos.
 
-Las tablas requieren Auth y aplican RLS por `auth.uid()`. El HTML aún no escribe sesiones en `activity_sessions` ni consulta estas tablas remotas. Configuración de Auth, prueba de aislamiento con dos usuarios, operaciones idempotentes y transaccionales, importación inicial del estado v8 y pruebas entre dispositivos siguen pendientes. Registrar fechas de comidas, ciclos y sesiones como fechas locales y marcas de operación con zona horaria.
+Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política de acceso aceptada (ADR-0008) es correo + contraseña, registro libre y sin confirmación de correo; falta configurarla en Supabase. El HTML aún no escribe sesiones en `activity_sessions` ni consulta estas tablas remotas. La integración HTML, prueba de aislamiento con dos usuarios, operaciones idempotentes y transaccionales, importación inicial del estado v8 y pruebas entre dispositivos siguen pendientes. Revisar manualmente el tamaño global y por tabla conforme se incorporen usuarios; al acercarse a 350 MB, estudiar el crecimiento. No purgar snapshots automáticamente. Registrar fechas de comidas, ciclos y sesiones como fechas locales y marcas de operación con zona horaria.
 
 ## Migración y recuperación
 
