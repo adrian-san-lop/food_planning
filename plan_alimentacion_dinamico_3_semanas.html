@@ -373,7 +373,7 @@ const LOCAL_STATE_KEY='mi_plan_saludable_v3_13oct';
 let KEY=LOCAL_STATE_KEY; // La copia de trabajo local se separa por cuenta
 let supabaseClient=null,authMode='login',authBusy=false,authMessage='',authMessageType='info';
 let authSessionUserId=null,currentUserId=null,appReadyUserId=null,openingUserId=null;
-let cloudReady=false,cloudRevision=0,cloudSyncTimer=null,cloudSyncInFlight=false,cloudSyncPending=false,cloudSyncConflict=false;
+let cloudReady=false,cloudRevision=0,cloudSyncTimer=null,cloudSyncInFlight=false,cloudSyncPending=false,cloudSyncConflict=false,cloudSyncLastError=null;
 const SYNC_META_PREFIX=LOCAL_STATE_KEY+':sync:user:';
 let passwordRecoveryActive=false,catalogsLoaded=false,catalogsPromise=null;
 const FIRST_CYCLE_START='2026-10-13';
@@ -587,6 +587,14 @@ function cloudStatus(message,level='idle'){
  if(button){button.disabled=cloudSyncInFlight;button.textContent=cloudSyncConflict?'Usar versión de Supabase':cloudSyncInFlight?'Sincronizando…':'Sincronizar';button.hidden=!cloudReady&&!cloudSyncConflict}
  if(upload){upload.hidden=!cloudSyncConflict;upload.disabled=cloudSyncInFlight}
 }
+function cloudErrorForUser(error){
+ const message=String(error?.message||'').replace(/\s+/g,' ').trim(),code=String(error?.code||'').trim();
+ if(message.includes('REMOTE_DATA_EXISTS_RELOAD'))return 'Supabase ya tiene datos para esta cuenta, pero no consta la importación inicial. No se ha enviado la copia local para evitar sobrescribir esos datos. Código REMOTE_DATA_EXISTS_RELOAD.';
+ if(message.includes('SYNC_CONFLICT')||code==='40001')return 'Los datos de Supabase cambiaron durante la copia inicial. La copia local se conserva; vuelve a intentarlo para cargar el estado más reciente.';
+ if(code==='PGRST202'||message.includes('schema cache'))return 'Supabase no encuentra la función de sincronización. Comprueba que la migración de sincronización se aplicó en el proyecto conectado.'+(code?' Código '+code+'.':'');
+ const detail=[code?'código '+code:'',message].filter(Boolean).join(' · ').slice(0,320);
+ return (detail?'Error de Supabase: '+detail+'. ':'No se recibió el detalle del error. ')+'La copia local se conserva.';
+}
 function cloudMetaKey(){return SYNC_META_PREFIX+(currentUserId||'')}
 function readCloudMeta(){try{return JSON.parse(localStorage.getItem(cloudMetaKey())||'null')}catch{return null}}
 function writeCloudMeta(revision,fingerprint,snapshot=null){
@@ -755,12 +763,12 @@ function stateFromCloud(data){
  const cleaned=cleanState(s);if(!cleaned)throw Error('Los datos recuperados de Supabase no pasan las validaciones locales. No he sustituido los datos de este navegador.');return cleaned;
 }
 async function initializeCloudState(user){
- cloudReady=false;cloudSyncConflict=false;cloudStatus('Conectando los datos de tu cuenta…','working');
+ cloudReady=false;cloudSyncConflict=false;cloudSyncLastError=null;cloudStatus('Conectando los datos de tu cuenta…','working');
  const localExists=!!localStorage.getItem(KEY),localState=load();
  const {data:settings,error:settingsError}=await supabaseClient.from('user_settings').select('*').eq('user_id',user.id).maybeSingle();if(settingsError)throw settingsError;
  if(!settings?.state_initialized_at){
   state=localState;cloudRevision=Number(settings?.sync_revision)||0;cloudReady=true;
-  const ok=await syncCloudNow(true);if(!ok)throw Error('No se pudo completar la copia inicial de tus datos en Supabase. La copia local se conserva.');
+  const ok=await syncCloudNow(true);if(!ok)throw Error(cloudErrorForUser(cloudSyncLastError));
   return;
  }
  const remote=await fetchCloudSnapshot(),remoteRevision=Number(remote.settings?.sync_revision)||0,meta=readCloudMeta();
@@ -779,7 +787,7 @@ async function syncCloudNow(immediate=false){
  const submitted=JSON.parse(JSON.stringify(state));
  try{
   const fingerprint=await stateFingerprint(submitted),fullSnapshot=await buildCloudSnapshot(submitted),snapshot=submitted.resetCloudPending?fullSnapshot:reduceCloudSnapshot(JSON.parse(JSON.stringify(fullSnapshot)),readCloudMeta()),rpcName=submitted.resetCloudPending?'reset_menuki_state':'sync_menuki_state',{data,error}=await supabaseClient.rpc(rpcName,{p_snapshot:snapshot,p_expected_revision:cloudRevision});
-  if(error){if(error.message?.includes('SYNC_CONFLICT')||error.code==='40001'){cloudSyncConflict=true;cloudReady=false;cloudStatus('Supabase tiene cambios más recientes','conflict');showToast('Hay cambios más recientes en Supabase. Tu copia local se conserva; revisa la sincronización antes de cambiar de dispositivo.');return false}throw error}
+  if(error){if(error.message?.includes('SYNC_CONFLICT')||error.code==='40001'){cloudSyncLastError=error;cloudSyncConflict=true;cloudReady=false;cloudStatus('Supabase tiene cambios más recientes','conflict');showToast('Hay cambios más recientes en Supabase. Tu copia local se conserva; revisa la sincronización antes de cambiar de dispositivo.');return false}throw error}
   cloudRevision=Number(data)||cloudRevision+1;
   if(state===undefined)return false;
   const stateWasUnchanged=JSON.stringify(state)===JSON.stringify(submitted);
@@ -789,7 +797,7 @@ async function syncCloudNow(immediate=false){
   saveLocalOnly();writeCloudMeta(cloudRevision,stateWasUnchanged?await stateFingerprint(state):fingerprint,fullSnapshot);cloudStatus('Sincronizado con Supabase','ok');
   if(cloudSyncPending){cloudSyncPending=false;scheduleCloudSync()}
   return true;
- }catch(error){cloudStatus('No se pudo sincronizar · la copia local se conserva','error');console.error('Menuki cloud sync failed',error);return false}
+ }catch(error){cloudSyncLastError=error;cloudStatus('No se pudo sincronizar · la copia local se conserva','error');console.error('Menuki cloud sync failed',error);return false}
  finally{cloudSyncInFlight=false;const button=document.getElementById('cloudSyncButton'),upload=document.getElementById('cloudUploadButton');if(button)button.disabled=false;if(upload)upload.disabled=false}
 }
 async function resolveCloudConflict(){
