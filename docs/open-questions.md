@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador y el registro local de sesiones realizadas están implementados. El HTML todavía no tiene autenticación ni sincronización. Las tablas remotas de sesiones y snapshots de comidas están aplicadas; la retención de snapshots es indefinida y el tamaño se vigilará al añadir usuarios.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. La migración está aplicada en Supabase; falta publicar el nuevo HTML y validar el primer traspaso y la sincronización entre dispositivos. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
@@ -27,11 +27,9 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador y el regi
 
 ## Persistencia e integración
 
-- La integración del HTML con Supabase, Auth y sincronización queda pendiente. `activity_sessions` y `meal_completion_ingredients` ya están aplicadas.
-- La política de Auth ya está decidida en [ADR-0008](decisions/0008-email-password-auth.md): correo + contraseña, registro libre y sin confirmación de correo. Falta configurarla en Supabase e implementarla en el HTML.
-- Pendiente implementar y ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas y comprobar lecturas, altas y referencias entre filas de propietarios distintos.
-- Pendiente diseñar operaciones transaccionales e idempotentes para completar/revertir comidas y guardar sus snapshots junto con los movimientos.
-- Pendiente diseñar la importación inicial del estado local v8 y la persistencia remota desde varios dispositivos.
-- Revisar mensualmente el tamaño total y por tabla cuando se active la sincronización multiusuario y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
+- Publicar el HTML actualizado para activar la sincronización y completar la primera importación local v8 a Supabase.
+- Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
+- Verificar en GitHub Pages la sincronización entre PC y móvil, conflictos, errores de red, reversos y restauración desde una copia.
+- Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?
 - ¿Qué navegadores y dispositivos se validarán antes de declarar lista la sincronización?

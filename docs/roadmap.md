@@ -4,11 +4,11 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 
 ## Estado actual
 
-- La app sigue siendo estática y personal; guarda el estado en `localStorage`.
+- La app sigue siendo estática y personal. `localStorage` conserva una copia de trabajo; el estado compartido se sincroniza en las tablas relacionales de Supabase.
 - El estado local actual es v8; admite importaciones v5-v8. Las sesiones realizadas se guardan con fecha.
 - Los catálogos JSON están en versión 0.5.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde el HTML. Las recetas pesan frutas/verduras enteras en gramos; inventario y compras las cuentan por unidades. Recuperación ósea usa etiquetas cualitativas de alimentos para favorecer fuentes de calcio, vitamina D y vitamina C en propuestas futuras.
 - La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
-- El esquema de Supabase tiene trece tablas con RLS aplicadas, incluidas las sesiones y los snapshots de ingredientes. Los snapshots tienen retención indefinida y no se purgan automáticamente; revisar el crecimiento global y por tabla al añadir usuarios y alrededor de 350 MB. El HTML sigue en `localStorage` y no hay integración de Auth/sincronización.
+- El esquema de Supabase tiene trece tablas con RLS y una función transaccional de sincronización; la migración está aplicada. Los snapshots tienen retención indefinida y no se purgan automáticamente; revisar el crecimiento global y por tabla al añadir usuarios y alrededor de 350 MB. La nueva versión del HTML todavía debe publicarse en Pages.
 - Las sesiones reales ajustan las comidas pendientes de su misma fecha; días futuros mantienen el objetivo base y las comidas registradas conservan sus cantidades.
 
 ## Etapas candidatas
@@ -31,14 +31,14 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - Aplicar las reglas aceptadas con heurísticas iniciales; añadir preferencias personales solo después de decidir su modelo.
 - Permitir revisar, cambiar y bloquear platos; preservar bloqueos al regenerar; guardar versión de catálogo y cantidades consumidas.
 
-### D. Persistencia remota y Auth — diseño y preparación en curso
+### D. Persistencia remota y Auth — implementación realizada; validación pendiente
 
 - Esquema inicial, RLS, `activity_sessions` y `meal_completion_ingredients`: aplicados. La migración de snapshots se verificó estructuralmente; la validación de aislamiento con dos cuentas sigue pendiente.
 - Retención de snapshots: indefinida, sin purga automática. Revisar tamaño total y por tabla al incorporar usuarios; decidir cualquier cambio de retención solo tras analizar el uso real.
-- Método de Auth aceptado en ADR-0008: correo + contraseña, registro libre y sin confirmación del correo. Configuración de Supabase Auth, integración HTML y operaciones transaccionales: pendientes.
+- Método de Auth aceptado en ADR-0008: correo + contraseña, registro libre y sin confirmación del correo. Auth y el cliente HTML están configurados; la migración transaccional/idempotente de sincronización está aplicada.
 - Prueba de aislamiento con dos usuarios: pendiente; debe cubrir lectura, inserción y referencias cruzadas con cuentas reales.
-- Importar el estado local v8 una sola vez: pendiente de que Auth, esquema y aislamiento estén resueltos.
-- Comprobar PC/móvil, errores de conexión y restauración antes de afirmar que hay sincronización.
+- Publicar el HTML para activar la sincronización y permitir el traspaso inicial v8 desde el navegador que contiene los datos.
+- Comprobar PC/móvil, conflictos, errores de conexión y restauración antes de declarar validada la sincronización.
 
 ### E. Compra, inventario y robustez
 

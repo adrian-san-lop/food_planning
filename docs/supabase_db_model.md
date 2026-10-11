@@ -2,7 +2,7 @@
 
 Última revisión: 11 de octubre de 2026. El proyecto tiene trece tablas aplicadas; las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
-El HTML todavía no está conectado a Supabase: los datos de uso siguen en localStorage y no se ha creado una cuenta de Auth para la app. La comprobación actual valida tablas, RLS, políticas y permisos; no sustituye una prueba de acceso con una sesión autenticada.
+El HTML y Supabase Auth están integrados en el repositorio; la migración de sincronización también está aplicada al proyecto. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta publicar este HTML y probar el flujo real entre dispositivos y el aislamiento con dos cuentas autenticadas.
 
 ## Diagrama entidad-relación
 
@@ -21,13 +21,14 @@ PK significa clave primaria y FK significa clave foránea. Las tablas de la apli
 - Los IDs food_id y recipe_id son identificadores de los catálogos JSON. No tienen FK SQL porque esos catálogos no se duplican en PostgreSQL.
 - Las cantidades de inventario y compra usan la unidad `unit` del alimento (g, ml o ud); las recetas usan `recipeUnit`. En el inventario, quantity lleva signo: entradas positivas y consumos/salidas negativas. Para frutas y verduras enteras, los movimientos y compras usan `ud`, aunque las cantidades de receta estén en gramos.
 - La tabla de movimientos es append-only para el rol de la aplicación: puede leer e insertar, pero no actualizar ni borrar.
-- `training_logs` y `profiles.training_bonus_kcal` son heredados; el nuevo registro y cálculo de actividad usarán `activity_sessions` cuando se aplique la migración.
+- `training_logs` y `profiles.training_bonus_kcal` son heredados; el cálculo actual usa `activity_sessions`.
 
 ## Tablas y columnas
 
 ### auth.users
 
 Tabla externa administrada por Supabase Auth. La aplicación no la crea ni la modifica mediante estas migraciones.
+El correo y la contraseña se administran aquí; no se copian a `public.profiles`.
 
 | Columna | Tipo | Nulable | Clave o regla |
 | --- | --- | --- | --- |
@@ -67,6 +68,8 @@ Cada fila representa un menú de tres semanas, incluida su versión del catálog
 | catalog_version | text | No | Versión de foods.json y recipes.json usada por el ciclo. |
 | generated_at | timestamptz | Sí | Momento de generación, si se conoce. |
 | confirmed_at | timestamptz | Sí | Momento de confirmación, si se conoce. |
+| recovery_focus | boolean | No | DEFAULT false; indica el enfoque cualitativo de recuperación ósea del ciclo. |
+| archived_at | timestamptz | Sí | Momento en que el ciclo se archivó. |
 | supersedes_cycle_id | uuid | Sí | Junto con user_id, FK → plan_cycles (id, user_id); ON DELETE RESTRICT. |
 | created_at | timestamptz | No | DEFAULT now(). |
 
@@ -105,7 +108,7 @@ Conserva el evento de completar una comida, el ID de receta usado en ese momento
 | reversed_at | timestamptz | Sí | Nulo mientras el evento no se haya revertido. |
 | created_at | timestamptz | No | DEFAULT now(). |
 
-Un índice único parcial permite como máximo una finalización no revertida por comida planificada y usuario. La lógica transaccional que crea o revierte el evento, su snapshot y los movimientos aún debe implementarse en funciones de base de datos o en otra operación transaccional.
+Un índice único parcial permite como máximo una finalización no revertida por comida planificada y usuario. `sync_menuki_state` inserta idempotentemente los eventos, sus snapshots y movimientos dentro de una transacción, y propaga la marca de reversión.
 
 ### meal_completion_ingredients — aplicada
 
@@ -171,7 +174,7 @@ Tabla heredada del diseño inicial; permite como máximo una marca por usuario y
 
 ### activity_sessions — aplicada
 
-Registra sesiones ya realizadas, permite varias por usuario y fecha y conserva la actividad/MET usada como snapshot. La tercera migración aditiva se aplicó al proyecto el 11 de octubre de 2026; el HTML todavía no escribe en esta tabla.
+Registra sesiones ya realizadas, permite varias por usuario y fecha y conserva la actividad/MET usada como snapshot.
 
 | Columna | Tipo | Nulable | Clave o regla |
 | --- | --- | --- | --- |
@@ -182,8 +185,9 @@ Registra sesiones ya realizadas, permite varias por usuario y fecha y conserva l
 | duration_minutes | smallint | No | Entre 1 y 600 minutos. |
 | met_value | numeric(4,2) | No | MET snapshot, entre 1 y 20. |
 | created_at | timestamptz | No | DEFAULT now(). |
+| client_id | text | Sí | Identificador estable del cliente; UNIQUE junto con user_id para sincronización idempotente. |
 
-Índice: `(user_id, session_date DESC, created_at DESC)`. RLS permite al usuario autenticado seleccionar, insertar y borrar solo sus filas; no se concede UPDATE. Para corregir una sesión se elimina y se vuelve a insertar.
+Índices: `(user_id, session_date DESC, created_at DESC)` y `(user_id, client_id)` único. RLS permite al usuario autenticado seleccionar, insertar y borrar solo sus filas; no se concede UPDATE. Para corregir una sesión se elimina y se vuelve a insertar.
 
 ### prep_tasks
 
@@ -238,6 +242,9 @@ Guarda la selección, envase y estado marcado de cada artículo de la compra. La
 | --- | --- | --- | --- |
 | user_id | uuid | No | PK y FK → auth.users.id; ON DELETE CASCADE. |
 | last_backup_at | timestamptz | Sí | Fecha de la última copia anotada. |
+| state_initialized_at | timestamptz | Sí | Se fija tras la primera sincronización completa para impedir que un dispositivo vacío importe sobre datos existentes. |
+| last_synced_at | timestamptz | Sí | Última confirmación de sincronización. |
+| sync_revision | bigint | No | DEFAULT 0; contador de control de concurrencia que rechaza escrituras con revisión desactualizada. |
 | updated_at | timestamptz | No | DEFAULT now(); no se actualiza automáticamente. |
 
 ## Relaciones
@@ -265,8 +272,9 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 - RLS está habilitado en las trece tablas aplicadas y sus políticas filtran por auth.uid() = user_id.
 - El rol anon no tiene permisos de lectura, inserción, actualización ni borrado en estas tablas.
 - El rol authenticated recibe solo los permisos de tabla previstos; inventory_movements permite lectura e inserción, sin actualización ni borrado.
-- Las cuatro migraciones se aplicaron desde SQL Editor. Consultas de solo lectura confirmaron que `activity_sessions` y `meal_completion_ingredients` tienen RLS y permisos mínimos; los snapshots no conceden UPDATE ni DELETE a `authenticated`. El aislamiento con dos sesiones reales de Auth sigue sin probarse.
-- Aún no se ha probado el aislamiento entre dos sesiones reales de Auth. La conexión del HTML, el usuario de Auth y las funciones transaccionales/idempotentes para completar comidas, reversos y compras siguen pendientes.
+- Las seis migraciones se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el reinicio/restauración transaccional. Ambas funciones son `SECURITY DEFINER`, derivan el propietario de `auth.uid()` y solo conceden ejecución a `authenticated`.
+- Consultas previas confirmaron que `activity_sessions` y `meal_completion_ingredients` tienen RLS y permisos mínimos; los snapshots no conceden UPDATE ni DELETE a `authenticated`. La aplicación del SQL de sincronización devolvió éxito; no se ha probado todavía con dos sesiones autenticadas ni desde GitHub Pages.
+- El HTML ya contiene inicio de sesión y sincronización; la publicación, el primer traspaso de datos local a remoto y la prueba entre PC/móvil siguen pendientes.
 - SQL Editor no registra por sí solo el historial de archivos de migración. Los archivos locales describen el orden aplicado, pero aún no existe una operación de Supabase CLI que los registre en su tabla de versiones.
 
 ## Fuente de verdad
@@ -275,5 +283,7 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 - Permisos mínimos: [20261010131500_least_privilege_grants.sql](../supabase/migrations/20261010131500_least_privilege_grants.sql).
 - Sesiones realizadas (aplicada): [20261010140000_actual_activity_sessions.sql](../supabase/migrations/20261010140000_actual_activity_sessions.sql).
 - Snapshots de ingredientes (aplicada): [20261011100000_meal_completion_ingredient_snapshots.sql](../supabase/migrations/20261011100000_meal_completion_ingredient_snapshots.sql).
+- Sincronización relacional (aplicada): [20261011120000_menuki_cloud_sync.sql](../supabase/migrations/20261011120000_menuki_cloud_sync.sql).
+- Reinicio/restauración confirmados (aplicada): [20261011130000_menuki_cloud_reset.sql](../supabase/migrations/20261011130000_menuki_cloud_reset.sql).
 - Comprobación estructural: [001_schema_check.sql](../supabase/tests/001_schema_check.sql).
 - Guía de Supabase: [supabase/README.md](../supabase/README.md).

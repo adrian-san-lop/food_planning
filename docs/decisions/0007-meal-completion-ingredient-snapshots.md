@@ -19,11 +19,11 @@ Si cambia una receta o una etiqueta del catálogo, el historial debe poder mostr
 - Conservar los snapshots sin caducidad temporal mientras exista la comida completada y la cuenta. No programar purgas por antigüedad. El borrado de una cuenta sigue eliminando sus datos relacionados en cascada.
 - Vigilar manualmente el tamaño total y por tabla a medida que se incorporen usuarios. Revisar el crecimiento al alcanzar aproximadamente 350 MB del límite Free de 500 MB; ese umbral inicia una revisión, no un borrado automático.
 - Mantener `inventory_movements` en unidades de inventario. La tabla de snapshots no es otra fuente de saldo.
-- Crear el evento, las líneas de snapshot y los movimientos de inventario en una única operación transaccional e idempotente cuando se implemente la conexión. Esa operación aún no está implementada.
+- Crear el evento, las líneas de snapshot y los movimientos de inventario en una única operación transaccional e idempotente. La migración de sincronización implementa el guardado transaccional; eventos locales previos sin detalle de ingredientes permanecen sin cantidades inventadas.
 
 ## Consecuencias
 
 - La migración aditiva `20261011100000_meal_completion_ingredient_snapshots.sql` crea la tabla, RLS y permisos mínimos. No modifica ni convierte las filas existentes.
 - La migración es el cuarto archivo, después de `activity_sessions`; se aplicó al proyecto el 11 de octubre de 2026 y se verificaron tabla, RLS y permisos.
-- El HTML todavía no utiliza Supabase. La aplicación de esta migración no activa autenticación, sincronización ni persistencia remota.
+- La quinta migración `20261011120000_menuki_cloud_sync.sql` conecta esos snapshots con el cliente HTML mediante una transacción.
 - Los registros completados antes de aplicar la migración no tendrán filas de ingredientes salvo que se planifique una importación histórica aparte.

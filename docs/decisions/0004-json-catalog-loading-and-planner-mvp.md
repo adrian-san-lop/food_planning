@@ -27,3 +27,7 @@ Los catálogos JSON contienen alimentos, formatos de compra y recetas relacionad
 ## Pendiente
 
 Validar el plan con el uso real y decidir más adelante si hacen falta filtros personales, métricas adicionales o Supabase.
+
+## Evolución posterior
+
+La decisión de aplazar Supabase describía el primer MVP y quedó reemplazada para la persistencia personal por [ADR-0009](0009-supabase-relational-state-sync.md). Los catálogos JSON siguen siendo públicos y locales al repositorio; el perfil y los registros personales ahora se sincronizan en tablas relacionales.

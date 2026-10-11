@@ -5,7 +5,7 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 ## Estado actual
 
 - `index.html` es la entrada de GitHub Pages y redirige a `plan_alimentacion_dinamico_3_semanas.html` en la raíz.
-- La app conserva las recetas y el diseño existentes; sus datos se guardan en `localStorage` del navegador.
+- La app conserva las recetas y el diseño existentes. El usuario inicia sesión con Supabase Auth; los datos personales se sincronizan en tablas relacionales y `localStorage` mantiene una copia de trabajo.
 - La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.
 - El menú fijo actual sigue activo. La app puede preparar y guardar una propuesta editable para el siguiente ciclo de tres semanas.
 - El estado actual es v8. La app importa copias v5 a v8; la migración adapta los consumos históricos a gramos de receta y conserva despensa y movimientos en las unidades de inventario correspondientes.
@@ -14,11 +14,13 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - Hay un recordatorio semanal dentro de la página para descargar una copia JSON. No envía notificaciones del sistema.
 - Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales.
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.
-- El proyecto Supabase tiene trece tablas con RLS, incluida `activity_sessions` y los snapshots inmutables de ingredientes. Los snapshots no caducan ni se purgan automáticamente; se revisará el tamaño de la base al incorporar usuarios. El HTML aún no está conectado y no hay inicio de sesión ni sincronización entre dispositivos. Los datos siguen en `localStorage`.
+- Supabase tiene trece tablas con RLS y una función transaccional para sincronizar el estado por cuenta. Auth guarda la identidad y las credenciales; `public.profiles` guarda únicamente parámetros nutricionales. La migración de sincronización ya está aplicada; publica el HTML actualizado para activar el flujo en GitHub Pages.
 
-### Importar datos entre instalaciones
+### Sincronización y copias de seguridad
 
-El navegador no comparte automáticamente el almacenamiento del HTML local con la dirección `https://…github.io`. Descarga una copia JSON con **Exportar copia** en la instalación de origen y usa **Importar copia JSON** en la de destino. La importación admitida comienza en v5; los formatos anteriores no se convierten.
+Al iniciar sesión en otro dispositivo, Menuki carga los datos de tu cuenta desde Supabase. La primera vez que una cuenta sin inicializar entra en una instalación con datos locales, importa esa copia una sola vez. La app conserva `localStorage` como copia de trabajo; si muestra un conflicto, no reemplaza silenciosamente los datos locales.
+
+Usa **Exportar copia** para descargar un respaldo independiente y **Importar copia JSON** para restaurar uno. La importación admitida comienza en v5; los formatos anteriores no se convierten. El archivo contiene datos del perfil y del seguimiento: guárdalo fuera del repositorio.
 
 ## Publicar en GitHub Pages
 
@@ -78,11 +80,11 @@ Tu usuario
 
 Ejemplo: si hay `2 ud` de brócoli y registras una receta que usa `250 g`, con un peso comestible estimado de `400 g/ud`, la app muestra `250 g` en la receta y descuenta aproximadamente `0,63 ud` del inventario. Si el saldo no alcanza, registra el consumo completo y muestra el déficit en unidades. Al desmarcar la comida, añade un movimiento inverso en la misma unidad de inventario; no borra el historial ni vuelve a descontar por un reintento.
 
-El dibujo resume el esquema relacional aplicado: trece tablas con políticas RLS por propietario. Los snapshots de ingredientes conservan las cantidades en unidad de receta sin caducidad temporal ni purga automática; el tamaño de la base se revisará conforme se incorporen usuarios. El HTML aún no usa esa base: faltan decidir el método de acceso, probar el aislamiento con dos usuarios, implementar operaciones transaccionales y conectar la aplicación. Hasta entonces, el estado sigue en el navegador. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
+El dibujo resume el esquema relacional aplicado: trece tablas con políticas RLS por propietario. Los snapshots de ingredientes conservan las cantidades en unidad de receta sin caducidad temporal ni purga automática; el tamaño de la base se revisará conforme crezca el uso. La función de sincronización recibe un JSON de transporte y distribuye sus datos en estas tablas; PostgreSQL no guarda el estado completo en una columna JSON. La clave pública se usa en el navegador y RLS limita los registros al usuario autenticado. La prueba de aislamiento con dos cuentas y el recorrido publicado entre PC y móvil siguen pendientes. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
 
 ## Datos y copias de seguridad
 
-Los datos actuales permanecen en el almacenamiento del navegador y no aparecen automáticamente en otro navegador o dispositivo. Descarga el archivo JSON cuando aparezca el recordatorio semanal y guárdalo en una ubicación privada. El archivo incluye datos personales del perfil y del seguimiento. **No lo subas a GitHub ni lo compartas.** Puedes restaurarlo con **Importar copia JSON**.
+Los datos confirmados se guardan en Supabase y en la copia de trabajo local. Descarga el archivo JSON cuando aparezca el recordatorio semanal y guárdalo en una ubicación privada. El archivo incluye datos del perfil y del seguimiento. **No lo subas a GitHub ni lo compartas.** Puedes restaurarlo con **Importar copia JSON**.
 
 ## Archivos principales
 
@@ -99,4 +101,4 @@ Los datos actuales permanecen en el almacenamiento del navegador y no aparecen a
 - `docs/roadmap.md`: etapas candidatas y criterios de aceptación que deben conservarse.
 - `docs/decisions/`: registro de decisiones con su estado.
 - `docs/open-questions.md`: propuestas y cuestiones que aún requieren decisión.
-- `supabase/`: migraciones SQL del esquema personal y comprobaciones de RLS/permisos; todavía no es una integración del HTML.
+- `supabase/`: migraciones SQL del esquema personal y de la sincronización relacional, además de comprobaciones estructurales de RLS/permisos.

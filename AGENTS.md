@@ -15,7 +15,7 @@ These instructions apply to the whole repository.
 - The weekly backup reminder is in-page only. Do not describe `localStorage` as cloud storage or synchronization.
 - Keep the UI in Spanish. Keep `AGENTS.md` and `context.md` in English; write other project documentation in Spanish unless the owner asks otherwise.
 - `plan_alimentacion_dinamico_3_semanas.html` is the runtime app. It loads the generic food and recipe catalogs from `data/foods.json` and `data/recipes.json` over HTTP(S); the current fixed menu remains the initial plan.
-- Dynamic next-cycle proposals are implemented locally. Do not claim that Supabase persistence, authentication, or device synchronization is implemented.
+- Dynamic next-cycle proposals use relational Supabase persistence. Auth uses Supabase Auth; credentials are never duplicated in public tables. `localStorage` is a working copy. The sync migration has been applied to the configured project, but changes reach GitHub Pages only after publication.
 - State format v5 is the first supported import format; current state is v8. Accept v5-v8 imports and do not add v1-v4 migrations.
 
 ## Catalogs and planner
@@ -31,6 +31,7 @@ These instructions apply to the whole repository.
 
 - Use `ud` for eggs and pantry/purchases of the whole fruits/vegetables listed in `docs/product/requirements.md`; fractions are allowed. Measure all solid ingredients, including whole produce, in recipe grams; use `ud` for eggs and `ml` for liquids. Milk is purchased in 1 L cartons; ground coffee is measured in grams and included in breakfasts.
 - Record full recipe consumption even if it exceeds recorded stock; show the deficit and allow a negative balance. Reversals must be idempotent.
+- Keep cloud writes transactional and idempotent through `sync_menuki_state`; bind all writes to `auth.uid()`, retain RLS, and reject stale `sync_revision` writes. Use `reset_menuki_state` only for an explicitly confirmed full reset/import. Never store the full personal state as one JSON column.
 - GitHub Pages content is public. If Supabase is integrated, use an appropriate public client key with RLS on all user tables; never expose service-role keys or secrets.
 - Keep `index.html` at the repository root with a relative destination for GitHub Pages.
 
