@@ -5,7 +5,7 @@ These instructions apply to the whole repository.
 ## Before making changes
 
 - Read `README.md`, `context/context.md`, and the relevant documents under `docs/`.
-- Before changing application behavior, inspect `menuki.html`; it is the current runtime source of truth.
+- Before changing application behavior, inspect `menuki.html` and the relevant modules under `js/` and `assets/`; together they are the current runtime source of truth.
 - Check the active branch and working-tree status first. Preserve existing user changes and follow the Git workflow below when starting a new task.
 - Distinguish implemented behavior from accepted design decisions, proposals, and open questions.
 
@@ -23,16 +23,16 @@ These instructions apply to the whole repository.
 ## Product and data boundaries
 
 - The current product is a personal, single-user, online app. Do not add offline queues or background/push notifications.
-- Supabase sync runs automatically after changes while the app is online. Keep a compact status, offer retry only after a sync error, and retain explicit conflict choices. Do not add manual sync controls to normal use or background/push notifications. Do not describe `localStorage` as cloud storage or synchronization.
+- Supabase sync runs automatically after changes while the app is online. Keep a compact status, offer retry only after a sync error, and retain explicit conflict choices. Do not add manual sync controls to normal use or background/push notifications. Supabase relational tables are the canonical remote source for personal data; `localStorage` is only the browser working copy and may hold pending changes. Do not describe it as cloud storage or synchronization.
 - Keep the UI in Spanish. Keep `AGENTS.md` and `context.md` in English; write other project documentation in Spanish unless the owner asks otherwise.
-- `menuki.html` is the runtime app. It loads the generic food and recipe catalogs from `data/foods.json` and `data/recipes.json` over HTTP(S); the current fixed menu remains the initial plan.
+- `menuki.html` is the app shell and loads `assets/css/app.css` and the `js/main.js` ES-module entry. `data/foods.json` and `data/recipes.json` are the canonical generic catalogs; derive runtime models from them instead of maintaining duplicate catalog literals. The fixed initial menu remains a code template of stable recipe IDs.
 - Supabase Auth manages accounts, and personal data, including next-cycle proposals, syncs to relational Supabase tables. `localStorage` is a browser working copy. The configured project has the authentication and cloud-sync migrations applied; changes reach GitHub Pages after publication.
 - State format v5 is the first supported import format; current state is v8. Accept v5-v8 imports and do not add v1-v4 migrations.
 - Do not add JSON export/download controls or periodic backup reminders. Keep the supported v5-v8 JSON restore flow.
 
 ## Catalogs and planner
 
-- Catalog JSON contains generic food and recipe data only. Never put personal profiles, weights, pantry balances, meal history, credentials, or backups in it.
+- Catalog JSON is the canonical source for generic food and recipe data only. Never put personal profiles, weights, pantry balances, meal history, credentials, or backups in it.
 - Keep food IDs stable and ensure every recipe ingredient references an existing food ID. `food.unit` is the pantry/purchase unit; `food.recipeUnit` is the recipe measurement unit. Whole fruit and vegetables use grams in recipes and units in pantry/purchases; eggs use units and liquids use millilitres. Preserve the JSON Schemas and nutrition basis described in `docs/planner/specification.md`.
 - Follow accepted planner decisions in `docs/decisions/`. Treat items marked proposed or open as undecided; do not silently turn them into requirements.
 - When bone recovery is enabled, new menu proposals qualitatively favor catalog foods tagged as calcium, vitamin D, or vitamin C sources. Do not present those tags as measured micronutrient totals or a treatment.
