@@ -16,6 +16,7 @@ export function validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recove
     if (
       !food
       || typeof food.id !== 'string'
+      || !/^[a-z][a-zA-Z0-9_]*$/.test(food.id)
       || foodIds.has(food.id)
       || !food.name
       || !['g', 'ml', 'ud'].includes(food.unit)
@@ -72,6 +73,7 @@ export function validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recove
     if (
       !recipe
       || typeof recipe.id !== 'string'
+      || !/^[a-z][a-zA-Z0-9_]*$/.test(recipe.id)
       || recipeIds.has(recipe.id)
       || !recipe.name
       || !slotTypes.includes(recipe.mealType)

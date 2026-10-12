@@ -36,9 +36,8 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 
 ## Arquitectura front-end
 
-El refactor incremental y las fuentes canónicas vigentes están definidos en [ADR-0013](decisions/0013-front-end-modules-and-madrid-dates.md) y [ADR-0014](decisions/0014-canonical-data-sources.md). Siguen pendientes estas decisiones de herramienta:
+El refactor incremental, las fuentes canónicas y el paquete de robustez vigente están definidos en [ADR-0013](decisions/0013-front-end-modules-and-madrid-dates.md), [ADR-0014](decisions/0014-canonical-data-sources.md) y [ADR-0015](decisions/0015-medium-priority-client-hardening.md). Sigue pendiente esta decisión de herramienta:
 
-- ¿Conviene fijar la versión secundaria y de parche de Supabase JS?
 - ¿Vite o TypeScript resolverían una necesidad concreta en las siguientes etapas?
 
 La [auditoría front-end y back-end](front-end-audit.md) explica los criterios para reconsiderarlas.
