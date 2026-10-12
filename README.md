@@ -123,7 +123,8 @@ El dibujo resume el esquema relacional aplicado: trece tablas con políticas RLS
 - `menuki.html`: shell HTML de la aplicación.
 - `assets/css/app.css`: estilos extraídos del HTML.
 - `js/main.js`: entrada ES del cliente; compone la interfaz y los módulos del dominio y de persistencia.
-- `js/domain/`, `js/data/` y `js/persistence/`: módulos de fechas, unidades, catálogos y acceso a datos.
+- `js/domain/`, `js/data/`, `js/persistence/` y `js/ui/`: módulos de fechas, unidades, catálogos, acceso a datos y codificación segura de HTML.
+- `package.json` y `tests/`: comprobaciones de dominio, catálogos y codificación HTML.
 - `index.html`: entrada que redirige a la aplicación.
 - `data/foods.json` y `data/recipes.json`: catálogos genéricos que carga la aplicación.
 - `data/foods.schema.json` y `data/recipes.schema.json`: contratos estructurales de los catálogos.
@@ -140,3 +141,7 @@ El dibujo resume el esquema relacional aplicado: trece tablas con políticas RLS
 - `docs/decisions/`: registro de decisiones con su estado.
 - `docs/open-questions.md`: propuestas y cuestiones que aún requieren decisión.
 - `supabase/`: migraciones SQL del esquema personal y de la sincronización relacional, además de comprobaciones estructurales de RLS/permisos.
+
+## Comprobaciones automatizadas
+
+Con Node.js 20 o posterior, ejecuta `npm test`. La suite usa el ejecutor integrado de Node y no necesita instalar paquetes ni compilar la aplicación. Comprueba fechas civiles de Madrid en los cambios de horario, conversiones de unidades, contrato de los catálogos y codificación de textos, atributos y URL. No sustituye la validación de Auth/sincronización en navegador ni la prueba RLS con dos cuentas.
