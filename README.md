@@ -121,7 +121,7 @@ El dibujo resume el esquema relacional aplicado: trece tablas con políticas RLS
 ## Archivos principales
 
 - `menuki.html`: shell HTML de la aplicación.
-- `assets/css/app.css`: estilos extraídos del HTML.
+- `assets/css/app.css`: estilos extraídos del HTML y organizados por secciones; las reglas responsive quedan al final y las plantillas JavaScript no usan atributos `style`.
 - `js/main.js`: entrada ES del cliente; compone la interfaz y los módulos del dominio y de persistencia.
 - `js/domain/`, `js/data/`, `js/persistence/` y `js/ui/`: módulos de fechas, unidades, catálogos, acceso a datos y codificación segura de HTML.
 - `package.json` y `tests/`: comprobaciones de dominio, catálogos y codificación HTML.
