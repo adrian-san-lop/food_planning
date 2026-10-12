@@ -4,10 +4,12 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 
 ## Product
 
-- Menuki (Mi Plan Saludable) is currently a personal, single-user web app, used online and published as a static GitHub Pages site.
+- Menuki (Mi Plan Saludable) is currently a personal, single-user web app, used online and published as a static GitHub Pages site from the `dev` branch.
 - The current interface is Spanish. It plans three weeks with five meal slots per day (105 planned meals per cycle), tracks recipes, shopping, pantry stock, completed activity sessions, and weight.
-- Supabase Auth and the HTML login are configured for email/password without email confirmation. The repository now has transactional relational sync to the existing thirteen RLS-protected tables; migrations `20261011120000_menuki_cloud_sync.sql` and `20261011130000_menuki_cloud_reset.sql` were applied through SQL Editor on 2026-10-11. The updated HTML still needs to be published to GitHub Pages before remote sync runs there. The first access imports local v8 state once; later devices load the remote state. `localStorage` remains a working copy, not the source of cross-device synchronization. Sync uses a revision check and stops stale writes; there is no offline queue. Confirmed reset/restore replaces the account's rows transactionally. Credentials stay in `auth.users`, not `public.profiles`. Snapshots have indefinite retention while the parent completion and account exist; no timed purge is configured. Monitor total and per-table database size as users are added, reviewing around 350 MB of the 500 MB Free quota. SQL Editor does not track repository migration history.
-- The in-page weekly backup reminder is implemented; there are no push or background notifications.
+- Supabase Auth and the HTML login are configured for email/password without email confirmation. The repository has transactional relational sync to thirteen RLS-protected tables. Seven migrations are applied through SQL Editor, including `20261011120000_menuki_cloud_sync.sql`, `20261011130000_menuki_cloud_reset.sql`, and `20261011150000_profile_confirmation.sql` (2026-10-11). The last adds `profiles.profile_confirmed` and updates sync to preserve the flag when older clients omit it. The updated HTML still needs to be published to GitHub Pages before these UI changes can be verified there. The first access imports local v8 state once; later devices load the remote state. `localStorage` remains a working copy, not the source of cross-device synchronization. Sync uses a revision check and stops stale writes; there is no offline queue. Confirmed reset/restore replaces the account's rows transactionally. Credentials stay in `auth.users`, not `public.profiles`. Snapshots have indefinite retention while the parent completion and account exist; no timed purge is configured. Monitor total and per-table database size as users are added, reviewing around 350 MB of the 500 MB Free quota. SQL Editor does not track repository migration history.
+- First-use guidance directs the user to review generic profile values; saving the profile persists `profile_confirmed` locally and remotely. A local/Supabase conflict shows a summary and explicit consequences before the user chooses a copy. Future meals are labeled planned and cannot be completed before their date. Desktop/mobile and two-user RLS validation are still pending.
+- Supabase sync runs automatically after changes while online. The compact account status offers retry only after a sync error; divergent copies still require an explicit choice. JSON export and periodic backup reminders are not part of the interface; supported v5-v8 imports remain available.
+- On mobile, the bottom navigation keeps Inicio, Menú, Compra, and Despensa visible; Perfil, Peso, Recetas, and Guía are under **Más**. The shopping page has product search and a fixed progress/finalize bar. Physical-phone validation is still pending.
 
 ## Catalogs and planning
 
@@ -24,7 +26,7 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 - `food.unit` is the pantry/purchase unit and `food.recipeUnit` is the recipe unit. Whole produce uses recipe `g` and pantry/purchase `ud`; eggs use `ud`, solids are weighed in `g`, and liquids use `ml`. Milk is purchased in 1 L cartons.
 - If a logged meal consumes more than recorded stock, record the full consumption and show the deficit. Reversals must not be applied twice.
 - Legacy strength-day flags may remain in imported state but are inert; fixed-menu third-amount overrides were removed. Activity sessions, weights, pantry movements, menu cycles, and shopping selections sync to their corresponding tables.
-- ADR-0007 accepts immutable per-ingredient completion snapshots in recipe units, separate from inventory movements, with indefinite retention and no scheduled purge. Track database size as users are added; review near 350 MB. ADR-0008 accepts email + password, open registration, and no email confirmation. ADR-0009 records relational sync and its one-time import. Two-user RLS isolation and published PC/mobile flow remain unverified.
+- ADR-0008 accepts immutable per-ingredient completion snapshots in recipe units, separate from inventory movements, with indefinite retention and no scheduled purge. Track database size as users are added; review near 350 MB. ADR-0009 accepts email + password, open registration, and no email confirmation. ADR-0010 records relational sync and its one-time import. Two-user RLS isolation and published PC/mobile flow remain unverified.
 - No offline queue. The UI must only report a successful remote save after Supabase confirms it; on failure it keeps the local working copy and shows pending/conflict status.
 
 ## Source-of-truth map
@@ -38,8 +40,12 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 - [Roadmap](docs/roadmap.md): candidate stages and acceptance criteria.
 - [Decision records](docs/decisions/): rationale and acceptance status.
 - [Actual activity-session nutrition decision](docs/decisions/0005-actual-activity-session-nutrition.md): same-date, post-session calculation and its limits.
-- [Meal completion ingredient snapshot decision](docs/decisions/0007-meal-completion-ingredient-snapshots.md): immutable recipe-unit quantities, separate from inventory movements.
-- [Supabase state-sync decision](docs/decisions/0009-supabase-relational-state-sync.md): normalized persistence, first import, and stale-write conflicts.
+- [Meal completion ingredient snapshot decision](docs/decisions/0008-meal-completion-ingredient-snapshots.md): immutable recipe-unit quantities, separate from inventory movements.
+- [Email/password authentication decision](docs/decisions/0009-email-password-auth.md): open registration without email confirmation.
+- [Supabase state-sync decision](docs/decisions/0010-supabase-relational-state-sync.md): normalized persistence, first import, and stale-write conflicts.
+- [First-use and meal-registration decision](docs/decisions/0011-first-use-profile-and-meal-registration.md): profile review, copy conflict choices, and future meal handling.
+- [Mobile shopping and sync interface decision](docs/decisions/0012-mobile-shopping-and-sync-ui.md): automatic sync retry, mobile purchase flow, pantry labels, and grouped navigation.
+- [UX/UI audit](docs/ux-ui-audit.md): desktop/mobile findings and verification still required before publication.
 - [Open questions](docs/open-questions.md): proposals and decisions still needed.
 
-Before editing, check the active branch and working tree, then verify current behavior in `plan_alimentacion_dinamico_3_semanas.html`. Do not infer implementation from plans in the documentation.
+Before editing, check the active branch and working tree, then verify current behavior in `menuki.html`. Do not infer implementation from plans in the documentation.

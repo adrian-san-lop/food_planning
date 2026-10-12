@@ -5,7 +5,7 @@ These instructions apply to the whole repository.
 ## Before making changes
 
 - Read `README.md`, `context/context.md`, and the relevant documents under `docs/`.
-- Before changing application behavior, inspect `plan_alimentacion_dinamico_3_semanas.html`; it is the current runtime source of truth.
+- Before changing application behavior, inspect `menuki.html`; it is the current runtime source of truth.
 - Check the active branch and working-tree status first. Preserve existing user changes and follow the Git workflow below when starting a new task.
 - Distinguish implemented behavior from accepted design decisions, proposals, and open questions.
 
@@ -15,7 +15,7 @@ These instructions apply to the whole repository.
 - Continue on the current task branch when resuming that same unfinished task. Before a new task, require a clean working tree, including untracked files. If it is dirty, report the paths and wait for the owner to decide how to handle them; never stash, commit, discard, or transfer changes automatically.
 - Use `dev` as the base for task branches. Fetch `origin` when its current state matters, switch to `dev` in this checkout, and require local `dev` to match `origin/dev`. Fast-forward only when possible; if branches have diverged, stop for review instead of resetting or rebasing automatically.
 - Create task branches with `./scripts/new-branch.ps1 -Name "docs/<description>"`, `fix/<description>`, or `chore/<description>`. The script requires a clean checkout and does not fetch from the network.
-- Task branches are proposed to `dev` through a pull request. Promoting `dev` to `main` is a separate pull request. GitHub Pages publishes from `main`.
+- Task branches are proposed to `dev` through a pull request. Promoting `dev` to `main` is a separate pull request. GitHub Pages currently publishes from `dev`.
 - Never commit or push unless the owner explicitly asks. For commits, use `./scripts/commit.ps1` with explicit `-Path` values, or `-All` only when all changes are explicitly approved. `-Yes` skips the script's confirmation and is allowed only when the owner explicitly authorized that commit; without it, retain the interactive confirmation.
 - Push only after explicit authorization, using `./scripts/push-origin.ps1 -Yes` for a task branch. Direct pushes to `main` or `dev` additionally require explicit authorization and `-AllowProtectedBranch`. Without `-Yes`, retain the interactive confirmation.
 - Do not merge, rebase, force-push, delete branches, or stash changes automatically.
@@ -23,11 +23,12 @@ These instructions apply to the whole repository.
 ## Product and data boundaries
 
 - The current product is a personal, single-user, online app. Do not add offline queues or background/push notifications.
-- The weekly backup reminder is in-page only. Do not describe `localStorage` as cloud storage or synchronization.
+- Supabase sync runs automatically after changes while the app is online. Keep a compact status, offer retry only after a sync error, and retain explicit conflict choices. Do not add manual sync controls to normal use or background/push notifications. Do not describe `localStorage` as cloud storage or synchronization.
 - Keep the UI in Spanish. Keep `AGENTS.md` and `context.md` in English; write other project documentation in Spanish unless the owner asks otherwise.
-- `plan_alimentacion_dinamico_3_semanas.html` is the runtime app. It loads the generic food and recipe catalogs from `data/foods.json` and `data/recipes.json` over HTTP(S); the current fixed menu remains the initial plan.
-- Dynamic next-cycle proposals use relational Supabase persistence. Auth uses Supabase Auth; credentials are never duplicated in public tables. `localStorage` is a working copy. The sync migration has been applied to the configured project, but changes reach GitHub Pages only after publication.
+- `menuki.html` is the runtime app. It loads the generic food and recipe catalogs from `data/foods.json` and `data/recipes.json` over HTTP(S); the current fixed menu remains the initial plan.
+- Supabase Auth manages accounts, and personal data, including next-cycle proposals, syncs to relational Supabase tables. `localStorage` is a browser working copy. The configured project has the authentication and cloud-sync migrations applied; changes reach GitHub Pages after publication.
 - State format v5 is the first supported import format; current state is v8. Accept v5-v8 imports and do not add v1-v4 migrations.
+- Do not add JSON export/download controls or periodic backup reminders. Keep the supported v5-v8 JSON restore flow.
 
 ## Catalogs and planner
 

@@ -1,4 +1,4 @@
-# ADR-0009 — Sincronizar el estado personal con Supabase
+# ADR-0010 — Sincronizar el estado personal con Supabase
 
 - Estado: Aceptada e implementada en el repositorio; migración aplicada el 11 de octubre de 2026
 - Alcance: persistencia remota del perfil y del uso personal de Menuki
@@ -28,4 +28,4 @@
 - Migración: `supabase/migrations/20261011120000_menuki_cloud_sync.sql`.
 - Reinicio/restauración: `supabase/migrations/20261011130000_menuki_cloud_reset.sql`.
 - Modelo relacional: `docs/supabase_db_model.md`.
-- Acceso: [ADR-0008](0008-email-password-auth.md).
+- Acceso: [ADR-0009](0009-email-password-auth.md).

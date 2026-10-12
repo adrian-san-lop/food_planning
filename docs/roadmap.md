@@ -35,7 +35,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 
 - Esquema inicial, RLS, `activity_sessions` y `meal_completion_ingredients`: aplicados. La migración de snapshots se verificó estructuralmente; la validación de aislamiento con dos cuentas sigue pendiente.
 - Retención de snapshots: indefinida, sin purga automática. Revisar tamaño total y por tabla al incorporar usuarios; decidir cualquier cambio de retención solo tras analizar el uso real.
-- Método de Auth aceptado en ADR-0008: correo + contraseña, registro libre y sin confirmación del correo. Auth y el cliente HTML están configurados; la migración transaccional/idempotente de sincronización está aplicada.
+- Método de Auth aceptado en ADR-0009: correo + contraseña, registro libre y sin confirmación del correo. Auth y el cliente HTML están configurados; la migración transaccional/idempotente de sincronización está aplicada.
 - Prueba de aislamiento con dos usuarios: pendiente; debe cubrir lectura, inserción y referencias cruzadas con cuentas reales.
 - Publicar el HTML para activar la sincronización y permitir el traspaso inicial v8 desde el navegador que contiene los datos.
 - Comprobar PC/móvil, conflictos, errores de conexión y restauración antes de declarar validada la sincronización.

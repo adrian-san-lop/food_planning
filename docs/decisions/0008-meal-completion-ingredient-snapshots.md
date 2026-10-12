@@ -1,4 +1,4 @@
-# ADR-0007 — Guardar snapshots de ingredientes de comidas completadas
+# ADR-0008 — Guardar snapshots de ingredientes de comidas completadas
 
 - Estado: Aceptada; retención indefinida sin purga automática. Migración aplicada en Supabase.
 - Fecha: 2026-10-11

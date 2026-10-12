@@ -1,4 +1,4 @@
-# ADR-0008 — Acceso mediante correo y contraseña
+# ADR-0009 — Acceso mediante correo y contraseña
 
 - Estado: Aceptada; Supabase Auth y el formulario HTML están configurados; quedan publicación y pruebas de aislamiento
 - Fecha: 2026-10-11
@@ -15,7 +15,7 @@
 
 ## Consecuencias
 
-- La cuenta puede iniciar sesión en varios dispositivos con el mismo correo y contraseña; compartir datos requiere publicar y validar la sincronización descrita en ADR-0009.
+- La cuenta puede iniciar sesión en varios dispositivos con el mismo correo y contraseña; compartir datos requiere publicar y validar la sincronización descrita en ADR-0010.
 - Sin verificar el correo, un error al escribirlo puede impedir recuperar la cuenta mediante ese correo. El usuario debe introducirlo correctamente y conservar acceso a él.
 - El registro libre permite que otras personas creen cuentas propias si conocen la web. RLS debe mantener sus datos separados; se podrá cerrar el registro si la política cambia.
 - La decisión no requiere duplicar credenciales en tablas públicas. Supabase Auth y los formularios HTML están configurados; Auth administra la cuenta y la contraseña.
