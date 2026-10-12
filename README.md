@@ -84,7 +84,9 @@ Los catálogos JSON conservan los datos genéricos que ya usa la aplicación y s
 
 Son datos genéricos del recetario; no incluyen perfil, peso, despensa ni otros datos de uso personal. La app los carga desde la misma web y comprueba unidades, referencias de ingredientes y tipos de comida antes de abrirse. Si falla la carga o la estructura no es válida, muestra un error y permite reintentar; no guarda cambios con un catálogo incompleto.
 
-Los catálogos están en la versión `0.5.0`: 83 alimentos, 107 recetas y 512 referencias de ingredientes. Esta versión añade marcadores cualitativos para fuentes de calcio, vitamina D y vitamina C. Con **Recuperación ósea** activa, las nuevas propuestas favorecen recetas con esos alimentos y muestran su presencia en los 21 días; no se calculan micronutrientes ni se promete acelerar la consolidación. El ciclo actual no cambia automáticamente. La versión `0.4.0` cambió la medida de receta para 17 frutas y verduras enteras: ahora se expresan en gramos y su compra/despensa sigue en unidades. Las cantidades nutricionales por pieza se expresan por 100 g usando el peso comestible aproximado del catálogo. La ampliación anterior conserva los 63 alimentos y 84 recetas del HTML, añade 20 alimentos y 23 recetas y enlaza cada receta por el ID estable de sus ingredientes. Las 20 incorporaciones nutricionales usan referencias genéricas de [USDA FoodData Central](https://fdc.nal.usda.gov/); las cifras heredadas del HTML no tienen una fuente detallada por alimento. Todos los valores y formatos de compra son aproximados y deben cotejarse con las etiquetas y envases reales. La versión del catálogo es independiente de la versión del estado personal guardado en el navegador.
+Estos JSON son la fuente canónica de alimentos y recetas. La app deriva de ellos los modelos en memoria; no mantiene otra lista editable de esos datos en JavaScript. Para los datos personales, Supabase es la fuente remota y `localStorage` solo conserva la copia de trabajo del navegador.
+
+Los catálogos están en la versión `0.5.0`: 83 alimentos, 107 recetas y 512 referencias de ingredientes. Esta versión añade marcadores cualitativos para fuentes de calcio, vitamina D y vitamina C. Con **Recuperación ósea** activa, las nuevas propuestas favorecen recetas con esos alimentos y muestran su presencia en los 21 días; no se calculan micronutrientes ni se promete acelerar la consolidación. El ciclo actual no cambia automáticamente. La versión `0.4.0` cambió la medida de receta para 17 frutas y verduras enteras: ahora se expresan en gramos y su compra/despensa sigue en unidades. Las cantidades nutricionales por pieza se expresan por 100 g usando el peso comestible aproximado del catálogo. La versión `0.2.0` partió de 63 alimentos y 84 recetas que entonces estaban embebidos en el HTML, añadió 20 alimentos y 23 recetas y enlazó cada receta por el ID estable de sus ingredientes. Las 20 incorporaciones nutricionales usan referencias genéricas de [USDA FoodData Central](https://fdc.nal.usda.gov/); las cifras heredadas no tienen una fuente detallada por alimento. Todos los valores y formatos de compra son aproximados y deben cotejarse con las etiquetas y envases reales. La versión del catálogo es independiente de la versión del estado personal v8.
 
 ### Registro de actividad
 
@@ -118,7 +120,10 @@ El dibujo resume el esquema relacional aplicado: trece tablas con políticas RLS
 
 ## Archivos principales
 
-- `menuki.html`: interfaz y lógica de la aplicación.
+- `menuki.html`: shell HTML de la aplicación.
+- `assets/css/app.css`: estilos extraídos del HTML.
+- `js/main.js`: entrada ES del cliente; compone la interfaz y los módulos del dominio y de persistencia.
+- `js/domain/`, `js/data/` y `js/persistence/`: módulos de fechas, unidades, catálogos y acceso a datos.
 - `index.html`: entrada que redirige a la aplicación.
 - `data/foods.json` y `data/recipes.json`: catálogos genéricos que carga la aplicación.
 - `data/foods.schema.json` y `data/recipes.schema.json`: contratos estructurales de los catálogos.
@@ -128,6 +133,7 @@ El dibujo resume el esquema relacional aplicado: trece tablas con políticas RLS
 - `scripts/new-branch.ps1`, `scripts/commit.ps1` y `scripts/push-origin.ps1`: automatizan la creación de ramas, commits y publicación con comprobaciones de seguridad.
 - `docs/product/requirements.md`: alcance y flujos del producto.
 - `docs/architecture.md`: estado actual y arquitectura prevista.
+- `docs/front-end-audit.md`: auditoría de arquitectura y propuestas de evolución.
 - `docs/supabase_db_model.md`: diagrama, columnas, claves, relaciones y RLS del esquema de Supabase.
 - `docs/planner/specification.md`: catálogos, reglas aceptadas y propuestas del planificador.
 - `docs/roadmap.md`: etapas candidatas y criterios de aceptación que deben conservarse.

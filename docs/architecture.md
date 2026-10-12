@@ -1,6 +1,6 @@
 # Arquitectura
 
-Estado de referencia: 11 de octubre de 2026. El esquema y el cliente de sincronización están implementados en el repositorio; el HTML modificado aún debe publicarse para que GitHub Pages active el flujo.
+Estado de referencia: 12 de octubre de 2026. El esquema y el cliente de sincronización están implementados. La primera etapa de modularización está en esta rama y debe publicarse para comprobar la carga y el comportamiento en GitHub Pages.
 
 ## Arquitectura actual
 
@@ -8,26 +8,32 @@ Estado de referencia: 11 de octubre de 2026. El esquema y el cliente de sincroni
 Navegador
   └── GitHub Pages / HTML estático
         ├── index.html (redirección relativa)
-        ├── menuki.html
-        │     ├── carga data/foods.json y data/recipes.json
-        │     ├── conserva el menú fijo inicial y propone el siguiente ciclo
-        │     ├── guía la primera visita y pide confirmar el perfil
-        │     ├── registra sesiones realizadas y adapta las comidas pendientes de esa fecha
-        │     ├── deja las comidas futuras como planificadas
-        │     ├── Supabase Auth (correo y contraseña)
-        │     ├── sincroniza el estado personal en tablas relacionales por user_id
-        │     └── conserva una copia de trabajo local (formato v8)
+        ├── menuki.html (shell HTML)
+        ├── assets/
+        │     └── css/app.css (estilos)
+        ├── js/
+        │     ├── main.js (entrada ES; UI y orquestación restante)
+        │     ├── domain/dates.js (fecha civil Europe/Madrid)
+        │     ├── domain/inventory-units.js (conversiones de unidades)
+        │     ├── data/catalogs.js (carga y validación de JSON)
+        │     ├── persistence/local-state.js (copia de trabajo local)
+        │     └── persistence/supabase-transport.js (lecturas y RPC)
         └── data/*.json + esquemas JSON
-              Supabase PostgreSQL + RLS
+              └── carga desde el módulo de catálogos
+
+Supabase Auth + PostgreSQL con RLS (servicio externo)
 ```
 
-- `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al HTML principal, también en la raíz.
-- El HTML carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
+- `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al shell `menuki.html`, también en la raíz. El shell carga CSS y JavaScript mediante rutas relativas.
+- La primera etapa reunió en una hoja los estilos de los ocho bloques `<style>` y convirtió el bloque de aplicación en un módulo ES. Los estilos inline de las plantillas aún siguen en `main.js`. Los límites extraídos se describen en ADR-0013; vistas, gran parte del dominio y la orquestación de Auth/sincronización siguen allí.
+- Menuki guarda las fechas civiles como `YYYY-MM-DD`. `today()` resuelve el instante en `Europe/Madrid`; los objetos `Date` que se usan para operar con días representan medianoche UTC y solo son portadores de fecha. Los timestamps siguen siendo instantes ISO y se presentan en la zona de Madrid.
+- `js/data/catalogs.js` carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
 - En la primera visita, una guía breve recomienda revisar el perfil antes de confiar en objetivos calculados con valores de ejemplo. La marca se guarda localmente y en `profiles.profile_confirmed`.
 - Cuando la copia local y Supabase divergen, la interfaz muestra el estado del perfil, el inicio del menú, comidas realizadas, movimientos de despensa, pesos, sesiones, artículos de compra y fechas de actualización. Explica que usar Supabase reemplaza la copia local pendiente; subir la local reemplaza perfil, menú y compra remotos e integra los registros por identificador. No elige ni reemplaza datos en silencio.
 - Las comidas de fechas futuras se muestran como planificadas y no se pueden registrar como consumidas antes de que llegue ese día.
-- `localStorage` conserva una copia de trabajo. La fuente común para una cuenta inicializada son las tablas privadas de Supabase; los cambios se sincronizan automáticamente y el indicador muestra si están guardados, pendientes o en conflicto. La acción de reintento solo aparece tras un error.
+- `data/foods.json` y `data/recipes.json` son la fuente canónica de los catálogos genéricos. `js/data/catalogs.js` valida esos ficheros y deriva las estructuras en memoria que necesita la interfaz.
+- Para datos personales, Supabase es la fuente canónica remota de una cuenta y `localStorage` es su copia de trabajo en el navegador. Los cambios se sincronizan automáticamente; el indicador muestra si están guardados, pendientes o en conflicto. La acción de reintento solo aparece tras un error.
 - Los alimentos separan medida de receta (`recipeUnit`) y medida de inventario (`unit`). Frutas y verduras enteras se pesan en gramos en recetas y se cuentan por piezas en despensa y compra; una conversión por peso comestible aproximado conecta ambas.
 - Las sesiones se registran después de realizarse. Su energía neta estimada se aplica solo a la fecha de la sesión y a comidas aún pendientes; no cambia días futuros ni cantidades ya registradas.
 - Supabase conserva identidad en `auth.users` y los datos personales en sus tablas relacionales con RLS. El perfil se guarda en `profiles`; las credenciales no se copian a tablas públicas.
@@ -52,15 +58,14 @@ Los catálogos comunes se versionan junto al código. El estado personal (perfil
 
 ## Separación de datos
 
-| Datos | Ubicación actual | Destino previsto |
+| Dominio | Fuente canónica | Uso o copia de trabajo |
 | --- | --- | --- |
-| Alimentos, nutrición aproximada y formato de compra | `data/foods.json`, cargado por la app y descrito por `foods.schema.json` | Catálogo JSON público, versionado |
-| Recetas e ingredientes | `data/recipes.json`, cargado por la app y descrito por `recipes.schema.json` | Catálogo JSON público, con referencias por ID estable |
-| Menú de tres semanas | Menú fijo inicial y ciclos guardados con su versión de catálogo | `plan_cycles` y `planned_meals`; propuesta, bloqueos y ciclo activo se sincronizan |
-| Perfil y seguimiento | Copia de trabajo en el navegador | `profiles`, `weight_logs` y `user_settings`, vinculados por `user_id` |
-| Sesiones de actividad realizadas | Copia de trabajo en el navegador | `activity_sessions`, con fecha, tipo, duración y MET |
-| Comidas e inventario | Copia de trabajo en el navegador | `meal_completions`, `meal_completion_ingredients` y `inventory_movements` |
-| Preparación y compra | Copia de trabajo en el navegador | `prep_tasks`, `shopping_sessions` y `shopping_session_items` |
+| Alimentos, nutrición aproximada y formato de compra | `data/foods.json`, descrito por `foods.schema.json` | Modelo en memoria derivado al cargar el catálogo |
+| Recetas e ingredientes | `data/recipes.json`, descrito por `recipes.schema.json` | Modelo en memoria derivado con referencias a IDs estables de alimentos |
+| Menú fijo inicial | Plantilla de IDs de receta en `js/main.js` | Se usa para inicializar el primer ciclo personal; no duplica las recetas |
+| Ciclos y comidas personales | `plan_cycles` y `planned_meals` en Supabase | `localStorage` mantiene la copia de trabajo del navegador |
+| Perfil, peso, actividad, comidas realizadas e inventario | Tablas relacionales de Supabase vinculadas por `user_id` | `localStorage` mantiene la copia de trabajo del navegador |
+| Preparación y compra | `prep_tasks`, `shopping_sessions` y `shopping_session_items` en Supabase | `localStorage` mantiene la copia de trabajo del navegador |
 | Gustos/restricciones | No hay sistema general implementado | Preferencias por persona fuera del catálogo; modelo pendiente |
 
 No colocar datos personales o copias de seguridad en GitHub. Aunque un repositorio sea privado, GitHub Pages publica el sitio. Las tablas personales usan RLS; la clave pública del proyecto puede aparecer en el navegador, pero una clave `service_role` o cualquier otro secreto nunca debe incluirse ahí.
@@ -101,4 +106,7 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada 
 - [Decisión de conservar snapshots de ingredientes completados](decisions/0008-meal-completion-ingredient-snapshots.md)
 - [Decisión de sincronizar el estado personal con Supabase](decisions/0010-supabase-relational-state-sync.md)
 - [Decisión de simplificar sincronización y uso móvil](decisions/0012-mobile-shopping-and-sync-ui.md)
+- [Decisión de modularizar el cliente y fijar la fecha civil de Menuki](decisions/0013-front-end-modules-and-madrid-dates.md)
+- [Decisión sobre fuentes canónicas de datos](decisions/0014-canonical-data-sources.md)
+- [Auditoría front-end y back-end](front-end-audit.md)
 - [Preguntas abiertas](open-questions.md)

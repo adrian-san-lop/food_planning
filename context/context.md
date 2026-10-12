@@ -1,6 +1,6 @@
 # Project Context
 
-Last updated: 2026-10-11. This file is a short handoff index, not the full product specification. Detailed decisions and unresolved proposals are linked below.
+Last updated: 2026-10-12. This file is a short handoff index, not the full product specification. Detailed decisions and unresolved proposals are linked below.
 
 ## Product
 
@@ -15,6 +15,8 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 
 - Generic food and recipe catalogs are stored in `data/foods.json` and `data/recipes.json`, version `0.5.0`: 83 foods, 107 recipes, and 512 ingredient references. Bone-recovery tags qualitatively mark selected calcium, vitamin D, and vitamin C food sources; these are not nutrient amounts or clinical targets. When recovery is active, new or regenerated proposals favor recipes with these sources and show ingredient presence across the 21 days. The active cycle is not replaced automatically. Whole fruit and vegetables are weighed in recipe grams and tracked in pantry/purchases as units; nutrition and portions use the recipe measure. Eggs remain units and liquids use millilitres. Their contracts are in `data/foods.schema.json` and `data/recipes.schema.json`.
 - The HTML loads both JSON catalogs over HTTP(S), checks IDs, units, ingredient references, and meal types, and maps them into the existing runtime model. The fixed `WEEK_1`–`WEEK_3` menu remains the initial cycle.
+- `menuki.html` is the page shell. It loads `assets/css/app.css` and the `js/main.js` ES-module entry; dates are resolved against `Europe/Madrid`, while civil-day arithmetic uses `YYYY-MM-DD` dates carried at UTC midnight. Date/catalog/unit/local-state/Supabase transport modules have been extracted; UI and remaining orchestration still live in `js/main.js`. The first modularization stage needs browser validation before publication.
+- `data/foods.json` and `data/recipes.json` are the canonical generic catalogs. Supabase relational tables are canonical for personal data; `localStorage` is only the browser working copy. Runtime catalog models are derived from JSON, and the fixed initial menu remains a template of recipe IDs. Duplicate food/recipe/weight/pack literals have been removed from `js/main.js`.
 - The user can generate a 105-meal proposal for the next cycle, review and swap recipes within the same meal type, lock selections, regenerate unlocked meals, and save the proposal in Supabase through the relational sync. The proposal records its catalog version and activates when its start date arrives. Stock is a soft preference; there is no minimum count of unused recipes, taste filter, or allergy filter.
 - Four initial planning principles are accepted. Exact scoring thresholds, dislike handling, and multi-person preference aggregation are not decided. See the planner specification and open questions.
 - Activity sessions are entered after they happen. Net estimated energy `(MET - 1) × weight_kg × duration_hours` affects only uncompleted meals on that date. Completed quantities stay fixed; the remaining daily target is distributed across the meals still pending, primarily through carbohydrates. Future dates use the base goal; history does not automatically learn or alter a routine. The manual-activity-summary idea remains open. See decision ADR-0005.
@@ -35,6 +37,7 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 - [AGENTS.md](AGENTS.md): repository-wide instructions for coding agents.
 - [Product requirements](docs/product/requirements.md): scope and user workflows.
 - [Architecture](docs/architecture.md): implemented state and planned data boundaries.
+- [Front-end and back-end audit](docs/front-end-audit.md): findings, recommendations, and progress of the staged client refactor.
 - [Supabase database model](docs/supabase_db_model.md): applied schema, columns, keys, relations, and RLS status.
 - [Planner specification](docs/planner/specification.md): catalog contract and accepted planner rules.
 - [Roadmap](docs/roadmap.md): candidate stages and acceptance criteria.
@@ -45,7 +48,9 @@ Last updated: 2026-10-11. This file is a short handoff index, not the full produ
 - [Supabase state-sync decision](docs/decisions/0010-supabase-relational-state-sync.md): normalized persistence, first import, and stale-write conflicts.
 - [First-use and meal-registration decision](docs/decisions/0011-first-use-profile-and-meal-registration.md): profile review, copy conflict choices, and future meal handling.
 - [Mobile shopping and sync interface decision](docs/decisions/0012-mobile-shopping-and-sync-ui.md): automatic sync retry, mobile purchase flow, pantry labels, and grouped navigation.
+- [Client modules and Madrid dates decision](docs/decisions/0013-front-end-modules-and-madrid-dates.md): native ES modules, incremental extraction, and civil dates in `Europe/Madrid`.
+- [Canonical data sources decision](docs/decisions/0014-canonical-data-sources.md): JSON catalogs, Supabase personal state, and the local working copy boundary.
 - [UX/UI audit](docs/ux-ui-audit.md): desktop/mobile findings and verification still required before publication.
 - [Open questions](docs/open-questions.md): proposals and decisions still needed.
 
-Before editing, check the active branch and working tree, then verify current behavior in `menuki.html`. Do not infer implementation from plans in the documentation.
+Before editing, check the active branch and working tree, then verify current behavior in `menuki.html` and the relevant modules under `js/` and `assets/`. Do not infer implementation from plans in the documentation.
