@@ -1,6 +1,6 @@
 # Arquitectura
 
-Estado de referencia: 12 de octubre de 2026. El esquema y el cliente de sincronización están implementados. La primera etapa de modularización y el paquete de prioridad media están implementados en la rama de tarea; quedan pendientes la validación de los recorridos publicados y la prueba RLS con dos cuentas.
+Estado de referencia: 13 de octubre de 2026. El esquema y el cliente de sincronización están implementados. Las etapas de prioridad alta, media y baja de la modularización están implementadas; quedan pendientes la validación de los recorridos publicados y la prueba RLS con dos cuentas.
 
 ## Arquitectura actual
 
@@ -28,10 +28,11 @@ Supabase Auth + PostgreSQL con RLS (servicio externo)
 El cliente de Supabase se carga desde jsDelivr con la versión exacta `@supabase/supabase-js@2.117.3`. Las pruebas automatizadas usan Node integrado; no añaden una dependencia de ejecución a la web publicada.
 
 - `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al shell `menuki.html`, también en la raíz. El shell carga CSS y JavaScript mediante rutas relativas.
-- La primera etapa reunió en una hoja los estilos de los ocho bloques `<style>` y convirtió el bloque de aplicación en un módulo ES. Los estilos inline de las plantillas aún siguen en `main.js`. Los límites extraídos se describen en ADR-0013; vistas, gran parte del dominio y la orquestación de Auth/sincronización siguen allí.
+- La primera etapa reunió en una hoja los estilos de los ocho bloques `<style>` y convirtió el bloque de aplicación en un módulo ES. `assets/css/app.css` organiza base, shell, controles y vistas, y concentra las reglas responsive al final. Las plantillas de `main.js` ya no generan atributos `style`; los indicadores usan `<progress>` y la portada coloca su foto mediante un `<img>`. Vistas, gran parte del dominio y la orquestación de Auth/sincronización siguen en `main.js`.
 - Menuki guarda las fechas civiles como `YYYY-MM-DD`. `today()` resuelve el instante en `Europe/Madrid`; los objetos `Date` que se usan para operar con días representan medianoche UTC y solo son portadores de fecha. Los timestamps siguen siendo instantes ISO y se presentan en la zona de Madrid.
 - `js/data/catalogs.js` carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
 - `js/ui/html.js` centraliza la codificación de texto y atributos y solo permite URL HTTPS de orígenes indicados explícitamente. Las vistas todavía usan plantillas HTML, pero escapan los valores variables del catálogo y del estado personal antes de insertarlos.
+- Los indicadores de comidas completadas usan elementos `<progress>` con etiquetas accesibles en sus botones; el color y la disposición se definen en CSS.
 - `npm test` ejecuta pruebas integradas para fechas, conversiones, validación de catálogos y codificación HTML/URL. Las pruebas de navegador con Auth, sincronización y RLS requieren cuentas y publicación y siguen pendientes.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
 - En la primera visita, una guía breve recomienda revisar el perfil antes de confiar en objetivos calculados con valores de ejemplo. La marca se guarda localmente y en `profiles.profile_confirmed`.
@@ -114,5 +115,6 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada 
 - [Decisión de modularizar el cliente y fijar la fecha civil de Menuki](decisions/0013-front-end-modules-and-madrid-dates.md)
 - [Decisión sobre fuentes canónicas de datos](decisions/0014-canonical-data-sources.md)
 - [Decisión de fijar Supabase JS y reforzar comprobaciones del cliente](decisions/0015-medium-priority-client-hardening.md)
+- [Decisión de organizar CSS y retirar estilos inline de las plantillas](decisions/0016-css-sections-and-template-presentation.md)
 - [Auditoría front-end y back-end](front-end-audit.md)
 - [Preguntas abiertas](open-questions.md)

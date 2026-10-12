@@ -1,14 +1,14 @@
 # Auditoría de arquitectura front-end y back-end
 
-- **Fecha:** 12 de octubre de 2026
+- **Fecha:** 13 de octubre de 2026
 - **Alcance:** revisión estática del repositorio y del cliente web, junto con sus catálogos, documentación, migraciones y comprobación SQL.
-- **Estado:** diagnóstico actualizado tras implementar las recomendaciones aceptadas de prioridad alta y el paquete de prioridad media. La app aún requiere validación publicada en navegador y prueba de aislamiento RLS con dos cuentas; el esquema de Supabase no ha cambiado.
+- **Estado:** diagnóstico actualizado tras implementar las recomendaciones aceptadas de prioridad alta y los paquetes de prioridad media y baja. La app aún requiere validación publicada en navegador y prueba de aislamiento RLS con dos cuentas; el esquema de Supabase no ha cambiado.
 
 ## Resumen
 
 Menuki es una aplicación estática en español publicada desde GitHub Pages. `index.html` redirige a `menuki.html`. El navegador carga los catálogos genéricos desde `data/`, guarda una copia de trabajo en `localStorage` y sincroniza los datos personales con Supabase Auth y tablas PostgreSQL protegidas con RLS.
 
-La arquitectura funcional encaja con el producto actual: no hace falta introducir un servidor propio ni cambiar de proveedor. Antes de la primera etapa, `menuki.html` contenía alrededor de 276 kB, ocho bloques `<style>`, un bloque JavaScript clásico con 196 funciones declaradas y la conexión de autenticación, estado, sincronización, vistas y eventos. Ahora el HTML mide alrededor de 6,7 kB, los estilos están en `assets/css/app.css` y el código de entrada es `js/main.js`, un módulo ES de alrededor de 173 kB. Ya existen módulos separados para fechas, unidades, catálogos, almacenamiento local, transporte de Supabase y codificación de HTML. El cliente Supabase está fijado a una versión exacta y hay pruebas de dominio/catálogos sin dependencias web. Las definiciones editables duplicadas de catálogos que permanecían en JavaScript se han eliminado. Vistas, gran parte de las reglas del dominio y la orquestación restante continúan en `main.js`, así que la separación es parcial e incremental.
+La arquitectura funcional encaja con el producto actual: no hace falta introducir un servidor propio ni cambiar de proveedor. Antes de la primera etapa, `menuki.html` contenía alrededor de 276 kB, ocho bloques `<style>`, un bloque JavaScript clásico con 196 funciones declaradas y la conexión de autenticación, estado, sincronización, vistas y eventos. Ahora el HTML mide alrededor de 6,7 kB, los estilos están en `assets/css/app.css` y el código de entrada es `js/main.js`, un módulo ES de alrededor de 173 kB. La hoja se organiza por base, shell, controles y vistas; las reglas responsive quedan al final. Las plantillas JavaScript ya no generan atributos `style`: usan clases CSS, elementos `<progress>` y una imagen HTML para el hero. Ya existen módulos separados para fechas, unidades, catálogos, almacenamiento local, transporte de Supabase y codificación de HTML. El cliente Supabase está fijado a una versión exacta y hay pruebas de dominio/catálogos sin dependencias web. Las definiciones editables duplicadas de catálogos que permanecían en JavaScript se han eliminado. Vistas, gran parte de las reglas del dominio y la orquestación restante continúan en `main.js`, así que la separación es parcial e incremental.
 
 **Recomendación:** conservar GitHub Pages, Supabase y los contratos actuales, y dividir gradualmente la interfaz en HTML, CSS y módulos JavaScript nativos. No recomiendo migrar ahora a React, Vue ni a TypeScript. Vite puede ser una etapa posterior si se necesita agrupar recursos o automatizar una compilación; las dependencias y pruebas actuales ya se pueden fijar sin añadir paso de compilación.
 
@@ -34,11 +34,11 @@ flowchart TD
 
 El navegador hace el renderizado, los cálculos de porciones, la propuesta de ciclos y la gestión de inventario. Supabase presta identidad, persistencia remota y sincronización. Los catálogos de alimentos y recetas son datos genéricos públicos; el estado personal se guarda por separado. El módulo `js/domain/dates.js` obtiene el día civil de `Europe/Madrid` y opera con fechas `YYYY-MM-DD` mediante portadores a medianoche UTC; esto evita que la zona del dispositivo o los cambios de horario de verano alteren la aritmética del calendario. Los timestamps permanecen como instantes ISO.
 
-La primera etapa está registrada en [ADR-0013](decisions/0013-front-end-modules-and-madrid-dates.md), las fuentes canónicas en [ADR-0014](decisions/0014-canonical-data-sources.md) y el paquete medio en [ADR-0015](decisions/0015-medium-priority-client-hardening.md). No modifican el esquema ni los contratos de sincronización. La interfaz, el resto de dominio y parte de la orquestación aún deben extraerse por etapas.
+La primera etapa está registrada en [ADR-0013](decisions/0013-front-end-modules-and-madrid-dates.md), las fuentes canónicas en [ADR-0014](decisions/0014-canonical-data-sources.md), el paquete medio en [ADR-0015](decisions/0015-medium-priority-client-hardening.md) y la limpieza de CSS/plantillas en [ADR-0016](decisions/0016-css-sections-and-template-presentation.md). No modifican el esquema ni los contratos de sincronización. La interfaz, el resto de dominio y parte de la orquestación aún deben extraerse por etapas.
 
 ## Hallazgos y prioridades
 
-| Prioridad | Hallazgo | Efecto | Propuesta | Estado tras etapa 1 |
+| Prioridad | Hallazgo | Efecto | Propuesta | Estado actual |
 | --- | --- | --- | --- | --- |
 | Alta | La lógica de fechas usaba la zona horaria local del navegador. | Los requisitos fijan `Europe/Madrid`; un dispositivo configurado en otra zona podía considerar que un día empezaba o terminaba en un instante distinto. Esto afectaba al registro de comidas y sesiones y a la activación del siguiente ciclo. | Centralizar la fecha civil y la hora de Menuki en un módulo que aplique `Europe/Madrid` explícitamente. Mantener aritmética de fechas civiles y cubrir cambios de horario de verano. | Implementado en `js/domain/dates.js`. Pendiente validación publicada en navegador. |
 | Alta | Presentación, dominio y persistencia compartían un único HTML y un ámbito global. | Un cambio de una vista podía afectar al estado, a los cálculos o a la sincronización. Costaba localizar responsabilidades, revisar regresiones y reutilizar lógica. | Extraer por etapas CSS y JavaScript; separar funciones de dominio puras de DOM, `localStorage` y Supabase. | CSS y entrada extraídos; fechas, unidades, catálogos y accesos de persistencia tienen módulos. `main.js` aún concentra UI, reglas y orquestación. |
@@ -46,9 +46,9 @@ La primera etapa está registrada en [ADR-0013](decisions/0013-front-end-modules
 | Media | El cliente de Supabase se cargaba desde `@supabase/supabase-js@2`, sin fijar una versión secundaria y de parche. | El recurso servido podía cambiar dentro de la versión principal y afectar a una app sin paso de compilación ni bloqueo de dependencias. | Fijar una versión exacta de la librería. Si más adelante se introduce una compilación, declarar la dependencia y conservar un archivo de bloqueo. La clave publishable que aparece en el navegador es apropiada para este modelo; no debe sustituirse por una clave secreta o `service_role`. | Implementado: `menuki.html` carga `@supabase/supabase-js@2.117.3`. |
 | Media | No había una suite automatizada de front-end en el repositorio. | Los contratos de catálogos sí se validaban al cargar y existe una comprobación estructural SQL, pero eso no demuestra los recorridos de Auth, sincronización, conflictos, fechas ni uso en navegador. | Añadir pruebas pequeñas para las reglas de dominio y comprobaciones de navegador para los recorridos sensibles. Ejecutar también la prueba RLS con dos cuentas que ya está pendiente en la documentación. | Implementado: `npm test` ejecuta nueve comprobaciones sin dependencias externas para fechas, unidades, catálogos y codificación HTML/URL. Las comprobaciones de navegador y RLS siguen pendientes. |
 | Media | Las vistas generan fragmentos HTML mediante concatenación y los asignan a `innerHTML`. Existe escape de HTML, pero la seguridad depende de aplicarlo en cada texto y atributo dinámico. | El contenido local o sincronizado puede proceder de copias importadas y catálogos editables; un escape omitido podría convertir datos en marcado ejecutable. La revisión estática no confirma una vulnerabilidad explotable concreta. | Definir una regla común para textos, atributos y URL; usar `textContent` o nodos DOM para valores variables cuando resulte sencillo. Revisar los usos de `innerHTML` durante la separación, sin quitar la validación de importación. | Implementado parcialmente: `js/ui/html.js` centraliza el escape y limita las URL a HTTPS y orígenes permitidos; se revisaron las vistas con contenido de catálogo/estado y se validan los IDs según el esquema. La estrategia de plantillas continúa y requiere revisión gradual. |
-| Baja | Antes del refactor los estilos estaban en ocho bloques; también había estilos inline en plantillas. | Se hace difícil saber qué reglas pertenecen a una vista y qué cambios son globales; los estilos inline también limitan una futura política CSP estricta. | Ordenar la hoja por base, componentes, vistas y responsive; retirar estilos inline de forma gradual. | Los ocho bloques se reunieron en `assets/css/app.css`; los estilos inline en plantillas JS siguen pendientes. |
+| Baja | Antes del refactor los estilos estaban en ocho bloques; también había estilos inline en plantillas. | Se hace difícil saber qué reglas pertenecen a una vista y qué cambios son globales; los estilos inline también limitan una futura política CSP estricta. | Ordenar la hoja por base, componentes, vistas y responsive; retirar estilos inline de forma gradual. | Implementado: `assets/css/app.css` está separado en secciones y concentra las reglas responsive al final. Se eliminaron los atributos `style` de las plantillas; los indicadores usan `<progress>` y la foto del hero usa un `<img>` permitido por origen. |
 
-Las prioridades reflejan riesgo de mantenimiento y ajuste a requisitos. Se implementaron las dos recomendaciones altas y el paquete aceptado de prioridad media. La publicación y las pruebas de sincronización entre dos cuentas y dispositivos continúan pendientes, según [la arquitectura](architecture.md), [la auditoría UX/UI](ux-ui-audit.md) y [la guía de Supabase](../supabase/README.md).
+Las prioridades reflejan riesgo de mantenimiento y ajuste a requisitos. Se implementaron las recomendaciones altas y los paquetes de prioridad media y baja. La publicación y las pruebas de sincronización entre dos cuentas y dispositivos continúan pendientes, según [la arquitectura](architecture.md), [la auditoría UX/UI](ux-ui-audit.md) y [la guía de Supabase](../supabase/README.md).
 
 ## Evaluación del back-end actual
 
@@ -65,14 +65,14 @@ La principal tarea pendiente es operativa: la prueba SQL incluida confirma estru
 
 ## Estructura actual y extracción propuesta
 
-Esta es la estructura implementada en la primera etapa. Los módulos aún dentro de `main.js` son candidatos de extracción gradual, no archivos existentes:
+Esta es la estructura actual tras las tres etapas de modularización del cliente. Los módulos aún dentro de `main.js` son candidatos de extracción gradual, no archivos existentes:
 
 ```text
 index.html                 # redirección relativa en la raíz
 menuki.html                # shell HTML y puntos de montaje
 assets/
   css/
-    app.css                # estilos extraídos; quedan estilos inline en plantillas JS
+    app.css                # base, componentes, vistas y reglas responsive
 js/
   main.js                  # UI, dominio restante y composición; 173 kB aprox.
   ui/
@@ -97,7 +97,7 @@ Los módulos de `domain/` deberían recibir datos como argumentos y devolver res
 | Área | Elección recomendada ahora | Cuándo reconsiderar |
 | --- | --- | --- |
 | Marcado | HTML semántico en `menuki.html`; conservar `index.html` en la raíz. | Si se añaden rutas o páginas independientes. |
-| Estilos | CSS nativo, variables actuales y media queries organizadas por capas. | Un preprocesador solo si las reglas repetidas o el diseño de temas lo justifican. |
+| Estilos | CSS nativo; base, shell, componentes y vistas por secciones, con reglas responsive al final. | Un preprocesador solo si las reglas repetidas o el diseño de temas lo justifican. |
 | Lógica | JavaScript moderno con módulos ES (`type="module"`) y APIs del navegador. | TypeScript si el dominio crece, trabajan varias personas o los contratos requieren más garantías estáticas. |
 | Interfaz | Mantener el renderizado actual y extraer responsabilidades gradualmente. | React, Vue u otro framework si aparecen interfaces reutilizables complejas, rutas numerosas o estado compartido difícil de manejar. |
 | Compilación | Supabase JS fijado a `2.117.3` por CDN; no hay compilación ni dependencias npm en producción. | Vite si aporta agrupación, optimización o un flujo de publicación repetible. |
@@ -107,7 +107,7 @@ No recomiendo migrar ahora a un servidor Node, una aplicación de una sola pági
 
 ## Secuencia de trabajo sugerida
 
-1. **Etapas altas y paquete medio implementados:** hoja CSS, entrada ES, módulos de fechas, unidades, catálogos y persistencia; fecha civil en `Europe/Madrid`; versión exacta del cliente Supabase; pruebas de dominio/catálogos/HTML y escape compartido. Preservar estado v8, importaciones v5-v8, catálogos 0.5.0, menú inicial, UI en español y sincronización.
+1. **Etapas altas y paquetes medio y bajo implementados:** hoja CSS organizada, plantillas sin atributos `style`, entrada ES, módulos de fechas, unidades, catálogos y persistencia; fecha civil en `Europe/Madrid`; versión exacta del cliente Supabase; pruebas de dominio/catálogos/HTML y escape compartido. Preservar estado v8, importaciones v5-v8, catálogos 0.5.0, menú inicial, UI en español y sincronización.
 2. **Validar en navegador antes de publicar:** carga de recursos, fecha actual, comidas y sesiones en los límites del día de Madrid, activación de ciclos, Auth, sincronización, conflictos, restauración, navegación y compra; comprobar PC y móvil.
 3. **Continuar la extracción gradualmente:** revisar primero las reglas de dominio (nutrición, planificador, inventario y normalización de estado), luego vistas/eventos y el resto de orquestación de nube. Evitar cambios de producto durante cada etapa y preservar los contratos existentes.
 4. **Completar las comprobaciones operativas por separado:** prueba de aislamiento RLS con dos cuentas, publicación en GitHub Pages y validación en dispositivos reales.
