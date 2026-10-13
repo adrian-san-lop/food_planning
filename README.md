@@ -19,7 +19,7 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - Compra muestra el establecimiento principal como **Supermercado**; Frutería conserva su sección propia.
 - Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales. Las comidas futuras aparecen como planificadas y solo se pueden registrar cuando llega su fecha.
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.
-- Supabase tiene trece tablas con RLS y una función transaccional para sincronizar el estado por cuenta. Auth guarda la identidad y las credenciales; `public.profiles` guarda parámetros nutricionales y la confirmación de revisión. Las siete migraciones están aplicadas; publica el HTML actualizado para activar los cambios en GitHub Pages.
+- Supabase tiene trece tablas con RLS y funciones transaccionales para sincronizar y restablecer el estado por cuenta. Auth guarda la identidad y las credenciales; `public.profiles` guarda parámetros nutricionales y la confirmación de revisión. Las siete migraciones iniciales están aplicadas. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, prepara la respuesta HTTP 409 para los conflictos de revisión y queda pendiente de aplicar en SQL Editor; después, publica el HTML actualizado en GitHub Pages.
 
 ### Sincronización entre dispositivos
 
