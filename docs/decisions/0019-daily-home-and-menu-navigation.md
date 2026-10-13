@@ -13,6 +13,8 @@
 4. Mostrar la navegación semanal de la cabecera únicamente en Menú. La navegación por días y semanas nunca cambia la fecha ni el contenido del resumen de Inicio.
 5. Mantener la orientación inicial de cinco pasos en Guía para conservar Inicio como resumen diario.
 6. En Compra, mostrar el establecimiento principal como **Supermercado**. El identificador interno de tienda y los datos de catálogo no cambian.
+7. En PC, dejar el logotipo de la barra lateral como única marca de cabecera y ocultar el logotipo repetido del área principal. Dar más presencia al banner de Inicio en escritorio; conservar su escala compacta en móvil.
+8. Cuando la fecha actual quede fuera del ciclo, mostrar su fecha de inicio o fin en un aviso destacado. Separar visualmente el objetivo nutricional de hoy del bloque del menú.
 
 ## Consecuencias
 
@@ -20,3 +22,4 @@
 - Las comidas que se registren desde Inicio o Menú conservan la semana y fecha correctas, aunque se haya navegado por el ciclo.
 - La primera visita sigue indicando que se debe revisar el perfil, ahora desde Guía y el formulario de Perfil.
 - Compra usa una etiqueta genérica para el establecimiento principal sin modificar la persistencia ni las referencias del catálogo.
+- En escritorio, el banner ocupa más espacio y el logo no se repite junto al contenido. El aviso de fecha explica cuándo empieza o terminó el ciclo; el objetivo y el menú tienen una separación visible.
