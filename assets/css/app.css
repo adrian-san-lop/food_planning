@@ -534,6 +534,7 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .proposal-review-note p{margin:5px 0 0;font-size:13px;line-height:1.55}
 .proposal-admin-heading,.proposal-card-header,.proposal-purge{display:flex;align-items:center;justify-content:space-between;gap:14px}
 .proposal-admin-heading{margin-bottom:18px}
+.proposal-admin-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap}
 .proposal-admin-heading h2,.proposal-card h2{margin:0}
 .proposal-admin-heading p,.proposal-purge p{margin:5px 0 0;color:var(--muted);font-size:13px}
 .proposal-list{display:grid;gap:12px}
@@ -768,6 +769,9 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .mobile-shop-bar .btn{padding:9px 10px;font-size:11px}}
 
 @media(max-width:720px){.recipe-proposal-panel,.proposal-admin-panel{padding:16px}
+.proposal-admin-heading{align-items:flex-start;flex-direction:column}
+.proposal-admin-actions{width:100%}
+.proposal-admin-actions .btn{flex:1;justify-content:center}
 .proposal-card-columns{grid-template-columns:1fr;gap:14px}
 .proposal-purge{align-items:stretch;flex-direction:column}
 .proposal-purge .btn{width:100%;justify-content:center}}

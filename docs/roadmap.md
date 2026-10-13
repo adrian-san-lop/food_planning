@@ -8,7 +8,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - El estado local actual es v8; admite importaciones v5-v8. Las sesiones realizadas se guardan con fecha.
 - Los catálogos JSON están en versión 0.6.0 (83 alimentos y 107 recetas), tienen JSON Schema y se cargan desde los módulos de la app. Las recetas pesan frutas/verduras enteras en gramos; inventario y compras las cuentan por unidades. Recuperación ósea usa etiquetas cualitativas de alimentos para favorecer fuentes de calcio, vitamina D y vitamina C en propuestas futuras. Las recetas no usan fotografías de platos.
 - La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
-- El esquema existente de Supabase tiene trece tablas con RLS. La octava migración de conflictos HTTP 409 y la novena del buzón de recetas están preparadas, pero pendientes de aplicar. La novena añade cuatro tablas y RPCs de envío/administración. Los snapshots tienen retención indefinida y no se purgan automáticamente; revisar el crecimiento global y por tabla al añadir usuarios y alrededor de 350 MB. La nueva versión del HTML todavía debe publicarse en Pages.
+- El esquema personal existente de Supabase tiene trece tablas con RLS. La octava migración de conflictos HTTP 409 sigue pendiente. El propietario informa que la novena migración del buzón de recetas y la asignación del admin ya se aplicaron. La exportación JSON admin está en la rama local y aún debe publicarse y validarse. Los snapshots tienen retención indefinida y no se purgan automáticamente; revisar el crecimiento global y por tabla al añadir usuarios y alrededor de 350 MB.
 - Las sesiones reales ajustan las comidas pendientes de su misma fecha; días futuros mantienen el objetivo base y las comidas registradas conservan sus cantidades.
 
 ## Etapas candidatas
@@ -44,14 +44,15 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 
 - Mantener una fuente de verdad clara para saldos y movimientos.
 - Revisar compras por envase, ajustes, consumos externos y reversos idempotentes.
-- Revisar accesibilidad, móvil, fechas locales, exportación/importación y experiencia de recuperación.
+- Revisar accesibilidad, móvil, fechas locales, restauración de datos y experiencia de recuperación.
 
-### F. Buzón compartido de propuestas de recetas — implementación local, puesta en marcha pendiente
+### F. Buzón compartido de propuestas de recetas — migración aplicada según el propietario; publicación y validación pendientes
 
 - El formulario para cuentas autenticadas recoge solo tipo, nombre, ingredientes simples y pasos; Supabase aplica los límites y guarda los datos de forma relacional e idempotente.
 - La sección admin se habilita por un rol privado de Supabase. La asignación inicial se hace desde SQL Editor; no hay contraseña administrativa en el HTML.
 - La revisión nutricional y la edición de `foods.json`/`recipes.json` se hacen manualmente con ayuda de IA fuera de la app. La publicación sigue el flujo Git normal.
-- Aplicar las migraciones octava y novena en orden, asignar el rol admin, publicar la rama y validar envío, RLS y purga global con dos cuentas antes de dar el flujo por terminado.
+- La novena migración y la asignación del rol admin se ejecutaron según el propietario. Aplicar aún la octava migración pendiente, publicar la rama y validar envío, RLS, descarga JSON y purga global con cuenta normal y admin.
+- El botón admin descarga un paquete `menuki.recipe-proposal-export` versión 1 según `docs/schemas/recipe-proposal-export.schema.json`. El chat de Codex que procese el archivo debe tener acceso al repositorio; el navegador no escribe en GitHub.
 - El botón elimina todas las propuestas solo después de publicar los catálogos; el RPC confirma el recuento y elimina los registros hijos en cascada.
 
 ## Criterios de aceptación a conservar
