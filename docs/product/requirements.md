@@ -1,6 +1,6 @@
 # Requisitos del producto
 
-Estado de referencia: 11 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
+Estado de referencia: 13 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
 
 ## Propósito y usuarios
 
@@ -14,12 +14,12 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 
 - Un ciclo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios). El primer ciclo mantiene el menú fijo existente; los siguientes pueden generarse desde el catálogo.
 - En una primera visita, Inicio explica los pasos básicos y dirige al perfil. Los valores de ejemplo no se consideran revisados hasta que la persona guarda el perfil explícitamente.
-- Si las copias local y remota han cambiado por separado, la app resume el estado de revisión del perfil, la fecha de inicio del menú, comidas realizadas, movimientos de despensa, pesos, sesiones, artículos de compra y última actualización antes de pedir qué copia conservar. Explica que usar Supabase reemplaza la copia local pendiente; subir la local reemplaza perfil, menú y compra remotos e integra los registros por identificador.
+- La app comprueba periódicamente la revisión de Supabase mientras está visible y al volver al primer plano o recuperar la conexión. Combina cambios independientes usando la última revisión remota como base; cuando dos dispositivos cambian el mismo valor, prevalece el valor de la revisión que Supabase aceptó más recientemente. No pide elegir una copia.
 - Recetas, instrucciones, fotografías orientativas y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
-- Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; seguimiento del peso.
+- Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; historial accesible desde **Actividad** en la barra inferior del móvil y desde **Actividad y peso** en escritorio. Cada sesión se puede eliminar de forma individual; el historial muestra 12 filas inicialmente y permite cargar más.
 - Estado de trabajo en `localStorage` y sincronización automática autenticada con Supabase. Se pueden restaurar archivos JSON v5-v8; no hay recordatorio periódico de copia.
-- En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Despensa; Perfil, Peso, Recetas y Guía están bajo **Más**. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
+- En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Actividad; Perfil, Despensa, Recetas y Guía están bajo **Más**. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
 - Inventario negativo permitido cuando se registra una comida que supera las existencias; se muestra el faltante y desmarcar la comida revierte el consumo.
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
 - Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado local con fecha y versión del catálogo.
@@ -97,5 +97,5 @@ Estos principios están aceptados. Las puntuaciones, umbrales y cantidades míni
 
 - Los catálogos son datos genéricos; no deben contener perfiles, pesos, preferencias personales, despensa, comidas completadas ni copias de seguridad.
 - GitHub Pages es alojamiento estático y de acceso público. Los datos personales no se guardan en el repositorio; Supabase los separa por `auth.uid()` y RLS. `localStorage` es una copia de trabajo, no la sincronización entre dispositivos.
-- No añadir colas offline, avisos en segundo plano ni notificaciones push. La sincronización se inicia automáticamente al guardar cambios; la interfaz solo ofrece reintento manual cuando falla.
+- No añadir colas offline, avisos en segundo plano ni notificaciones push. La sincronización se inicia automáticamente al guardar cambios y al detectar una revisión remota nueva; la interfaz solo ofrece reintento cuando falla. Reinicio total y restauración JSON conservan su confirmación explícita y usan el RPC de reemplazo; no participan en la conciliación habitual entre dispositivos.
 - El inicio de sesión y la sincronización relacional están implementados en el HTML y el esquema. La publicación del HTML actualizado, la prueba RLS con dos cuentas y la verificación PC/móvil siguen pendientes; véase [arquitectura](../architecture.md).

@@ -1,6 +1,6 @@
 # Arquitectura
 
-Estado de referencia: 13 de octubre de 2026. El esquema y el cliente de sincronización están implementados. Las etapas de prioridad alta, media y baja de la modularización están implementadas; quedan pendientes la validación de los recorridos publicados y la prueba RLS con dos cuentas.
+Estado de referencia: 13 de octubre de 2026. El esquema y el cliente de sincronización están implementados. La conciliación automática y el acceso directo al historial de actividad están implementados en el cliente local; quedan pendientes la publicación y la validación de los recorridos en navegador y la prueba RLS con dos cuentas.
 
 ## Arquitectura actual
 
@@ -16,6 +16,7 @@ Navegador
         │     ├── ui/html.js (escape HTML y validación de URL por origen permitido)
         │     ├── domain/dates.js (fecha civil Europe/Madrid)
         │     ├── domain/inventory-units.js (conversiones de unidades)
+        │     ├── domain/state-reconciliation.js (conciliación de cambios de estado)
         │     ├── data/catalogs.js (carga y validación de JSON)
         │     ├── persistence/local-state.js (copia de trabajo local)
         │     └── persistence/supabase-transport.js (lecturas y RPC)
@@ -36,15 +37,16 @@ El cliente de Supabase se carga desde jsDelivr con la versión exacta `@supabase
 - `npm test` ejecuta pruebas integradas para fechas, conversiones, validación de catálogos y codificación HTML/URL. Las pruebas de navegador con Auth, sincronización y RLS requieren cuentas y publicación y siguen pendientes.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
 - En la primera visita, una guía breve recomienda revisar el perfil antes de confiar en objetivos calculados con valores de ejemplo. La marca se guarda localmente y en `profiles.profile_confirmed`.
-- Cuando la copia local y Supabase divergen, la interfaz muestra el estado del perfil, el inicio del menú, comidas realizadas, movimientos de despensa, pesos, sesiones, artículos de compra y fechas de actualización. Explica que usar Supabase reemplaza la copia local pendiente; subir la local reemplaza perfil, menú y compra remotos e integra los registros por identificador. No elige ni reemplaza datos en silencio.
+- El cliente consulta `user_settings.sync_revision` mientras la página está visible cada 15 segundos y al volver al foco o recuperar la conexión. Solo descarga el estado completo si la revisión cambió.
+- `js/domain/state-reconciliation.js` aplica una conciliación de tres vías entre la base común guardada en la copia de trabajo, el estado local y el estado remoto. Combina cambios independientes; si ambos dispositivos modifican el mismo valor, prevalece la revisión que Supabase aceptó más recientemente. Las sesiones, pesos y movimientos usan identificadores o tombstones para evitar duplicados y propagar eliminaciones.
 - Las comidas de fechas futuras se muestran como planificadas y no se pueden registrar como consumidas antes de que llegue ese día.
 - `data/foods.json` y `data/recipes.json` son la fuente canónica de los catálogos genéricos. `js/data/catalogs.js` valida esos ficheros y deriva las estructuras en memoria que necesita la interfaz.
-- Para datos personales, Supabase es la fuente canónica remota de una cuenta y `localStorage` es su copia de trabajo en el navegador. Los cambios se sincronizan automáticamente; el indicador muestra si están guardados, pendientes o en conflicto. La acción de reintento solo aparece tras un error.
+- Para datos personales, Supabase es la fuente canónica remota de una cuenta y `localStorage` es su copia de trabajo en el navegador. Los cambios se sincronizan automáticamente; el indicador muestra si están guardados, pendientes o si hubo un error. La acción de reintento solo aparece tras un error. Cambiar de dispositivo no muestra una elección de copias.
 - Los alimentos separan medida de receta (`recipeUnit`) y medida de inventario (`unit`). Frutas y verduras enteras se pesan en gramos en recetas y se cuentan por piezas en despensa y compra; una conversión por peso comestible aproximado conecta ambas.
 - Las sesiones se registran después de realizarse. Su energía neta estimada se aplica solo a la fecha de la sesión y a comidas aún pendientes; no cambia días futuros ni cantidades ya registradas.
 - Supabase conserva identidad en `auth.users` y los datos personales en sus tablas relacionales con RLS. El perfil se guarda en `profiles`; las credenciales no se copian a tablas públicas.
 - La migración `20261011120000_menuki_cloud_sync.sql` añade la operación transaccional e idempotente de sincronización, control de revisión para evitar sobrescribir cambios recientes y metadatos de ciclos/sesiones. La migración `20261011150000_profile_confirmation.sql` añade la confirmación del perfil y actualiza la sincronización para guardarla sin borrar una confirmación al recibir clientes antiguos. No se almacena el estado completo como JSON en una columna.
-- Reiniciar toda la cuenta o restaurar una copia JSON requiere una confirmación específica y usa `reset_menuki_state`, que reemplaza las filas propias en la misma transacción; la sincronización habitual no borra el historial.
+- Reiniciar toda la cuenta o restaurar una copia JSON requiere una confirmación específica y usa `reset_menuki_state`, que reemplaza las filas propias en la misma transacción. Si la revisión cambia antes de que se ejecute una acción ya confirmada, el cliente actualiza la revisión y reintenta esa acción; esta vía no participa en la conciliación habitual.
 - El primer acceso de una cuenta sin inicializar importa su estado local una sola vez. Los dispositivos siguientes leen el estado remoto. No hay cola offline; la app requiere conexión para sincronizar y muestra cuándo conserva cambios locales pendientes.
 - Los snapshots de ingredientes mantienen retención indefinida y no se purgan automáticamente. Vigilar el crecimiento de la base al añadir usuarios, con revisión alrededor de 350 MB.
 
@@ -88,7 +90,7 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada 
 
 ## Migración y recuperación
 
-- Supabase sincroniza la cuenta entre dispositivos cuando se inicia sesión y hay conexión. Si una petición falla, la copia local se conserva y la interfaz permite reintentar. Los conflictos entre copias requieren una elección explícita.
+- Supabase sincroniza la cuenta entre dispositivos cuando hay conexión. Al detectar una revisión nueva, el cliente carga el estado remoto y combina cualquier cambio local pendiente. Si una petición falla, la copia local se conserva y la interfaz permite reintentar. No hay cola offline.
 - Aceptar v5 como primer archivo importable y v8 como estado actual; admitir v5-v8, sin importar v1-v4. Tratar el stock v5 como saldo de apertura y no sumar otra vez sobre él compras/comidas que ya estén reflejadas. Al actualizar v5, convertir las cantidades antiguas en gramos a unidades de inventario; al actualizar v6/v7, conservar movimientos y stock, y convertir los snapshots históricos de consumo a unidades de receta.
 - La restauración de JSON personales es distinta de los catálogos de GitHub. No subir datos personales al repositorio.
 
@@ -99,7 +101,7 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada 
 - La app requiere conexión y no mantiene cola offline. No afirmar que un cambio se guardó remotamente hasta que la función RPC responda con éxito.
 - La vista de planificación permite proponer, editar, bloquear, regenerar y confirmar el menú del siguiente ciclo. La propuesta y el menú se sincronizan en `plan_cycles` y `planned_meals`.
 - El historial de actividad describe sesiones ya realizadas; no es un calendario de previsiones ni un mecanismo de aprendizaje automático del perfil.
-- En móvil, la navegación principal incluye Inicio, Menú, Compra y Despensa; Perfil, Peso, Recetas y Guía se agrupan bajo **Más**. La compra ofrece búsqueda y un resumen fijo con acceso a finalizar.
+- En móvil, la navegación principal incluye Inicio, Menú, Compra y Actividad; Perfil, Despensa, Recetas y Guía se agrupan bajo **Más**. La vista **Actividad y peso** muestra el historial al principio, con acciones de borrado etiquetadas y carga progresiva de sesiones.
 - El uso sin coste depende de los límites vigentes de GitHub Pages y del proveedor de base de datos; verificar límites oficiales antes de integrar o prometer capacidad.
 
 ## Referencias de implementación
@@ -116,5 +118,6 @@ Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada 
 - [Decisión sobre fuentes canónicas de datos](decisions/0014-canonical-data-sources.md)
 - [Decisión de fijar Supabase JS y reforzar comprobaciones del cliente](decisions/0015-medium-priority-client-hardening.md)
 - [Decisión de organizar CSS y retirar estilos inline de las plantillas](decisions/0016-css-sections-and-template-presentation.md)
+- [Decisión de conciliación automática y acceso al historial de actividad](decisions/0017-automatic-reconciliation-and-activity-history.md)
 - [Auditoría front-end y back-end](front-end-audit.md)
 - [Preguntas abiertas](open-questions.md)

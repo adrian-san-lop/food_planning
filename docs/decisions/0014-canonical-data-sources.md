@@ -11,7 +11,7 @@ Los alimentos, recetas, formatos de compra y pesos comestibles aparecían tanto 
 ## Decisiones
 
 1. `data/foods.json` y `data/recipes.json` son las fuentes canónicas de los catálogos genéricos, incluidos los datos nutricionales, unidades, pesos por pieza, compra e ingredientes de recetas. La aplicación puede construir en memoria las vistas de datos que necesite, pero debe derivarlas de esos JSON.
-2. Las tablas relacionales de Supabase son la fuente canónica remota de los datos personales de una cuenta: perfil, ciclos y comidas, actividad, peso, despensa, compras y preparación. Mantener RLS, `auth.uid()`, la sincronización transaccional existente y sus decisiones explícitas ante conflictos.
+2. Las tablas relacionales de Supabase son la fuente canónica remota de los datos personales de una cuenta: perfil, ciclos y comidas, actividad, peso, despensa, compras y preparación. Mantener RLS, `auth.uid()` y la sincronización transaccional existente; la conciliación automática de revisiones está definida en ADR-0017.
 3. `localStorage` es la copia de trabajo del navegador para esos datos personales. Puede conservar cambios locales pendientes de sincronización, pero no es una segunda fuente común ni sustituye a Supabase entre dispositivos.
 4. El menú fijo inicial permanece como plantilla de la aplicación que referencia IDs estables de recetas. No debe contener otra definición de alimentos o recetas; el ciclo personal resultante se guarda con el estado remoto.
 

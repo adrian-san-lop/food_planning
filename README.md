@@ -7,23 +7,23 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - `index.html` es la entrada de GitHub Pages y redirige a `menuki.html` en la raíz.
 - El usuario inicia sesión con Supabase Auth; los datos personales se sincronizan en tablas relacionales y `localStorage` mantiene una copia de trabajo del navegador.
 - En la primera visita, Inicio indica por dónde empezar. Las cifras genéricas del perfil se marcan como ejemplos hasta que el usuario las revise y guarde.
-- Si la copia local y Supabase tienen cambios diferentes, Menuki resume su contenido y explica qué reemplaza cada opción antes de pedir una elección.
+- Al abrir la cuenta en otro dispositivo, Menuki actualiza los datos automáticamente. Los cambios independientes se combinan; si ambos dispositivos cambian el mismo valor, prevalece la última revisión guardada en Supabase.
 - La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.
 - El menú fijo actual sigue activo. La app puede preparar y guardar una propuesta editable para el siguiente ciclo de tres semanas.
 - El estado actual es v8. La app importa copias v5 a v8; la migración adapta los consumos históricos a gramos de receta y conserva despensa y movimientos en las unidades de inventario correspondientes.
 - Las antiguas marcas de fuerza se conservan como datos heredados, pero ya no afectan al cálculo. No se importan datos v1-v4.
 - Las compras, consumos, reversos y correcciones nuevas se anotan como movimientos con identificador único. Si una receta supera el saldo anotado, se registra completa y se muestra el faltante.
-- Los cambios se sincronizan automáticamente con Supabase mientras hay conexión. Si falla un envío, la cuenta muestra el estado y permite reintentarlo; los conflictos entre copias siguen requiriendo una elección explícita.
-- En móvil, Inicio, Menú, Compra y Despensa están en la barra inferior; Perfil, Peso, Recetas y Guía se encuentran bajo **Más**. La compra incluye búsqueda y un resumen fijo para revisar el progreso y finalizarla.
+- Los cambios se sincronizan automáticamente con Supabase mientras hay conexión. La app comprueba cambios remotos mientras está abierta y al volver a ella. Si falla la sincronización, muestra el estado y permite reintentar.
+- En móvil, Inicio, Menú, Compra y Actividad están en la barra inferior; Perfil, Despensa, Recetas y Guía se encuentran bajo **Más**. La compra incluye búsqueda y un resumen fijo para revisar el progreso y finalizarla.
 - Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales. Las comidas futuras aparecen como planificadas y solo se pueden registrar cuando llega su fecha.
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.
 - Supabase tiene trece tablas con RLS y una función transaccional para sincronizar el estado por cuenta. Auth guarda la identidad y las credenciales; `public.profiles` guarda parámetros nutricionales y la confirmación de revisión. Las siete migraciones están aplicadas; publica el HTML actualizado para activar los cambios en GitHub Pages.
 
 ### Sincronización entre dispositivos
 
-Al iniciar sesión en otro dispositivo, Menuki carga los datos de tu cuenta desde Supabase. La primera vez que una cuenta sin inicializar entra en una instalación con datos locales, importa esa copia una sola vez. Después, los cambios se sincronizan automáticamente; `localStorage` es la copia de trabajo del navegador. Si falla un envío, puedes reintentarlo. Si los datos local y remoto divergen, Menuki resume ambas copias y no reemplaza datos sin tu elección explícita.
+Al iniciar sesión en otro dispositivo, Menuki carga los datos de tu cuenta desde Supabase. La primera vez que una cuenta sin inicializar entra en una instalación con datos locales, importa esa copia una sola vez. Después, los cambios se sincronizan automáticamente y la app consulta la revisión remota cada 15 segundos mientras está visible, además de actualizar al recuperar el foco o la conexión. `localStorage` es la copia de trabajo del navegador. Los cambios independientes se combinan sin pedir una elección; si dos dispositivos modifican el mismo valor, prevalece la revisión que Supabase aceptó más recientemente. Si falla la sincronización, puedes reintentarlo.
 
-La app puede restaurar archivos JSON v5 a v8 desde **Importar copia**; los formatos anteriores no se convierten.
+El historial de sesiones está al principio de **Actividad y peso**. En móvil, **Actividad** está en la barra inferior. Cada fila incluye **Eliminar sesión**, y puedes ampliar el historial para ver registros anteriores. Reiniciar todos los datos y restaurar archivos JSON v5 a v8 siguen siendo acciones deliberadas con confirmación; no intervienen al cambiar de dispositivo. Los formatos anteriores no se convierten.
 
 ## Flujo de trabajo con Git
 
@@ -90,7 +90,7 @@ Los catálogos están en la versión `0.5.0`: 83 alimentos, 107 recetas y 512 re
 
 ### Registro de actividad
 
-En **Seguimiento**, registra una sesión después de hacerla con fecha, actividad e intensidad orientativa y duración. La app estima su energía neta con `(MET − 1) × peso (kg) × horas`; el nivel de movimiento del perfil representa la actividad diaria habitual sin ejercicio. La estimación solo se aplica a esa fecha; no se predicen entrenamientos futuros. Las comidas que ya registraste conservan sus cantidades; el objetivo restante se reparte entre las comidas aún pendientes, principalmente aumentando hidratos. Es una aproximación basada en valores MET, no una medición clínica.
+En **Actividad y peso**, registra una sesión después de hacerla con fecha, actividad e intensidad orientativa y duración. El historial aparece al principio de la página y permite eliminar sesiones anotadas por error. La app estima su energía neta con `(MET − 1) × peso (kg) × horas`; el nivel de movimiento del perfil representa la actividad diaria habitual sin ejercicio. La estimación solo se aplica a esa fecha; no se predicen entrenamientos futuros. Las comidas que ya registraste conservan sus cantidades; el objetivo restante se reparte entre las comidas aún pendientes, principalmente aumentando hidratos. Es una aproximación basada en valores MET, no una medición clínica.
 
 En **Menú 3 semanas**, **Preparar propuesta** crea 105 espacios para el siguiente ciclo. Puedes cambiar una receta por otra del mismo tipo, bloquear comidas y volver a generar las que dejes desbloqueadas. La despensa influye en el orden de selección, pero no excluye recetas por falta de stock. La app guarda la propuesta en el navegador y la activa al llegar su fecha de inicio. No se aplican todavía preferencias de gustos ni exclusiones personales.
 

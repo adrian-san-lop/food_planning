@@ -2,7 +2,7 @@
 
 - **Fecha:** 13 de octubre de 2026
 - **Alcance:** revisión estática del repositorio y del cliente web, junto con sus catálogos, documentación, migraciones y comprobación SQL.
-- **Estado:** diagnóstico actualizado tras implementar las recomendaciones aceptadas de prioridad alta y los paquetes de prioridad media y baja. La app aún requiere validación publicada en navegador y prueba de aislamiento RLS con dos cuentas; el esquema de Supabase no ha cambiado.
+- **Estado:** diagnóstico actualizado tras implementar las recomendaciones aceptadas y la conciliación automática entre dispositivos. Esta última y el acceso al historial de actividad están en la copia local de `dev`; la publicación y validación en navegador y la prueba RLS con dos cuentas siguen pendientes. El esquema de Supabase no ha cambiado.
 
 ## Resumen
 
@@ -21,6 +21,7 @@ flowchart TD
     B --> M[js/main.js<br/>módulo ES de entrada]
     M --> U[js/ui/html.js<br/>escape y validación de URL]
     M --> D[domain/dates.js<br/>domain/inventory-units.js]
+    M --> R[domain/state-reconciliation.js<br/>conciliación de revisiones]
     M --> C[data/catalogs.js<br/>carga y valida JSON]
     M --> L[persistence/local-state.js]
     M --> T[persistence/supabase-transport.js]
@@ -34,7 +35,7 @@ flowchart TD
 
 El navegador hace el renderizado, los cálculos de porciones, la propuesta de ciclos y la gestión de inventario. Supabase presta identidad, persistencia remota y sincronización. Los catálogos de alimentos y recetas son datos genéricos públicos; el estado personal se guarda por separado. El módulo `js/domain/dates.js` obtiene el día civil de `Europe/Madrid` y opera con fechas `YYYY-MM-DD` mediante portadores a medianoche UTC; esto evita que la zona del dispositivo o los cambios de horario de verano alteren la aritmética del calendario. Los timestamps permanecen como instantes ISO.
 
-La primera etapa está registrada en [ADR-0013](decisions/0013-front-end-modules-and-madrid-dates.md), las fuentes canónicas en [ADR-0014](decisions/0014-canonical-data-sources.md), el paquete medio en [ADR-0015](decisions/0015-medium-priority-client-hardening.md) y la limpieza de CSS/plantillas en [ADR-0016](decisions/0016-css-sections-and-template-presentation.md). No modifican el esquema ni los contratos de sincronización. La interfaz, el resto de dominio y parte de la orquestación aún deben extraerse por etapas.
+La primera etapa está registrada en [ADR-0013](decisions/0013-front-end-modules-and-madrid-dates.md), las fuentes canónicas en [ADR-0014](decisions/0014-canonical-data-sources.md), el paquete medio en [ADR-0015](decisions/0015-medium-priority-client-hardening.md), la limpieza de CSS/plantillas en [ADR-0016](decisions/0016-css-sections-and-template-presentation.md) y la conciliación automática e historial de actividad en [ADR-0017](decisions/0017-automatic-reconciliation-and-activity-history.md). El último paquete no modifica el esquema ni las RPC de Supabase. La interfaz, el resto de dominio y parte de la orquestación aún deben extraerse por etapas.
 
 ## Hallazgos y prioridades
 
@@ -44,7 +45,7 @@ La primera etapa está registrada en [ADR-0013](decisions/0013-front-end-modules
 | Alta | Presentación, dominio y persistencia compartían un único HTML y un ámbito global. | Un cambio de una vista podía afectar al estado, a los cálculos o a la sincronización. Costaba localizar responsabilidades, revisar regresiones y reutilizar lógica. | Extraer por etapas CSS y JavaScript; separar funciones de dominio puras de DOM, `localStorage` y Supabase. | CSS y entrada extraídos; fechas, unidades, catálogos y accesos de persistencia tienen módulos. `main.js` aún concentra UI, reglas y orquestación. |
 | Media | Antes de la limpieza, los alimentos, recetas, compra y pesos por pieza aparecían tanto como literales en JavaScript como en los catálogos JSON. | Dos fuentes editables podían divergir en nombres, IDs, unidades, valores o formatos de compra. El menú fijo usa IDs de receta y sí cumple otra función. | Mantener los JSON como fuente canónica y derivar de ellos los modelos en memoria. Conservar estables los IDs y los JSON Schema. | Resuelto en esta etapa: se eliminaron los literales `FOOD`, `RECIPES`, `CATALOG` y `UNIT_GRAMS`; el menú fijo conserva solo referencias a recetas. Véase ADR-0014. |
 | Media | El cliente de Supabase se cargaba desde `@supabase/supabase-js@2`, sin fijar una versión secundaria y de parche. | El recurso servido podía cambiar dentro de la versión principal y afectar a una app sin paso de compilación ni bloqueo de dependencias. | Fijar una versión exacta de la librería. Si más adelante se introduce una compilación, declarar la dependencia y conservar un archivo de bloqueo. La clave publishable que aparece en el navegador es apropiada para este modelo; no debe sustituirse por una clave secreta o `service_role`. | Implementado: `menuki.html` carga `@supabase/supabase-js@2.117.3`. |
-| Media | No había una suite automatizada de front-end en el repositorio. | Los contratos de catálogos sí se validaban al cargar y existe una comprobación estructural SQL, pero eso no demuestra los recorridos de Auth, sincronización, conflictos, fechas ni uso en navegador. | Añadir pruebas pequeñas para las reglas de dominio y comprobaciones de navegador para los recorridos sensibles. Ejecutar también la prueba RLS con dos cuentas que ya está pendiente en la documentación. | Implementado: `npm test` ejecuta nueve comprobaciones sin dependencias externas para fechas, unidades, catálogos y codificación HTML/URL. Las comprobaciones de navegador y RLS siguen pendientes. |
+| Media | No había una suite automatizada de front-end en el repositorio. | Los contratos de catálogos sí se validaban al cargar y existe una comprobación estructural SQL, pero eso no demuestra los recorridos de Auth, conciliación entre dispositivos, fechas ni uso en navegador. | Añadir comprobaciones pequeñas de dominio y validaciones de navegador para los recorridos sensibles. Ejecutar también la prueba RLS con dos cuentas que ya está pendiente en la documentación. | Implementado: `npm test` ejecuta nueve comprobaciones sin dependencias externas para fechas, unidades, catálogos y codificación HTML/URL. La conciliación automática, los recorridos publicados y RLS siguen pendientes de validar en vivo. |
 | Media | Las vistas generan fragmentos HTML mediante concatenación y los asignan a `innerHTML`. Existe escape de HTML, pero la seguridad depende de aplicarlo en cada texto y atributo dinámico. | El contenido local o sincronizado puede proceder de copias importadas y catálogos editables; un escape omitido podría convertir datos en marcado ejecutable. La revisión estática no confirma una vulnerabilidad explotable concreta. | Definir una regla común para textos, atributos y URL; usar `textContent` o nodos DOM para valores variables cuando resulte sencillo. Revisar los usos de `innerHTML` durante la separación, sin quitar la validación de importación. | Implementado parcialmente: `js/ui/html.js` centraliza el escape y limita las URL a HTTPS y orígenes permitidos; se revisaron las vistas con contenido de catálogo/estado y se validan los IDs según el esquema. La estrategia de plantillas continúa y requiere revisión gradual. |
 | Baja | Antes del refactor los estilos estaban en ocho bloques; también había estilos inline en plantillas. | Se hace difícil saber qué reglas pertenecen a una vista y qué cambios son globales; los estilos inline también limitan una futura política CSP estricta. | Ordenar la hoja por base, componentes, vistas y responsive; retirar estilos inline de forma gradual. | Implementado: `assets/css/app.css` está separado en secciones y concentra las reglas responsive al final. Se eliminaron los atributos `style` de las plantillas; los indicadores usan `<progress>` y la foto del hero usa un `<img>` permitido por origen. |
 
@@ -61,7 +62,7 @@ La arquitectura de datos está alineada con las decisiones del proyecto y convie
 - El cliente filtra las lecturas por `user_id`; ese filtro complementa RLS y no debe reemplazarla.
 - `localStorage` es una copia de trabajo del navegador. El producto no mantiene una cola offline ni guarda datos personales en los catálogos públicos.
 
-La principal tarea pendiente es operativa: la prueba SQL incluida confirma estructura, políticas y permisos, pero no prueba aislamiento en dos sesiones autenticadas. También están pendientes el recorrido real en GitHub Pages, los conflictos y la sincronización entre PC y móvil. Las migraciones se aplicaron manualmente desde SQL Editor y Supabase no registra esos archivos en su tabla de versiones. Si se incorpora Supabase CLI, primero hay que establecer con cuidado la correspondencia entre las siete migraciones ya aplicadas y el historial remoto; no se deben volver a ejecutar sobre el proyecto existente.
+La principal tarea pendiente es operativa: la prueba SQL incluida confirma estructura, políticas y permisos, pero no prueba aislamiento en dos sesiones autenticadas. También están pendientes el recorrido real en GitHub Pages y la sincronización automática entre PC y móvil, incluida la conciliación de cambios independientes y simultáneos. Las migraciones se aplicaron manualmente desde SQL Editor y Supabase no registra esos archivos en su tabla de versiones. Si se incorpora Supabase CLI, primero hay que establecer con cuidado la correspondencia entre las siete migraciones ya aplicadas y el historial remoto; no se deben volver a ejecutar sobre el proyecto existente.
 
 ## Estructura actual y extracción propuesta
 
@@ -108,7 +109,7 @@ No recomiendo migrar ahora a un servidor Node, una aplicación de una sola pági
 ## Secuencia de trabajo sugerida
 
 1. **Etapas altas y paquetes medio y bajo implementados:** hoja CSS organizada, plantillas sin atributos `style`, entrada ES, módulos de fechas, unidades, catálogos y persistencia; fecha civil en `Europe/Madrid`; versión exacta del cliente Supabase; pruebas de dominio/catálogos/HTML y escape compartido. Preservar estado v8, importaciones v5-v8, catálogos 0.5.0, menú inicial, UI en español y sincronización.
-2. **Validar en navegador antes de publicar:** carga de recursos, fecha actual, comidas y sesiones en los límites del día de Madrid, activación de ciclos, Auth, sincronización, conflictos, restauración, navegación y compra; comprobar PC y móvil.
+2. **Validar en navegador antes de publicar:** carga de recursos, fecha actual, comidas y sesiones en los límites del día de Madrid, activación de ciclos, Auth, conciliación automática de cambios, borrado de sesiones, reinicio/restauración confirmados, navegación y compra; comprobar PC y móvil.
 3. **Continuar la extracción gradualmente:** revisar primero las reglas de dominio (nutrición, planificador, inventario y normalización de estado), luego vistas/eventos y el resto de orquestación de nube. Evitar cambios de producto durante cada etapa y preservar los contratos existentes.
 4. **Completar las comprobaciones operativas por separado:** prueba de aislamiento RLS con dos cuentas, publicación en GitHub Pages y validación en dispositivos reales.
 5. **Evaluar herramienta de compilación con evidencia:** incorporar Vite o TypeScript solo si la separación muestra una necesidad concreta y dejar documentado el proceso de publicación desde `dev`.
@@ -118,7 +119,7 @@ No recomiendo migrar ahora a un servidor Node, una aplicación de una sola pági
 - Mantener `index.html` y `menuki.html` en la raíz y usar referencias relativas compatibles con GitHub Pages.
 - Mantener los JSON Schema, los IDs estables de alimentos y recetas, y la separación entre catálogos genéricos y datos personales.
 - Conservar estado v8 e importación/restauración v5-v8; no añadir migraciones v1-v4.
-- Mantener la sincronización autenticada, RLS, `auth.uid()`, el control `sync_revision`, las transacciones y la elección explícita ante conflictos.
+- Mantener la sincronización autenticada, RLS, `auth.uid()`, el control `sync_revision`, las transacciones y la conciliación automática definida en ADR-0017.
 - No introducir cola offline, sincronización manual de uso normal, notificaciones en segundo plano ni claves secretas en el navegador.
 - Mantener las decisiones aceptadas del planificador, inventario y actividad. Las ideas aún propuestas siguen siendo preguntas abiertas.
 

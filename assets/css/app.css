@@ -325,6 +325,8 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .activity-log-row strong,.activity-log-row small{display:block}
 .activity-log-row small{color:var(--muted);margin-top:4px}
 .activity-history .section-head{align-items:center;margin:0 0 10px}
+.activity-delete-button{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.activity-history-more{margin-top:12px}
 .activity-dialog-body{max-width:620px}
 .activity-dialog-body>p{color:var(--muted);line-height:1.55}
 .activity-dialog-body .dialog-actions{margin-top:15px} .shop-store{margin-top:24px}
@@ -461,28 +463,21 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .auth-account-email{max-width:min(46vw,360px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .auth-account .btn{padding:7px 10px;font-size:11px}
 .cloud-sync-status{font-size:10px}
-.cloud-sync-status[data-level="error"],.cloud-sync-status[data-level="conflict"]{color:#a05246;font-weight:700}
+.cloud-sync-status[data-level="error"]{color:#a05246;font-weight:700}
 .cloud-sync-status[data-level="ok"]{color:var(--accent)}
 
 
-.first-use-card,.cloud-conflict-card{margin:0 0 18px;padding:22px 24px;border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:var(--shadow)}
+.first-use-card{margin:0 0 18px;padding:22px 24px;border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:var(--shadow)}
 .first-use-card{border-color:#c7dccb;background:linear-gradient(135deg,#f4f8ef,#fffefa)}
-.first-use-card h2,.cloud-conflict-card h2{margin:6px 0 8px;font-size:22px;line-height:1.2}
-.first-use-card>p,.cloud-conflict-card>p{max-width:850px;color:var(--muted);line-height:1.6;margin:0 0 14px}
+.first-use-card h2{margin:6px 0 8px;font-size:22px;line-height:1.2}
+.first-use-card>p{max-width:850px;color:var(--muted);line-height:1.6;margin:0 0 14px}
 .first-use-card ol{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;list-style:none;padding:0;margin:16px 0}
 .first-use-card li{display:grid;align-content:start;gap:5px;padding:11px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:12px;color:var(--muted)}
 .first-use-card li.current{border-color:#97bea2;background:#eaf3e8;color:var(--ink)}
 .first-use-card li strong{font-size:12px;color:var(--ink)}
-.first-use-actions,.cloud-conflict-options{display:flex;gap:10px;flex-wrap:wrap}
+.first-use-actions{display:flex;gap:10px;flex-wrap:wrap}
 .profile-review-notice{margin:0 0 18px;padding:15px 17px;border:1px solid #e8d6b5;border-radius:14px;background:#fff7e8;color:#73563b}
 .profile-review-notice p{margin:5px 0 0;font-size:13px;line-height:1.55}
-.copy-summary-grid,.cloud-conflict-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:14px 0}
-.copy-summary,.cloud-conflict-options article{padding:14px;border:1px solid var(--line);border-radius:13px;background:#fbfcf8}
-.copy-summary p,.cloud-conflict-options article p{margin:6px 0;color:var(--muted);font-size:13px;line-height:1.5}
-.copy-summary small{color:var(--muted)}
-.cloud-conflict-options h3{margin:0;font-size:15px}
-.cloud-conflict-options article{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
-.cloud-conflict-options article .btn{margin-top:auto}
 .profile-review-notice strong{color:#614a32}
 .meal-status{margin-left:auto;padding:4px 7px;border-radius:20px;background:#f1f3ec;color:#69766c;font-size:10px;font-weight:750;white-space:nowrap}
 .meal-status.planned{background:#fff2dc;color:#8a6331}
@@ -714,12 +709,11 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 @media(max-width:850px){.first-use-card ol{grid-template-columns:repeat(2,minmax(0,1fr))}
 .first-use-card li:first-child{grid-column:1/-1}}
 
-@media(max-width:600px){.first-use-card,.cloud-conflict-card{padding:17px 15px;border-radius:15px}
-.first-use-card h2,.cloud-conflict-card h2{font-size:20px}
-.copy-summary-grid,.cloud-conflict-options{grid-template-columns:1fr}
+@media(max-width:600px){.first-use-card{padding:17px 15px;border-radius:15px}
+.first-use-card h2{font-size:20px}
 .first-use-card li:first-child{grid-column:1/-1}
 .first-use-actions{display:grid;grid-template-columns:1fr}
-.first-use-actions .btn,.cloud-conflict-options .btn{width:100%;justify-content:center}}
+.first-use-actions .btn{width:100%;justify-content:center}}
 
 @media(max-width:850px){
  .mobile-nav{justify-content:space-around;overflow:visible}

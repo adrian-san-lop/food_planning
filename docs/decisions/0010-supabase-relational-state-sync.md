@@ -10,13 +10,13 @@
 - Mantener foods.json y recipes.json como catálogos genéricos públicos. El cuerpo JSON enviado al procedimiento es solo el formato de transporte; la base de datos no guarda un objeto completo de estado en una columna.
 - Importar una sola vez el estado v8 del navegador a una cuenta sin registros remotos. No reemplazar filas remotas que ya existan si falta la marca de importación inicial.
 - Sincronizar los cambios confirmados desde la sesión autenticada mediante `sync_menuki_state(jsonb, bigint)`, que valida el propietario con `auth.uid()`, aplica los cambios en una transacción y usa `sync_revision` para rechazar escrituras de una copia desactualizada.
-- Conservar localStorage como copia de trabajo y recuperación ante errores. No mantener una cola offline. La interfaz solo declara una sincronización correcta tras recibir confirmación de Supabase; los conflictos conservan la copia local y permiten elegir la versión.
+- Conservar localStorage como copia de trabajo y recuperación ante errores. No mantener una cola offline. La interfaz solo declara una sincronización correcta tras recibir confirmación de Supabase; las revisiones obsoletas se reconcilian según ADR-0017.
 - Hacer que “Reiniciar todo” y restaurar una copia JSON soliciten confirmación y reemplacen el estado remoto en una transacción separada; las sincronizaciones ordinarias nunca purgan el historial.
 - RLS sigue limitando las tablas personales al usuario autenticado. La clave pública puede estar en el cliente; nunca usar una clave `service_role` en GitHub Pages.
 
 ## Consecuencias
 
-- Un mismo usuario puede abrir sus datos desde distintos dispositivos con conexión e iniciar sesión en cada uno. No se resuelven automáticamente escrituras simultáneas: la revisión detecta el conflicto y bloquea la escritura desactualizada.
+- Un mismo usuario puede abrir sus datos desde distintos dispositivos con conexión e iniciar sesión en cada uno. `sync_revision` bloquea escrituras obsoletas; el cliente las reconcilia automáticamente según ADR-0017.
 - La primera sincronización importa el estado local del dispositivo donde ya se usaba la app. En otros dispositivos, una cuenta inicializada carga la copia remota.
 - Cada comida conserva un evento idempotente, sus cantidades disponibles como snapshots de receta y los movimientos de inventario enlazados. Los eventos de inventario existentes no se borran al sincronizar.
 - Se añaden columnas de inicialización/revisión a `user_settings`, metadata de recuperación a `plan_cycles` y `client_id` en `activity_sessions`; no se añade una tabla de estado JSON.
