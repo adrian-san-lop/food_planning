@@ -2,7 +2,7 @@
 
 Última revisión: 11 de octubre de 2026. El proyecto tiene trece tablas aplicadas; las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
-El HTML y Supabase Auth están integrados en el repositorio; las siete migraciones también están aplicadas al proyecto. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta publicar este HTML y probar el flujo real entre dispositivos y el aislamiento con dos cuentas autenticadas.
+El HTML y Supabase Auth están integrados en el repositorio; las siete migraciones iniciales están aplicadas al proyecto y la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, está pendiente. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta aplicar esa corrección, publicar este HTML y probar el flujo real entre dispositivos y el aislamiento con dos cuentas autenticadas.
 
 ## Diagrama entidad-relación
 
@@ -273,7 +273,7 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 - RLS está habilitado en las trece tablas aplicadas y sus políticas filtran por auth.uid() = user_id.
 - El rol anon no tiene permisos de lectura, inserción, actualización ni borrado en estas tablas.
 - El rol authenticated recibe solo los permisos de tabla previstos; inventory_movements permite lectura e inserción, sin actualización ni borrado.
-- Las siete migraciones se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el reinicio/restauración transaccional; la séptima añadió `profiles.profile_confirmed` y actualizó `sync_menuki_state` para guardar la confirmación y conservarla si un cliente antiguo no envía ese campo. Ambas funciones son `SECURITY DEFINER`, derivan el propietario de `auth.uid()` y solo conceden ejecución a `authenticated`.
+- Las siete migraciones iniciales se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el reinicio/restauración transaccional; la séptima añadió `profiles.profile_confirmed` y actualizó `sync_menuki_state` para guardar la confirmación y conservarla si un cliente antiguo no envía ese campo. Ambas funciones son `SECURITY DEFINER`, derivan el propietario de `auth.uid()` y solo conceden ejecución a `authenticated`. La octava migración, pendiente de aplicar, cambia las excepciones de revisión obsoleta a `PT409` sin modificar el esquema ni los datos.
 - Consultas previas confirmaron que `activity_sessions` y `meal_completion_ingredients` tienen RLS y permisos mínimos; los snapshots no conceden UPDATE ni DELETE a `authenticated`. La aplicación del SQL de sincronización devolvió éxito; no se ha probado todavía con dos sesiones autenticadas ni desde GitHub Pages.
 - El HTML ya contiene inicio de sesión y sincronización; la publicación, el primer traspaso de datos local a remoto y la prueba entre PC/móvil siguen pendientes.
 - SQL Editor no registra por sí solo el historial de archivos de migración. Los archivos locales describen el orden aplicado, pero aún no existe una operación de Supabase CLI que los registre en su tabla de versiones.

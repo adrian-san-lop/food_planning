@@ -8,7 +8,7 @@ Las credenciales pertenecen a Supabase Auth (`auth.users`). `public.profiles` gu
 
 ## Migraciones
 
-Los siete archivos de `migrations/` están aplicados al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para las acciones confirmadas de reiniciar/restaurar. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state` para guardar la confirmación y conservarla cuando un cliente antiguo no envía el campo. Aplicar estas migraciones no borró ni convirtió filas existentes. Para un proyecto nuevo, revisa y aplica los siete archivos en orden. No vuelvas a ejecutar una migración ya aplicada en el proyecto existente.
+Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para las acciones confirmadas de reiniciar/restaurar. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state` para guardar la confirmación y conservarla cuando un cliente antiguo no envía el campo. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, está preparada pero pendiente de aplicar: sustituye el SQLSTATE `40001` por `PT409` en ambas funciones para que PostgREST devuelva HTTP 409 y no reintente indefinidamente ese conflicto de aplicación. No modifica tablas ni filas. Aplicar las siete migraciones iniciales no borró ni convirtió filas existentes. Para un proyecto nuevo, revisa y aplica los ocho archivos en orden. En el proyecto existente, aplica solo la octava una vez; no vuelvas a ejecutar las siete ya aplicadas.
 
 La migración crea `sync_menuki_state(jsonb, bigint)`: el cliente transmite el snapshot, la función obtiene el propietario mediante `auth.uid()`, guarda los registros en las tablas normalizadas y comprueba `sync_revision` para rechazar copias desactualizadas. La primera sincronización importa una sola vez el estado local si la cuenta no tiene ya registros; no sobrescribe silenciosamente filas remotas. La app no mantiene una cola offline.
 
@@ -16,7 +16,7 @@ El reinicio y la restauración de una copia JSON son operaciones explícitas dis
 
 Para revisar el esquema inicial, ejecuta `tests/001_schema_check.sql`. Es una comprobación estructural; no demuestra el aislamiento con dos sesiones autenticadas ni el recorrido completo de sincronización.
 
-SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Los archivos locales describen las siete migraciones aplicadas; no vuelvas a ejecutar los scripts solo para registrarlos.
+SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Los siete primeros archivos describen las migraciones ya aplicadas; el octavo sigue pendiente y debe aplicarse manualmente. No vuelvas a ejecutar los scripts solo para registrarlos.
 
 ## Tablas utilizadas
 
@@ -33,7 +33,7 @@ Los IDs de alimentos y recetas se resuelven contra los catálogos JSON; no se du
 
 ## Pendiente de validar
 
-- Publicar el HTML actualizado en GitHub Pages. La migración está en Supabase, pero la versión publicada no sincronizará hasta incluir el nuevo HTML.
+- Aplicar la octava migración desde SQL Editor y publicar el HTML actualizado en GitHub Pages. La migración `20261013120000_menuki_sync_conflict_http_409.sql` aún no está en el proyecto alojado.
 - Ejecutar la prueba de aislamiento con dos cuentas de Auth: lectura, inserción y referencias entre propietarios distintos.
 - Probar en la web publicada los cambios desde PC y móvil, los conflictos y la recuperación ante un error de red.
 - Definir una copia externa periódica y revisar el crecimiento de almacenamiento.
@@ -61,7 +61,7 @@ Los snapshots de ingredientes no caducan y no hay una tarea programada que los b
 
 Al activar la sincronización multiusuario, toma una medida inicial y revisa el crecimiento mensualmente y tras importaciones grandes. Al acercarse a 350 MB del límite Free de 500 MB, revisa qué tablas ocupan más y decide una acción explícita; no se borran snapshots automáticamente. El umbral inicia una revisión, no una purga.
 
-La lectura SQL anterior a la cuarta migración fue de **11.622.067 bytes** (aprox. 11 MB, con 12 tablas); el panel mostró **11 MB** redondeados después de la cuarta migración. Las migraciones quinta a séptima no importaron registros de la app. El tamaño debe volver a medirse cuando se active la sincronización; la cifra es una referencia inicial, no una garantía de espacio disponible, e incluye estructuras del proyecto y puede cambiar con extensiones y uso de PostgreSQL.
+La lectura SQL anterior a la cuarta migración fue de **11.622.067 bytes** (aprox. 11 MB, con 12 tablas); el panel mostró **11 MB** redondeados después de la cuarta migración. Las migraciones quinta a séptima no importaron registros de la app. El propietario comunicó **27 MB** en el panel el 13 de octubre de 2026. Es una medida reportada, no una lectura independiente de esta revisión; queda por debajo del umbral de revisión de 350 MB. El tamaño puede cambiar con extensiones y uso de PostgreSQL.
 
 Consulta global de solo lectura:
 
