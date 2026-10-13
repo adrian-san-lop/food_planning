@@ -20,5 +20,5 @@ La interfaz, las reglas del dominio y el acceso a datos estaban concentrados en 
 - El cálculo de días y semanas ya no depende de la zona configurada en el dispositivo; sumar días civiles tampoco suma 24 horas a un instante local y, por ello, no desplaza la fecha al cruzar el horario de verano.
 - El código cliente puede servirse como archivos estáticos desde GitHub Pages con rutas relativas.
 - Esta etapa no completa la separación de todos los módulos. Extraer planificador, nutrición, normalización de estado, vistas, eventos y orquestación de sincronización requiere etapas posteriores y revisión de regresiones.
-- Antes de publicar, validar en navegador la carga de módulos y estilos. En la publicación, revisar comidas y sesiones en el cambio de día de Madrid, la activación del siguiente ciclo, sincronización, conflictos y los recorridos móvil/escritorio.
+- Antes de publicar, validar en navegador la carga de módulos y estilos. En la publicación, revisar comidas y sesiones en el cambio de día de Madrid, la activación del siguiente ciclo, conciliación automática y los recorridos móvil/escritorio.
 - La elección de Vite/TypeScript y el pin de la versión secundaria/parche de Supabase JS siguen abiertos; no son requisitos de esta etapa.

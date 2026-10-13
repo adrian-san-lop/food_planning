@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones están aplicadas en Supabase. Las mejoras UX de prioridad alta están en `dev`; las mejoras de prioridad media y baja de compra, navegación y guardado están implementadas en `chore/ux-mobile-shopping`, pendientes de publicación y validación en teléfono. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones están aplicadas en Supabase. La conciliación automática entre dispositivos y el acceso directo al historial de actividad están implementados localmente en `dev`; aún no están publicados ni validados en navegador/teléfono. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
@@ -27,18 +27,17 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 
 ## Persistencia e integración
 
-- Publicar el HTML actualizado para activar la guía de primera visita, la elección explicada ante conflictos y el bloqueo de registro anticipado; completar después la primera importación local v8 a Supabase.
+- Publicar la app actualizada y comprobar la primera importación local v8 a Supabase, la conciliación de cambios independientes, el desempate de cambios simultáneos y la propagación del borrado de sesiones entre PC y móvil.
 - Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
-- Verificar en GitHub Pages la sincronización entre PC y móvil, conflictos, errores de red, reversos y restauración desde una copia.
+- Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y restauración desde una copia confirmada.
 - Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?
 - ¿Qué navegadores y dispositivos se validarán antes de declarar lista la sincronización?
 
 ## Arquitectura front-end
 
-El refactor incremental y las fuentes canónicas vigentes están definidos en [ADR-0013](decisions/0013-front-end-modules-and-madrid-dates.md) y [ADR-0014](decisions/0014-canonical-data-sources.md). Siguen pendientes estas decisiones de herramienta:
+El refactor incremental, las fuentes canónicas y el paquete de robustez vigente están definidos en [ADR-0013](decisions/0013-front-end-modules-and-madrid-dates.md), [ADR-0014](decisions/0014-canonical-data-sources.md) y [ADR-0015](decisions/0015-medium-priority-client-hardening.md). Sigue pendiente esta decisión de herramienta:
 
-- ¿Conviene fijar la versión secundaria y de parche de Supabase JS?
 - ¿Vite o TypeScript resolverían una necesidad concreta en las siguientes etapas?
 
 La [auditoría front-end y back-end](front-end-audit.md) explica los criterios para reconsiderarlas.

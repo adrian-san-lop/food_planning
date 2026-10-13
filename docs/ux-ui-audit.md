@@ -12,12 +12,16 @@ La primera visita también presenta una decisión sobre datos locales y Supabase
 
 La experiencia cambia con el tamaño de pantalla: en escritorio las secciones se encuentran en una barra lateral; en móvil pasan a una barra inferior con ocho opciones. La compra y la despensa siguen siendo recorridos largos en móvil.
 
+## Actualización de comportamiento — 13 de octubre de 2026
+
+La elección manual entre copias y la pantalla descritas en esta auditoría son observaciones históricas de la versión revisada y quedan sustituidas por [ADR-0017](decisions/0017-automatic-reconciliation-and-activity-history.md). El cliente local consulta las revisiones remotas y combina cambios automáticamente. En móvil, **Actividad** está en la barra inferior; el historial aparece al inicio de **Actividad y peso** y cada sesión muestra una acción «Eliminar sesión». Estos cambios están en la copia local de `dev`; la publicación y las comprobaciones reales entre dispositivos siguen pendientes.
+
 ## Estado de las mejoras de prioridad alta
 
-Las tres propuestas de prioridad alta están en `dev`; la migración que guarda la confirmación del perfil también se aplicó en Supabase. La publicación y las comprobaciones con usuario nuevo y dos copias divergentes siguen pendientes.
+La guía de primera visita, la confirmación del perfil y el bloqueo de registro anticipado están implementados. La publicación y la comprobación con usuario nuevo siguen pendientes.
 
 - **Primera visita y perfil:** Inicio guía por cinco pasos y dirige a revisar los valores genéricos. El perfil queda marcado como revisado al guardarlo; esa marca se sincroniza con Supabase.
-- **Conflicto de copias:** un panel resume perfil, menú, comidas realizadas, movimientos de despensa, pesos, sesiones, compra y fechas de actualización, y explica qué se reemplaza o integra antes de elegir entre la copia local y Supabase.
+- **Sincronización entre dispositivos:** el antiguo panel de elección de copias fue retirado. El cliente reconcilia cambios remotos y locales automáticamente, con la política descrita en ADR-0017.
 - **Planificación y registro:** las comidas futuras aparecen como planificadas y el control para registrarlas está deshabilitado hasta la fecha correspondiente.
 
 Las observaciones siguientes describen lo que se encontró antes de estas mejoras. Las propuestas de prioridad media y baja se han implementado en la rama de esta iteración; faltan la publicación y la validación en un teléfono físico.
@@ -108,7 +112,7 @@ Mostrar el paso actual y permitir saltar tareas que no sean necesarias todavía.
 
 Priorizar una sola acción relevante, por ejemplo **Revisar mi perfil** si aún no está confirmado, o **Ver el menú de hoy** cuando ya lo esté. Dejar los detalles de sincronización y mantenimiento en un estado compacto o en Ajustes.
 
-### 3. Aclarar la elección cuando hay dos copias
+### 3. Elección entre copias — propuesta sustituida
 
 Si aparecen **Usar versión de Supabase** y **Subir esta copia**, explicar antes de elegir:
 
@@ -116,7 +120,7 @@ Si aparecen **Usar versión de Supabase** y **Subir esta copia**, explicar antes
 - qué datos se conservarán y cuáles podrían reemplazarse;
 - cuál es la opción recomendada para esta cuenta.
 
-Así la decisión se puede tomar con confianza sin que el usuario tenga que conocer cómo está implementada la sincronización.
+Esta propuesta histórica fue sustituida por ADR-0017: el cambio normal de dispositivo se resuelve automáticamente y no presenta estas opciones.
 
 ### 4. Hacer más manejable la compra en móvil
 
@@ -124,7 +128,7 @@ La compra ahora ofrece búsqueda por producto, un resumen fijo de artículos mar
 
 ### 5. Simplificar la navegación móvil
 
-La barra inferior mantiene Inicio, Menú, Compra y Despensa como destinos principales. Perfil, Peso, Recetas y Guía aparecen bajo **Más**, en un orden estable. La decisión ya está implementada; queda comprobar el menú y las áreas seguras en teléfonos reales.
+La barra inferior mantiene Inicio, Menú, Compra y Actividad como destinos principales. Perfil, Despensa, Recetas y Guía aparecen bajo **Más**. La decisión está implementada localmente; queda comprobar el menú y las áreas seguras en teléfonos reales.
 
 ### 6. Separar planificación y registro
 
@@ -135,7 +139,7 @@ Marcar con claridad qué comidas son futuras y cuáles ya se pueden registrar. E
 | Prioridad | Mejora | Motivo | Estado |
 | --- | --- | --- | --- |
 | Alta | Guiar la primera visita y pedir que se revise el perfil | Sin ello, los objetivos pueden parecer personalizados aunque no se hayan confirmado los datos. | Publicada. |
-| Alta | Aclarar qué hace cada opción al resolver un conflicto entre copias | El usuario puede temer perder información o seleccionar la copia equivocada. | Publicada. |
+| Alta | Conciliar automáticamente los cambios al cambiar de dispositivo | Evita que el usuario tenga que escoger entre dos copias durante el uso normal. | Implementada localmente; publicación y validación pendientes. |
 | Alta | Diferenciar el menú planificado de una comida registrada | Evita descontar despensa antes del consumo. | Implementada en rama; Publicada. |
 | Media | Eliminar los avisos y controles de copia/sincronización según la propuesta del propietario | Reduce ruido en Inicio y en móvil. | Implementada en rama; publicación pendiente. |
 | Media | Mejorar el recorrido de compra con lista larga en móvil | La compra es una tarea frecuente y se realiza mientras se consulta la pantalla. | Implementada en rama; prueba en teléfono pendiente. |
@@ -145,9 +149,9 @@ Marcar con claridad qué comidas son futuras y cuáles ya se pueden registrar. E
 ## Qué falta validar
 
 - Hacer un recorrido desde una cuenta realmente nueva y verificar que la guía dirige al perfil, desaparece después de confirmarlo y la marca se conserva tras iniciar sesión en otro dispositivo.
-- Preparar dos copias divergentes y verificar los resúmenes, las consecuencias descritas y el resultado de cada opción.
+- Verificar en dos dispositivos que los cambios independientes se combinan, que el valor remoto prevalece cuando ambos cambian el mismo campo y que el borrado de una sesión llega al otro dispositivo.
 - Confirmar que una comida futura no se puede registrar desde Inicio, el menú semanal ni el detalle de receta y que el control se habilita cuando llega la fecha.
 - Probar en un teléfono físico la búsqueda, el contador, el botón fijo de compra, el menú **Más** y las áreas seguras.
-- Verificar que el estado de sincronización se actualiza, que **Reintentar** aparece solo tras un error y que los conflictos siguen mostrando las dos opciones.
+- Verificar que la revisión remota se actualiza automáticamente, que **Reintentar** aparece solo tras un error y que reinicio/restauración siguen requiriendo confirmación.
 
-La auditoría original describe observaciones de la interfaz publicada el 11 de octubre de 2026. Las tres mejoras altas y las cuatro de prioridad media/baja están implementadas en ramas locales; quedan pendientes su publicación y las comprobaciones en dispositivos reales.
+La auditoría original describe observaciones de la interfaz publicada el 11 de octubre de 2026. Las mejoras indicadas y la actualización de conciliación e historial están en la copia local; quedan pendientes su publicación y las comprobaciones en dispositivos reales.

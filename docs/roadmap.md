@@ -38,7 +38,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - Método de Auth aceptado en ADR-0009: correo + contraseña, registro libre y sin confirmación del correo. Auth y el cliente HTML están configurados; la migración transaccional/idempotente de sincronización está aplicada.
 - Prueba de aislamiento con dos usuarios: pendiente; debe cubrir lectura, inserción y referencias cruzadas con cuentas reales.
 - Publicar el HTML para activar la sincronización y permitir el traspaso inicial v8 desde el navegador que contiene los datos.
-- Comprobar PC/móvil, conflictos, errores de conexión y restauración antes de declarar validada la sincronización.
+- Comprobar en PC/móvil la conciliación automática de cambios independientes y simultáneos, los errores de conexión, el borrado de sesiones y la restauración confirmada antes de declarar validada la sincronización.
 
 ### E. Compra, inventario y robustez
 

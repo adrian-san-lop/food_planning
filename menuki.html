@@ -46,7 +46,7 @@
 <dialog id="activityDialog" aria-label="Registrar una sesión de actividad"><button type="button" class="dialog-close" data-action="activity-close" aria-label="Cerrar">✕</button><div class="dialog-body activity-dialog-body"><div class="eyebrow">SEGUIMIENTO DE ACTIVIDAD</div><h2>Registrar sesión realizada</h2><p>Regístrala después de hacerla. La estimación solo ajusta el objetivo y las comidas pendientes de esa fecha.</p><form id="activityForm" class="activity-form"><label>Fecha<input id="activityDate" name="date" type="date" data-change="activity-date" required></label><label>Actividad y esfuerzo<select id="activityType" name="activityId" required></select></label><label>Duración (minutos)<input id="activityDuration" name="durationMinutes" type="number" min="1" max="600" step="1" required placeholder="45"></label><div id="activityDateSessions"></div><div class="dialog-actions"><button class="btn btn-primary" type="submit">Guardar sesión</button><button class="btn" type="button" data-action="activity-close">Cerrar</button></div></form></div></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="importInput" accept="application/json,.json" hidden>
- <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+ <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3"></script>
  <script type="module" src="./js/main.js"></script>
 </body>
 </html>
