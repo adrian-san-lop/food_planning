@@ -514,6 +514,43 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .empty-chart{padding:38px 15px}
 .day-summary--last-weight{margin:12px 0 0}
 
+/* Recipe proposal forms and the admin inbox */
+.recipe-proposal-panel,.proposal-admin-panel{max-width:1050px;margin:0 0 22px;padding:22px}
+.recipe-proposal-form{display:grid;gap:20px}
+.recipe-proposal-form .field{display:grid;gap:8px;font-weight:700}
+.recipe-proposal-form input,.recipe-proposal-form select,.recipe-proposal-form textarea{width:100%;min-width:0;border:1px solid var(--line);border-radius:12px;background:#fff;padding:11px 12px;color:var(--ink);font:inherit;font-weight:450}
+.recipe-proposal-form textarea{resize:vertical;line-height:1.5}
+.recipe-proposal-form input:focus,.recipe-proposal-form select:focus,.recipe-proposal-form textarea:focus{outline:3px solid rgba(50,106,85,.16);border-color:var(--accent)}
+.recipe-proposal-form .field small,.proposal-help{font-size:12px;color:var(--muted);font-weight:450}
+.proposal-fieldset{display:grid;gap:13px;min-width:0;margin:0;padding:17px;border:1px solid var(--line);border-radius:16px}
+.proposal-fieldset legend{padding:0 7px;font-weight:800;color:var(--ink)}
+.proposal-help{margin:-7px 0 0}
+.proposal-list-row{display:flex;align-items:end;gap:10px}
+.proposal-list-row label{display:grid;flex:1;gap:7px;min-width:0;font-size:13px;font-weight:700}
+.proposal-list-row.proposal-step-row{align-items:end}
+.proposal-add{justify-self:start}
+.proposal-remove{flex:none}
+.proposal-review-note{padding:15px 17px;border-radius:14px;background:var(--accent-tint);color:var(--ink-soft)}
+.proposal-review-note p{margin:5px 0 0;font-size:13px;line-height:1.55}
+.proposal-admin-heading,.proposal-card-header,.proposal-purge{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.proposal-admin-heading{margin-bottom:18px}
+.proposal-admin-heading h2,.proposal-card h2{margin:0}
+.proposal-admin-heading p,.proposal-purge p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.proposal-list{display:grid;gap:12px}
+.proposal-card{padding:18px;border:1px solid var(--line);border-radius:16px;background:#fffefa}
+.proposal-card-header{align-items:flex-start}
+.proposal-card-header h2{margin-top:5px;font-size:19px}
+.proposal-card-header time{color:var(--muted);font-size:12px;white-space:nowrap}
+.proposal-card-columns{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:15px}
+.proposal-card-columns h3{margin:0 0 8px;font-size:14px}
+.proposal-card-columns ul,.proposal-card-columns ol{margin:0;padding-left:21px;color:var(--ink-soft);line-height:1.6}
+.proposal-card-columns li+li{margin-top:4px}
+.proposal-purge{margin-top:20px;padding-top:17px;border-top:1px solid var(--line)}
+.btn-danger{border-color:#e6c4bd;background:#fff5f2;color:#923f31}
+.btn-danger:hover{background:#fae6e1}
+.proposal-error{padding:12px;border-radius:10px;background:#fff0ed;color:#8d382d}
+.proposal-empty{padding:30px 14px}
+
 /* Responsive breakpoints, kept after base and view rules */
 @media(max-width:1160px){.main{padding:26px 24px 55px}
 .sidebar{width:226px;padding-left:12px;padding-right:12px}
@@ -729,3 +766,13 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .mobile-shop-bar{left:9px;right:9px}
 .mobile-shop-progress{font-size:11px}
 .mobile-shop-bar .btn{padding:9px 10px;font-size:11px}}
+
+@media(max-width:720px){.recipe-proposal-panel,.proposal-admin-panel{padding:16px}
+.proposal-card-columns{grid-template-columns:1fr;gap:14px}
+.proposal-purge{align-items:stretch;flex-direction:column}
+.proposal-purge .btn{width:100%;justify-content:center}}
+@media(max-width:480px){.proposal-list-row{align-items:stretch}
+.proposal-list-row.proposal-step-row{align-items:stretch}
+.proposal-remove{align-self:end;padding:8px}
+.proposal-admin-heading{align-items:flex-start}
+.proposal-card-header{flex-direction:column;gap:7px}}
