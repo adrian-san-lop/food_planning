@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones están aplicadas en Supabase. La conciliación automática entre dispositivos y el acceso directo al historial de actividad están implementados localmente en `dev`; aún no están publicados ni validados en navegador/teléfono. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas en Supabase; la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, está preparada y pendiente de aplicar para cambiar conflictos de revisión a HTTP 409 (`PT409`). La conciliación automática entre dispositivos y el acceso directo al historial de actividad están implementados localmente en `dev`; aún no están publicados ni validados en navegador/teléfono. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 

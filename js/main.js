@@ -277,7 +277,7 @@ function cloudStatus(message,level='idle'){
 function cloudErrorForUser(error){
  const message=String(error?.message||'').replace(/\s+/g,' ').trim(),code=String(error?.code||'').trim();
  if(message.includes('REMOTE_DATA_EXISTS_RELOAD'))return 'Supabase ya tiene datos para esta cuenta, pero no consta la importación inicial. No se ha enviado la copia local para evitar sobrescribir esos datos. Código REMOTE_DATA_EXISTS_RELOAD.';
- if(message.includes('SYNC_CONFLICT')||code==='40001')return 'Los datos de Supabase cambiaron durante la copia inicial. La copia local se conserva; vuelve a intentarlo para cargar el estado más reciente.';
+ if(message.includes('SYNC_CONFLICT')||code==='PT409'||code==='40001')return 'La revisión de Supabase cambió durante la sincronización. La copia local se conserva; vuelve a intentarlo para cargar el estado más reciente.';
  if(code==='PGRST202'||message.includes('schema cache'))return 'Supabase no encuentra la función de sincronización. Comprueba que la migración de sincronización se aplicó en el proyecto conectado.'+(code?' Código '+code+'.':'');
  const detail=[code?'código '+code:'',message].filter(Boolean).join(' · ').slice(0,320);
  return (detail?'Error de Supabase: '+detail+'. ':'No se recibió el detalle del error. ')+'La copia local se conserva.';
@@ -497,7 +497,7 @@ async function syncCloudNow(immediate=false){
    const submitted=JSON.parse(JSON.stringify(state)),meta=readCloudMeta(),fullSnapshot=await buildCloudSnapshot(submitted),snapshot=submitted.resetCloudPending?fullSnapshot:reduceCloudSnapshot(JSON.parse(JSON.stringify(fullSnapshot)),meta),rpcName=submitted.resetCloudPending?'reset_menuki_state':'sync_menuki_state';
    const {data,error}=await supabaseTransport.submitSnapshot(rpcName,snapshot,cloudRevision);
    if(error){
-    if(error.message?.includes('SYNC_CONFLICT')||error.code==='40001'){
+    if(error.message?.includes('SYNC_CONFLICT')||error.code==='PT409'||error.code==='40001'){
      const remote=await fetchCloudSnapshot();cloudRevision=Number(remote.settings?.sync_revision)||0;
      if(submitted.resetCloudPending){writeCloudMeta(cloudRevision,await stateFingerprint(stateFromCloud(remote)),cloudMetaSnapshot(remote),stateFromCloud(remote),true)}
      else await reconcileCloudState(remote,state,meta);
