@@ -18,7 +18,7 @@
         "fat_g": 0.4
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 500,
         "unit": "g",
@@ -40,7 +40,7 @@
         "fat_g": 6
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 500,
         "unit": "g",
@@ -62,7 +62,7 @@
         "fat_g": 1.6
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 1000,
         "unit": "ml",
@@ -84,7 +84,7 @@
         "fat_g": 6
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 250,
         "unit": "g",
@@ -105,7 +105,7 @@
         "fat_g": 17
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 350,
         "unit": "g",
@@ -126,7 +126,7 @@
         "fat_g": 7
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 500,
         "unit": "g",
@@ -147,7 +147,7 @@
         "fat_g": 4
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 400,
         "unit": "g",
@@ -168,7 +168,7 @@
         "fat_g": 1
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 1000,
         "unit": "g",
@@ -189,7 +189,7 @@
         "fat_g": 2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 500,
         "unit": "g",
@@ -210,7 +210,7 @@
         "fat_g": 6
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 300,
         "unit": "g",
@@ -232,7 +232,7 @@
         "fat_g": 5
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 6,
         "unit": "ud",
@@ -253,7 +253,7 @@
         "fat_g": 2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 500,
         "unit": "g",
@@ -274,7 +274,7 @@
         "fat_g": 1.5
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 500,
         "unit": "g",
@@ -295,7 +295,7 @@
         "fat_g": 2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 150,
         "unit": "g",
@@ -316,7 +316,7 @@
         "fat_g": 1
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 400,
         "unit": "g",
@@ -338,7 +338,7 @@
         "fat_g": 13
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 350,
         "unit": "g",
@@ -359,7 +359,7 @@
         "fat_g": 1
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 400,
         "unit": "g",
@@ -381,7 +381,7 @@
         "fat_g": 1
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 160,
         "unit": "g",
@@ -403,7 +403,7 @@
         "fat_g": 12
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 90,
         "unit": "g",
@@ -425,7 +425,7 @@
         "fat_g": 0.5
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Legumbres y refrigerados",
         "quantity": 400,
         "unit": "g",
@@ -447,7 +447,7 @@
         "fat_g": 2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Legumbres y refrigerados",
         "quantity": 400,
         "unit": "g",
@@ -468,7 +468,7 @@
         "fat_g": 21
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Legumbres y refrigerados",
         "quantity": 180,
         "unit": "g",
@@ -512,7 +512,7 @@
         "fat_g": 0.3
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Legumbres y refrigerados",
         "quantity": 400,
         "unit": "g",
@@ -645,7 +645,7 @@
         "fat_g": 0.2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 500,
         "unit": "g",
@@ -934,7 +934,7 @@
         "fat_g": 0.4
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 300,
         "unit": "g",
@@ -977,7 +977,7 @@
         "fat_g": 65
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 200,
         "unit": "g",
@@ -999,7 +999,7 @@
         "fat_g": 50
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 200,
         "unit": "g",
@@ -1020,7 +1020,7 @@
         "fat_g": 100
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 500,
         "unit": "g",
@@ -1041,7 +1041,7 @@
         "fat_g": 0
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 250,
         "unit": "g",
@@ -1062,7 +1062,7 @@
         "fat_g": 1
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 400,
         "unit": "g",
@@ -1084,7 +1084,7 @@
         "fat_g": 0.5
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Legumbres y refrigerados",
         "quantity": 400,
         "unit": "g",
@@ -1105,7 +1105,7 @@
         "fat_g": 6
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 500,
         "unit": "g",
@@ -1126,7 +1126,7 @@
         "fat_g": 1.5
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 500,
         "unit": "g",
@@ -1147,7 +1147,7 @@
         "fat_g": 2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 500,
         "unit": "g",
@@ -1168,7 +1168,7 @@
         "fat_g": 11
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 200,
         "unit": "g",
@@ -1190,7 +1190,7 @@
         "fat_g": 12
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 140,
         "unit": "g",
@@ -1211,7 +1211,7 @@
         "fat_g": 7
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 400,
         "unit": "g",
@@ -1275,7 +1275,7 @@
         "fat_g": 0.4
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 500,
         "unit": "g",
@@ -1317,7 +1317,7 @@
         "fat_g": 13
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 250,
         "unit": "g",
@@ -1338,7 +1338,7 @@
         "fat_g": 0.5
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 200,
         "unit": "g",
@@ -1359,7 +1359,7 @@
         "fat_g": 50
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 350,
         "unit": "g",
@@ -1380,7 +1380,7 @@
         "fat_g": 8.7
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Legumbres y refrigerados",
         "quantity": 250,
         "unit": "g",
@@ -1401,7 +1401,7 @@
         "fat_g": 10.8
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Legumbres y refrigerados",
         "quantity": 200,
         "unit": "g",
@@ -1423,7 +1423,7 @@
         "fat_g": 5.2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 500,
         "unit": "g",
@@ -1445,7 +1445,7 @@
         "fat_g": 0.3
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 240,
         "unit": "g",
@@ -1467,7 +1467,7 @@
         "fat_g": 1.1
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 500,
         "unit": "g",
@@ -1489,7 +1489,7 @@
         "fat_g": 1.2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 200,
         "unit": "g",
@@ -1510,7 +1510,7 @@
         "fat_g": 3.5
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 500,
         "unit": "g",
@@ -1531,7 +1531,7 @@
         "fat_g": 5.2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 400,
         "unit": "g",
@@ -1552,7 +1552,7 @@
         "fat_g": 7.7
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Carnes, pescado y huevos",
         "quantity": 400,
         "unit": "g",
@@ -1680,7 +1680,7 @@
         "fat_g": 1.2
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Cereales y conservas",
         "quantity": 285,
         "unit": "g",
@@ -1702,7 +1702,7 @@
         "fat_g": 30.7
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 200,
         "unit": "g",
@@ -1724,7 +1724,7 @@
         "fat_g": 49
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 200,
         "unit": "g",
@@ -1746,7 +1746,7 @@
         "fat_g": 53
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 300,
         "unit": "g",
@@ -1768,7 +1768,7 @@
         "fat_g": 2.3
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Lácteos y desayuno",
         "quantity": 200,
         "unit": "g",
@@ -1789,7 +1789,7 @@
         "fat_g": 0.6
       },
       "purchase": {
-        "store": "mercadona",
+        "store": "supermercado",
         "section": "Congelados y despensa",
         "quantity": 150,
         "unit": "ml",

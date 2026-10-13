@@ -52,7 +52,7 @@ export function validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recove
       food.purchase.unit !== food.unit
       || !Number.isFinite(Number(food.purchase.quantity))
       || Number(food.purchase.quantity) <= 0
-      || !['mercadona', 'fruteria'].includes(food.purchase.store)
+      || !['supermercado', 'fruteria'].includes(food.purchase.store)
     ) throw new Error(`Revisa el formato de compra de ${food.name}.`);
   }
 
