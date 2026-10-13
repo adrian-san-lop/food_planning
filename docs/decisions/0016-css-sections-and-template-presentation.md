@@ -1,7 +1,7 @@
 # Decisión 0016: organizar CSS y retirar estilos inline de las plantillas
 
 - **Fecha:** 13 de octubre de 2026
-- **Estado:** Aceptada e implementada
+- **Estado:** Aceptada e implementada; la decisión sobre la imagen del hero quedó sustituida por ADR-0018
 - **Alcance:** hoja de estilos y marcado generado por las plantillas del cliente
 
 ## Contexto
@@ -22,3 +22,4 @@ La primera etapa reunió en `assets/css/app.css` los estilos que estaban en vari
 - Las plantillas JavaScript ya no escriben atributos `style`; los valores variables de las barras se expresan con `value` y `max` de `<progress>`.
 - No se añaden dependencias ni un paso de compilación.
 - La revisión visual publicada en GitHub Pages y en un dispositivo físico sigue pendiente.
+- ADR-0018 retiró posteriormente las fotografías de platos y sus referencias del catálogo; se mantienen las imágenes de marca.

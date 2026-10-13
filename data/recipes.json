@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.5.0",
+  "catalogVersion": "0.6.0",
   "source": "Existing recipes from menuki.html plus 23 curated recipes using foods from catalogVersion 0.2.0.",
   "status": "Catálogo de recetas genéricas con cantidades base; la app adapta las raciones al perfil y a la actividad real registrada por fecha.",
   "recipes": [
@@ -10,7 +10,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -53,7 +52,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -90,7 +88,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "rice",
@@ -139,7 +136,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 2,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -165,7 +161,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 22,
-      "photoKey": "hake",
       "ingredients": [
         {
           "foodId": "hake",
@@ -204,7 +199,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 12,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "eggs",
@@ -251,7 +245,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -277,7 +270,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "lentil",
       "ingredients": [
         {
           "foodId": "lentils",
@@ -336,7 +328,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "hummus",
@@ -367,7 +358,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "pasta",
       "ingredients": [
         {
           "foodId": "pasta",
@@ -410,7 +400,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -452,7 +441,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -483,7 +471,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "salmon",
       "ingredients": [
         {
           "foodId": "salmon",
@@ -522,7 +509,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -548,7 +534,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 15,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "eggs",
@@ -596,7 +581,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -638,7 +622,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -664,7 +647,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 10,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "chickpeas",
@@ -718,7 +700,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 28,
-      "photoKey": "sweet",
       "ingredients": [
         {
           "foodId": "chicken",
@@ -762,7 +743,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -809,7 +789,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -840,7 +819,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "pasta",
       "ingredients": [
         {
           "foodId": "pasta",
@@ -889,7 +867,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -915,7 +892,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "fajita",
       "ingredients": [
         {
           "foodId": "tortilla",
@@ -955,7 +931,7 @@
         "Unta un poco de hummus y reparte el relleno.",
         "Sirve con limón y tus especias favoritas."
       ],
-      "tip": "La fotografía es orientativa; nuestro relleno usa hummus en lugar de salsa de nata.",
+      "tip": "El hummus aporta una textura cremosa; ajusta la cantidad al gusto.",
       "description": ""
     },
     {
@@ -964,7 +940,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 2,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -989,7 +964,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 27,
-      "photoKey": "sweet",
       "ingredients": [
         {
           "foodId": "chicken",
@@ -1032,7 +1006,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 2,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "greek",
@@ -1058,7 +1031,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 10,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -1101,7 +1073,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -1144,7 +1115,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "fruit",
       "ingredients": [
         {
           "foodId": "orange",
@@ -1170,7 +1140,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "shrimp",
       "ingredients": [
         {
           "foodId": "rice",
@@ -1219,7 +1188,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "soup",
       "ingredients": [
         {
           "foodId": "zucchini",
@@ -1272,7 +1240,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "hake",
       "ingredients": [
         {
           "foodId": "cod",
@@ -1325,7 +1292,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 15,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "beans",
@@ -1383,7 +1349,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "turkey",
@@ -1431,7 +1396,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "shrimp",
       "ingredients": [
         {
           "foodId": "gulas",
@@ -1479,7 +1443,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 22,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "chickpeas",
@@ -1532,7 +1495,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "pasta",
       "ingredients": [
         {
           "foodId": "chicken",
@@ -1580,7 +1542,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "salmon",
       "ingredients": [
         {
           "foodId": "quinoa",
@@ -1628,7 +1589,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "eggs",
@@ -1681,7 +1641,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 22,
-      "photoKey": "lentil",
       "ingredients": [
         {
           "foodId": "beans",
@@ -1734,7 +1693,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "hake",
       "ingredients": [
         {
           "foodId": "hake",
@@ -1777,7 +1735,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "pasta",
       "ingredients": [
         {
           "foodId": "pasta",
@@ -1825,7 +1782,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "sweet",
       "ingredients": [
         {
           "foodId": "chicken",
@@ -1863,7 +1819,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "shrimp",
       "ingredients": [
         {
           "foodId": "rice",
@@ -1916,7 +1871,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "soup",
       "ingredients": [
         {
           "foodId": "pumpkin",
@@ -1969,7 +1923,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "turkey",
@@ -2018,7 +1971,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 15,
-      "photoKey": "salmon",
       "ingredients": [
         {
           "foodId": "mackerel",
@@ -2065,7 +2017,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 12,
-      "photoKey": "lentil",
       "ingredients": [
         {
           "foodId": "lentils",
@@ -2118,7 +2069,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "couscous",
@@ -2166,7 +2116,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "pasta",
       "ingredients": [
         {
           "foodId": "pasta",
@@ -2209,7 +2158,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "eggs",
@@ -2257,7 +2205,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 22,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "chicken",
@@ -2311,7 +2258,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "hake",
       "ingredients": [
         {
           "foodId": "trout",
@@ -2349,7 +2295,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "shrimp",
       "ingredients": [
         {
           "foodId": "noodles",
@@ -2402,7 +2347,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "fajita",
       "ingredients": [
         {
           "foodId": "tortilla",
@@ -2455,7 +2399,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "sweet",
       "ingredients": [
         {
           "foodId": "turkey",
@@ -2503,7 +2446,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "lentil",
       "ingredients": [
         {
           "foodId": "beans",
@@ -2551,7 +2493,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "soup",
       "ingredients": [
         {
           "foodId": "pumpkin",
@@ -2604,7 +2545,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -2651,7 +2591,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -2698,7 +2637,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -2745,7 +2683,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 12,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "eggs",
@@ -2792,7 +2729,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -2839,7 +2775,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -2886,7 +2821,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 12,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "eggs",
@@ -2938,7 +2872,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -2985,7 +2918,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 12,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "eggs",
@@ -3022,7 +2954,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3047,7 +2978,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 2,
-      "photoKey": "fruit",
       "ingredients": [
         {
           "foodId": "banana",
@@ -3072,7 +3002,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3103,7 +3032,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 4,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -3134,7 +3062,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3159,7 +3086,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "hummus",
@@ -3190,7 +3116,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3221,7 +3146,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3252,7 +3176,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -3283,7 +3206,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 2,
-      "photoKey": "fruit",
       "ingredients": [
         {
           "foodId": "mandarin",
@@ -3309,7 +3231,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -3340,7 +3261,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 12,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "eggs",
@@ -3366,7 +3286,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "hummus",
@@ -3392,7 +3311,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3418,7 +3336,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3443,7 +3360,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "fruit",
       "ingredients": [
         {
           "foodId": "pear",
@@ -3469,7 +3385,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 12,
-      "photoKey": "egg",
       "ingredients": [
         {
           "foodId": "tofuFirm",
@@ -3521,7 +3436,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "oats",
@@ -3568,7 +3482,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3615,7 +3528,6 @@
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 10,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "tempeh",
@@ -3662,7 +3574,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 4,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -3693,7 +3604,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 6,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "edamame",
@@ -3719,7 +3629,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -3750,7 +3659,6 @@
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "cottageCheese",
@@ -3781,7 +3689,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "soyProteinTextured",
@@ -3824,7 +3731,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "lentil",
       "ingredients": [
         {
           "foodId": "redLentilsDry",
@@ -3876,7 +3782,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "porkTenderloin",
@@ -3918,7 +3823,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "tofuFirm",
@@ -3965,7 +3869,6 @@
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "quinoa",
@@ -4017,7 +3920,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "cottageCheese",
@@ -4048,7 +3950,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 5,
-      "photoKey": "fruit",
       "ingredients": [
         {
           "foodId": "celery",
@@ -4080,7 +3981,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 4,
-      "photoKey": "toast",
       "ingredients": [
         {
           "foodId": "bread",
@@ -4111,7 +4011,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 10,
-      "photoKey": "chickpea",
       "ingredients": [
         {
           "foodId": "tempeh",
@@ -4143,7 +4042,6 @@
       "mealType": "tarde",
       "baseServings": 1,
       "timeMinutes": 3,
-      "photoKey": "yogurt",
       "ingredients": [
         {
           "foodId": "skyr",
@@ -4174,7 +4072,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 35,
-      "photoKey": "pasta",
       "ingredients": [
         {
           "foodId": "beefSirloin",
@@ -4217,7 +4114,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "sweet",
       "ingredients": [
         {
           "foodId": "porkTenderloin",
@@ -4254,7 +4150,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
-      "photoKey": "soup",
       "ingredients": [
         {
           "foodId": "cauliflower",
@@ -4301,7 +4196,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "fajita",
       "ingredients": [
         {
           "foodId": "tempeh",
@@ -4353,7 +4247,6 @@
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 20,
-      "photoKey": "rice",
       "ingredients": [
         {
           "foodId": "turkeyMince",
