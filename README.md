@@ -18,7 +18,7 @@ Aplicación web de planificación nutricional con datos personales aislados por 
 - Las antiguas marcas de fuerza se conservan como datos heredados, pero ya no afectan al cálculo. No se importan datos v1-v4.
 - Las compras, consumos, reversos y correcciones nuevas se anotan como movimientos con identificador único. Si una receta supera el saldo anotado, se registra completa y se muestra el faltante.
 - Los cambios se sincronizan automáticamente con Supabase mientras hay conexión. La app comprueba cambios remotos mientras está abierta y al volver a ella. Si falla la sincronización, muestra el estado y permite reintentar.
-- En móvil, Inicio, Menú, Compra y Actividad están en la barra inferior; Perfil, Despensa, Recetas y Guía se encuentran bajo **Más**. La compra incluye búsqueda y un resumen fijo para revisar el progreso y finalizarla.
+- En móvil, Inicio, Menú, Compra y Actividad están en la barra inferior; Perfil, Despensa, Recetas y Guía se encuentran bajo **Más**. El logo queda en una barra superior fija; el correo y **Cerrar sesión** están en Perfil. La compra incluye búsqueda y un resumen fijo para revisar el progreso y finalizarla.
 - Compra muestra el establecimiento principal como **Supermercado**; Frutería conserva su sección propia.
 - Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales. Las comidas futuras aparecen como planificadas y solo se pueden registrar cuando llega su fecha.
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.

@@ -21,7 +21,7 @@ La posibilidad de combinar los gustos de varias personas en un menú común sigu
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
 - Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; historial accesible desde **Actividad** en la barra inferior del móvil y desde **Actividad y peso** en escritorio. Cada sesión se puede eliminar de forma individual; el historial muestra 12 filas inicialmente y permite cargar más.
 - Estado de trabajo en `localStorage` y sincronización automática autenticada con Supabase. Se pueden restaurar archivos JSON v5-v8; no hay recordatorio periódico de copia.
-- En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Actividad; Perfil, Despensa, Recetas y Guía están bajo **Más**. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
+- En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Actividad; Perfil, Despensa, Recetas y Guía están bajo **Más**. El logo permanece en una barra superior fija con fondo diferenciado; el correo y el cierre de sesión están en Perfil. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
 - Inventario negativo permitido cuando se registra una comida que supera las existencias; se muestra el faltante y desmarcar la comida revierte el consumo.
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
 - Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado local con fecha y versión del catálogo.
