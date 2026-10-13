@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas en Supabase; la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, está preparada y pendiente de aplicar para cambiar conflictos de revisión a HTTP 409 (`PT409`). La conciliación automática entre dispositivos y el acceso directo al historial de actividad están implementados localmente en `dev`; aún no están publicados ni validados en navegador/teléfono. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas en Supabase; la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, y la novena, `20261013160000_recipe_proposal_inbox.sql`, están preparadas y pendientes de aplicar. La conciliación automática, el historial de actividad y la interfaz del buzón están implementados localmente en la rama de tarea; aún no están publicados ni validados en navegador/teléfono. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
@@ -29,6 +29,8 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 
 - Publicar la app actualizada y comprobar la primera importación local v8 a Supabase, la conciliación de cambios independientes, el desempate de cambios simultáneos y la propagación del borrado de sesiones entre PC y móvil.
 - Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
+- Aplicar en orden las migraciones octava y novena desde SQL Editor. Registrar una cuenta normal como administrador en `menuki_admins` y validar que las cuentas normales pueden enviar propuestas, pero no consultarlas ni borrarlas.
+- Publicar el código de propuestas y validar el formulario, la vista admin, la protección contra borrado con un recuento obsoleto y la eliminación en cascada después de incorporar una propuesta de prueba a los JSON.
 - Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y restauración desde una copia confirmada.
 - Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?

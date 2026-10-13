@@ -1,6 +1,6 @@
 # Menuki — Mi Plan Saludable
 
-Aplicación web personal para consultar un menú de tres semanas, preparar recetas, registrar comidas y sesiones de actividad, controlar la despensa y llevar el seguimiento del peso.
+Aplicación web de planificación nutricional con datos personales aislados por cuenta. Permite consultar un menú de tres semanas, preparar recetas, registrar comidas y sesiones de actividad, controlar la despensa y llevar el seguimiento del peso. Las cuentas autenticadas también pueden proponer recetas para un buzón compartido que revisa el administrador.
 
 ## Estado actual
 
@@ -10,6 +10,8 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - En la primera visita, Guía indica por dónde empezar. Las cifras genéricas del perfil se marcan como ejemplos hasta que el usuario las revise y guarde.
 - Al abrir la cuenta en otro dispositivo, Menuki actualiza los datos automáticamente. Los cambios independientes se combinan; si ambos dispositivos cambian el mismo valor, prevalece la última revisión guardada en Supabase.
 - La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.
+- Las cuentas autenticadas pueden enviar propuestas simples de receta. El administrador las enriquece con ayuda de IA y actualiza manualmente `foods.json` y `recipes.json`; las propuestas no se publican solas en el recetario.
+- El buzón compartido aparece en **Revisar propuestas** para las cuentas cuyo rol de administrador se haya asignado en Supabase. Cuando el catálogo esté actualizado y publicado, el administrador puede eliminar en una acción confirmada todas las propuestas y sus ingredientes y pasos.
 - El menú fijo actual sigue activo. La app puede preparar y guardar una propuesta editable para el siguiente ciclo de tres semanas.
 - El estado actual es v8. La app importa copias v5 a v8; la migración adapta los consumos históricos a gramos de receta y conserva despensa y movimientos en las unidades de inventario correspondientes.
 - Las antiguas marcas de fuerza se conservan como datos heredados, pero ya no afectan al cálculo. No se importan datos v1-v4.
@@ -19,7 +21,8 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - Compra muestra el establecimiento principal como **Supermercado**; Frutería conserva su sección propia.
 - Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales. Las comidas futuras aparecen como planificadas y solo se pueden registrar cuando llega su fecha.
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.
-- Supabase tiene trece tablas con RLS y funciones transaccionales para sincronizar y restablecer el estado por cuenta. Auth guarda la identidad y las credenciales; `public.profiles` guarda parámetros nutricionales y la confirmación de revisión. Las siete migraciones iniciales están aplicadas. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, prepara la respuesta HTTP 409 para los conflictos de revisión y queda pendiente de aplicar en SQL Editor; después, publica el HTML actualizado en GitHub Pages.
+- Supabase tiene trece tablas existentes para el estado por cuenta, con RLS y funciones transaccionales. La migración `20261013160000_recipe_proposal_inbox.sql` prepara otras cuatro tablas: una lista privada de administradores y tres tablas para propuestas, ingredientes y pasos. Esta migración y la corrección `20261013120000_menuki_sync_conflict_http_409.sql` están pendientes de aplicar en SQL Editor; la web publicada tampoco incluye todavía esta rama.
+- Auth administra las credenciales; `public.profiles` conserva los parámetros nutricionales y la confirmación de revisión. El rol de administrador se asigna a una cuenta ya registrada desde SQL Editor y no se decide por una contraseña incluida en el HTML.
 
 ### Sincronización entre dispositivos
 
@@ -118,14 +121,14 @@ Tu usuario
 
 Ejemplo: si hay `2 ud` de brócoli y registras una receta que usa `250 g`, con un peso comestible estimado de `400 g/ud`, la app muestra `250 g` en la receta y descuenta aproximadamente `0,63 ud` del inventario. Si el saldo no alcanza, registra el consumo completo y muestra el déficit en unidades. Al desmarcar la comida, añade un movimiento inverso en la misma unidad de inventario; no borra el historial ni vuelve a descontar por un reintento.
 
-El dibujo resume el esquema relacional aplicado: trece tablas con políticas RLS por propietario. Los snapshots de ingredientes conservan las cantidades en unidad de receta sin caducidad temporal ni purga automática; el tamaño de la base se revisará conforme crezca el uso. La función de sincronización recibe un JSON de transporte y distribuye sus datos en estas tablas; PostgreSQL no guarda el estado completo en una columna JSON. La clave pública se usa en el navegador y RLS limita los registros al usuario autenticado. La prueba de aislamiento con dos cuentas y el recorrido publicado entre PC y móvil siguen pendientes. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
+El dibujo del modelo distingue las trece tablas ya existentes y las cuatro preparadas por la nueva migración, aún pendiente de aplicación. Los snapshots personales de ingredientes conservan las cantidades en unidad de receta sin caducidad temporal. Las propuestas de recetas se guardan como texto relacional y se eliminan cuando el administrador confirma que ya se incorporaron y publicaron en los catálogos; PostgreSQL puede reutilizar el espacio liberado sin que el tamaño mostrado baje inmediatamente. La sincronización del estado personal recibe un JSON de transporte y distribuye sus datos en tablas; PostgreSQL no guarda el estado completo en una columna JSON. La clave pública se usa en el navegador y RLS limita cada operación. La prueba de aislamiento y los recorridos publicados siguen pendientes. [Documentación oficial de RLS](https://supabase.com/docs/guides/database/postgres/row-level-security) · [Claves de API](https://supabase.com/docs/guides/getting-started/api-keys) · [Autenticación con JavaScript](https://supabase.com/docs/reference/javascript/auth).
 
 ## Archivos principales
 
 - `menuki.html`: shell HTML de la aplicación.
 - `assets/css/app.css`: estilos extraídos del HTML y organizados por secciones; las reglas responsive quedan al final y las plantillas JavaScript no usan atributos `style`.
 - `js/main.js`: entrada ES del cliente; compone la interfaz y los módulos del dominio y de persistencia.
-- `js/domain/`, `js/data/`, `js/persistence/` y `js/ui/`: módulos de fechas, unidades, catálogos, acceso a datos y codificación segura de HTML.
+- `js/domain/`, `js/data/`, `js/persistence/` y `js/ui/`: módulos de fechas, unidades, catálogos, propuestas de recetas, acceso a datos y codificación segura de HTML.
 - `package.json` y `tests/`: comprobaciones de dominio, catálogos y codificación HTML.
 - `index.html`: entrada que redirige a la aplicación.
 - `data/foods.json` y `data/recipes.json`: catálogos genéricos que carga la aplicación.
