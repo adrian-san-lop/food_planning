@@ -13,9 +13,11 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 ### Implementado en el HTML actual
 
 - Un ciclo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios). El primer ciclo mantiene el menú fijo existente; los siguientes pueden generarse desde el catálogo.
-- En una primera visita, Inicio explica los pasos básicos y dirige al perfil. Los valores de ejemplo no se consideran revisados hasta que la persona guarda el perfil explícitamente.
+- Inicio muestra un resumen del día en este orden: banner, KPI, objetivo nutricional de hoy y menú de hoy. No incluye navegación semanal ni otras secciones.
+- Menú es una página separada: permite elegir una de las tres semanas y un día con el calendario de siete días; muestra el detalle de la fecha seleccionada.
+- En una primera visita, Guía explica los pasos básicos y dirige al perfil. Los valores de ejemplo no se consideran revisados hasta que la persona guarda el perfil explícitamente.
 - La app comprueba periódicamente la revisión de Supabase mientras está visible y al volver al primer plano o recuperar la conexión. Combina cambios independientes usando la última revisión remota como base; cuando dos dispositivos cambian el mismo valor, prevalece el valor de la revisión que Supabase aceptó más recientemente. No pide elegir una copia.
-- Recetas, instrucciones, fotografías orientativas y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas.
+- Recetas, instrucciones y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas. La aplicación no muestra fotografías de platos.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
 - Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; historial accesible desde **Actividad** en la barra inferior del móvil y desde **Actividad y peso** en escritorio. Cada sesión se puede eliminar de forma individual; el historial muestra 12 filas inicialmente y permite cargar más.
 - Estado de trabajo en `localStorage` y sincronización automática autenticada con Supabase. Se pueden restaurar archivos JSON v5-v8; no hay recordatorio periódico de copia.
@@ -29,14 +31,14 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 
 El HTML contempla sexo o metabolismo basal manual, edad, altura, peso, actividad habitual sin ejercicio, objetivo e indicador de recuperación ósea. Usa Mifflin-St Jeor como estimación del metabolismo en reposo, objetivos aproximados de energía/macros y adaptación de raciones. No son mediciones clínicas. Con Recuperación ósea activa, las propuestas nuevas favorecen alimentos marcados como fuentes de calcio, vitamina D y vitamina C; no se calculan cantidades de micronutrientes ni se prescriben suplementos.
 
-El perfil empieza con valores genéricos de ejemplo. Hasta que la persona lo revise y lo guarde, Inicio y el propio perfil lo indican; la confirmación se conserva en `profiles.profile_confirmed` y se sincroniza entre dispositivos. Los perfiles existentes también requieren una revisión explícita después de aplicar esta mejora.
+El perfil empieza con valores genéricos de ejemplo. Hasta que la persona lo revise y lo guarde, Guía y el propio perfil lo indican; la confirmación se conserva en `profiles.profile_confirmed` y se sincroniza entre dispositivos. Los perfiles existentes también requieren una revisión explícita después de aplicar esta mejora.
 
-Las comidas pendientes pueden recalcular porciones al cambiar el perfil o al registrar/quitar una sesión en esa fecha. Las comidas ya realizadas conservan sus cantidades registradas; el cálculo las trata como fijas y distribuye el objetivo restante entre comidas pendientes. El desayuno suele incluir yogur y no debe incluir queso según la preferencia vigente. No hay otras restricciones alimentarias generales definidas.
+Las comidas pendientes pueden recalcular porciones al cambiar el perfil o al registrar/quitar una sesión en esa fecha. Las comidas ya realizadas conservan sus cantidades registradas; el cálculo las trata como fijas y distribuye el objetivo restante entre comidas pendientes. En Inicio, las barras nutricionales suman solo las comidas registradas como realizadas. Una sesión aumenta el objetivo de energía de su fecha y no cuenta como alimento; el objetivo de proteína mantiene el cálculo actual del perfil. El desayuno suele incluir yogur y no debe incluir queso según la preferencia vigente. No hay otras restricciones alimentarias generales definidas.
 
 ### Compra y despensa
 
 - La compra puede calcularse para 3, 7 o 14 días, la semana visible o el ciclo pendiente; solo considera comidas futuras no realizadas.
-- Restar existencias, mostrar faltantes y traducirlos a envases orientativos. Mostrar por establecimiento y sección (compra principal en Mercadona y frescos en frutería).
+- Restar existencias, mostrar faltantes y traducirlos a envases orientativos. Mostrar por establecimiento y sección (Supermercado y Frutería).
 - Marcar un artículo no lo añade al inventario. Solo confirmar/finalizar la compra incorpora el contenido realmente comprado. Los artículos no confirmados no se registran.
 - Permitir extras, correcciones manuales, desperdicios y consumos fuera del menú.
 - 7 y 14 días deben representar ventanas distintas. Pueden coincidir cuando el ciclo restante sea menor o igual que ambas ventanas, indicándolo.
@@ -55,7 +57,7 @@ El aviso de renovación actual aparece dentro de la página cerca del final del 
 - Registrar las sesiones después de realizarlas; se permiten varias por día. La estimación neta `(MET − 1) × peso_kg × horas` se suma al objetivo base solo para esa fecha. Sin sesión registrada, se conserva el objetivo base.
 - La meta de proteína y grasa se mantiene estable ante la sesión; la energía extra se cubre principalmente con cantidades de hidratos. No se crean previsiones ni se alteran días futuros.
 - Registrar peso con fecha y consultar su tendencia sin interpretar fluctuaciones puntuales como cambios de grasa.
-- Mantener la app responsive y accesible; las fotos son orientativas y deben conservar atribución/licencia al modificarse.
+- Mantener la app responsive y accesible. El menú de Inicio prioriza los platos del día; Compra y Despensa agrupan sus productos en secciones plegables.
 
 ### Catálogos y siguiente ciclo
 
