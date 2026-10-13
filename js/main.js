@@ -535,7 +535,75 @@ async function syncCloudNow(immediate=false){
 function newOperationId(){return globalThis.crypto?.randomUUID?globalThis.crypto.randomUUID():'op-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
 function applyMovement(move){if(!move?.operationId||!FOOD[move.foodId]||!Number.isFinite(Number(move.quantity))||state.movements.some(x=>x.operationId===move.operationId))return false;const quantity=roundAmount(move.quantity);if(!quantity)return false;state.movements.push({...move,quantity,createdAt:move.createdAt||new Date().toISOString()});state.stock[move.foodId]=roundAmount(Number(state.stock[move.foodId]||0)+quantity);if(Math.abs(state.stock[move.foodId])<.001)delete state.stock[move.foodId];return true}
 function setInventoryBalance(id,value,kind='adjustment'){const current=Number(state.stock[id]||0),delta=roundAmount(Number(value)-current);if(!delta)return false;return applyMovement({operationId:newOperationId(),foodId:id,quantity:delta,kind,createdAt:new Date().toISOString()})}
-let visibleWeek=0,selectedDay=0,view='inicio',shopStore='merc',shopRange='7',shoppingSearch='',recipeFilter='todos',recipeSearch='',pantryFilter='used',pantrySearch='',modalCtx=null,plannerProposal=null,toastTimer,mobileMoreOpen=false,cycleStartEditorOpen=false,cycleStartDraft=null,cycleSetupDateDraft='';
+let visibleWeek=0,selectedDay=0,view='inicio',shopStore='merc',shopRange='7',shoppingSearch='',recipeFilter='todos',recipeSearch='',pantryFilter='used',pantrySearch='',modalCtx=null,plannerProposal=null,toastTimer,mobileMoreOpen=false,cycleStartEditorOpen=false,cycleStartDraft=null,cycleSetupDateDraft='',quickGuideStep=0;
+function renderQuickGuide(){
+ const root=document.getElementById('quickGuideContent');
+ if(!root)return;
+ const activeCycle=!state.noActiveCycle;
+ const steps=[
+  {
+   eyebrow:'PRIMEROS PASOS · PERSONALIZA',
+   title:'Personaliza tu plan',
+   text:'Revisa tu edad, altura, peso, movimiento habitual y objetivo. Menuki usa esos datos para estimar tus objetivos y adaptar las raciones.',
+   note:activeCycle?'La fecha de inicio se cambia en Menú 3 semanas. El acceso de Inicio abre directamente ese editor.':'Tu cuenta no tiene un ciclo activo. Selecciona el día de inicio en el aviso que aparece arriba en todas las páginas.',
+   actions:'<button type="button" class="btn btn-subtle" data-action="quick-guide-profile">Revisar perfil</button>'+(activeCycle?'<button type="button" class="btn btn-quiet" data-action="edit-cycle-start">'+ic('calendar')+' Cambiar fecha</button>':'<button type="button" class="btn btn-quiet" data-action="quick-guide-choose-cycle">'+ic('calendar')+' Elegir fecha</button>')
+  },
+  {
+   eyebrow:'PRIMEROS PASOS · TU MENÚ',
+   title:'Consulta y registra tus comidas',
+   text:activeCycle?'Inicio enseña el menú de hoy. En Menú 3 semanas puedes cambiar de día, consultar las recetas y ajustar lo que está planificado.':'Cuando elijas la fecha de inicio, Inicio mostrará el menú de hoy y Menú 3 semanas permitirá consultar otros días y recetas.',
+   note:'Marca una comida solo después de haberla tomado. Las cantidades registradas se conservan aunque luego cambie el menú.',
+   actions:activeCycle?'<button type="button" class="btn btn-subtle" data-action="navigate" data-view="semana">Abrir Menú 3 semanas</button>':'<button type="button" class="btn btn-subtle" data-action="quick-guide-choose-cycle">'+ic('calendar')+' Elegir fecha de inicio</button>'
+  },
+  {
+   eyebrow:'PRIMEROS PASOS · TU PROGRESO',
+   title:'Compra, despensa y actividad',
+   text:'La lista de compra te ayuda a reponer ingredientes; al finalizar una compra, los productos se suman a la despensa. En Actividad y peso puedes llevar un seguimiento opcional.',
+   note:'Registra una sesión solo después de hacerla. Su estimación afecta al objetivo de ese día; el peso es opcional.',
+   actions:'<button type="button" class="btn btn-subtle" data-action="navigate" data-view="compra">'+ic('cart')+' Abrir Compra</button><button type="button" class="btn btn-quiet" data-action="navigate" data-view="despensa">'+ic('leaf')+' Ver despensa</button><button type="button" class="btn btn-quiet" data-action="navigate" data-view="evolucion">'+ic('chart')+' Actividad y peso</button>'
+  }
+ ];
+ quickGuideStep=Math.max(0,Math.min(steps.length-1,quickGuideStep));
+ const step=steps[quickGuideStep];
+ root.innerHTML='<div class="quick-guide-body"><div class="quick-guide-progress"><span class="eyebrow">'+step.eyebrow+'</span><span>Paso '+(quickGuideStep+1)+' de '+steps.length+'</span></div><div class="quick-guide-progress-track" aria-hidden="true">'+steps.map((item,index)=>'<span class="'+(index<=quickGuideStep?'is-complete':'')+'"></span>').join('')+'</div><h2 id="quickGuideTitle" tabindex="-1">'+step.title+'</h2><p class="quick-guide-text">'+step.text+'</p><p class="quick-guide-note">'+step.note+'</p><div class="quick-guide-chips">'+(quickGuideStep===1?SLOTS.map((slot,index)=>'<span class="quick-guide-chip">'+ic(SLOT_ICONS[index])+escapeHTML(slot)+'</span>').join(''):quickGuideStep===2?'<span class="quick-guide-chip">'+ic('cart')+'Compra</span><span class="quick-guide-chip">'+ic('leaf')+'Despensa</span><span class="quick-guide-chip">'+ic('chart')+'Actividad y peso</span>':'')+'</div><div class="quick-guide-actions">'+step.actions+'</div><div class="quick-guide-footer"><button type="button" class="btn btn-quiet" data-action="quick-guide-close">Cerrar</button><div><button type="button" class="btn btn-quiet" data-action="quick-guide-previous" '+(quickGuideStep===0?'disabled':'')+'>Anterior</button><button type="button" class="btn btn-primary" data-action="quick-guide-next">'+(quickGuideStep===steps.length-1?'Terminar':'Siguiente')+'</button></div></div></div>';
+}
+function openQuickGuide(){quickGuideStep=0;renderQuickGuide();const dialog=document.getElementById('quickGuideDialog');if(dialog&&!dialog.open)dialog.showModal()}
+function applyHomeOnboarding(root){
+ if(view!=='inicio')return;
+ const copy=root.querySelector('.home-banner-copy');
+ if(!copy||copy.querySelector('.home-banner-actions'))return;
+ if(!state.profileConfirmed){const intro=copy.querySelector('p');if(intro)intro.textContent='Empieza revisando tu perfil y descubre cómo organizar tu menú y tu progreso.'}
+ const actions=document.createElement('div');
+ actions.className='home-banner-actions';
+ if(!state.profileConfirmed){
+  const profile=document.createElement('button');
+  profile.type='button';profile.className='btn btn-subtle';profile.dataset.action='quick-guide-profile';profile.textContent='Revisar perfil';
+  actions.append(profile);
+ }
+ const guide=document.createElement('button');
+ guide.type='button';guide.className='btn btn-quiet';guide.dataset.action='quick-guide-open';guide.textContent='Ver guía rápida';
+ actions.append(guide);
+ const dateLink=copy.querySelector('.home-banner-date-link');
+ if(dateLink)actions.append(dateLink);
+ copy.append(actions);
+}
+function applyQuickGuideEntry(root){
+ if(view!=='guia')return;
+ const firstUse=root.querySelector('.first-use-card');
+ if(firstUse){
+  const actions=firstUse.querySelector('.first-use-actions');
+  if(actions&&!actions.querySelector('[data-action=\"quick-guide-open\"]')){
+   const button=document.createElement('button');button.type='button';button.className='btn btn-subtle';button.dataset.action='quick-guide-open';button.textContent='Ver guía rápida';actions.append(button);
+  }
+  return;
+ }
+ const intro=root.querySelector('.page-intro');
+ if(!intro||root.querySelector('.quick-guide-entry'))return;
+ const entry=document.createElement('section');
+ entry.className='quick-guide-entry';
+ entry.innerHTML='<div><strong>¿Primera vez en Menuki?</strong><p>Recorre en unos minutos las funciones principales y cómo empezar.</p></div><button type=\"button\" class=\"btn btn-subtle\" data-action=\"quick-guide-open\">Ver guía rápida</button>';
+ intro.insertAdjacentElement('afterend',entry);
+}
 function alignCurrentDay(){const off=dateDiff(dateFromISO(state.start),today());if(off>=0&&off<21){visibleWeek=Math.floor(off/7);selectedDay=off%7}else if(off>=21){visibleWeek=2;selectedDay=6}else{visibleWeek=0;selectedDay=0}}
 function todayMenuPosition(){if(state.noActiveCycle)return null;const offset=dateDiff(dateFromISO(state.start),today());return offset>=0&&offset<21?{week:Math.floor(offset/7),day:offset%7}:null}
 function dateAt(week,day){return addDays(dateFromISO(state.start),week*7+day)}
@@ -975,7 +1043,7 @@ function addRecipeProposalItem(kind){captureRecipeProposalDraft();const field=ki
 function removeRecipeProposalItem(kind,index){captureRecipeProposalDraft();const field=kind==='ingredient'?'ingredients':'steps';if(recipeProposalDraft[field].length<=1)return;recipeProposalDraft[field].splice(index,1);render()}
 function firstUseBanner(){if(state.profileConfirmed||view!=='guia')return '';return '<section class="first-use-card" aria-labelledby="firstUseTitle"><div class="eyebrow">PRIMEROS PASOS · PASO 1 DE 5</div><h2 id="firstUseTitle">Empieza revisando tu perfil</h2><p>Menuki muestra valores genéricos de ejemplo. Los objetivos y las raciones se calculan con ellos hasta que confirmes tus datos.</p><ol><li class="current"><strong>Revisa tu perfil</strong><span>Confirma edad, altura, peso, movimiento y objetivo.</span></li><li><strong>Explora el menú</strong><span>Consulta los platos y cambia los que quieras.</span></li><li><strong>Configura la despensa</strong><span>Puedes hacerlo ahora o más adelante.</span></li><li><strong>Revisa la compra semanal</strong><span>Finalízala cuando hayas comprado.</span></li><li><strong>Registra lo que comas</strong><span>Marca cada comida después de tomarla.</span></li></ol><div class="first-use-actions"><button class="btn btn-primary" data-action="navigate" data-view="perfil">Revisar mi perfil</button><button class="btn btn-quiet" data-action="navigate" data-view="semana">Ver el menú</button></div></section>'}
 function applyNoActiveCyclePresentation(root){if(!state.noActiveCycle)return;if(view==='inicio'){root.querySelector('.home-banner-date-link')?.remove();const menu=root.querySelector('.dashboard-menu');if(menu)menu.innerHTML='<div class="dashboard-menu-heading"><div><div class="eyebrow">PLANIFICACIÓN</div><h1>Menú pendiente de activación</h1><p>Selecciona el día de inicio en el aviso superior para mostrar tu menú.</p></div></div>'}if(view==='guia'){const card=[...root.querySelectorAll('.guide-card')].find(node=>node.querySelector('h3')?.textContent==='Fecha de inicio del ciclo');if(card){const paragraph=card.querySelector('p');if(paragraph)paragraph.textContent='Tu cuenta no tiene un ciclo activo. Selecciona el día de inicio en el aviso superior para empezar.';card.querySelector('.shop-actions')?.remove()}}if(view==='despensa'){const stat=root.querySelector('.compact-stats .stat');if(stat){const value=stat.querySelector('.stat-value'),note=stat.querySelector('.stat-note');if(value)value.textContent='—';if(note)note.textContent='Sin ciclo activo'}}}
-function render(){const root=document.getElementById('viewRoot'),sameView=root.dataset.renderedView===view,openGroups=sameView?new Set([...root.querySelectorAll('details[data-accordion-id][open]')].map(node=>node.dataset.accordionId)):new Set();renderCycleSetupNotice();renderHeader();renderNav();const app=document.querySelector('.app');app.classList.toggle('shopping-view',view==='compra');app.classList.toggle('weekless-view',view==='compra'||view==='despensa');const renderer=({inicio:dashboard,perfil:profileView,semana:weekView,recetas:recipesView,compra:shopView,despensa:pantryView,evolucion:trackingView,guia:guideView,proponer:recipeProposalView,admin:recipeProposalAdminView}[view]||dashboard);root.innerHTML=renderer();root.dataset.renderedView=view;applyNoActiveCyclePresentation(root);for(const node of root.querySelectorAll('details[data-accordion-id]'))node.open=openGroups.has(node.dataset.accordionId)||node.open;if(view==='compra'){applyShoppingSearch();updateShoppingProgress()}}
+function render(){const root=document.getElementById('viewRoot'),sameView=root.dataset.renderedView===view,openGroups=sameView?new Set([...root.querySelectorAll('details[data-accordion-id][open]')].map(node=>node.dataset.accordionId)):new Set();renderCycleSetupNotice();renderHeader();renderNav();const app=document.querySelector('.app');app.classList.toggle('shopping-view',view==='compra');app.classList.toggle('weekless-view',view==='compra'||view==='despensa');const renderer=({inicio:dashboard,perfil:profileView,semana:weekView,recetas:recipesView,compra:shopView,despensa:pantryView,evolucion:trackingView,guia:guideView,proponer:recipeProposalView,admin:recipeProposalAdminView}[view]||dashboard);root.innerHTML=renderer();root.dataset.renderedView=view;applyNoActiveCyclePresentation(root);applyHomeOnboarding(root);applyQuickGuideEntry(root);for(const node of root.querySelectorAll('details[data-accordion-id]'))node.open=openGroups.has(node.dataset.accordionId)||node.open;if(view==='compra'){applyShoppingSearch();updateShoppingProgress()}}
  function showRecipe(id,day,slot,week=visibleWeek){const r=REC[id];if(!r)return;modalCtx={id,week:week==null?visibleWeek:Number(week),day:day==null?null:Number(day),slot:slot==null?null:Number(slot)};renderRecipeModal();const dlg=document.getElementById('recipeDialog');if(!dlg.open)dlg.showModal()}
 function renderRecipeModal(){
  if(!modalCtx)return;
@@ -1033,7 +1101,7 @@ function openActivityDialog(day=null,week=visibleWeek){const requested=day===nul
 function renderActivityDateSessions(date){const root=document.getElementById('activityDateSessions');if(!root)return;const rows=activitySessionsForDate(date).slice().sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));root.innerHTML='<div class="activity-date-list"><h3>Sesiones de '+escapeHTML(date||'')+'</h3>'+(rows.length?rows.map(s=>'<div class="activity-log-row"><div><strong>'+escapeHTML(activityLabel(s.activityId))+'</strong><small>'+escapeHTML(s.durationMinutes)+' min · +'+nformat(activitySessionEnergy(s))+' kcal netas aprox.</small></div><button type="button" class="btn btn-quiet btn-danger activity-delete-button" data-action="delete-activity" data-id="'+escapeAttribute(s.id)+'" aria-label="Eliminar sesión de '+escapeAttribute(date||'')+' · '+escapeAttribute(activityLabel(s.activityId))+'">'+ic('trash')+'<span>Eliminar sesión</span></button></div>').join(''):'<p class="muted">Sin sesiones registradas para esta fecha.</p>')+'</div>'}
 function saveActivitySession(form){if(!form.reportValidity())return;const data=new FormData(form),date=String(data.get('date')),activityId=String(data.get('activityId')),durationMinutes=Number(data.get('durationMinutes')),activity=ACTIVITY_BY_ID[activityId];if(!dateFromISO(date)||date>isoDate(today())||!activity||!Number.isInteger(durationMinutes)||durationMinutes<1||durationMinutes>600){showToast('Revisa la fecha, el tipo de actividad y la duración');return}state.activitySessions.push({id:newOperationId(),date,activityId,met:activity.met,durationMinutes,createdAt:new Date().toISOString()});state.activitySessions=state.activitySessions.slice(-2000);state.cart={};save();document.getElementById('activityDuration').value='';renderActivityDateSessions(date);render();showToast('Sesión guardada · se recalculan las comidas aún pendientes de ese día')}
 function deleteActivitySession(id){const session=state.activitySessions.find(x=>x.id===id);if(!session)return;if(!confirm('¿Eliminar la sesión de '+session.date+'? Las comidas ya registradas conservarán sus cantidades.'))return;state.activitySessions=state.activitySessions.filter(x=>x.id!==id);state.deletedActivitySessionIds=[...new Set([...(state.deletedActivitySessionIds||[]),id])].slice(-2000);state.cart={};save();renderActivityDateSessions(document.getElementById('activityDate')?.value||session.date);render();showToast('Sesión eliminada · se actualizaron las comidas pendientes de esa fecha')}
-function navigate(where){const allowed=['inicio','perfil','semana','recetas','compra','despensa','evolucion','guia','proponer',...(menukiAdmin?['admin']:[])];if(!allowed.includes(where))return;mobileMoreOpen=false;if(where!=='semana'){cycleStartEditorOpen=false;cycleStartDraft=null}if(where==='semana'&&view==='inicio'){const position=todayMenuPosition();if(position){visibleWeek=position.week;selectedDay=position.day}}view=where;if(where==='admin')loadRecipeProposals();render();window.scrollTo({top:0,behavior:'smooth'})}
+function navigate(where){const allowed=['inicio','perfil','semana','recetas','compra','despensa','evolucion','guia','proponer',...(menukiAdmin?['admin']:[])];if(!allowed.includes(where))return;const guideDialog=document.getElementById('quickGuideDialog');if(guideDialog?.open)guideDialog.close();mobileMoreOpen=false;if(where!=='semana'){cycleStartEditorOpen=false;cycleStartDraft=null}if(where==='semana'&&view==='inicio'){const position=todayMenuPosition();if(position){visibleWeek=position.week;selectedDay=position.day}}view=where;if(where==='admin')loadRecipeProposals();render();window.scrollTo({top:0,behavior:'smooth'})}
 document.addEventListener('click',event=>{if(mobileMoreOpen&&!event.target.closest('#mobileNav')){mobileMoreOpen=false;renderNav()}});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&mobileMoreOpen){mobileMoreOpen=false;renderNav();document.getElementById('mobileMoreToggle')?.focus()}});
 function copyText(message){if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(message).then(()=>showToast('Texto copiado al portapapeles')).catch(()=>legacyCopy(message))}else legacyCopy(message)}
@@ -1047,12 +1115,18 @@ function activateCycleFromSetup(requested){const date=dateFromISO(requested);if(
 function changeCycleStart(requested){if(state.noActiveCycle)return activateCycleFromSetup(requested);const d=dateFromISO(requested);if(!d){showToast('Fecha de inicio no válida');render();return}const next=isoDate(d);if(next===state.start){cycleStartEditorOpen=false;cycleStartDraft=null;render();return}if(Object.keys(state.done).length||Object.keys(state.legacyStrengthDays).length){if(!confirm('Cambiar la fecha archivará las comidas y marcas antiguas del ciclo. Se conservarán las sesiones de actividad, inventario, compras y pesos. ¿Continuar?')){cycleStartDraft=requested;render();document.getElementById('cycleStartMenu')?.focus();return}state.archives.push({start:state.start,done:state.done,legacyStrengthDays:state.legacyStrengthDays,prep:state.prep,menus:cloneMenus(MENUS),catalogVersion:state.activeMenuCatalogVersion||catalogVersion,generatedAt:state.activeMenuGeneratedAt,confirmedAt:state.activeMenuConfirmedAt,recoveryFocus:state.activeMenuRecoveryFocus,archivedAt:new Date().toISOString()});state.archives=state.archives.slice(-6)}state.start=next;if(state.nextMenu)state.nextMenu.start=isoDate(addDays(d,21));if(state.plannerDraft)state.plannerDraft.start=isoDate(addDays(d,21));state.done={};state.legacyStrengthDays={};state.prep={};cycleStartEditorOpen=false;cycleStartDraft=null;alignCurrentDay();save();render();showToast('Plan de 3 semanas actualizado')}
 // Cambios de la interfaz (delegación compatible con páginas HTML locales).
 document.addEventListener('click',function(event){const btn=event.target.closest('[data-action]');if(!btn)return;const action=btn.dataset.action;
+ if(action==='quick-guide-open'){openQuickGuide();return}
+ if(action==='quick-guide-close'){document.getElementById('quickGuideDialog')?.close();return}
+ if(action==='quick-guide-next'){if(quickGuideStep>=2){document.getElementById('quickGuideDialog')?.close();return}quickGuideStep++;renderQuickGuide();document.getElementById('quickGuideTitle')?.focus();return}
+ if(action==='quick-guide-previous'){quickGuideStep=Math.max(0,quickGuideStep-1);renderQuickGuide();document.getElementById('quickGuideTitle')?.focus();return}
+ if(action==='quick-guide-profile'){document.getElementById('quickGuideDialog')?.close();navigate('perfil');return}
+ if(action==='quick-guide-choose-cycle'){document.getElementById('quickGuideDialog')?.close();const input=document.getElementById('cycleSetupDate');input?.scrollIntoView({behavior:'smooth',block:'center'});input?.focus();return}
  if(action==='toggle-accordion'){event.preventDefault();const group=btn.closest('details[data-accordion-id]');if(group)group.open=!group.open;return}
  if(action==='reload'){window.location.reload();return}
  if(action==='cloud-sync')return cloudSyncRetryTask==='refresh'?refreshCloudState(true):syncCloudNow(true)
  if(action==='toggle-more'){mobileMoreOpen=!mobileMoreOpen;renderNav();document.getElementById('mobileMoreToggle')?.focus();return}
  if(action==='activate-cycle'){const input=document.getElementById('cycleSetupDate');if(!input||!input.reportValidity())return;cycleSetupDateDraft=input.value;activateCycleFromSetup(input.value);return}
- if(action==='edit-cycle-start'){cycleStartDraft=state.start;cycleStartEditorOpen=true;navigate('semana');return}
+ if(action==='edit-cycle-start'){document.getElementById('quickGuideDialog')?.close();cycleStartDraft=state.start;cycleStartEditorOpen=true;navigate('semana');return}
  if(action==='toggle-cycle-start'){cycleStartEditorOpen=!cycleStartEditorOpen;cycleStartDraft=cycleStartEditorOpen?state.start:null;render();if(cycleStartEditorOpen)document.getElementById('cycleStartMenu')?.focus();else document.querySelector('[data-action="toggle-cycle-start"]')?.focus();return}
  if(action==='cancel-cycle-start'){cycleStartEditorOpen=false;cycleStartDraft=null;render();document.querySelector('[data-action="toggle-cycle-start"]')?.focus();return}
  if(action==='save-cycle-start'){const input=document.getElementById('cycleStartMenu');if(!input||!input.reportValidity())return;cycleStartDraft=input.value;changeCycleStart(input.value);return}

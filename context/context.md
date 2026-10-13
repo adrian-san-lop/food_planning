@@ -58,6 +58,7 @@ Last updated: 2026-10-13. This file is a short handoff index, not the full produ
 - [First-use and meal-registration decision](docs/decisions/0011-first-use-profile-and-meal-registration.md): profile review and future meal handling.
 - [Daily home and menu navigation decision](docs/decisions/0019-daily-home-and-menu-navigation.md): daily-only Inicio, week/day navigation in Menú, and the generic supermarket label in Compra.
 - [No-active-cycle recovery decision](docs/decisions/0024-no-active-cycle-recovery.md): keep the app available and ask for a cycle start date across all pages.
+- [First-use quick guide decision](docs/decisions/0025-first-use-quick-guide.md): optional three-step onboarding from Inicio and Guía, reusing existing profile and cycle-date flows.
 - [Mobile shopping and sync interface decision](docs/decisions/0012-mobile-shopping-and-sync-ui.md): automatic sync retry, mobile purchase flow, pantry labels, and grouped navigation.
 - [Client modules and Madrid dates decision](docs/decisions/0013-front-end-modules-and-madrid-dates.md): native ES modules, incremental extraction, and civil dates in `Europe/Madrid`.
 - [Canonical data sources decision](docs/decisions/0014-canonical-data-sources.md): JSON catalogs, Supabase personal state, and the local working copy boundary.

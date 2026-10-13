@@ -15,7 +15,7 @@ La posibilidad de combinar los gustos de varias personas en un menú común sigu
 - Un ciclo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios). El primer ciclo mantiene el menú fijo existente; los siguientes pueden generarse desde el catálogo.
 - Inicio muestra un resumen del día en este orden: banner, KPI, objetivo nutricional de hoy y menú de hoy. No incluye navegación semanal ni otras secciones.
 - Menú es una página separada: permite elegir una de las tres semanas y un día con el calendario de siete días; muestra el detalle de la fecha seleccionada.
-- En una primera visita, Guía explica los pasos básicos y dirige al perfil. Los valores de ejemplo no se consideran revisados hasta que la persona guarda el perfil explícitamente.
+- En Inicio, la persona puede revisar el perfil mientras sus datos sigan pendientes de confirmación y abrir una guía rápida de tres pasos. Guía conserva el recorrido completo y permite reabrir la guía breve. Esta ayuda es opcional y no crea un estado de onboarding; los valores de ejemplo no se consideran revisados hasta guardar el perfil explícitamente.
 - La app comprueba periódicamente la revisión de Supabase mientras está visible y al volver al primer plano o recuperar la conexión. Combina cambios independientes usando la última revisión remota como base; cuando dos dispositivos cambian el mismo valor, prevalece el valor de la revisión que Supabase aceptó más recientemente. No pide elegir una copia.
 - Recetas, instrucciones y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas. La aplicación no muestra fotografías de platos.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.

@@ -7,7 +7,7 @@ Aplicación web de planificación nutricional con datos personales aislados por 
 - `index.html` es la entrada de GitHub Pages y redirige a `menuki.html` en la raíz.
 - El usuario inicia sesión con Supabase Auth; los datos personales se sincronizan en tablas relacionales y `localStorage` mantiene una copia de trabajo del navegador.
 - Inicio muestra un banner compacto, los KPI, el objetivo nutricional del día y solo el menú de hoy. Menú es una página separada con navegación por semana y por día.
-- En la primera visita, Guía indica por dónde empezar. Las cifras genéricas del perfil se marcan como ejemplos hasta que el usuario las revise y guarde.
+- En Inicio hay un acceso a revisar el perfil mientras sus datos sigan pendientes de confirmación y una guía rápida de tres pasos. Guía mantiene el recorrido completo y permite volver a abrir el breve; las cifras genéricas son ejemplos hasta que el usuario revise y guarde el perfil.
 - Al abrir la cuenta en otro dispositivo, Menuki actualiza los datos automáticamente. Los cambios independientes se combinan; si ambos dispositivos cambian el mismo valor, prevalece la última revisión guardada en Supabase.
 - Si la cuenta no tiene un ciclo activo, Menuki sigue disponible y muestra en todas las páginas un selector para elegir la fecha de inicio. El menú y la compra planificada se habilitan al activar el ciclo; el resto de los datos se conserva.
 - La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.

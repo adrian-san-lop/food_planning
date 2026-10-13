@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="./docs/images/menuki_logo.png">
 <meta name="description" content="Plan nutricional de 21 días con perfil adaptable, objetivos y macronutrientes calculados, recetas, compra e inventario.">
 <title>Menuki · Mi plan saludable</title>
-  <link rel="stylesheet" href="./assets/css/app.css?v=20261013-no-active-cycle">
+  <link rel="stylesheet" href="./assets/css/app.css?v=20261013-quick-guide">
 </head>
 <body>
 <div class="catalog-overlay" id="catalogStatus" role="status" aria-live="polite"><div><strong>Cargando catálogos…</strong><p>La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.</p></div></div>
@@ -45,9 +45,10 @@
 <dialog id="recipeDialog" aria-label="Detalles de la receta"><button type="button" class="dialog-close" data-action="close-modal" aria-label="Cerrar">✕</button><div id="modalContent"></div></dialog>
 <dialog id="plannerDialog" aria-label="Propuesta del siguiente menú"><button type="button" class="dialog-close" data-action="planner-close" aria-label="Cerrar">✕</button><div id="plannerContent"></div></dialog>
 <dialog id="activityDialog" aria-label="Registrar una sesión de actividad"><button type="button" class="dialog-close" data-action="activity-close" aria-label="Cerrar">✕</button><div class="dialog-body activity-dialog-body"><div class="eyebrow">SEGUIMIENTO DE ACTIVIDAD</div><h2>Registrar sesión realizada</h2><p>Regístrala después de hacerla. La estimación solo ajusta el objetivo y las comidas pendientes de esa fecha.</p><form id="activityForm" class="activity-form"><label>Fecha<input id="activityDate" name="date" type="date" data-change="activity-date" required></label><label>Actividad y esfuerzo<select id="activityType" name="activityId" required></select></label><label>Duración (minutos)<input id="activityDuration" name="durationMinutes" type="number" min="1" max="600" step="1" required placeholder="45"></label><div id="activityDateSessions"></div><div class="dialog-actions"><button class="btn btn-primary" type="submit">Guardar sesión</button><button class="btn" type="button" data-action="activity-close">Cerrar</button></div></form></div></dialog>
+<dialog id="quickGuideDialog" class="quick-guide-dialog" aria-labelledby="quickGuideTitle"><button type="button" class="dialog-close" data-action="quick-guide-close" aria-label="Cerrar guía rápida">✕</button><div id="quickGuideContent" aria-live="polite" aria-atomic="true"></div></dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="importInput" accept="application/json,.json" hidden>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3"></script>
- <script type="module" src="./js/main.js?v=20261013-no-active-cycle"></script>
+ <script type="module" src="./js/main.js?v=20261013-quick-guide"></script>
 </body>
 </html>
