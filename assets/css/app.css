@@ -157,12 +157,12 @@ h1,h2,h3,p{margin-top:0}
 .shop-progress{height:9px;background:#cddcca;border-radius:20px;overflow:hidden;margin-top:11px;max-width:360px}
 .shop-progress span{display:block;background:var(--accent);height:100%;border-radius:20px;transition:.18s}
 .shop-group{background:var(--white);border:1px solid var(--line);border-radius:17px;padding:0 17px;margin:12px 0;overflow:hidden}
-.shop-group-title{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 1px;border-bottom:1px solid var(--line);font-size:14px;font-weight:800;cursor:pointer}
+.shop-group-title{list-style:none;display:grid;grid-template-columns:minmax(0,1fr) auto 20px;align-items:center;gap:12px;padding:13px 1px;border-bottom:1px solid var(--line);font-size:14px;font-weight:800;cursor:pointer}
 .shop-group-title::-webkit-details-marker{display:none}
 .shop-group-title::marker{content:""}
-.shop-group-title::after{content:"+";color:var(--accent);font-size:18px;line-height:1}
+.shop-group-title::after{content:"+";justify-self:end;width:20px;text-align:center;color:var(--accent);font-size:18px;line-height:1}
 .shop-group[open]>.shop-group-title::after{content:"−"}
-.shop-group-title span{font-size:11px;color:var(--muted);font-weight:600}
+.shop-group-title span{justify-self:end;text-align:right;white-space:nowrap;font-size:11px;color:var(--muted);font-weight:600}
 .shop-group-items{padding:3px 0 5px}
 .shop-top-actions{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 14px}
 .shop-item{display:flex;gap:12px;align-items:center;padding:11px 3px;border-bottom:1px solid #eff1eb;cursor:pointer;font-size:13px;line-height:1.4}
@@ -342,6 +342,7 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .pack-unit{color:#64786a;font-size:12px;min-width:105px}
 .pack-adjust{grid-column:1/-1;color:#789080;font-size:11px}
 .pack-adjust input{width:85px;margin:5px 8px;border:1px solid #d8e5d7;border-radius:6px;padding:5px}
+@media(min-width:1000px){.shop-store .shop-group-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:0 12px}}
 .extra-purchase{display:flex;flex-wrap:wrap;gap:8px}
 .extra-purchase select{min-width:170px;max-width:100%;padding:10px;border:1px solid #d8e5d7;border-radius:9px}
 .extra-purchase input{width:70px;border:1px solid #d8e5d7;border-radius:9px;padding:10px}

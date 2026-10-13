@@ -15,6 +15,8 @@
 7. En Compra, conservar los botones de cantidad más y menos y retirar los controles nativos del campo numérico. Al marcar un artículo, ocultar sus controles y detalles y dejar su nombre con la casilla para poder desmarcarlo.
 8. Mostrar **Copiar lista** y **Ver despensa** antes del selector **Compra para**. En escritorio, Despensa presenta los alimentos en tres columnas amplias, dos en pantallas medianas y una en móvil.
 
+9. Alinear a la derecha el número de alimentos/artículos en los encabezados de categoría de Compra y Despensa. En PC, mostrar los artículos de cada categoría de Compra en dos o tres columnas según el ancho disponible; mantener una sola columna en móvil.
+
 ## Consecuencias
 
 - El banner compacto y los KPI orientan al usuario antes del menú del día; los avisos y la navegación del ciclo quedan debajo. Las cantidades nutricionales reflejan consumos registrados.
@@ -22,3 +24,4 @@
 - El catálogo de recetas deja de incluir metadatos de fotografía, y su esquema valida ese contrato actualizado.
 - La versión común de ambos catálogos pasa a `0.6.0` para identificar el contrato sin metadatos de fotografía.
 - No cambian los datos personales, la persistencia ni la sincronización con Supabase.
+- Los contadores se sitúan junto al control de despliegue, en el extremo derecho del encabezado. La cuadrícula de Compra solo se activa en pantallas de escritorio suficientemente anchas; en móvil conserva la lista vertical.
