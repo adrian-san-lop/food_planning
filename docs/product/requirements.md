@@ -29,7 +29,7 @@ La posibilidad de combinar los gustos de varias personas en un menú común sigu
 
 ### Propuestas de recetas — revisión admin individual y exportación JSON
 
-El buzón y su migración están implementados; el propietario informa que aplicó la novena migración y ejecutó la asignación inicial del admin. La edición y el borrado individual están implementados en la migración `20261013170000_recipe_proposal_admin_maintenance.sql`; queda aplicarla a Supabase, publicar el HTML y validar las acciones con cuentas admin y normal.
+El propietario informa que aplicó las migraciones del buzón y de mantenimiento admin. La edición y el borrado individual funcionan. La limpieza global requiere aplicar `20261013180000_recipe_proposal_purge_where_clause.sql`: Supabase rechaza el borrado masivo si no tiene cláusula `WHERE`. Después debe validarse la limpieza en la web publicada y el aislamiento con una cuenta normal.
 
 - Cualquier cuenta autenticada puede enviar una propuesta con tipo (desayuno, comida, snack o cena), nombre de hasta 120 caracteres, hasta 30 ingredientes de texto libre (160 caracteres cada uno) y hasta 30 pasos ordenados (500 caracteres cada uno). El formulario empieza con un ingrediente y un paso.
 - No se piden cantidades, raciones, kcal ni nutrientes. Los datos son una idea inicial; la propuesta no se convierte automáticamente en una receta del catálogo.

@@ -51,7 +51,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - El formulario para cuentas autenticadas recoge solo tipo, nombre, ingredientes simples y pasos; Supabase aplica los límites y guarda los datos de forma relacional e idempotente.
 - La sección admin se habilita por un rol privado de Supabase. La asignación inicial se hace desde SQL Editor; no hay contraseña administrativa en el HTML.
 - La revisión nutricional y la edición de `foods.json`/`recipes.json` se hacen manualmente con ayuda de IA fuera de la app. La publicación sigue el flujo Git normal.
-- La novena migración y la asignación del rol admin se ejecutaron según el propietario. Aplicar aún la octava migración pendiente y la nueva `20261013170000_recipe_proposal_admin_maintenance.sql`; publicar y validar envío, RLS, edición/borrado individual, descarga JSON y purga global con cuenta normal y admin.
+- El propietario informa que ya aplicó las migraciones novena y décima y que el borrado individual funciona. Aplicar la octava migración pendiente y la correctiva `20261013180000_recipe_proposal_purge_where_clause.sql`; validar envío, RLS, edición/borrado individual, descarga JSON y purga global con cuentas admin y normal.
 - El botón admin descarga un paquete `menuki.recipe-proposal-export` versión 1 según `docs/schemas/recipe-proposal-export.schema.json`. El chat de Codex que procese el archivo debe tener acceso al repositorio; el navegador no escribe en GitHub.
 - El botón elimina todas las propuestas solo después de publicar los catálogos; el RPC confirma el recuento y elimina los registros hijos en cascada.
 

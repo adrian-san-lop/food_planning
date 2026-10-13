@@ -204,7 +204,7 @@ begin
     raise exception using errcode = 'PT409', message = 'PROPOSAL_COUNT_CHANGED';
   end if;
 
-  delete from public.recipe_proposals;
+  delete from public.recipe_proposals where id is not null;
   return v_count;
 end;
 $$;

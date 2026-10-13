@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas. El propietario informa que la novena (`20261013160000_recipe_proposal_inbox.sql`) y la asignación admin ya se ejecutaron en Supabase; la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) sigue pendiente. La interfaz del buzón incluye exportación, edición y borrado individual; la nueva migración `20261013170000_recipe_proposal_admin_maintenance.sql` está en el repositorio local de `dev`, pero falta aplicarla y publicar. Después deben validarse los permisos con cuenta normal y admin. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas. El propietario informa que las migraciones novena y décima (`20261013160000_recipe_proposal_inbox.sql` y `20261013170000_recipe_proposal_admin_maintenance.sql`) y la asignación admin ya se ejecutaron en Supabase; la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) sigue pendiente. El propietario confirmó que el borrado individual funciona. La limpieza global falla porque Supabase rechaza un `DELETE` sin cláusula `WHERE`; la corrección está en `20261013180000_recipe_proposal_purge_where_clause.sql` y aún debe aplicarse. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
@@ -30,7 +30,7 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 - Publicar la app actualizada y comprobar la primera importación local v8 a Supabase, la conciliación de cambios independientes, el desempate de cambios simultáneos y la propagación del borrado de sesiones entre PC y móvil.
 - Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
 - Aplicar la octava migración pendiente desde SQL Editor. La novena y la asignación admin ya se ejecutaron según el propietario.
-- Aplicar `20261013170000_recipe_proposal_admin_maintenance.sql` después de verificar la novena; publicar y validar con cuenta normal y admin el formulario, aislamiento del buzón, edición y borrado individual, descarga conforme al esquema JSON v1, protección contra operaciones obsoletas y limpieza global en cascada.
+- Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` en SQL Editor para corregir la limpieza global; después comprobar que elimina las propuestas y sus filas hijas. La edición y el borrado individual ya funcionan según el propietario. Sigue pendiente validar el aislamiento con una cuenta normal y la limpieza global en la web publicada.
 - Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y restauración desde una copia confirmada.
 - Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?

@@ -1,7 +1,7 @@
 # Decisión 0023: edición y borrado individual de propuestas
 
 - **Fecha:** 13 de octubre de 2026
-- **Estado:** Aceptada; cliente y migración implementados localmente en `dev`; aplicación en Supabase y validación pendientes
+- **Estado:** Aceptada; cliente y migración de acciones individuales aplicados según el propietario; purga global corregida en migración undécima, pendiente de aplicar y validar
 - **Alcance:** corregir errores y descartar propuestas individuales antes de preparar la exportación para el catálogo
 
 ## Contexto
@@ -21,8 +21,8 @@ El buzón puede contener varias propuestas a la vez. El admin necesita corregir 
 
 - La visibilidad de la página admin es solo una decisión de interfaz; la autorización efectiva está en las RPC del servidor.
 - Los cambios afectan al buzón compartido, no a perfiles, menús personales ni a los catálogos JSON.
-- La migración `20261013170000_recipe_proposal_admin_maintenance.sql` debe ejecutarse en el proyecto después de verificar que la migración novena ya está aplicada. No modifica tablas personales ni concede escritura directa.
-- Tras aplicar la migración, validar con una cuenta admin que editar y borrar una propuesta actualiza solo esa propuesta y sus filas hijas; con una cuenta normal, ambas RPC deben rechazar la llamada.
+- El propietario informa que ya aplicó `20261013170000_recipe_proposal_admin_maintenance.sql`; la edición y el borrado individual funcionan. La limpieza global falló con `21000: DELETE requires a WHERE clause`; `20261013180000_recipe_proposal_purge_where_clause.sql` redefine esa RPC con `WHERE id IS NOT NULL`, conserva la confirmación de recuento y debe aplicarse en SQL Editor.
+- El propietario confirmó que la edición y el borrado individual funcionan. Tras aplicar la migración correctiva, validar la purga global y comprobar con una cuenta normal que las RPC admin rechazan la llamada.
 
 ## Referencias
 
