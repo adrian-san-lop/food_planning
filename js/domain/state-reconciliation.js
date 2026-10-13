@@ -188,6 +188,7 @@ function mergeableState(state = {}) {
   return {
     profile: state.profile || {},
     profileConfirmed: state.profileConfirmed === true,
+    noActiveCycle: state.noActiveCycle === true,
     start: state.start,
     activeMenus: state.activeMenus || null,
     activeMenuCatalogVersion: state.activeMenuCatalogVersion || null,
@@ -240,6 +241,7 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   result.activeMenuRecoveryFocus = activePlan?.recoveryFocus === true;
   result.profile = mergeValue(base.profile, local.profile, remote.profile);
   result.profileConfirmed = mergeValue(base.profileConfirmed, local.profileConfirmed, remote.profileConfirmed);
+  result.noActiveCycle = mergeValue(base.noActiveCycle, local.noActiveCycle, remote.noActiveCycle) === true;
   result.done = mergeValue(base.done, local.done, remote.done);
   result.legacyStrengthDays = mergeValue(base.legacyStrengthDays, local.legacyStrengthDays, remote.legacyStrengthDays);
   result.prep = mergeValue(base.prep, local.prep, remote.prep);

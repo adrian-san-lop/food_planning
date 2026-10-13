@@ -70,6 +70,19 @@ h1,h2,h3,p{margin-top:0}
 .cycle-boundary-icon{display:grid;place-items:center;flex:none;color:var(--accent)}
 .cycle-boundary-icon .icon svg{width:20px;height:20px}
 .cycle-boundary-notice strong{font-weight:800}
+.cycle-setup-banner{margin:0 0 18px}
+.cycle-setup-banner[hidden]{display:none!important}
+.cycle-setup-notice{display:grid;grid-template-columns:44px minmax(0,1fr) minmax(280px,auto);align-items:center;gap:14px;padding:15px 18px;border:1px solid #edc99e;border-radius:16px;background:linear-gradient(110deg,#fff5e8,#fffaf3);color:#744b2b;box-shadow:var(--shadow)}
+.cycle-setup-mark{display:grid;place-items:center;width:44px;height:44px;border-radius:13px;background:#f8e4cb;color:#a65731}
+.cycle-setup-mark .icon svg{width:22px;height:22px}
+.cycle-setup-copy{min-width:0}
+.cycle-setup-copy h2{margin:0 0 3px;font-family:Georgia,serif;font-size:18px;line-height:1.25}
+.cycle-setup-copy p{margin:0;color:#795c46;font-size:12px;line-height:1.5}
+.cycle-setup-fields{display:grid;grid-template-columns:minmax(140px,1fr) auto;align-items:end;gap:8px}
+.cycle-setup-fields label{display:flex;flex-direction:column;gap:5px;font-size:11px;font-weight:750}
+.cycle-setup-fields input{width:100%;min-height:42px;padding:9px 10px;border:1px solid #e2c7aa;border-radius:10px;background:white;color:var(--ink);font:inherit}
+.cycle-setup-fields input:focus{outline:2px solid #f2dcc0;border-color:#c98456}
+.cycle-setup-fields .btn{white-space:nowrap}
 .cycle-start-panel{display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:15px;margin:0 0 18px;padding:17px 19px}
 .cycle-start-mark{display:grid;place-items:center;width:46px;height:46px;border-radius:14px;background:var(--accent-tint);color:var(--accent)}
 .cycle-start-mark .icon svg{width:22px;height:22px}
@@ -676,6 +689,10 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .cycle-boundary-notice{font-size:13px;padding:10px 12px}
 .nutrition-meter+.dashboard-menu{margin-top:22px}
 .dashboard-menu-heading h1{font-size:23px}
+.cycle-setup-notice{grid-template-columns:40px minmax(0,1fr);gap:10px;padding:13px}
+.cycle-setup-mark{width:40px;height:40px;border-radius:12px}
+.cycle-setup-copy h2{font-size:16px}
+.cycle-setup-fields{grid-column:1/-1;grid-template-columns:minmax(0,1fr) auto}
 .cycle-start-panel{grid-template-columns:40px minmax(0,1fr);gap:11px;padding:14px}
 .cycle-start-mark{width:40px;height:40px;border-radius:12px}
 .cycle-start-copy h2{font-size:17px}
@@ -685,6 +702,9 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .cycle-start-form p{grid-column:auto}
 .cycle-start-actions{grid-column:2;grid-row:auto;justify-content:flex-start}
 .home-banner-date-link{font-size:10px}}
+
+@media(max-width:380px){.cycle-setup-fields{grid-template-columns:1fr}
+.cycle-setup-fields .btn{width:100%}}
 
 @media print{.sidebar,.mobile-nav,.topbar,.recipe-tools,.shop-actions,.btn,.day-summary .activity-switch,.meal-check,.dialog-close{display:none!important}
 .app{display:block}
