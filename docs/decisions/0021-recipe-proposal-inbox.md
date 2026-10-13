@@ -1,7 +1,7 @@
 # Decisión 0021: buzón compartido de propuestas de recetas
 
 - **Fecha:** 13 de octubre de 2026
-- **Estado:** Aceptada; interfaz y migración preparadas localmente; aplicación en Supabase y publicación pendientes
+- **Estado:** Aceptada; migración aplicada y admin asignado según el propietario; publicación y validación pendientes
 - **Alcance:** envío de ideas de recetas, revisión administrativa y limpieza posterior al alta manual en los catálogos
 
 ## Contexto
@@ -26,7 +26,7 @@
 - La entrada del catálogo requiere juicio administrativo; una propuesta no altera los menús ni el catálogo activo.
 - La interfaz no accede a GitHub ni mantiene una clave de escritura. Los cambios de catálogo pasan por edición, revisión y publicación del repositorio.
 - La migración `20261013160000_recipe_proposal_inbox.sql` añade `menuki_admins`, `recipe_proposals`, `recipe_proposal_ingredients` y `recipe_proposal_steps`. Los contenidos se aíslan mediante RLS y permisos mínimos.
-- La migración, la asignación inicial de rol, la publicación y la validación de RLS con cuentas normal y admin siguen pendientes.
+- El propietario informa que ejecutó la migración y la asignación inicial del rol. La publicación y la validación de RLS con cuentas normal y admin siguen pendientes.
 
 ## Referencias
 
