@@ -1,6 +1,6 @@
 # Arquitectura
 
-Estado de referencia: 13 de octubre de 2026. El esquema y el cliente de sincronización están implementados. La octava migración para detener los reintentos de PostgREST ante conflictos `SYNC_CONFLICT` está preparada, pero pendiente de aplicar en Supabase. La conciliación automática y el acceso directo al historial de actividad están implementados en el cliente local; quedan pendientes la publicación y la validación de los recorridos en navegador y la prueba RLS con dos cuentas.
+Estado de referencia: 13 de octubre de 2026. El esquema y el cliente de sincronización personal están implementados. La octava migración para detener los reintentos de PostgREST ante conflictos `SYNC_CONFLICT` está preparada, pero pendiente de aplicar en Supabase. La novena migración, `20261013160000_recipe_proposal_inbox.sql`, prepara el buzón compartido de propuestas y también está pendiente. La conciliación automática, el historial de actividad y la interfaz local de propuestas están implementados; quedan pendientes aplicar las migraciones, asignar el primer administrador, publicar y validar los recorridos y las políticas RLS.
 
 ## Arquitectura actual
 
@@ -19,6 +19,7 @@ Navegador
         │     ├── domain/state-reconciliation.js (conciliación de cambios de estado)
         │     ├── data/catalogs.js (carga y validación de JSON)
         │     ├── persistence/local-state.js (copia de trabajo local)
+        │     ├── persistence/recipe-proposals.js (envío, consulta y limpieza del buzón)
         │     └── persistence/supabase-transport.js (lecturas y RPC)
         └── data/*.json + esquemas JSON
               └── carga desde el módulo de catálogos
@@ -75,19 +76,28 @@ Los catálogos comunes se versionan junto al código. El estado personal (perfil
 | Ciclos y comidas personales | `plan_cycles` y `planned_meals` en Supabase | `localStorage` mantiene la copia de trabajo del navegador |
 | Perfil, peso, actividad, comidas realizadas e inventario | Tablas relacionales de Supabase vinculadas por `user_id` | `localStorage` mantiene la copia de trabajo del navegador |
 | Preparación y compra | `prep_tasks`, `shopping_sessions` y `shopping_session_items` en Supabase | `localStorage` mantiene la copia de trabajo del navegador |
+| Ideas de recetas enviadas | `recipe_proposals` y sus tablas de ingredientes/pasos en Supabase, después de aplicar la novena migración | Texto de propuesta; no se mezcla con el estado personal ni se publica en el catálogo automáticamente |
 | Gustos/restricciones | No hay sistema general implementado | Preferencias por persona fuera del catálogo; modelo pendiente |
 
 No colocar datos personales o copias de seguridad en GitHub. Aunque un repositorio sea privado, GitHub Pages publica el sitio. Las tablas personales usan RLS; la clave pública del proyecto puede aparecer en el navegador, pero una clave `service_role` o cualquier otro secreto nunca debe incluirse ahí.
 
 ## Esquema remoto y conexión del HTML
 
-El proyecto tiene tablas relacionales para perfiles, ciclos, comidas planificadas y realizadas, movimientos de inventario, peso, entrenamientos, preparación y listas de compra. El esquema se define en `supabase/migrations/`; la comprobación estructural y de permisos está en `supabase/tests/`. El catálogo genérico no requiere una tabla por alimento o receta.
+El proyecto tiene tablas relacionales para perfiles, ciclos, comidas planificadas y realizadas, movimientos de inventario, peso, entrenamientos, preparación y listas de compra. El esquema se define en `supabase/migrations/`; la comprobación estructural y de permisos del estado existente está en `supabase/tests/`. El catálogo genérico no requiere una tabla por alimento o receta.
 
-Las trece tablas aplicadas son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `meal_completion_ingredients`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items`, `user_settings` y `activity_sessions`. `profiles.profile_confirmed` es una marca booleana; no añade otra tabla. `meal_completion_ingredients` conserva una fila por ingrediente realmente usado, sin caducidad temporal ni purga programada. `training_logs` y `profiles.training_bonus_kcal` quedan como tabla/campo heredados y no se usarán para el nuevo cálculo. Las siete migraciones iniciales están aplicadas desde SQL Editor; la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) está pendiente. Supabase todavía no registra automáticamente el historial de esos archivos.
+Las trece tablas existentes son `profiles`, `plan_cycles`, `planned_meals`, `meal_completions`, `meal_completion_ingredients`, `inventory_movements`, `weight_logs`, `training_logs`, `prep_tasks`, `shopping_sessions`, `shopping_session_items`, `user_settings` y `activity_sessions`. `profiles.profile_confirmed` es una marca booleana; no añade otra tabla. `meal_completion_ingredients` conserva una fila por ingrediente realmente usado, sin caducidad temporal ni purga programada. `training_logs` y `profiles.training_bonus_kcal` quedan como tabla/campo heredados. Las siete migraciones iniciales están aplicadas desde SQL Editor; la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) y la novena (`20261013160000_recipe_proposal_inbox.sql`) están pendientes. La novena añade `menuki_admins`, `recipe_proposals`, `recipe_proposal_ingredients` y `recipe_proposal_steps`; el diagrama incluye estas cuatro tablas con estilo discontinuo hasta aplicar la migración. Supabase todavía no registra automáticamente el historial de esos archivos.
+
+Las propuestas son ideas genéricas, no datos nutricionales ni recetas publicadas. `submit_recipe_proposal` recibe el tipo, el nombre, los ingredientes libres y los pasos como datos de transporte, valida los límites y los guarda en tres tablas relacionales dentro de una transacción. La clave de cliente hace idempotentes los reintentos. No se guardan cantidades, kcal o nutrientes estimados por el usuario.
+
+El navegador consulta `is_menuki_admin()` al iniciar sesión. El administrador puede leer el buzón mediante RLS; una cuenta normal solo puede enviar una propuesta y no puede leer otras propuestas, modificar roles ni borrar filas directamente. `menuki_admins` no se expone al cliente. El propietario asigna el rol en SQL Editor después de que exista la cuenta de Auth. La web no contiene una contraseña administrativa ni una clave de escritura de GitHub.
+
+La IA se usa manualmente fuera de la app para ampliar las ideas: el administrador verifica los alimentos y su base nutricional, añade primero los alimentos nuevos a `data/foods.json`, completa la receta en `data/recipes.json` para una persona y publica los cambios con el flujo Git del repositorio. El campo de formulario `snack` se asigna a `media` o `tarde` cuando se incorpora al catálogo actual.
+
+`clear_recipe_proposals(expected_count)` es un RPC transaccional de administrador que elimina todo el buzón y sus filas hijas en cascada. El navegador muestra el número y pide confirmación; la función bloquea altas concurrentes y rechaza la operación si el recuento ha cambiado. Se usa después de publicar los catálogos. La eliminación hace que PostgreSQL pueda reutilizar ese espacio; no garantiza que el tamaño total informado baje inmediatamente.
 
 Cada ciclo futuro debería registrar la versión de catálogo usada. La decisión ADR-0008 define snapshots inmutables por ingrediente con cantidad y unidad de receta, mientras que los movimientos del inventario conservan las cantidades en unidades de inventario. El inventario debería poder reconstruirse a partir de movimientos con IDs únicos; las correcciones y reversos se registran como eventos nuevos.
 
-Las tablas requieren Auth y aplican RLS por `auth.uid()`. La política aceptada en ADR-0009 es correo + contraseña, registro libre y sin confirmación del correo. El HTML ya integra Auth y sincronización relacional. La función `SECURITY DEFINER` toma el propietario de `auth.uid()`, aplica la sincronización de forma transaccional y verifica `sync_revision`; su ejecución está concedida solo a `authenticated`. La prueba de aislamiento con dos cuentas y la comprobación de PC/móvil siguen pendientes. Las siete migraciones iniciales están aplicadas; aplica la octava corrección de `PT409` y publica el HTML actualizado antes de comprobar el recorrido en GitHub Pages. Revisar el tamaño global y por tabla conforme se incorporen usuarios; al acercarse a 350 MB, estudiar el crecimiento. No purgar snapshots automáticamente.
+Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es correo + contraseña, registro libre y sin confirmación del correo. La sincronización del estado personal toma el propietario de `auth.uid()`, aplica cambios de forma transaccional y verifica `sync_revision`; su ejecución está concedida solo a `authenticated`. Las propuestas usan RPCs separadas y limitadas, porque son contenido compartido y no parte del estado personal. La prueba de aislamiento con dos cuentas, el acceso admin y la comprobación PC/móvil siguen pendientes. Aplica en orden las migraciones octava y novena, asigna un administrador, publica el HTML actualizado y valida los permisos desde dos cuentas antes de usar el buzón. Revisar el tamaño global y por tabla conforme se incorporen usuarios; al acercarse a 350 MB, estudiar el crecimiento. No purgar snapshots personales automáticamente.
 
 ## Migración y recuperación
 

@@ -4,9 +4,9 @@ Estado de referencia: 13 de octubre de 2026. Este documento reúne el alcance ac
 
 ## Propósito y usuarios
 
-Menuki (Mi Plan Saludable) ayuda a organizar comidas de tres semanas, consultar recetas, preparar compras, controlar existencias, registrar sesiones de actividad ya realizadas y seguir el peso. La versión actual es personal, para una sola persona y requiere conexión. El propietario quiere mantener el coste de uso en cero dentro de los límites de los servicios gratuitos.
+Menuki (Mi Plan Saludable) ayuda a organizar comidas de tres semanas, consultar recetas, preparar compras, controlar existencias, registrar sesiones de actividad ya realizadas y seguir el peso. Los datos personales permanecen aislados por cuenta y la app requiere conexión. Las cuentas autenticadas también pueden enviar ideas a un buzón compartido de recetas; esto no crea un menú compartido ni mezcla perfiles. El propietario quiere mantener el coste de uso en cero dentro de los límites de los servicios gratuitos.
 
-La posibilidad de que otras personas tengan gustos distintos se está considerando para el diseño futuro. **No significa que el alcance actual ya sea multiusuario o que se haya aprobado un modo de menú compartido.**
+La posibilidad de combinar los gustos de varias personas en un menú común sigue pendiente. El buzón de recetas compartido sí está aceptado; los perfiles, menús, despensa y registros siguen aislados por cuenta.
 
 ## Alcance funcional
 
@@ -26,6 +26,18 @@ La posibilidad de que otras personas tengan gustos distintos se está consideran
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
 - Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado local con fecha y versión del catálogo.
 - Activación del siguiente menú al llegar su fecha; el ciclo anterior se archiva junto con su menú y registros.
+
+### Propuestas de recetas — alcance aceptado; despliegue pendiente
+
+La interfaz y el módulo cliente están implementados en la rama de tarea. La migración de Supabase, la asignación del primer administrador, la publicación y la validación de RLS están pendientes; la función no estará disponible en la web publicada hasta completar esos pasos.
+
+- Cualquier cuenta autenticada puede enviar una propuesta con tipo (desayuno, comida, snack o cena), nombre de hasta 120 caracteres, hasta 30 ingredientes de texto libre (160 caracteres cada uno) y hasta 30 pasos ordenados (500 caracteres cada uno). El formulario empieza con un ingrediente y un paso.
+- No se piden cantidades, raciones, kcal ni nutrientes. Los datos son una idea inicial; la propuesta no se convierte automáticamente en una receta del catálogo.
+- Un rol de administrador asignado de forma privada en Supabase puede revisar todas las propuestas. El rol se comprueba en la base de datos y no se deriva de una contraseña o correo escrito en el HTML.
+- El administrador utiliza IA fuera de la app para concretar una ración para una persona, cantidades y composición nutricional. Verifica y añade primero los alimentos nuevos a `data/foods.json`, después completa `data/recipes.json` y publica los cambios con el flujo Git del repositorio. La web no escribe en GitHub ni aloja una clave de escritura.
+- El formulario usa “Snack”; al crear la receta de catálogo, el administrador la asigna a `media` o `tarde`, que son los tipos equivalentes disponibles en el catálogo actual.
+- Tras incorporar y publicar todas las recetas del buzón, el administrador puede confirmar el borrado global de las propuestas. El borrado incluye sus ingredientes y pasos, no modifica cuentas ni datos personales y se rechaza si el número de propuestas cambió desde la confirmación.
+- PostgreSQL puede reutilizar el espacio de las filas eliminadas; el indicador de tamaño total puede tardar en reflejar cambios y no se garantiza que baje inmediatamente.
 
 ### Perfil y nutrición
 

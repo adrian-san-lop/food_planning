@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1110" viewBox="0 0 1800 1110" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1400" viewBox="0 0 1800 1400" role="img" aria-labelledby="title description">
   <title id="title">Modelo relacional de Supabase de Mi Plan Saludable</title>
-  <desc id="description">Trece tablas personales aplicadas con RLS. Incluye claves principales, claves foráneas y relaciones principales.</desc>
+  <desc id="description">Trece tablas personales existentes y cuatro tablas de propuestas preparadas en una migración pendiente. Incluye claves principales, claves foráneas y relaciones principales.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L10,4 L0,8 Z" fill="#58708d"/>
@@ -10,6 +10,7 @@
       .title { font: 700 28px system-ui, sans-serif; fill: #18263a; }
       .subtitle { font: 15px system-ui, sans-serif; fill: #52647a; }
       .entity { fill: #fff; stroke: #9aabc0; stroke-width: 1.5; rx: 12; }
+      .planned { fill: #fffaf0; stroke: #bd8740; stroke-width: 2; stroke-dasharray: 7 5; }
       .auth { fill: #edf2f8; stroke: #71839a; stroke-width: 1.5; rx: 12; }
       .head { fill: #e6eef8; }
       .authhead { fill: #dce5f0; }
@@ -23,9 +24,9 @@
     </style>
   </defs>
 
-  <rect class="bg" width="1800" height="1110"/>
+  <rect class="bg" width="1800" height="1400"/>
   <text class="title" x="40" y="44">Mi Plan Saludable · modelo relacional de Supabase</text>
-  <text class="subtitle" x="40" y="70">Trece tablas aplicadas con RLS · snapshots de ingredientes sin caducidad · los catálogos JSON permanecen fuera de PostgreSQL</text>
+  <text class="subtitle" x="40" y="70">13 tablas existentes · 4 tablas de propuestas pendientes de migración · los catálogos JSON permanecen fuera de PostgreSQL</text>
 
   <!-- Relaciones dibujadas detrás de las entidades -->
   <path class="edge" d="M195 190 L195 250"/>
@@ -56,6 +57,15 @@
 
   <path class="edge-dashed" d="M1320 615 L1370 615 L1370 730 L1320 730"/>
   <text class="edge-label" x="1378" y="676">reverses_movement_id · máximo un reverso</text>
+
+  <!-- Buzón compartido de propuestas: entidades preparadas, migración pendiente -->
+  <path class="edge" d="M350 145 L375 145 L375 1140 L350 1140"/>
+  <path class="edge" d="M350 170 L395 170 L395 1150 L440 1150"/>
+  <text class="edge-label" x="405" y="1107">submitter_id → auth.users.id</text>
+  <path class="edge" d="M800 1125 L850 1125 L850 1120 L900 1120"/>
+  <text class="edge-label" x="812" y="1107">proposal_id</text>
+  <path class="edge" d="M800 1200 L850 1200 L850 1260 L1360 1260 L1360 1145 L1380 1145"/>
+  <text class="edge-label" x="1120" y="1252">proposal_id</text>
 
   <!-- Identidad y seguimiento -->
   <g>
@@ -181,8 +191,46 @@
     <text class="hint" x="1448" y="654">La cantidad necesaria se calcula desde el plan</text>
   </g>
 
-  <line x1="40" y1="1005" x2="1760" y2="1005" stroke="#d1dae5" stroke-width="1"/>
-  <text class="legend" x="40" y="1034">PK = clave primaria · FK = clave foránea · Las cajas personales incluyen user_id → auth.users.id para aplicar RLS por usuario.</text>
-  <text class="legend" x="40" y="1060">Los snapshots de ingredientes se conservan sin caducidad temporal; no hay purga automática.</text>
-  <text class="legend" x="40" y="1086">El detalle completo de columnas, tipos, restricciones y claves está en las tablas de este documento.</text>
+  <text class="subtitle" x="40" y="1045">Buzón compartido de propuestas · entidades preparadas en una migración pendiente</text>
+  <g>
+    <rect class="entity planned" x="40" y="1080" width="310" height="135"/>
+    <rect class="head" x="40" y="1080" width="310" height="37" rx="12"/>
+    <text class="name" x="58" y="1105">menuki_admins</text>
+    <text class="key" x="58" y="1150">PK + FK · user_id → auth.users.id</text>
+    <text class="key" x="58" y="1173">granted_at</text>
+    <text class="hint" x="58" y="1197">Rol asignado por el propietario</text>
+  </g>
+  <g>
+    <rect class="entity planned" x="440" y="1070" width="360" height="195"/>
+    <rect class="head" x="440" y="1070" width="360" height="37" rx="12"/>
+    <text class="name" x="458" y="1095">recipe_proposals</text>
+    <text class="key" x="458" y="1132">PK · id · FK · submitter_id</text>
+    <text class="key" x="458" y="1155">UNIQUE · submitter_id, client_id</text>
+    <text class="key" x="458" y="1178">meal_type · recipe_name</text>
+    <text class="key" x="458" y="1201">created_at</text>
+    <text class="hint" x="458" y="1235">Idea en bruto · sin cantidades ni nutrición</text>
+  </g>
+  <g>
+    <rect class="entity planned" x="900" y="1070" width="370" height="160"/>
+    <rect class="head" x="900" y="1070" width="370" height="37" rx="12"/>
+    <text class="name" x="918" y="1095">recipe_proposal_ingredients</text>
+    <text class="key" x="918" y="1132">PK · proposal_id, position</text>
+    <text class="key" x="918" y="1155">FK · proposal_id → recipe_proposals.id</text>
+    <text class="hint" x="918" y="1184">Texto libre, hasta 30 ingredientes</text>
+    <text class="hint" x="918" y="1207">Borrado en cascada con la propuesta</text>
+  </g>
+  <g>
+    <rect class="entity planned" x="1380" y="1070" width="370" height="160"/>
+    <rect class="head" x="1380" y="1070" width="370" height="37" rx="12"/>
+    <text class="name" x="1398" y="1095">recipe_proposal_steps</text>
+    <text class="key" x="1398" y="1132">PK · proposal_id, position</text>
+    <text class="key" x="1398" y="1155">FK · proposal_id → recipe_proposals.id</text>
+    <text class="hint" x="1398" y="1184">Pasos ordenados, hasta 30 filas</text>
+    <text class="hint" x="1398" y="1207">Borrado en cascada con la propuesta</text>
+  </g>
+
+  <line x1="40" y1="1300" x2="1760" y2="1300" stroke="#d1dae5" stroke-width="1"/>
+  <text class="legend" x="40" y="1327">PK = clave primaria · FK = clave foránea · Las tablas personales usan RLS por auth.uid().</text>
+  <text class="legend" x="40" y="1353">El borde discontinuo marca las cuatro tablas de propuestas todavía no aplicadas al proyecto.</text>
+  <text class="legend" x="40" y="1379">El detalle completo de columnas, tipos, restricciones y claves está en las tablas de este documento.</text>
 </svg>

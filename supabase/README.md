@@ -2,21 +2,45 @@
 
 ## Alcance
 
-El HTML usa Supabase Auth para iniciar sesión y sincroniza los datos personales con las tablas relacionales existentes. Los catálogos genéricos `data/foods.json` y `data/recipes.json` permanecen en GitHub. El JSON que viaja en la llamada de sincronización es solo un formato de transporte: PostgreSQL no guarda el estado completo en una columna JSON.
+El HTML usa Supabase Auth para iniciar sesión y sincroniza los datos personales con las tablas relacionales existentes. Las propuestas de recetas forman un buzón compartido y separado del estado personal. Los catálogos genéricos `data/foods.json` y `data/recipes.json` permanecen en GitHub. Los JSON enviados a RPC son formatos de transporte: PostgreSQL no guarda el estado personal completo ni las propuestas como un documento JSON único.
 
 Las credenciales pertenecen a Supabase Auth (`auth.users`). `public.profiles` guarda parámetros nutricionales y se relaciona con la cuenta mediante `user_id`; no almacena correo ni contraseña.
 
 ## Migraciones
 
-Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para las acciones confirmadas de reiniciar/restaurar. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state` para guardar la confirmación y conservarla cuando un cliente antiguo no envía el campo. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, está preparada pero pendiente de aplicar: sustituye el SQLSTATE `40001` por `PT409` en ambas funciones para que PostgREST devuelva HTTP 409 y no reintente indefinidamente ese conflicto de aplicación. No modifica tablas ni filas. Aplicar las siete migraciones iniciales no borró ni convirtió filas existentes. Para un proyecto nuevo, revisa y aplica los ocho archivos en orden. En el proyecto existente, aplica solo la octava una vez; no vuelvas a ejecutar las siete ya aplicadas.
+Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para las acciones confirmadas de reiniciar/restaurar. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state`. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, prepara respuestas HTTP 409 ante conflictos de revisión. La novena, `20261013160000_recipe_proposal_inbox.sql`, prepara cuatro tablas de propuestas/administradores y tres RPCs acotados. Ambas migraciones están preparadas pero pendientes de aplicar. La novena no altera las filas personales ni el RPC `sync_menuki_state`. En un proyecto nuevo, revisa y aplica los nueve archivos en orden. En el proyecto existente, aplica solo la octava y después la novena; no vuelvas a ejecutar las siete ya aplicadas.
 
 La migración crea `sync_menuki_state(jsonb, bigint)`: el cliente transmite el snapshot, la función obtiene el propietario mediante `auth.uid()`, guarda los registros en las tablas normalizadas y comprueba `sync_revision` para rechazar copias desactualizadas. La primera sincronización importa una sola vez el estado local si la cuenta no tiene ya registros; no sobrescribe silenciosamente filas remotas. La app no mantiene una cola offline.
+
+La migración de propuestas define `submit_recipe_proposal`, que recibe campos simples, valida sus límites y guarda la cabecera, los ingredientes y los pasos en una transacción. Usa un identificador de cliente para que un reintento no duplique la misma propuesta. `is_menuki_admin` comprueba una lista privada de roles y `clear_recipe_proposals` permite al administrador borrar el buzón completo con control de recuento. El borrado bloquea altas simultáneas y falla si el número de propuestas cambió desde la confirmación de la interfaz.
+
+### Asignar el administrador
+
+Registra primero la cuenta admin normal en la app. Después, en **SQL Editor**, comprueba que Auth la conoce:
+
+```sql
+select id, email
+from auth.users
+where lower(email) = lower('correo-de-la-cuenta-admin@ejemplo.com');
+```
+
+Reemplaza el correo de ejemplo por el correo exacto de esa cuenta. Si la consulta devuelve una fila, asígnale el rol:
+
+```sql
+insert into public.menuki_admins (user_id)
+select id
+from auth.users
+where lower(email) = lower('correo-de-la-cuenta-admin@ejemplo.com')
+on conflict (user_id) do nothing;
+```
+
+No añadas la asignación de rol al HTML. Las cuentas normales no pueden leer ni cambiar `menuki_admins`; Supabase vuelve a comprobar el permiso en las políticas y funciones, aunque alguien altere la interfaz del navegador.
 
 El reinicio y la restauración de una copia JSON son operaciones explícitas distintas: tras confirmarlas en la app, `reset_menuki_state` reemplaza los registros personales y guarda el nuevo snapshot dentro de la misma transacción. El reinicio no se ejecuta en sincronizaciones ordinarias.
 
 Para revisar el esquema inicial, ejecuta `tests/001_schema_check.sql`. Es una comprobación estructural; no demuestra el aislamiento con dos sesiones autenticadas ni el recorrido completo de sincronización.
 
-SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Los siete primeros archivos describen las migraciones ya aplicadas; el octavo sigue pendiente y debe aplicarse manualmente. No vuelvas a ejecutar los scripts solo para registrarlos.
+SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Los siete primeros archivos describen las migraciones ya aplicadas; la octava y la novena siguen pendientes y deben aplicarse manualmente, en ese orden. No vuelvas a ejecutar los siete primeros scripts solo para registrarlos.
 
 ## Tablas utilizadas
 
@@ -28,12 +52,16 @@ SQL Editor no mantiene el historial de los archivos del repositorio en la tabla 
 - `prep_tasks`: preparación semanal.
 - `shopping_sessions` y `shopping_session_items`: lista, cantidades de envases y elementos marcados.
 - `user_settings`: copia registrada, inicialización y revisión de sincronización.
+- `recipe_proposals`, `recipe_proposal_ingredients` y `recipe_proposal_steps`: buzón compartido con contenido en texto libre. Solo el administrador puede leer las filas; el envío se realiza por RPC.
+- `menuki_admins`: cuentas con acceso administrativo, gestionadas por el propietario desde SQL Editor y sin permisos directos para el navegador.
 
 Los IDs de alimentos y recetas se resuelven contra los catálogos JSON; no se duplican esos catálogos en tablas. Consulta [docs/supabase_db_model.md](../docs/supabase_db_model.md) para columnas, claves, relaciones y políticas.
 
 ## Pendiente de validar
 
 - Aplicar la octava migración desde SQL Editor y publicar el HTML actualizado en GitHub Pages. La migración `20261013120000_menuki_sync_conflict_http_409.sql` aún no está en el proyecto alojado.
+- Aplicar después la novena migración `20261013160000_recipe_proposal_inbox.sql`, asignar el primer administrador y publicar esta rama a través del flujo Git. La migración está preparada localmente; no se ha aplicado al proyecto alojado.
+- Validar con una cuenta normal y otra admin: envío, aislamiento de lectura, permisos del botón de borrado, confirmación del recuento y borrado en cascada de ingredientes y pasos.
 - Ejecutar la prueba de aislamiento con dos cuentas de Auth: lectura, inserción y referencias entre propietarios distintos.
 - Probar en la web publicada los cambios desde PC y móvil, los conflictos y la recuperación ante un error de red.
 - Definir una copia externa periódica y revisar el crecimiento de almacenamiento.
