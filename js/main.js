@@ -2,7 +2,7 @@ import { addDays, civilDayOfMonth, dateDiff, dateFromISO, formatDate, formatMadr
 import { loadCatalogs as fetchCatalogs } from './data/catalogs.js?v=20261013-ux-repair';
 import { createInventoryUnitService } from './domain/inventory-units.js?v=20261013-ux-repair';
 import { createRecipeProposalExport, serializeRecipeProposalExport } from './domain/recipe-proposal-export.js?v=20261013-admin-proposal-maintenance';
-import { createReconciliationBase, reconcileStates } from './domain/state-reconciliation.js?v=20261013-ux-repair';
+import { createReconciliationBase, reconcileStates } from './domain/state-reconciliation.js?v=20261013-cycle-reconcile';
 import { loadLocalState, saveLocalState } from './persistence/local-state.js?v=20261013-ux-repair';
 import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261013-ux-repair';
 import { createRecipeProposalService } from './persistence/recipe-proposals.js?v=20261013-admin-proposal-maintenance';

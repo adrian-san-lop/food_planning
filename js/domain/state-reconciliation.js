@@ -82,7 +82,7 @@ function mergePlan(base, local, remote) {
   if (same(remote, base)) return clone(local);
   if (![base, local, remote].every((plan) => plan && typeof plan === 'object' && !Array.isArray(plan))) return clone(remote);
 
-  const stableFields = ['start', 'catalogVersion', 'generatedAt'];
+  const stableFields = ['active', 'start', 'catalogVersion', 'generatedAt'];
   if (!stableFields.every((field) => same(base[field], local[field]) && same(base[field], remote[field]))) return clone(remote);
 
   const merged = mergeValue(base, local, remote);
@@ -229,9 +229,9 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   const remote = mergeableState(remoteState);
   const result = JSON.parse(JSON.stringify(remoteState));
   const activePlan = mergePlan(
-    { start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus },
-    { start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus },
-    { start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus },
+    { active: !base.noActiveCycle, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus },
+    { active: !local.noActiveCycle, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus },
+    { active: !remote.noActiveCycle, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus },
   );
   result.start = activePlan?.start ?? remote.start;
   result.activeMenus = activePlan?.menus ?? null;
@@ -241,7 +241,10 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   result.activeMenuRecoveryFocus = activePlan?.recoveryFocus === true;
   result.profile = mergeValue(base.profile, local.profile, remote.profile);
   result.profileConfirmed = mergeValue(base.profileConfirmed, local.profileConfirmed, remote.profileConfirmed);
-  result.noActiveCycle = mergeValue(base.noActiveCycle, local.noActiveCycle, remote.noActiveCycle) === true;
+  // Cycle existence must follow the same winning value as its date and menu.
+  // Merging this flag separately can produce an active plan marked as missing
+  // (or vice versa), which may submit a snapshot without the selected cycle.
+  result.noActiveCycle = activePlan?.active !== true;
   result.done = mergeValue(base.done, local.done, remote.done);
   result.legacyStrengthDays = mergeValue(base.legacyStrengthDays, local.legacyStrengthDays, remote.legacyStrengthDays);
   result.prep = mergeValue(base.prep, local.prep, remote.prep);
