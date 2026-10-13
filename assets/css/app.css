@@ -32,8 +32,6 @@ h1,h2,h3,p{margin-top:0}
 .privacy{padding:13px 12px 0;color:#95a095;font-size:10px;line-height:1.5}
 .main{min-width:0;padding:27px 36px 65px}
 .topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:28px}
-.top-title{font-size:13px;font-weight:730;letter-spacing:.2px}
-.top-sub{font-size:12px;color:var(--muted);margin-top:5px}
 .top-actions{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 /* Shared controls and reusable components */
 .btn{border:1px solid var(--line);color:var(--ink);background:var(--white);padding:10px 14px;border-radius:11px;font-weight:650;display:inline-flex;align-items:center;gap:8px;white-space:nowrap;transition:.17s}
@@ -234,7 +232,6 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 /* Views: planning, reminders, shopping, and inventory */
 :root{--bg:#f5f6ee;--white:#fffefa;--ink:#233a32;--accent:#346e57;--accent-dark:#214c3d;--peach:#f6e2d0}
 .brand-name{font-size:20px}
-.top-sub{max-width:370px;line-height:1.5}
 .week-label{min-width:195px;font-size:11px;font-variant-numeric:tabular-nums}
 .weeks-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0 25px}
 .week-chip{border:1px solid #dce5da;background:#fffcf7;border-radius:19px;text-align:left;padding:16px 17px;display:flex;flex-direction:column;align-items:start;gap:7px;color:var(--ink-soft);box-shadow:0 4px 15px rgba(24,57,36,.025);min-height:130px;transition:background .15s,border-color .15s,transform .15s}
@@ -424,9 +421,8 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .brand{display:block;width:100%;padding:0}
 .brand-logo{display:block;width:100%;height:62px;object-fit:cover;object-position:center;border-radius:10px}
 .brand-sub{text-align:center;margin-top:2px}
-.topbar-heading{display:flex;align-items:center;gap:9px}
-.topbar-brand-mark{display:none}
-.topbar-brand-full{display:none}
+.topbar-heading{display:flex;align-items:center;gap:9px;min-width:0}
+.topbar-brand-full{display:block;width:168px;height:50px;max-width:100%;object-fit:cover;object-position:center 50%;mix-blend-mode:multiply;flex:none}
 
 [hidden]{display:none!important}
 .auth-shell{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at top,#e6f0e6 0%,var(--bg) 65%)}
@@ -529,17 +525,13 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .meal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 .meal-body{padding:12px}
 .recipe-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-.topbar-brand-mark{display:none}
-.topbar-brand-full{display:block;width:145px;height:42px;object-fit:cover;object-position:center 50%;mix-blend-mode:multiply;flex:none}
-.topbar-heading>div{display:none}
+.topbar-brand-full{width:142px;height:42px}
 .cloud-sync-status[data-level="ok"]{display:none}
 .pantry-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
 @media(max-width:580px){.main{padding:17px 13px 102px}
 .topbar{align-items:start;gap:6px}
 .top-actions{justify-content:flex-end}
-.top-title{font-size:12px}
-.top-sub{font-size:10px}
 .week-pager{max-width:200px}
 .week-label{min-width:110px;font-size:10px}
 .top-actions>.btn{display:none}
@@ -629,13 +621,17 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .purchase-control label{text-align:left}
 .purchase-control input{flex:1;max-width:125px;text-align:left}
 .purchase-control .btn{flex:1;justify-content:center}
-.top-actions{gap:4px}
-.week-label{min-width:125px;font-size:9px}
+ .top-actions{gap:4px}
+ .topbar-brand-full{width:clamp(96px,33vw,124px);height:clamp(29px,9.85vw,37px)}
+ .week-label{min-width:110px;font-size:10px}
 .week-pager .btn{width:27px}
 .pantry-row{gap:6px}
 .pantry-value input{width:86px}
 .mobile-tab .icon svg{height:19px;width:19px}
 .mobile-tab span{white-space:nowrap;font-size:8px}}
+
+@media(max-width:340px){.topbar-brand-full{width:94px;height:28px}
+.week-label{min-width:100px}}
 
 @media print{.reminder-banner .btn,.purchase-control,.week-chip{print-color-adjust:exact}
 .shop-toolbar select{appearance:none}}

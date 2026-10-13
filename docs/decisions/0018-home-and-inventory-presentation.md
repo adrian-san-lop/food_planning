@@ -9,7 +9,7 @@
 1. Retirar las fotografías de platos, sus atribuciones y las claves de imagen del catálogo. Mantener las imágenes de marca.
 2. Mostrar el menú del día al principio de Inicio. Los avisos, indicadores generales y navegación del ciclo quedan debajo.
 3. Las barras nutricionales de Inicio suman únicamente comidas registradas. Las sesiones aumentan el objetivo energético de su fecha, pero no se cuentan como consumo; el objetivo de proteína mantiene el cálculo del perfil.
-4. En móvil, mostrar el logo completo en la cabecera y ocultar el estado de sincronización correcta. Mantener visibles los errores y el reintento asociado.
+4. Mostrar el logotipo completo en la cabecera de escritorio y móvil, con tamaño acotado y sin el título duplicado. En móvil, ocultar el estado de sincronización correcta y mantener visibles los errores y el reintento asociado.
 5. Ocultar el selector semanal en Compra y Despensa.
 6. Presentar las categorías de Compra y Despensa como secciones plegables, cerradas al entrar. La búsqueda de Compra y Despensa puede abrir los grupos con resultados.
 7. En Compra, conservar los botones de cantidad más y menos y retirar los controles nativos del campo numérico. Al marcar un artículo, ocultar sus controles y detalles y dejar su nombre con la casilla para poder desmarcarlo.
