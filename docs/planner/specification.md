@@ -12,10 +12,10 @@ La biblioteca puede incluir recetas ya utilizadas y recetas que no aparecieron e
 
 Los catálogos son JSON genéricos e independientes de los datos personales:
 
-- [`foods.json`](../../data/foods.json): 83 alimentos.
-- [`recipes.json`](../../data/recipes.json): 107 recetas y 512 referencias de ingredientes.
+- [`foods.json`](../../data/foods.json): 85 alimentos.
+- [`recipes.json`](../../data/recipes.json): 111 recetas y 531 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.6.0`.
+Ambos catálogos usan actualmente `catalogVersion` `0.7.0`. Esta versión incorpora cuatro recetas revisadas desde la primera exportación del buzón y los alimentos nuevos `garlic` y `chickenWings`.
 
 Distribución actual de recetas por tipo:
 

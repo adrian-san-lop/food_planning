@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.6.0",
-  "source": "Existing foods plus curated generic additions with USDA FoodData Central references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance.",
-  "status": "Catálogo 0.6.0; recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
+  "catalogVersion": "0.7.0",
+  "source": "Existing foods plus curated generic additions with USDA FoodData Central references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance. Version 0.7.0 adds raw garlic and bone-in chicken wings for reviewed recipe proposals.",
+  "status": "Catálogo 0.7.0; 85 alimentos. Recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
   "foods": [
     {
       "id": "skyr",
@@ -1796,6 +1796,48 @@
         "label": "botella pequeña de unos 150 ml"
       },
       "nutritionSource": "USDA FoodData Central, salsa de soja genérica; cantidades por 100 ml aproximadas a partir de la referencia nutricional por volumen. El contenido de sal depende de la marca. https://fdc.nal.usda.gov/food-search/?query=soy+sauce"
+    },
+    {
+      "id": "garlic",
+      "name": "Ajo fresco",
+      "unit": "g",
+      "recipeUnit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 149,
+        "protein_g": 6.36,
+        "carbohydrates_g": 33.06,
+        "fat_g": 0.5
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Verduras y hortalizas",
+        "quantity": 50,
+        "unit": "g",
+        "label": "cabeza de ajo de unos 50 g"
+      },
+      "nutritionSource": "USDA FoodData Central, ajo crudo (SR Legacy, NDB 11215); valores genéricos por 100 g: 149 kcal, 6,36 g de proteína, 33,06 g de carbohidratos y 0,5 g de grasa. https://fdc.nal.usda.gov/food-search/?query=garlic"
+    },
+    {
+      "id": "chickenWings",
+      "name": "Alitas de pollo enteras con hueso y piel",
+      "unit": "g",
+      "recipeUnit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 86.4,
+        "protein_g": 8.1,
+        "carbohydrates_g": 0,
+        "fat_g": 5.7
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Carnes y pescados",
+        "quantity": 500,
+        "unit": "g",
+        "label": "bandeja de 500 g (peso con hueso)"
+      },
+      "nutritionSource": "Estimación por 100 g de peso de compra con hueso: USDA FoodData Central, alita asada con carne y piel (FDC 173630: 254 kcal, 23,79 g de proteína y 16,87 g de grasa por 100 g comestibles), multiplicado por el rendimiento USDA Food Buying Guide para alitas enteras con hueso y piel (1 lb comprada -> 0,34 lb de carne cocida deshuesada con piel); aproximadamente 86,4 kcal, 8,1 g de proteína y 5,7 g de grasa por 100 g comprados. Es una estimación y el rendimiento varía con el tamaño y la cocción. https://fdc.nal.usda.gov/fdc-app.html#/food-details/173630/nutrients ; https://foodbuyingguide.fns.usda.gov/files/Reports/USDA_FBG_Section1_MeatsAndMeatAlternatesYieldTable.pdf"
     }
   ]
 }

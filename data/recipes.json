@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.6.0",
-  "source": "Existing recipes from menuki.html plus 23 curated recipes using foods from catalogVersion 0.2.0.",
-  "status": "Catálogo de recetas genéricas con cantidades base; la app adapta las raciones al perfil y a la actividad real registrada por fecha.",
+  "catalogVersion": "0.7.0",
+  "source": "Existing recipes from menuki.html plus curated generic recipes using catalog foods. Version 0.7.0 incorporates four reviewed recipes from the first admin proposal export.",
+  "status": "Catálogo 0.7.0: 111 recetas y 531 referencias de ingredientes, con cantidades base para una persona; la app adapta las raciones al perfil y a la actividad real registrada por fecha.",
   "recipes": [
     {
       "id": "yogur_platano",
@@ -4290,6 +4290,168 @@
         "Añade la lombarda en tiras, las alubias y el maíz; saltea unos minutos y sirve con el arroz."
       ],
       "tip": "La cantidad de alubias y maíz es peso escurrido.",
+      "description": ""
+    },
+    {
+      "id": "cena_pavo_plancha_verduras",
+      "name": "Pechuga de pavo a la plancha con verduras",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 20,
+      "ingredients": [
+        {
+          "foodId": "turkey",
+          "amount": 160,
+          "unit": "g"
+        },
+        {
+          "foodId": "pepper",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "onion",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "zucchini",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "mushroom",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "garlic",
+          "amount": 3,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Lava y corta en tiras el pimiento verde y rojo, la cebolla, el calabacín y los champiñones; pica el ajo.",
+        "Calienta el aceite en una sartén. Añade el ajo y las verduras y cocínalas tapadas a fuego medio durante 8-10 minutos, removiendo de vez en cuando.",
+        "Cocina la pechuga de pavo a la plancha en otra sartén o retira temporalmente las verduras.",
+        "Sirve el pavo junto con las verduras."
+      ],
+      "tip": "Los 80 g de pimiento representan la mezcla de pimiento verde y rojo.",
+      "description": ""
+    },
+    {
+      "id": "media_manzana_cafe_leche",
+      "name": "Manzana y café con leche",
+      "mealType": "media",
+      "baseServings": 1,
+      "timeMinutes": 5,
+      "ingredients": [
+        {
+          "foodId": "apple",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        }
+      ],
+      "steps": [
+        "Prepara el café y añade la leche semidesnatada caliente o fría.",
+        "Acompáñalo con la manzana."
+      ],
+      "tip": "",
+      "description": ""
+    },
+    {
+      "id": "desayuno_tostada_aguacate_pavo_huevo",
+      "name": "Tostada integral de aguacate, pavo y huevo con café con leche",
+      "mealType": "desayuno",
+      "baseServings": 1,
+      "timeMinutes": 15,
+      "ingredients": [
+        {
+          "foodId": "bread",
+          "amount": 65,
+          "unit": "g"
+        },
+        {
+          "foodId": "avocado",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "turkeySlice",
+          "amount": 55,
+          "unit": "g"
+        },
+        {
+          "foodId": "eggs",
+          "amount": 1,
+          "unit": "ud"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        },
+        {
+          "foodId": "coffee",
+          "amount": 7,
+          "unit": "g"
+        },
+        {
+          "foodId": "milk",
+          "amount": 120,
+          "unit": "ml"
+        }
+      ],
+      "steps": [
+        "Tuesta el pan integral.",
+        "Corta el aguacate en láminas y reparte sobre el pan.",
+        "Cocina el huevo en una sartén con los 5 g de aceite.",
+        "Calienta brevemente las lonchas de pavo, monta la tostada y coloca el huevo encima.",
+        "Prepara el café con la leche semidesnatada."
+      ],
+      "tip": "La ración de pavo corresponde aproximadamente a dos lonchas.",
+      "description": ""
+    },
+    {
+      "id": "cena_alitas_especiadas_boniato",
+      "name": "Alitas de pollo especiadas con boniato al horno",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 45,
+      "ingredients": [
+        {
+          "foodId": "chickenWings",
+          "amount": 300,
+          "unit": "g"
+        },
+        {
+          "foodId": "sweetpotato",
+          "amount": 220,
+          "unit": "g"
+        }
+      ],
+      "steps": [
+        "Precalienta el horno a 200 °C.",
+        "Salpimenta las alitas y añade comino, pimentón y jengibre al gusto.",
+        "Pela y corta el boniato; sazónalo con las mismas especias.",
+        "Coloca las alitas y el boniato en una bandeja y hornea unos 35-40 minutos, dándoles la vuelta a mitad de cocción. Comprueba que la parte más gruesa de las alitas alcanza 74 °C."
+      ],
+      "tip": "Los 300 g de alitas se pesan con hueso; su aporte nutricional usa un rendimiento comestible aproximado.",
       "description": ""
     }
   ]

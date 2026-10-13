@@ -108,7 +108,7 @@ No recomiendo migrar ahora a un servidor Node, una aplicación de una sola pági
 
 ## Secuencia de trabajo sugerida
 
-1. **Etapas altas y paquetes medio y bajo implementados:** hoja CSS organizada, plantillas sin atributos `style`, entrada ES, módulos de fechas, unidades, catálogos y persistencia; fecha civil en `Europe/Madrid`; versión exacta del cliente Supabase; pruebas de dominio/catálogos/HTML y escape compartido. Preservar estado v8, importaciones v5-v8, catálogos 0.6.0, menú inicial, UI en español y sincronización.
+1. **Etapas altas y paquetes medio y bajo implementados:** hoja CSS organizada, plantillas sin atributos `style`, entrada ES, módulos de fechas, unidades, catálogos y persistencia; fecha civil en `Europe/Madrid`; versión exacta del cliente Supabase; pruebas de dominio/catálogos/HTML y escape compartido. Preservar estado v8, importaciones v5-v8, contratos e IDs estables de catálogos, menú inicial, UI en español y sincronización.
 2. **Validar en navegador antes de publicar:** carga de recursos, fecha actual, comidas y sesiones en los límites del día de Madrid, activación de ciclos, Auth, conciliación automática de cambios, borrado de sesiones, reinicio/restauración confirmados, navegación y compra; comprobar PC y móvil.
 3. **Continuar la extracción gradualmente:** revisar primero las reglas de dominio (nutrición, planificador, inventario y normalización de estado), luego vistas/eventos y el resto de orquestación de nube. Evitar cambios de producto durante cada etapa y preservar los contratos existentes.
 4. **Completar las comprobaciones operativas por separado:** prueba de aislamiento RLS con dos cuentas, publicación en GitHub Pages y validación en dispositivos reales.

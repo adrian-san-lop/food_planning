@@ -108,7 +108,7 @@ Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es co
 ## Versiones y operación
 
 - El estado personal actual es v8; v5 es el primer formato de importación admitido. Se aceptan v5-v8; no implementar migraciones desde v1-v4.
-- Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.6.0`), independiente de la versión del estado personal. Incluyen 83 alimentos y 107 recetas y se cargan desde JSON. `food.unit` expresa inventario/compra y `food.recipeUnit` la unidad de receta. `recoveryTags` son marcadores cualitativos para selección de menú, no valores medidos de micronutrientes. Las recetas no contienen claves ni fotografías de platos.
+- Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.7.0`), independiente de la versión del estado personal. Incluyen 85 alimentos, 111 recetas y 531 referencias de ingredientes y se cargan desde JSON. `food.unit` expresa inventario/compra y `food.recipeUnit` la unidad de receta. `recoveryTags` son marcadores cualitativos para selección de menú, no valores medidos de micronutrientes. Las recetas no contienen claves ni fotografías de platos.
 - La app requiere conexión y no mantiene cola offline. No afirmar que un cambio se guardó remotamente hasta que la función RPC responda con éxito.
 - La vista de planificación permite proponer, editar, bloquear, regenerar y confirmar el menú del siguiente ciclo. La propuesta y el menú se sincronizan en `plan_cycles` y `planned_meals`.
 - El historial de actividad describe sesiones ya realizadas; no es un calendario de previsiones ni un mecanismo de aprendizaje automático del perfil.
