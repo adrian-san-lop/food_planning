@@ -7,7 +7,7 @@
 ## Decisiones
 
 1. Retirar las fotografías de platos, sus atribuciones y las claves de imagen del catálogo. Mantener las imágenes de marca.
-2. Mostrar el menú del día al principio de Inicio. Los avisos, indicadores generales y navegación del ciclo quedan debajo.
+2. En Inicio, mostrar primero un banner de marca compacto, seguido de los KPI y el menú del día. El menú y sus platos deben quedar en el primer bloque funcional; los avisos y la navegación del ciclo quedan después.
 3. Las barras nutricionales de Inicio suman únicamente comidas registradas. Las sesiones aumentan el objetivo energético de su fecha, pero no se cuentan como consumo; el objetivo de proteína mantiene el cálculo del perfil.
 4. Mostrar el logotipo completo en la cabecera de escritorio y móvil, con tamaño acotado y sin el título duplicado. En móvil, ocultar el estado de sincronización correcta y mantener visibles los errores y el reintento asociado.
 5. Ocultar el selector semanal en Compra y Despensa.
@@ -17,7 +17,7 @@
 
 ## Consecuencias
 
-- El menú se ve antes del contenido de resumen en Inicio y las cantidades nutricionales reflejan consumos registrados.
+- El banner compacto y los KPI orientan al usuario antes del menú del día; los avisos y la navegación del ciclo quedan debajo. Las cantidades nutricionales reflejan consumos registrados.
 - La sesión de actividad solo modifica el objetivo de energía del día. No incrementa la comida consumida ni modifica el objetivo de proteína.
 - El catálogo de recetas deja de incluir metadatos de fotografía, y su esquema valida ese contrato actualizado.
 - La versión común de ambos catálogos pasa a `0.6.0` para identificar el contrato sin metadatos de fotografía.

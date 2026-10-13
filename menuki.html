@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="./docs/images/menuki_logo.png">
 <meta name="description" content="Plan nutricional de 21 días con perfil adaptable, objetivos y macronutrientes calculados, recetas, compra e inventario.">
 <title>Menuki · Mi plan saludable · 13 octubre – 2 noviembre</title>
-  <link rel="stylesheet" href="./assets/css/app.css?v=20261013-brand-header">
+  <link rel="stylesheet" href="./assets/css/app.css?v=20261013-ux-repair">
 </head>
 <body>
 <div class="catalog-overlay" id="catalogStatus" role="status" aria-live="polite"><div><strong>Cargando catálogos…</strong><p>La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.</p></div></div>
@@ -36,7 +36,7 @@
  </aside>
  <main class="main">
 <div class="auth-account" id="authAccount" hidden><span class="auth-account-email" id="authAccountEmail"></span><span id="cloudSyncStatus" class="cloud-sync-status" data-level="idle" role="status" aria-live="polite"></span><button class="btn" id="cloudSyncButton" data-action="cloud-sync" type="button" hidden>Reintentar</button><button class="btn" id="authSignOut" type="button">Cerrar sesión</button></div>
-  <header class="topbar"><div class="topbar-heading"><img class="topbar-brand-full" src="./docs/images/menuki_name_logo.png" alt="Menuki" width="168" height="50"></div><div class="top-actions"><div class="week-pager"><button class="btn btn-quiet icon-btn" data-action="prev-week" aria-label="Semana anterior" title="Semana anterior">‹</button><span id="weekLabel" class="week-label"></span><button class="btn btn-quiet icon-btn" data-action="next-week" aria-label="Semana siguiente" title="Semana siguiente">›</button></div></div></header>
+  <header class="topbar"><div class="topbar-heading"><img class="topbar-brand-full" src="./docs/images/menuki_name_logo.png" alt="Menuki" width="168" height="50"></div><div class="top-actions"><div class="week-pager" hidden><button class="btn btn-quiet icon-btn" data-action="prev-week" aria-label="Semana anterior" title="Semana anterior">‹</button><span id="weekLabel" class="week-label"></span><button class="btn btn-quiet icon-btn" data-action="next-week" aria-label="Semana siguiente" title="Semana siguiente">›</button></div></div></header>
   <div id="viewRoot" aria-live="polite"></div>
  </main>
 </div>
@@ -47,6 +47,6 @@
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <input type="file" id="importInput" accept="application/json,.json" hidden>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3"></script>
- <script type="module" src="./js/main.js"></script>
+ <script type="module" src="./js/main.js?v=20261013-ux-repair"></script>
 </body>
 </html>
