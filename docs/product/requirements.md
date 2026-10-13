@@ -27,14 +27,16 @@ La posibilidad de combinar los gustos de varias personas en un menú común sigu
 - Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado local con fecha y versión del catálogo.
 - Activación del siguiente menú al llegar su fecha; el ciclo anterior se archiva junto con su menú y registros.
 
-### Propuestas de recetas — alcance aceptado; exportación implementada en la rama local
+### Propuestas de recetas — revisión admin individual y exportación JSON
 
-El buzón y su migración están implementados; el propietario informa que aplicó la novena migración y ejecutó la asignación inicial del admin. La exportación JSON está implementada en esta rama de tarea. La publicación y validación de RLS en navegador siguen pendientes.
+El buzón y su migración están implementados; el propietario informa que aplicó la novena migración y ejecutó la asignación inicial del admin. La edición y el borrado individual están implementados en la migración `20261013170000_recipe_proposal_admin_maintenance.sql`; queda aplicarla a Supabase, publicar el HTML y validar las acciones con cuentas admin y normal.
 
 - Cualquier cuenta autenticada puede enviar una propuesta con tipo (desayuno, comida, snack o cena), nombre de hasta 120 caracteres, hasta 30 ingredientes de texto libre (160 caracteres cada uno) y hasta 30 pasos ordenados (500 caracteres cada uno). El formulario empieza con un ingrediente y un paso.
 - No se piden cantidades, raciones, kcal ni nutrientes. Los datos son una idea inicial; la propuesta no se convierte automáticamente en una receta del catálogo.
 - Un rol de administrador asignado de forma privada en Supabase puede revisar todas las propuestas. El rol se comprueba en la base de datos y no se deriva de una contraseña o correo escrito en el HTML.
 - Solo el administrador puede descargar el buzón en el formato `menuki.recipe-proposal-export`, versión 1. El paquete sigue `docs/schemas/recipe-proposal-export.schema.json`, registra `exportedAt`, `catalogVersion` y el número de propuestas, y conserva por propuesta el ID estable, tipo, nombre, fecha, ingredientes y pasos. No incluye correo ni ID de cuenta remitente ni cambia Supabase.
+- Antes de exportar, el administrador puede editar tipo, nombre, ingredientes y pasos de una propuesta, guardando los cambios en Supabase. Puede eliminar una propuesta individual junto con sus ingredientes y pasos, sin afectar a las demás. La descarga siempre refleja el estado guardado en ese momento.
+- La edición y el borrado individual usan RPCs transaccionales que verifican en Supabase que la cuenta pertenece a `menuki_admins`; la visibilidad de los botones en el navegador no es una medida de autorización. No se conceden escrituras directas a las tablas del buzón. Si una propuesta cambió desde la última lectura, la operación se rechaza y el admin actualiza el buzón antes de reintentar.
 - El administrador utiliza IA fuera de la app para concretar una ración para una persona, cantidades y composición nutricional. Verifica y añade primero los alimentos nuevos a `data/foods.json`, después completa `data/recipes.json` y publica los cambios con el flujo Git del repositorio. La web no escribe en GitHub ni aloja una clave de escritura.
 - El formulario usa “Snack”; al crear la receta de catálogo, el administrador la asigna a `media` o `tarde`, que son los tipos equivalentes disponibles en el catálogo actual.
 - Tras incorporar y publicar todas las recetas del buzón, el administrador puede confirmar el borrado global de las propuestas. El borrado incluye sus ingredientes y pasos, no modifica cuentas ni datos personales y se rechaza si el número de propuestas cambió desde la confirmación.

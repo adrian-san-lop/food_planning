@@ -546,6 +546,10 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .proposal-card-columns h3{margin:0 0 8px;font-size:14px}
 .proposal-card-columns ul,.proposal-card-columns ol{margin:0;padding-left:21px;color:var(--ink-soft);line-height:1.6}
 .proposal-card-columns li+li{margin-top:4px}
+.proposal-card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.proposal-edit-form{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.proposal-edit-form .field{display:grid;gap:8px;font-weight:700}
+.proposal-edit-form .dialog-actions{justify-content:flex-start}
 .proposal-purge{margin-top:20px;padding-top:17px;border-top:1px solid var(--line)}
 .btn-danger{border-color:#e6c4bd;background:#fff5f2;color:#923f31}
 .btn-danger:hover{background:#fae6e1}
@@ -773,6 +777,8 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .proposal-admin-actions{width:100%}
 .proposal-admin-actions .btn{flex:1;justify-content:center}
 .proposal-card-columns{grid-template-columns:1fr;gap:14px}
+.proposal-card-actions{display:grid;grid-template-columns:1fr 1fr}
+.proposal-card-actions .btn{justify-content:center}
 .proposal-purge{align-items:stretch;flex-direction:column}
 .proposal-purge .btn{width:100%;justify-content:center}}
 @media(max-width:480px){.proposal-list-row{align-items:stretch}

@@ -12,7 +12,7 @@ Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto de
 
 La migración crea `sync_menuki_state(jsonb, bigint)`: el cliente transmite el snapshot, la función obtiene el propietario mediante `auth.uid()`, guarda los registros en las tablas normalizadas y comprueba `sync_revision` para rechazar copias desactualizadas. La primera sincronización importa una sola vez el estado local si la cuenta no tiene ya registros; no sobrescribe silenciosamente filas remotas. La app no mantiene una cola offline.
 
-La migración de propuestas define `submit_recipe_proposal`, que recibe campos simples, valida sus límites y guarda la cabecera, los ingredientes y los pasos en una transacción. Usa un identificador de cliente para que un reintento no duplique la misma propuesta. `is_menuki_admin` comprueba una lista privada de roles y `clear_recipe_proposals` permite al administrador borrar el buzón completo con control de recuento. El borrado bloquea altas simultáneas y falla si el número de propuestas cambió desde la confirmación de la interfaz.
+La migración de propuestas define `submit_recipe_proposal`, que recibe campos simples, valida sus límites y guarda la cabecera, los ingredientes y los pasos en una transacción. Usa un identificador de cliente para que un reintento no duplique la misma propuesta. `is_menuki_admin` comprueba una lista privada de roles y `clear_recipe_proposals` permite al administrador borrar el buzón completo con control de recuento. La migración `20261013170000_recipe_proposal_admin_maintenance.sql` añade `update_recipe_proposal` y `delete_recipe_proposal`, RPCs que solo permiten al admin corregir una propuesta o eliminarla con sus filas hijas. Las dos comparan el contenido que el admin había leído con el contenido actual para rechazar operaciones obsoletas. No se conceden permisos directos de escritura en las tablas.
 
 ### Asignar el administrador
 
@@ -60,6 +60,7 @@ Los IDs de alimentos y recetas se resuelven contra los catálogos JSON; no se du
 ## Pendiente de validar
 
 - Aplicar la octava migración desde SQL Editor y publicar el HTML actualizado en GitHub Pages. La novena y la asignación admin se consideran aplicadas según confirmación del propietario.
+- Aplicar `20261013170000_recipe_proposal_admin_maintenance.sql` después de verificar la novena migración aplicada; no volver a ejecutar la novena. Esta migración no modifica las tablas personales.
 - Validar con una cuenta normal y otra admin: envío, aislamiento de lectura, JSON admin conforme al esquema v1, permisos del botón de borrado, confirmación del recuento y borrado en cascada de ingredientes y pasos.
 - Ejecutar la prueba de aislamiento con dos cuentas de Auth: lectura, inserción y referencias entre propietarios distintos.
 - Probar en la web publicada los cambios desde PC y móvil, los conflictos y la recuperación ante un error de red.

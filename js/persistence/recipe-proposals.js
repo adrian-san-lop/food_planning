@@ -25,6 +25,24 @@ export function createRecipeProposalService({ getClient }) {
       }));
     },
 
+    async update({ proposalId, expected, mealType, recipeName, ingredients, steps }) {
+      return unwrap(await client().rpc('update_recipe_proposal', {
+        p_proposal_id: proposalId,
+        p_expected: expected,
+        p_meal_type: mealType,
+        p_recipe_name: recipeName,
+        p_ingredients: ingredients,
+        p_steps: steps,
+      }));
+    },
+
+    async deleteOne({ proposalId, expected }) {
+      return unwrap(await client().rpc('delete_recipe_proposal', {
+        p_proposal_id: proposalId,
+        p_expected: expected,
+      }));
+    },
+
     async list() {
       const db = client();
       const [proposalsResult, ingredientsResult, stepsResult] = await Promise.all([

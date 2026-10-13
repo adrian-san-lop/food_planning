@@ -1,7 +1,7 @@
 # Decisión 0022: exportación admin de propuestas para revisión con Codex
 
 - **Fecha:** 13 de octubre de 2026
-- **Estado:** Aceptada; implementada en la rama `chore/admin-recipe-export`; publicación y validación en navegador pendientes
+- **Estado:** Aceptada; implementada en `dev`; validación de navegador publicada pendiente
 - **Alcance:** transferir propuestas sin enriquecer desde el buzón de Supabase a un chat de Codex con acceso al repositorio
 
 ## Contexto

@@ -1,6 +1,6 @@
 # Arquitectura
 
-Estado de referencia: 13 de octubre de 2026. El propietario informa que la novena migración (`20261013160000_recipe_proposal_inbox.sql`) y la asignación del rol admin ya se ejecutaron en Supabase. La octava migración de conflictos `SYNC_CONFLICT` sigue pendiente. La interfaz admin y la exportación JSON v1 están en esta rama local; publicar y validar los recorridos y las políticas RLS sigue pendiente.
+Estado de referencia: 13 de octubre de 2026. El propietario informa que la novena migración (`20261013160000_recipe_proposal_inbox.sql`) y la asignación del rol admin ya se ejecutaron en Supabase. La octava migración de conflictos `SYNC_CONFLICT` sigue pendiente. La edición/borrado individual y la exportación JSON están implementados localmente en `dev`; la migración admin nueva aún debe aplicarse y las acciones deben validarse en navegador.
 
 ## Arquitectura actual
 
@@ -19,7 +19,7 @@ Navegador
         │     ├── domain/state-reconciliation.js (conciliación de cambios de estado)
         │     ├── data/catalogs.js (carga y validación de JSON)
         │     ├── persistence/local-state.js (copia de trabajo local)
-        │     ├── persistence/recipe-proposals.js (envío, consulta y limpieza del buzón)
+        │     ├── persistence/recipe-proposals.js (envío, consulta, edición y limpieza del buzón)
         │     └── persistence/supabase-transport.js (lecturas y RPC)
         └── data/*.json + esquemas JSON
               └── carga desde el módulo de catálogos
@@ -89,15 +89,15 @@ Las trece tablas existentes son `profiles`, `plan_cycles`, `planned_meals`, `mea
 
 Las propuestas son ideas genéricas, no datos nutricionales ni recetas publicadas. `submit_recipe_proposal` recibe el tipo, el nombre, los ingredientes libres y los pasos como datos de transporte, valida los límites y los guarda en tres tablas relacionales dentro de una transacción. La clave de cliente hace idempotentes los reintentos. No se guardan cantidades, kcal o nutrientes estimados por el usuario.
 
-El navegador consulta `is_menuki_admin()` al iniciar sesión. El administrador puede leer el buzón mediante RLS y descargar el paquete JSON v1 definido en `docs/schemas/recipe-proposal-export.schema.json`; una cuenta normal solo puede enviar una propuesta y no puede leer otras propuestas, descargar el buzón, modificar roles ni borrar filas directamente. `menuki_admins` no se expone al cliente. El propietario asigna el rol en SQL Editor después de que exista la cuenta de Auth. La web no contiene una contraseña administrativa ni una clave de escritura de GitHub.
+El navegador consulta `is_menuki_admin()` al iniciar sesión. El administrador puede leer el buzón mediante RLS, corregir una propuesta mediante `update_recipe_proposal`, descartar una propuesta mediante `delete_recipe_proposal` y descargar el paquete JSON v1 definido en `docs/schemas/recipe-proposal-export.schema.json`. Las RPC de edición y borrado comprueban de nuevo el rol admin, bloquean la fila y comparan el contenido esperado con el actual para rechazar una acción sobre una copia desactualizada. Las cuentas normales solo pueden enviar propuestas; no pueden leer otras propuestas, descargar el buzón, modificar roles ni escribir directamente en sus tablas. `menuki_admins` no se expone al cliente. El propietario asigna el rol en SQL Editor después de que exista la cuenta de Auth. La web no contiene una contraseña administrativa ni una clave de escritura de GitHub.
 
 El administrador descarga el paquete solo cuando actualiza el buzón. Codex recibe ese fichero en un chat con acceso al repositorio, consulta el esquema y los catálogos actuales, detecta posibles duplicados y prepara un diff revisable. La IA verifica los alimentos y su base nutricional, añade primero los alimentos nuevos a `data/foods.json`, completa la receta en `data/recipes.json` para una persona y no publica cambios por sí sola. El campo de formulario `snack` se asigna a `media` o `tarde` cuando se incorpora al catálogo actual. La descarga no modifica Supabase ni registra propuestas como procesadas.
 
-`clear_recipe_proposals(expected_count)` es un RPC transaccional de administrador que elimina todo el buzón y sus filas hijas en cascada. El navegador muestra el número y pide confirmación; la función bloquea altas concurrentes y rechaza la operación si el recuento ha cambiado. Se usa después de publicar los catálogos. La eliminación hace que PostgreSQL pueda reutilizar ese espacio; no garantiza que el tamaño total informado baje inmediatamente.
+`delete_recipe_proposal(id, expected)` elimina una sola propuesta con sus ingredientes y pasos en cascada; el navegador pide confirmación y no altera otras propuestas. La edición reemplaza el texto de la cabecera y las listas ordenadas de ingredientes y pasos en una transacción. Ambas funciones rechazan cambios si el contenido esperado ya no coincide con el servidor. `clear_recipe_proposals(expected_count)` sigue siendo una RPC aparte para limpiar todo el buzón después de publicar los catálogos; confirma el recuento y bloquea altas concurrentes. La eliminación hace que PostgreSQL pueda reutilizar ese espacio; no garantiza que el tamaño total informado baje inmediatamente.
 
 Cada ciclo futuro debería registrar la versión de catálogo usada. La decisión ADR-0008 define snapshots inmutables por ingrediente con cantidad y unidad de receta, mientras que los movimientos del inventario conservan las cantidades en unidades de inventario. El inventario debería poder reconstruirse a partir de movimientos con IDs únicos; las correcciones y reversos se registran como eventos nuevos.
 
-Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es correo + contraseña, registro libre y sin confirmación del correo. La sincronización del estado personal toma el propietario de `auth.uid()`, aplica cambios de forma transaccional y verifica `sync_revision`; su ejecución está concedida solo a `authenticated`. Las propuestas usan RPCs separadas y limitadas, porque son contenido compartido y no parte del estado personal. El propietario informa que aplicó la novena migración y ejecutó la asignación de admin; la octava corrección de conflictos, la publicación de esta exportación y las pruebas RLS con dos cuentas siguen pendientes. Revisar el tamaño global y por tabla conforme se incorporen usuarios; al acercarse a 350 MB, estudiar el crecimiento. No purgar snapshots personales automáticamente.
+Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es correo + contraseña, registro libre y sin confirmación del correo. La sincronización del estado personal toma el propietario de `auth.uid()`, aplica cambios de forma transaccional y verifica `sync_revision`; su ejecución está concedida solo a `authenticated`. Las propuestas usan RPCs separadas y limitadas, porque son contenido compartido y no parte del estado personal. El propietario informa que aplicó la novena migración y ejecutó la asignación de admin; la migración nueva `20261013170000_recipe_proposal_admin_maintenance.sql` añade edición y borrado individual, pero todavía debe aplicarse. La octava corrección de conflictos, la publicación de esta versión y las pruebas RLS con dos cuentas siguen pendientes. Revisar el tamaño global y por tabla conforme se incorporen usuarios; al acercarse a 350 MB, estudiar el crecimiento. No purgar snapshots personales automáticamente.
 
 ## Migración y recuperación
 
@@ -121,6 +121,7 @@ Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es co
 - [Especificación del planificador](planner/specification.md)
 - [Decisiones registradas](decisions/)
 - [Decisión de exportación de propuestas para Codex](decisions/0022-admin-recipe-proposal-export.md)
+- [Decisión de edición y borrado individual de propuestas](decisions/0023-admin-recipe-proposal-review-actions.md)
 - [Decisión de ajuste por actividad realizada](decisions/0005-actual-activity-session-nutrition.md)
 - [Decisión de separar las unidades de receta e inventario](decisions/0006-recipe-and-inventory-units.md)
 - [Decisión de conservar snapshots de ingredientes completados](decisions/0008-meal-completion-ingredient-snapshots.md)
