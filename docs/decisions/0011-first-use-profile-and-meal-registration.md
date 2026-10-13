@@ -16,4 +16,5 @@
 - Los perfiles existentes se deben revisar y guardar una vez después de aplicar la migración.
 - La migración `20261011150000_profile_confirmation.sql` agrega una columna a `profiles` y actualiza `sync_menuki_state`; no agrega tablas ni modifica registros existentes.
 - La guía de primera visita, la confirmación del perfil y el bloqueo de registro anticipado siguen vigentes. La resolución mediante elección de copias descrita originalmente aquí fue sustituida por ADR-0017.
+- La ubicación inicial de la guía en Inicio descrita en la decisión 1 se trasladó a Guía según ADR-0019.
 - La auditoría propone además cambios de prioridad media y baja; esta decisión no los aprueba ni implementa.

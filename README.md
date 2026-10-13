@@ -6,7 +6,8 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 
 - `index.html` es la entrada de GitHub Pages y redirige a `menuki.html` en la raíz.
 - El usuario inicia sesión con Supabase Auth; los datos personales se sincronizan en tablas relacionales y `localStorage` mantiene una copia de trabajo del navegador.
-- En la primera visita, Inicio indica por dónde empezar. Las cifras genéricas del perfil se marcan como ejemplos hasta que el usuario las revise y guarde.
+- Inicio muestra un banner compacto, los KPI, el objetivo nutricional del día y solo el menú de hoy. Menú es una página separada con navegación por semana y por día.
+- En la primera visita, Guía indica por dónde empezar. Las cifras genéricas del perfil se marcan como ejemplos hasta que el usuario las revise y guarde.
 - Al abrir la cuenta en otro dispositivo, Menuki actualiza los datos automáticamente. Los cambios independientes se combinan; si ambos dispositivos cambian el mismo valor, prevalece la última revisión guardada en Supabase.
 - La página carga alimentos y recetas desde los catálogos JSON versionados del repositorio.
 - El menú fijo actual sigue activo. La app puede preparar y guardar una propuesta editable para el siguiente ciclo de tres semanas.
@@ -15,6 +16,7 @@ Aplicación web personal para consultar un menú de tres semanas, preparar recet
 - Las compras, consumos, reversos y correcciones nuevas se anotan como movimientos con identificador único. Si una receta supera el saldo anotado, se registra completa y se muestra el faltante.
 - Los cambios se sincronizan automáticamente con Supabase mientras hay conexión. La app comprueba cambios remotos mientras está abierta y al volver a ella. Si falla la sincronización, muestra el estado y permite reintentar.
 - En móvil, Inicio, Menú, Compra y Actividad están en la barra inferior; Perfil, Despensa, Recetas y Guía se encuentran bajo **Más**. La compra incluye búsqueda y un resumen fijo para revisar el progreso y finalizarla.
+- Compra muestra el establecimiento principal como **Supermercado**; Frutería conserva su sección propia.
 - Los valores de perfil que usa una instalación nueva son ejemplos genéricos, no datos personales. Las comidas futuras aparecen como planificadas y solo se pueden registrar cuando llega su fecha.
 - Registra cada sesión una vez realizada. Su gasto neto estimado ajusta principalmente los hidratos y solo las comidas pendientes de esa fecha; no cambia días futuros ni cantidades ya registradas.
 - Supabase tiene trece tablas con RLS y una función transaccional para sincronizar el estado por cuenta. Auth guarda la identidad y las credenciales; `public.profiles` guarda parámetros nutricionales y la confirmación de revisión. Las siete migraciones están aplicadas; publica el HTML actualizado para activar los cambios en GitHub Pages.
