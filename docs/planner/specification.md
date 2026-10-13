@@ -15,7 +15,7 @@ Los catálogos son JSON genéricos e independientes de los datos personales:
 - [`foods.json`](../../data/foods.json): 83 alimentos.
 - [`recipes.json`](../../data/recipes.json): 107 recetas y 512 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.5.0`.
+Ambos catálogos usan actualmente `catalogVersion` `0.6.0`.
 
 Distribución actual de recetas por tipo:
 
@@ -43,7 +43,7 @@ Unidades admitidas: `g`, `ml` y `ud`. Las frutas y verduras enteras de [requisit
 
 ### Recetas
 
-Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, `photoKey`, ingredientes, pasos y notas. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra el peso de receta, pero informa el stock y los faltantes en unidad de inventario. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
+Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, ingredientes, pasos y notas. No contiene fotografía: la interfaz presenta platos e ingredientes sin imágenes de comida. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra el peso de receta, pero informa el stock y los faltantes en unidad de inventario. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
 
 Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el contrato, mantener los IDs existentes o documentar una migración explícita; no renombrar IDs a la ligera.
 

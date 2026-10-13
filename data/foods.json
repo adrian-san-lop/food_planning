@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.5.0",
+  "catalogVersion": "0.6.0",
   "source": "Existing foods plus curated generic additions with USDA FoodData Central references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance.",
-  "status": "Catálogo 0.5.0; recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
+  "status": "Catálogo 0.6.0; recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
   "foods": [
     {
       "id": "skyr",

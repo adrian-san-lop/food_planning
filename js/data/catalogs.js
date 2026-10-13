@@ -133,7 +133,6 @@ export async function loadCatalogs({ slotTypes, recoveryTags }) {
     name: recipe.name,
     type: recipe.mealType,
     time: Number(recipe.timeMinutes),
-    pic: recipe.photoKey,
     ingredients: recipe.ingredients.map((ingredient) => ({
       id: ingredient.foodId,
       rest: Number(ingredient.amount) / Number(recipe.baseServings || 1),
