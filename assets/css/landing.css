@@ -13,7 +13,7 @@ svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-wi
 .content-shell{width:min(100% - 64px,1280px);margin-inline:auto}
 .site-header{position:sticky;z-index:50;top:0;background:rgba(255,254,250,.9);border-bottom:1px solid rgba(225,231,221,.78);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);transition:box-shadow .25s ease,background .25s ease}
 .site-header.is-scrolled{background:rgba(255,254,250,.96);box-shadow:0 8px 28px rgba(31,61,44,.075)}
-.nav-shell{width:min(100% - 64px,1380px);height:var(--header-height);display:flex;align-items:center;gap:34px;margin-inline:auto}
+.nav-shell{width: min(100% - 64px,1550px);height:var(--header-height);display:flex;align-items:center;gap:34px;margin-inline:auto}
 .brand-lockup{display:inline-flex;flex:none;align-items:center;gap:10px;color:var(--landing-green)}
 .brand-lockup img{width:42px;height:42px;object-fit:contain}
 .brand-lockup span{font-family:var(--landing-sans);font-size:30px;font-weight:780;letter-spacing:-1.7px;line-height:1}
@@ -270,6 +270,15 @@ svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-wi
   .faq-section{gap:var(--landing-space-3);padding-top:0;padding-bottom:var(--landing-space-section-mobile)}
   .final-cta{padding-bottom:var(--landing-space-5)}
   .final-cta-inner{gap:var(--landing-space-3);padding:var(--landing-space-4) var(--landing-space-3)}
+  .hero{gap:0;padding-top:24px;padding-bottom:24px}
+  .hero-copy{padding:4px 0}
+  .hero-copy .eyebrow{margin-bottom:10px}
+  .hero h1{font-size:clamp(37px,10vw,46px);line-height:1.02}
+  .hero-lede{margin-top:10px;font-size:15px;line-height:1.4}
+  .hero-actions{gap:8px;margin-top:15px}
+  .hero-actions .button-primary,.hero-actions .hero-secondary{min-height:44px}
+  .hero-note{margin-top:10px}
+  .product-stage{min-height:330px;margin:8px 0 0}
 }
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0ms!important}.has-js [data-reveal]{opacity:1!important;transform:none!important}}
