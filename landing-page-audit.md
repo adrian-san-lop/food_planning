@@ -53,6 +53,4 @@ Sin hallazgos críticos en la revisión estática.
 
 ## Siguiente paso
 
-Los cuatro hallazgos se aplicaron localmente en `assets/css/landing.css`: objetivos táctiles de 44 px, colores de texto más oscuros, una demo móvil centrada en el plan y tokens compartidos para el espaciado. Después, la captura aportada por el propietario mostró que la tarjeta de compra y la hoja decorativa quedaban cortadas por el borde derecho en escritorio; se desplazaron hacia dentro. También se estrechó la tarjeta y se quitaron las ilustraciones de ingredientes y la flecha, conservando el carrito y los controles de lista.
-
-En la iteración de contenido, el titular se orientó a reducir la decisión diaria, se aclaró el público y el tiempo típico de los platos principales, se ampliaron las funciones visibles y se añadió una foto ilustrativa basada en una receta del catálogo estimada en 25 minutos. Falta comprobar visualmente la composición actualizada en 1280 px y 390 px antes de publicar.
+¿Quieres que aplique los tres hallazgos importantes y deje el ajuste de espaciado como pulido opcional?

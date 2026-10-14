@@ -138,6 +138,10 @@ svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-wi
 .feature-card p{max-width:250px;margin:0;color:var(--landing-muted);font-size:13px;line-height:1.6}
 .feature-card-recipes .feature-icon,.feature-card-activity .feature-icon{background:#fae9dd;color:var(--landing-orange)}
 .feature-card-pantry .feature-icon{background:#edf1df;color:#78885e}
+.feature-card-recovery{grid-column:1/-1;display:grid;grid-template-columns:42px minmax(0,1fr);align-items:center;column-gap:16px;min-height:132px}
+.feature-card-recovery .feature-icon{grid-row:1/span 2;margin:0;background:#edf1df;color:#78885e}
+.feature-card-recovery h3{grid-column:2;grid-row:1}
+.feature-card-recovery p{grid-column:2;grid-row:2;max-width:none}
 .recipe-highlight{position:relative;min-height:370px;display:flex;align-items:center;overflow:hidden;padding:48px clamp(24px,5vw,64px);border-radius:28px;background:#20382e;color:white;box-shadow:var(--landing-shadow)}
 .recipe-highlight::before{position:absolute;z-index:1;inset:0;background:linear-gradient(90deg,rgba(26,48,38,.9) 0%,rgba(26,48,38,.78) 42%,rgba(26,48,38,.04) 100%);content:"";pointer-events:none}
 .recipe-highlight-image{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 54%}
@@ -258,6 +262,8 @@ svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-wi
   .features-grid{grid-template-columns:1fr;gap:var(--landing-space-2)}
   .feature-card{min-height:0;padding:var(--landing-space-2)}
   .feature-card p{max-width:none;font-size:13px;line-height:1.6}
+  .feature-card-recovery{grid-template-columns:36px minmax(0,1fr);column-gap:12px}
+  .feature-card-recovery .feature-icon{width:36px;height:36px}
   .feature-intro>p:not(.eyebrow){margin:var(--landing-space-2) 0 var(--landing-space-3)}
   .recipe-highlight{min-height:390px;align-items:flex-end;padding:24px}
   .recipe-highlight::before{background:linear-gradient(0deg,rgba(26,48,38,.93) 0%,rgba(26,48,38,.62) 48%,rgba(26,48,38,.02) 100%)}
