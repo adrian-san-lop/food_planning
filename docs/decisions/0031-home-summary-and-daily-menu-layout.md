@@ -15,10 +15,12 @@ Inicio debe enseñar con claridad el progreso diario sin que el encabezado del m
 2. «Menú de hoy» y las cinco comidas se mantienen en Inicio debajo del resumen y aparecen al desplazarse. El detalle siempre usa la fecha actual y conserva las acciones para abrir recetas, registrar comidas y añadir actividad. Inicio no añade navegación por semanas ni por días.
 3. En la tarjeta del día, la primera línea muestra el número de fecha, el nombre del día y «Registrar actividad». Debajo aparece el estado de actividad. Cuando no hay sesiones, el texto es «Sin sesiones»; se elimina «objetivo base».
 4. La misma tarjeta y jerarquía se usan en Inicio y en Menú para que la fecha, el estado y las comidas tengan una presentación coherente. La navegación del ciclo permanece en Menú.
+5. En escritorio, el resumen conserva sus cuatro KPI y presenta la nutrición en dos columnas: indicador circular de calorías y barras de proteínas, hidratos y grasas. Las tarjetas mantienen su altura según el contenido; el resumen se centra en la pantalla disponible sin estirar separadores internos.
 
 ## Consecuencias
 
 - El encabezado «Menú de hoy» no aparece parcialmente en el primer pantallazo, pero sigue accesible en Inicio al desplazarse.
 - En móvil, los KPI de comidas semanales y racha se muestran en tarjetas apiladas, a ancho completo, con tipografía e iconos legibles. El resumen nutricional conserva el anillo calórico y las barras de macronutrientes.
+- En escritorio, el panel nutricional muestra calorías en un anillo y los tres macronutrientes en barras, sin huecos artificiales entre métricas.
 - La lista de comidas ocupa todo el ancho disponible y mantiene el estado y las acciones existentes.
 - Hay que revisar en navegador alturas cortas y anchos móviles antes de publicar.

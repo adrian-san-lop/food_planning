@@ -252,12 +252,6 @@ h1,h2,h3,p{margin-top:0}
 .guide-card strong{color:var(--ink)}
 .guide-card ul{color:var(--muted);font-size:12px;line-height:1.7;padding-left:17px;margin-bottom:0}
 .guide-wide{grid-column:span 2}
-.meter-info{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:750}
-.meter-progress{-webkit-appearance:none;appearance:none;display:block;width:100%;height:9px;margin-top:9px;padding:0;border:0;border-radius:20px;background:#e9eee5;overflow:hidden;color:var(--accent)}
-.meter-progress::-webkit-progress-bar{background:#e9eee5;border-radius:20px}
-.meter-progress::-webkit-progress-value{background:currentColor;border-radius:20px}
-.meter-progress::-moz-progress-bar{background:currentColor;border-radius:20px}
-.meter-progress--protein{color:#bb886d}
 .target-note{font-size:11px;color:var(--muted);margin-top:7px;line-height:1.6}
 .tiny-pill{padding:5px 8px;border-radius:9px;color:var(--accent-dark);background:var(--accent-tint);font-weight:800;font-size:10px}
 .empty{padding:45px;border:1px dashed #ceddce;border-radius:18px;text-align:center;color:var(--muted);font-size:13px}
@@ -584,7 +578,6 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .dashboard-stats .stat-value{font-size:27px}
 .dashboard-stats .stat-value--compact{font-size:21px}
 .panel.nutrition-meter{margin-top:14px;padding:18px 20px}
-.nutrition-meter-spacer{height:13px}
 .muted-detail{display:block;color:var(--muted)}
 .two-cols--spaced{margin-top:18px}
 .two-cols--tracking{margin-top:16px}
@@ -1010,40 +1003,57 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .dashboard-menu-empty{margin-bottom:14px}
 
 @media(min-width:851px){
+ .dashboard-overview{justify-content:center;gap:clamp(18px,2.4svh,28px)}
+ .dashboard-overview>.nutrition-meter{flex:0 0 auto}
  .dashboard-overview>.nutrition-meter .nutrition-desktop-view{display:flex;flex:1;flex-direction:column}
- .dashboard-overview>.nutrition-meter .nutrition-meter-spacer{flex:1 1 auto}
- .home-banner{min-height:clamp(142px,19svh,184px);margin:0;padding:clamp(20px,3svh,30px) clamp(24px,2.4vw,38px);gap:clamp(16px,2.4svh,24px)}
+ .home-banner{min-height:clamp(140px,16svh,170px);margin:0;padding:clamp(18px,2.6svh,26px) clamp(24px,2.4vw,38px);gap:clamp(16px,2.4svh,24px)}
  .home-banner-mark{width:clamp(54px,8svh,68px);height:clamp(54px,8svh,68px)}
- .home-banner h2{font-size:clamp(30px,4.6svh,40px)}
+ .home-banner h2{font-size:clamp(30px,4.2svh,40px)}
  .home-banner p{font-size:clamp(14px,1.9svh,16px)}
  .dashboard-stats{margin:0}
- .dashboard-stats .stat{min-height:138px;padding:clamp(17px,2.4svh,24px) clamp(15px,1.8vw,24px)}
+ .dashboard-stats .stat{min-height:140px;padding:clamp(15px,2svh,20px) clamp(15px,1.8vw,24px)}
  .dashboard-stats .stat-top{font-size:clamp(13px,1.6svh,15px)}
- .dashboard-stats .stat-value{margin:clamp(10px,1.8svh,16px) 0 5px;font-size:clamp(34px,4.3svh,42px)}
+ .dashboard-stats .stat-value{margin:clamp(8px,1.5svh,13px) 0 4px;font-size:clamp(34px,4.1svh,40px)}
  .dashboard-stats .stat-value--compact{font-size:clamp(28px,3.5svh,34px)}
  .dashboard-stats .stat-note{font-size:clamp(12px,1.6svh,14px);line-height:1.4}
- .panel.nutrition-meter{min-height:230px;padding:clamp(20px,3svh,30px) clamp(20px,2.2vw,30px)}
+ .panel.nutrition-meter{min-height:clamp(340px,36svh,420px);padding:clamp(20px,2.8svh,28px) clamp(22px,2.2vw,32px)}
  .nutrition-meter .meter-heading h3{font-size:clamp(22px,3svh,28px)}
  .nutrition-meter .meter-heading{margin-bottom:clamp(12px,2svh,18px)}
- .dashboard-overview .meter-info{font-size:clamp(14px,1.8svh,16px)}
- .dashboard-overview .meter-progress{height:clamp(9px,1.3svh,12px)}
- .meter-progress{margin-top:clamp(7px,1.3svh,11px)}
- .nutrition-meter-spacer{min-height:clamp(8px,1.6svh,15px)}
- .macro-chips{margin-top:clamp(8px,1.6svh,13px)}
- .dashboard-overview .macro-chips span{font-size:clamp(12px,1.6svh,14px)}
+ .nutrition-desktop-layout{display:grid;grid-template-columns:minmax(190px,.8fr) minmax(0,2fr);align-items:center;gap:clamp(28px,4vw,64px);height:100%;min-height:230px}
+ .nutrition-desktop-calories{display:grid;justify-items:center;gap:clamp(9px,1.5svh,15px)}
+ .nutrition-desktop-ring{position:relative;display:grid;place-items:center;width:clamp(176px,15vw,220px);aspect-ratio:1;border-radius:50%;background:conic-gradient(var(--accent) var(--progress),#e9eee5 0);color:var(--ink)}
+ .nutrition-desktop-ring::before{position:absolute;inset:clamp(10px,1.2vw,14px);border-radius:50%;background:var(--white);content:""}
+ .nutrition-desktop-ring>div{position:relative;z-index:1;display:grid;justify-items:center;gap:4px}
+ .nutrition-desktop-ring strong{font-size:clamp(36px,4vw,48px);line-height:1.1;font-variant-numeric:tabular-nums}
+ .nutrition-desktop-ring span{color:var(--muted);font-size:clamp(13px,1.3vw,16px)}
+ .nutrition-desktop-meals{color:var(--muted);font-size:clamp(12px,1.2vw,14px);text-align:center}
+ .nutrition-desktop-macros{display:grid;gap:clamp(18px,2.5svh,30px);min-width:0}
+ .nutrition-desktop-macro>div{display:flex;align-items:baseline;justify-content:space-between;gap:14px;color:var(--ink-soft);font-size:clamp(14px,1.5vw,16px);line-height:1.35}
+ .nutrition-desktop-macro strong{color:var(--ink);font-size:clamp(14px,1.5vw,16px);font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums}
+ .nutrition-desktop-macro progress{display:block;appearance:none;width:100%;height:10px;margin-top:9px;border:0;border-radius:20px;overflow:hidden;background:#e9eee5;color:var(--accent)}
+ .nutrition-desktop-macro progress::-webkit-progress-bar{border-radius:20px;background:#e9eee5}
+ .nutrition-desktop-macro progress::-webkit-progress-value{border-radius:20px;background:currentColor}
+ .nutrition-desktop-macro progress::-moz-progress-bar{border-radius:20px;background:currentColor}
+ .nutrition-desktop-macro.protein progress{color:#bb7957}
+ .nutrition-desktop-macro.carbs progress{color:var(--accent)}
+ .nutrition-desktop-macro.fats progress{color:#a9c5a8}
+ .nutrition-meter .target-note{font-size:clamp(12px,1.3vw,14px);line-height:1.45}
  .dashboard-menu-heading h1{font-size:32px}
 }
 
 @media(min-width:851px) and (max-height:820px){
  .app.home-view .main{padding-top:clamp(14px,3svh,27px);padding-bottom:clamp(32px,6svh,58px)}
  .topbar{margin-bottom:clamp(10px,2.2svh,20px)}
- .dashboard-overview{min-height:calc(100vh - 70px);min-height:max(400px,calc(100svh - 70px));gap:clamp(12px,1.8svh,18px)}
+ .dashboard-overview{justify-content:center;min-height:calc(100vh - 70px);min-height:max(400px,calc(100svh - 70px));gap:clamp(16px,2.2svh,22px)}
  .home-banner{min-height:clamp(118px,16svh,146px);padding:clamp(16px,2.5svh,23px) clamp(20px,2vw,32px)}
  .home-banner-mark{width:clamp(48px,7svh,60px);height:clamp(48px,7svh,60px)}
  .home-banner h2{font-size:clamp(28px,4.2svh,35px)}
  .dashboard-stats .stat{min-height:126px;padding:clamp(13px,1.8svh,18px) clamp(11px,1.4vw,18px)}
  .dashboard-stats .stat-value{margin:clamp(8px,1.3svh,12px) 0 4px}
- .panel.nutrition-meter{min-height:210px;padding:clamp(15px,2.2svh,19px) clamp(15px,1.8vw,22px)}
+ .panel.nutrition-meter{min-height:320px;padding:clamp(15px,2.2svh,19px) clamp(15px,1.8vw,22px)}
+ .nutrition-desktop-layout{grid-template-columns:minmax(170px,.8fr) minmax(0,2fr);gap:clamp(18px,3vw,36px);min-height:220px}
+ .nutrition-desktop-ring{width:clamp(160px,15vw,190px)}
+ .nutrition-desktop-macros{gap:clamp(14px,2svh,20px)}
  .nutrition-meter .meter-heading{margin-bottom:clamp(8px,1.3svh,12px)}
  .nutrition-meter .target-note{margin-top:clamp(9px,1.2svh,13px);font-size:12px;line-height:1.45}
 }
@@ -1051,6 +1061,7 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 @media(max-width:850px){
  .app.home-view .main{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
  .dashboard-overview{min-height:calc(100vh - 151px - env(safe-area-inset-top));min-height:max(420px,calc(100svh - 151px - env(safe-area-inset-top)));gap:clamp(12px,1.9svh,16px)}
+ .dashboard-overview>.nutrition-meter{flex:1 0 auto}
  .dashboard-overview>.nutrition-meter{min-height:clamp(236px,34svh,300px)}
  .dashboard-overview>.nutrition-meter .nutrition-mobile-view{flex:1 0 auto;align-content:center}
  .home-banner{min-height:clamp(112px,17svh,148px);margin:0;padding:clamp(13px,2.3svh,19px) clamp(13px,3.5vw,19px);gap:clamp(10px,2.8vw,14px)}
