@@ -3,7 +3,7 @@
 - **Fecha:** 14 de octubre de 2026
 - **Estado:** Aceptada e implementada localmente
 - **Alcance:** contenido y adaptación de Inicio en escritorio y móvil
-- **Relación:** reemplaza el punto 2 de ADR-0019; mantiene los KPI móviles aceptados en ADR-0028.
+- **Relación:** reemplaza el punto 2 de ADR-0019; sus puntos 1–2 quedan parcialmente reemplazados por ADR-0031. Mantiene los KPI móviles aceptados en ADR-0028.
 
 ## Contexto
 

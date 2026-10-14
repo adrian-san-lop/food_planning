@@ -158,11 +158,12 @@ h1,h2,h3,p{margin-top:0}
 .page-intro h1{font-family:Georgia,serif;font-size:34px;font-weight:500;letter-spacing:-1px;margin:0 0 8px}
 .page-intro p{color:var(--muted);max-width:720px;line-height:1.7;font-size:13px;margin-bottom:0}
 .plan-day{border-radius:20px;border:1px solid var(--line);background:var(--white);overflow:hidden;margin-bottom:12px;box-shadow:var(--shadow)}
-.plan-day-head{display:flex;align-items:center;gap:14px;padding:16px 18px}
-.day-circle{width:45px;height:45px;background:var(--accent-tint);border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:19px;color:var(--accent-dark)}
-.plan-day-head h3{font-size:16px;margin:0}
-.plan-day-head p{font-size:11px;color:var(--muted);margin:5px 0 0}
-.plan-day-head .spacer{flex:1}
+.plan-day-head{display:grid;grid-template-columns:45px minmax(0,1fr) auto;align-items:center;column-gap:14px;row-gap:4px;padding:16px 18px}
+.day-circle{grid-row:1 / span 2;width:45px;height:45px;background:var(--accent-tint);border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:19px;color:var(--accent-dark)}
+.plan-day-heading{grid-column:2;grid-row:1 / span 2;display:grid;align-content:center;gap:4px;min-width:0}
+.plan-day-heading h3{font-size:16px;margin:0}
+.activity-day-note{font-size:12px;line-height:1.35;color:var(--muted)}
+.activity-day-action{grid-column:3;grid-row:1 / span 2;white-space:nowrap}
 .plan-day-body{border-top:1px solid var(--line);padding:8px 17px 17px}
 .meal-table-row{display:grid;grid-template-columns:110px minmax(0,1fr) 85px 32px;gap:12px;align-items:center;padding:12px 4px;border-bottom:1px dashed var(--line)}
 .meal-table-row:last-child{border-bottom:0}
@@ -703,9 +704,11 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .tile-body{padding:11px}
 .tile-body h3{font-size:13px}
 .tile-meta{font-size:10px}
-.plan-day-head{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:8px;padding:12px}.plan-day-head .spacer{display:none}.plan-day-head .activity-day{grid-column:2;min-width:0}
+.plan-day-head{grid-template-columns:38px minmax(0,1fr) auto;column-gap:8px;row-gap:3px;padding:12px}
 .day-circle{width:38px;height:38px;font-size:17px}
-.plan-day-head h3{font-size:14px}
+.plan-day-heading h3{font-size:14px}
+.activity-day-note{font-size:10px}
+.activity-day-action{padding:7px 9px;font-size:10px}
 .plan-day-head .total-pill{display:none}
 .meal-table-row{grid-template-columns:73px minmax(0,1fr) 57px 28px;gap:7px}
 .meal-table-row .cat{font-size:10px}
@@ -960,6 +963,9 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 @media(max-width:380px){
  .top-actions .week-pager{min-width:0;flex:1}
  .week-label{min-width:0}
+ .plan-day-head{grid-template-columns:34px minmax(0,1fr) auto;column-gap:6px;padding:10px}
+ .day-circle{width:34px;height:34px;font-size:16px}
+ .activity-day-action{padding:6px 7px;font-size:9px}
  .nutrition-mobile-view{grid-template-columns:90px minmax(0,1fr);gap:10px}
  .nutrition-calorie-ring{width:90px}
  .nutrition-calorie-ring strong{font-size:18px}
@@ -987,78 +993,108 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .proposal-admin-heading{align-items:flex-start}
 .proposal-card-header{flex-direction:column;gap:7px}}
 
-/* Inicio fills the visible app area with its summary; the menu has its own page. */
-.app.home-view .main{height:100vh;height:100svh;display:flex;flex-direction:column}
-.app.home-view #viewRoot{display:flex;flex:1 0 auto;min-height:0}
-.dashboard-overview{display:flex;flex:1 0 auto;flex-direction:column;justify-content:space-between;gap:clamp(14px,3svh,34px);min-height:0;width:100%}
+/* Inicio fills the first viewport; today's menu continues below it in normal page flow. */
+.app.home-view .main{min-height:100vh;min-height:100svh;display:flex;flex-direction:column}
+.app.home-view #viewRoot{display:block;flex:1 0 auto;min-height:0}
+.dashboard-page{width:100%}
+.dashboard-overview{display:flex;flex-direction:column;justify-content:space-between;gap:clamp(12px,2.5svh,28px);min-height:calc(100vh - 96px);min-height:max(430px,calc(100svh - 96px));width:100%}
 .dashboard-overview>.home-banner,.dashboard-overview>.dashboard-stats,.dashboard-overview>.dashboard-mobile-stats,.dashboard-overview>.nutrition-meter{flex:0 0 auto}
 .dashboard-overview>.home-banner,.dashboard-overview>.dashboard-stats,.dashboard-overview>.dashboard-mobile-stats{margin-bottom:0}
 .dashboard-overview>.nutrition-meter{margin:0}
+.dashboard-menu{margin-top:clamp(24px,4svh,42px)}
+.dashboard-menu-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin:0 0 15px}
+.dashboard-menu-heading .eyebrow{margin-bottom:6px}
+.dashboard-menu-heading h1{font-family:Georgia,serif;font-size:30px;font-weight:500;letter-spacing:-.8px;margin:0 0 4px}
+.dashboard-menu-heading p{color:var(--muted);font-size:12px;margin:0}
+.dashboard-menu-empty{margin-bottom:14px}
 
 @media(min-width:851px){
- .home-banner{min-height:clamp(120px,16svh,170px);margin:0;padding:clamp(18px,3svh,30px) clamp(20px,2vw,34px);gap:clamp(14px,2.2svh,22px)}
+ .home-banner{min-height:clamp(108px,15svh,155px);margin:0;padding:clamp(16px,2.7svh,27px) clamp(20px,2vw,34px);gap:clamp(14px,2.2svh,22px)}
  .home-banner-mark{width:clamp(48px,7svh,62px);height:clamp(48px,7svh,62px)}
  .home-banner h2{font-size:clamp(24px,3.4svh,32px)}
  .dashboard-stats{margin:0}
- .dashboard-stats .stat{padding:clamp(10px,1.8svh,16px) clamp(12px,1.5vw,19px) clamp(8px,1.5svh,14px)}
- .dashboard-stats .stat-value{margin:clamp(6px,1.3svh,14px) 0 3px}
- .panel.nutrition-meter{padding:clamp(12px,2.2svh,20px) clamp(15px,1.8vw,24px)}
+ .dashboard-stats .stat{padding:clamp(12px,2svh,20px) clamp(12px,1.5vw,20px)}
+ .dashboard-stats .stat-top{font-size:clamp(11px,1.3svh,13px)}
+ .dashboard-stats .stat-value{margin:clamp(8px,1.5svh,14px) 0 4px;font-size:clamp(28px,3.4svh,34px)}
+ .dashboard-stats .stat-value--compact{font-size:clamp(23px,2.8svh,28px)}
+ .dashboard-stats .stat-note{font-size:clamp(11px,1.3svh,12px);line-height:1.35}
+ .panel.nutrition-meter{padding:clamp(14px,2.4svh,22px) clamp(16px,1.8vw,25px)}
+ .nutrition-meter .meter-heading h3{font-size:clamp(18px,2.4svh,22px)}
  .nutrition-meter .meter-heading{margin-bottom:clamp(8px,1.7svh,14px)}
+ .dashboard-overview .meter-info{font-size:clamp(12px,1.5svh,14px)}
+ .dashboard-overview .meter-progress{height:clamp(8px,1.1svh,11px)}
  .meter-progress{margin-top:clamp(5px,1.1svh,9px)}
  .nutrition-meter-spacer{height:clamp(6px,1.6svh,13px)}
  .macro-chips{margin-top:clamp(6px,1.3svh,10px)}
+ .dashboard-overview .macro-chips span{font-size:clamp(11px,1.3svh,12px)}
+ .dashboard-menu-heading h1{font-size:32px}
 }
 
 @media(min-width:851px) and (max-height:820px){
- .main{padding-top:clamp(14px,3svh,27px);padding-bottom:clamp(32px,6svh,58px)}
+ .app.home-view .main{padding-top:clamp(14px,3svh,27px);padding-bottom:clamp(32px,6svh,58px)}
  .topbar{margin-bottom:clamp(10px,2.2svh,20px)}
- .dashboard-overview{gap:clamp(9px,2svh,18px)}
- .home-banner{min-height:clamp(88px,13svh,112px);padding:clamp(10px,2.2svh,18px) clamp(18px,2vw,30px)}
+ .dashboard-overview{min-height:calc(100vh - 70px);min-height:max(400px,calc(100svh - 70px));gap:clamp(9px,1.8svh,16px)}
+ .home-banner{min-height:clamp(86px,12svh,106px);padding:clamp(10px,2svh,16px) clamp(18px,2vw,30px)}
  .home-banner-mark{width:clamp(42px,7svh,54px);height:clamp(42px,7svh,54px)}
  .home-banner h2{font-size:clamp(22px,4svh,29px)}
- .dashboard-stats .stat{padding:clamp(9px,1.6svh,13px) clamp(11px,1.5vw,17px) clamp(7px,1.3svh,11px)}
+ .dashboard-stats .stat{padding:clamp(9px,1.5svh,12px) clamp(10px,1.4vw,16px)}
  .dashboard-stats .stat-value{margin:clamp(5px,1.1svh,9px) 0 3px}
- .panel.nutrition-meter{padding:clamp(10px,1.8svh,15px) clamp(14px,1.8vw,20px)}
+ .panel.nutrition-meter{padding:clamp(10px,1.7svh,14px) clamp(14px,1.8vw,20px)}
  .nutrition-meter .meter-heading{margin-bottom:clamp(6px,1.3svh,10px)}
  .nutrition-meter .target-note{margin-top:clamp(7px,1.2svh,11px);font-size:11px;line-height:1.4}
 }
 
 @media(max-width:850px){
  .app.home-view .main{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
- .dashboard-overview{gap:clamp(9px,2.2svh,20px)}
- .home-banner{min-height:clamp(72px,12svh,112px);margin:0;padding:clamp(8px,1.55svh,13px) clamp(10px,3.3vw,16px);gap:clamp(8px,2.4vw,12px)}
+ .dashboard-overview{min-height:calc(100vh - 151px - env(safe-area-inset-top));min-height:max(420px,calc(100svh - 151px - env(safe-area-inset-top)));gap:clamp(9px,2svh,18px)}
+ .home-banner{min-height:clamp(80px,13svh,116px);margin:0;padding:clamp(9px,1.7svh,15px) clamp(10px,3.3vw,16px);gap:clamp(8px,2.4vw,12px)}
  .home-banner-mark{width:clamp(32px,8vw,42px);height:clamp(32px,8vw,42px);border-radius:clamp(10px,3vw,14px)}
  .home-banner-mark .icon svg{width:clamp(18px,5vw,22px);height:clamp(18px,5vw,22px)}
  .home-banner .eyebrow{margin-bottom:clamp(1px,.35svh,3px);font-size:clamp(7px,2.1vw,9px);letter-spacing:clamp(.7px,.3vw,1.4px)}
- .home-banner h2{font-size:clamp(15px,4.3vw,20px);line-height:1.12}
+ .home-banner h2{font-size:clamp(17px,4.6vw,22px);line-height:1.12}
  .home-banner p{font-size:clamp(9px,2.6vw,11px);line-height:1.25}
  .home-banner-actions{gap:clamp(3px,1vw,6px);margin-top:clamp(4px,1svh,8px)}
  .home-banner-actions .btn{min-height:clamp(28px,4svh,34px);padding:clamp(5px,.8svh,7px) clamp(7px,2vw,11px);font-size:clamp(9px,2.6vw,11px)}
  .home-banner-actions .home-banner-date-link{margin:0 2px;padding:clamp(4px,.7svh,5px) 2px;font-size:clamp(9px,2.4vw,10px)}
  .home-banner-date-link{margin-top:clamp(4px,.7svh,7px)}
- .dashboard-mobile-stats{gap:clamp(6px,2vw,10px);margin:0}
- .dashboard-mobile-stat{padding:clamp(8px,1.4svh,13px) clamp(8px,2.4vw,12px) clamp(7px,1.2svh,11px)}
- .dashboard-mobile-stat-value{margin:clamp(5px,1svh,9px) 0 2px;font-size:clamp(20px,5.9vw,23px)}
+ .dashboard-mobile-stats{gap:clamp(7px,2vw,11px);margin:0}
+ .dashboard-mobile-stat{padding:clamp(11px,1.8svh,16px) clamp(9px,2.6vw,14px) clamp(9px,1.5svh,14px)}
+ .dashboard-mobile-stat-top{font-size:clamp(10px,2.8vw,12px)}
+ .dashboard-mobile-stat-icon{width:clamp(30px,8vw,36px);height:clamp(30px,8vw,36px)}
+ .dashboard-mobile-stat-icon .icon svg{width:clamp(17px,4.6vw,20px);height:clamp(17px,4.6vw,20px)}
+ .dashboard-mobile-stat-value{margin:clamp(6px,1.2svh,10px) 0 3px;font-size:clamp(23px,6.2vw,28px)}
  .dashboard-mobile-stat>progress{margin:clamp(5px,1svh,9px) 0 clamp(4px,.8svh,7px)}
+ .dashboard-mobile-stat-note{font-size:clamp(9px,2.5vw,11px);line-height:1.35}
  .streak-marks{margin:clamp(4px,.9svh,8px) 0 clamp(3px,.7svh,6px)}
- .panel.nutrition-meter{margin:0;padding:clamp(11px,1.7svh,18px) clamp(12px,3.5vw,20px)}
+ .panel.nutrition-meter{margin:0;padding:clamp(14px,2svh,21px) clamp(12px,3.5vw,20px)}
  .nutrition-meter .meter-heading{margin-bottom:clamp(7px,1.5svh,14px)}
- .nutrition-mobile-view{grid-template-columns:minmax(72px,clamp(72px,22vw,96px)) minmax(0,1fr);gap:clamp(8px,2.4vw,13px)}
- .nutrition-calorie-ring{width:clamp(72px,22vw,96px)}
- .nutrition-calorie-ring::before{inset:clamp(5px,1.5vw,7px)}
- .nutrition-calorie-ring strong{font-size:clamp(17px,4.7vw,20px)}
- .nutrition-mobile-macros{gap:clamp(5px,1.2svh,9px)}
- .nutrition-mobile-macro>div{font-size:clamp(9px,2.5vw,10px)}
- .nutrition-mobile-macro strong{font-size:clamp(8px,2.2vw,9px)}
+ .nutrition-meter .meter-heading h3{font-size:clamp(18px,4.9vw,22px)}
+ .nutrition-meter .btn{font-size:clamp(10px,2.8vw,12px);padding:8px 10px}
+ .nutrition-mobile-view{grid-template-columns:minmax(84px,clamp(84px,23vw,106px)) minmax(0,1fr);gap:clamp(9px,2.6vw,14px)}
+ .nutrition-calorie-ring{width:clamp(84px,23vw,106px)}
+ .nutrition-calorie-ring::before{inset:clamp(6px,1.6vw,8px)}
+ .nutrition-calorie-ring strong{font-size:clamp(19px,5vw,23px)}
+ .nutrition-calorie-ring span{font-size:clamp(9px,2.5vw,11px)}
+ .nutrition-mobile-macros{gap:clamp(6px,1.4svh,10px)}
+ .nutrition-mobile-macro>div{font-size:clamp(10px,2.7vw,12px)}
+ .nutrition-mobile-macro strong{font-size:clamp(9px,2.5vw,11px)}
  .nutrition-mobile-macro progress{margin-top:clamp(3px,.6svh,4px)}
- .nutrition-meter .target-note{margin:clamp(7px,1.2svh,12px) 0 0;font-size:clamp(9px,2.3vw,10px);line-height:1.35}
+ .nutrition-meter .target-note{margin:clamp(9px,1.4svh,14px) 0 0;font-size:clamp(10px,2.7vw,11px);line-height:1.4}
+ .dashboard-menu{margin-top:clamp(24px,4svh,36px)}
+ .dashboard-menu-heading{align-items:flex-start;flex-direction:column;gap:9px;margin-bottom:12px}
+ .dashboard-menu-heading h1{font-size:clamp(25px,7vw,31px)}
+ .dashboard-menu-heading>.btn{align-self:flex-start}
 }
 
 @media(max-width:850px) and (max-height:760px){
  .topbar{margin-bottom:clamp(7px,1.4svh,12px)}
+ .dashboard-overview{min-height:calc(100vh - 142px - env(safe-area-inset-top));min-height:max(390px,calc(100svh - 142px - env(safe-area-inset-top)));gap:clamp(7px,1.6svh,12px)}
+ .home-banner{min-height:74px}
  .home-banner p{display:none}
- .dashboard-overview{gap:clamp(7px,1.6svh,12px)}
  .home-banner-actions{margin-top:clamp(3px,.7svh,6px)}
  .dashboard-mobile-stat-note{font-size:9px;line-height:1.25}
- .nutrition-meter .target-note{font-size:9px;line-height:1.25}
+ .nutrition-meter .target-note{font-size:9px;line-height:1.25;margin-top:7px}
+ .dashboard-mobile-stat{padding-top:9px;padding-bottom:8px}
+ .panel.nutrition-meter{padding-top:11px;padding-bottom:11px}
+ .nutrition-meter .meter-heading{margin-bottom:7px}
 }
