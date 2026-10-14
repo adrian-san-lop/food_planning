@@ -49,7 +49,6 @@ h1,h2,h3,p{margin-top:0}
 .week-label{min-width:142px;font-weight:700;font-size:12px;text-align:center}
 .eyebrow{display:flex;gap:8px;align-items:center;color:var(--orange);font-size:11px;letter-spacing:1.7px;font-weight:850;text-transform:uppercase;margin-bottom:12px}
 /* Main views */
-.dashboard-menu{margin-bottom:24px}
 .home-banner{position:relative;isolation:isolate;display:flex;align-items:center;gap:13px;min-height:86px;margin:0 0 16px;padding:13px 18px;overflow:hidden;border:1px solid #dbe7d9;border-radius:18px;background:linear-gradient(112deg,#e8f1e8 0%,#f8f7ef 70%,#fff3e8 100%);box-shadow:var(--shadow)}
 .home-banner::after{content:"";position:absolute;z-index:-1;right:-34px;top:-92px;width:205px;height:205px;border:1px solid rgba(50,106,85,.12);border-radius:50%;box-shadow:0 0 0 22px rgba(255,255,255,.2),0 0 0 46px rgba(255,255,255,.12);pointer-events:none}
 .home-banner-mark{width:42px;height:42px;display:grid;place-items:center;flex:none;border-radius:14px;background:var(--accent);color:white;box-shadow:0 7px 17px rgba(50,106,85,.16)}
@@ -65,10 +64,6 @@ h1,h2,h3,p{margin-top:0}
 .home-banner-actions .btn{min-height:34px;padding:7px 11px;font-size:11px}
 .home-banner-actions .home-banner-date-link{margin:0 2px;padding:5px 3px}
 .dashboard-stats{margin:0 0 19px}
-.dashboard-menu-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 14px}
-.dashboard-menu-heading .eyebrow{margin-bottom:6px}
-.dashboard-menu-heading h1{font-family:Georgia,serif;font-size:30px;font-weight:500;letter-spacing:-.8px;margin:0 0 4px}
-.dashboard-menu-heading p{color:var(--muted);font-size:12px;margin:0}
 .cycle-boundary-notice{display:flex;align-items:center;gap:10px;width:fit-content;max-width:100%;margin-top:14px;padding:13px 16px;border:1px solid #d6e6d7;border-radius:14px;background:var(--accent-tint);color:var(--accent-dark);font-size:15px;line-height:1.45}
 .cycle-boundary-icon{display:grid;place-items:center;flex:none;color:var(--accent)}
 .cycle-boundary-icon .icon svg{width:20px;height:20px}
@@ -650,7 +645,7 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .home-banner h2{margin-bottom:5px;font-size:30px}
 .home-banner p{font-size:13px}
 .dashboard-stats{margin-bottom:25px}
-.nutrition-meter+.dashboard-menu{margin-top:38px}}
+}
 
 @media(max-width:1160px){.main{padding:26px 24px 55px}
 .sidebar{width:226px;padding-left:12px;padding-right:12px}
@@ -685,8 +680,6 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .week-pager{max-width:200px}
 .week-label{min-width:110px;font-size:10px}
 .top-actions>.btn{display:none}
-.dashboard-menu-heading h1{font-size:23px}
-.dashboard-full-week{display:none}
 .section-head h2,.section-title{font-size:22px}
 .section-head{align-items:center}
 .stat-grid{margin-top:14px}
@@ -710,7 +703,7 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .tile-body{padding:11px}
 .tile-body h3{font-size:13px}
 .tile-meta{font-size:10px}
-.plan-day-head{gap:8px;padding:12px}
+.plan-day-head{display:grid;grid-template-columns:38px minmax(0,1fr);align-items:center;gap:8px;padding:12px}.plan-day-head .spacer{display:none}.plan-day-head .activity-day{grid-column:2;min-width:0}
 .day-circle{width:38px;height:38px;font-size:17px}
 .plan-day-head h3{font-size:14px}
 .plan-day-head .total-pill{display:none}
@@ -732,11 +725,7 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .field input{width:145px}}
 
 @media(max-width:700px){.pantry-grid{grid-template-columns:1fr}
-.dashboard-menu-heading{align-items:flex-start;flex-direction:column}
-.dashboard-menu-heading>.btn{align-self:flex-start}
 .cycle-boundary-notice{font-size:13px;padding:10px 12px}
-.nutrition-meter+.dashboard-menu{margin-top:22px}
-.dashboard-menu-heading h1{font-size:23px}
 .cycle-setup-notice{grid-template-columns:40px minmax(0,1fr);gap:10px;padding:13px}
 .cycle-setup-mark{width:40px;height:40px;border-radius:12px}
 .cycle-setup-copy h2{font-size:16px}
@@ -998,26 +987,46 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .proposal-admin-heading{align-items:flex-start}
 .proposal-card-header{flex-direction:column;gap:7px}}
 
-/* Keep Inicio's banner, progress and today's menu in view on short screens. */
-@media(min-width:851px) and (max-height:900px){
- .main{padding-top:clamp(14px,3svh,27px);padding-bottom:clamp(38px,7svh,65px)}
- .topbar{margin-bottom:clamp(10px,2.2svh,20px)}
- .home-banner{min-height:clamp(100px,16svh,150px);margin-bottom:clamp(10px,2.6svh,24px);padding:clamp(12px,3svh,26px) clamp(18px,2vw,30px);gap:clamp(12px,2.2svh,20px)}
- .home-banner-mark{width:clamp(44px,7.8svh,60px);height:clamp(44px,7.8svh,60px)}
- .home-banner h2{font-size:clamp(22px,4svh,30px)}
- .dashboard-stats{margin-bottom:clamp(12px,3svh,25px)}
+/* Inicio fills the visible app area with its summary; the menu has its own page. */
+.app.home-view .main{height:100vh;height:100svh;display:flex;flex-direction:column}
+.app.home-view #viewRoot{display:flex;flex:1 0 auto;min-height:0}
+.dashboard-overview{display:flex;flex:1 0 auto;flex-direction:column;justify-content:space-between;gap:clamp(14px,3svh,34px);min-height:0;width:100%}
+.dashboard-overview>.home-banner,.dashboard-overview>.dashboard-stats,.dashboard-overview>.dashboard-mobile-stats,.dashboard-overview>.nutrition-meter{flex:0 0 auto}
+.dashboard-overview>.home-banner,.dashboard-overview>.dashboard-stats,.dashboard-overview>.dashboard-mobile-stats{margin-bottom:0}
+.dashboard-overview>.nutrition-meter{margin:0}
+
+@media(min-width:851px){
+ .home-banner{min-height:clamp(120px,16svh,170px);margin:0;padding:clamp(18px,3svh,30px) clamp(20px,2vw,34px);gap:clamp(14px,2.2svh,22px)}
+ .home-banner-mark{width:clamp(48px,7svh,62px);height:clamp(48px,7svh,62px)}
+ .home-banner h2{font-size:clamp(24px,3.4svh,32px)}
+ .dashboard-stats{margin:0}
  .dashboard-stats .stat{padding:clamp(10px,1.8svh,16px) clamp(12px,1.5vw,19px) clamp(8px,1.5svh,14px)}
  .dashboard-stats .stat-value{margin:clamp(6px,1.3svh,14px) 0 3px}
- .panel.nutrition-meter{padding:clamp(12px,2.2svh,18px) clamp(15px,1.8vw,20px)}
+ .panel.nutrition-meter{padding:clamp(12px,2.2svh,20px) clamp(15px,1.8vw,24px)}
  .nutrition-meter .meter-heading{margin-bottom:clamp(8px,1.7svh,14px)}
  .meter-progress{margin-top:clamp(5px,1.1svh,9px)}
  .nutrition-meter-spacer{height:clamp(6px,1.6svh,13px)}
  .macro-chips{margin-top:clamp(6px,1.3svh,10px)}
- .nutrition-meter+.dashboard-menu{margin-top:clamp(12px,3.2svh,30px)}
+}
+
+@media(min-width:851px) and (max-height:820px){
+ .main{padding-top:clamp(14px,3svh,27px);padding-bottom:clamp(32px,6svh,58px)}
+ .topbar{margin-bottom:clamp(10px,2.2svh,20px)}
+ .dashboard-overview{gap:clamp(9px,2svh,18px)}
+ .home-banner{min-height:clamp(88px,13svh,112px);padding:clamp(10px,2.2svh,18px) clamp(18px,2vw,30px)}
+ .home-banner-mark{width:clamp(42px,7svh,54px);height:clamp(42px,7svh,54px)}
+ .home-banner h2{font-size:clamp(22px,4svh,29px)}
+ .dashboard-stats .stat{padding:clamp(9px,1.6svh,13px) clamp(11px,1.5vw,17px) clamp(7px,1.3svh,11px)}
+ .dashboard-stats .stat-value{margin:clamp(5px,1.1svh,9px) 0 3px}
+ .panel.nutrition-meter{padding:clamp(10px,1.8svh,15px) clamp(14px,1.8vw,20px)}
+ .nutrition-meter .meter-heading{margin-bottom:clamp(6px,1.3svh,10px)}
+ .nutrition-meter .target-note{margin-top:clamp(7px,1.2svh,11px);font-size:11px;line-height:1.4}
 }
 
 @media(max-width:850px){
- .home-banner{min-height:0;margin-bottom:clamp(8px,1.7svh,16px);padding:clamp(8px,1.55svh,13px) clamp(10px,3.3vw,16px);gap:clamp(8px,2.4vw,12px)}
+ .app.home-view .main{padding-bottom:calc(68px + env(safe-area-inset-bottom))}
+ .dashboard-overview{gap:clamp(9px,2.2svh,20px)}
+ .home-banner{min-height:clamp(72px,12svh,112px);margin:0;padding:clamp(8px,1.55svh,13px) clamp(10px,3.3vw,16px);gap:clamp(8px,2.4vw,12px)}
  .home-banner-mark{width:clamp(32px,8vw,42px);height:clamp(32px,8vw,42px);border-radius:clamp(10px,3vw,14px)}
  .home-banner-mark .icon svg{width:clamp(18px,5vw,22px);height:clamp(18px,5vw,22px)}
  .home-banner .eyebrow{margin-bottom:clamp(1px,.35svh,3px);font-size:clamp(7px,2.1vw,9px);letter-spacing:clamp(.7px,.3vw,1.4px)}
@@ -1026,12 +1035,13 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
  .home-banner-actions{gap:clamp(3px,1vw,6px);margin-top:clamp(4px,1svh,8px)}
  .home-banner-actions .btn{min-height:clamp(28px,4svh,34px);padding:clamp(5px,.8svh,7px) clamp(7px,2vw,11px);font-size:clamp(9px,2.6vw,11px)}
  .home-banner-actions .home-banner-date-link{margin:0 2px;padding:clamp(4px,.7svh,5px) 2px;font-size:clamp(9px,2.4vw,10px)}
- .dashboard-mobile-stats{gap:clamp(6px,2vw,10px);margin-bottom:clamp(8px,1.6svh,14px)}
+ .home-banner-date-link{margin-top:clamp(4px,.7svh,7px)}
+ .dashboard-mobile-stats{gap:clamp(6px,2vw,10px);margin:0}
  .dashboard-mobile-stat{padding:clamp(8px,1.4svh,13px) clamp(8px,2.4vw,12px) clamp(7px,1.2svh,11px)}
  .dashboard-mobile-stat-value{margin:clamp(5px,1svh,9px) 0 2px;font-size:clamp(20px,5.9vw,23px)}
  .dashboard-mobile-stat>progress{margin:clamp(5px,1svh,9px) 0 clamp(4px,.8svh,7px)}
  .streak-marks{margin:clamp(4px,.9svh,8px) 0 clamp(3px,.7svh,6px)}
- .panel.nutrition-meter{margin-top:clamp(8px,1.5svh,14px);padding:clamp(11px,1.7svh,18px) clamp(12px,3.5vw,20px)}
+ .panel.nutrition-meter{margin:0;padding:clamp(11px,1.7svh,18px) clamp(12px,3.5vw,20px)}
  .nutrition-meter .meter-heading{margin-bottom:clamp(7px,1.5svh,14px)}
  .nutrition-mobile-view{grid-template-columns:minmax(72px,clamp(72px,22vw,96px)) minmax(0,1fr);gap:clamp(8px,2.4vw,13px)}
  .nutrition-calorie-ring{width:clamp(72px,22vw,96px)}
@@ -1042,19 +1052,13 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
  .nutrition-mobile-macro strong{font-size:clamp(8px,2.2vw,9px)}
  .nutrition-mobile-macro progress{margin-top:clamp(3px,.6svh,4px)}
  .nutrition-meter .target-note{margin:clamp(7px,1.2svh,12px) 0 0;font-size:clamp(9px,2.3vw,10px);line-height:1.35}
- .nutrition-meter+.dashboard-menu{margin-top:clamp(10px,2.6svh,22px)}
- .dashboard-menu-heading{gap:clamp(8px,2vw,14px);margin-bottom:clamp(7px,1.3svh,14px)}
- .dashboard-menu-heading h1{margin-bottom:clamp(2px,.5svh,4px);font-size:clamp(21px,5.9vw,23px);line-height:1.12}
- .dashboard-menu-heading p{font-size:clamp(10px,2.8vw,12px);line-height:1.35}
- .day-summary{margin:clamp(8px,1.5svh,15px) 0;padding:clamp(9px,1.4svh,13px) clamp(10px,3vw,13px)}
- .day-summary h3{font-size:clamp(13px,3.8vw,15px)}
- .day-summary p{font-size:clamp(10px,2.8vw,12px)}
- .meal-grid{gap:clamp(7px,1.2svh,9px)}
 }
 
 @media(max-width:850px) and (max-height:760px){
  .topbar{margin-bottom:clamp(7px,1.4svh,12px)}
- .home-banner p,.dashboard-menu-heading p{display:none}
+ .home-banner p{display:none}
+ .dashboard-overview{gap:clamp(7px,1.6svh,12px)}
  .home-banner-actions{margin-top:clamp(3px,.7svh,6px)}
- .dashboard-menu .day-summary h3{display:none}
+ .dashboard-mobile-stat-note{font-size:9px;line-height:1.25}
+ .nutrition-meter .target-note{font-size:9px;line-height:1.25}
 }
