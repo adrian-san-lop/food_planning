@@ -144,7 +144,7 @@ h1,h2,h3,p{margin-top:0}
 .meal-type{display:inline-flex;align-items:center;gap:6px;font-size:10px;text-transform:uppercase;letter-spacing:1.15px;font-weight:800;color:var(--orange)}
 .meal-type .icon svg{width:15px;height:15px;stroke-width:1.8}
 .meal-check{width:28px;height:28px;border:1px solid #cad9ce;background:white;border-radius:50%;display:grid;place-items:center;color:#b8c6b9;flex:none}
-.meal-check.checked{color:white;background:var(--accent);border-color:var(--accent)}
+.meal-check.checked{color:white;background:var(--accent);border-color:var(--accent-dark)}
 .meal-card h3{font-size:15px;margin:5px 0 7px;line-height:1.3;letter-spacing:-.2px}
 .meal-meta{color:var(--muted);font-size:11px;display:flex;gap:11px;align-items:center;flex-wrap:wrap;margin-top:auto}
 .meal-meta b{color:var(--ink-soft)}
