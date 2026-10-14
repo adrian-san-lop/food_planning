@@ -3,7 +3,7 @@
 - **Fecha:** 14 de octubre de 2026
 - **Estado:** Aceptada e implementada localmente
 - **Alcance:** resumen, menú de hoy y cabecera del día en Inicio y Menú
-- **Relación:** reemplaza parcialmente ADR-0030; conserva el orden diario de ADR-0019 y los KPI móviles de ADR-0028.
+- **Relación:** reemplaza parcialmente ADR-0030; conserva el orden diario de ADR-0019 y los indicadores móviles definidos en ADR-0028.
 
 ## Contexto
 
@@ -19,6 +19,6 @@ Inicio debe enseñar con claridad el progreso diario sin que el encabezado del m
 ## Consecuencias
 
 - El encabezado «Menú de hoy» no aparece parcialmente en el primer pantallazo, pero sigue accesible en Inicio al desplazarse.
-- Los KPI móviles siguen en dos columnas; el resumen nutricional conserva el anillo calórico y las barras de macronutrientes.
+- En móvil, los KPI de comidas semanales y racha se muestran en tarjetas apiladas, a ancho completo, con tipografía e iconos legibles. El resumen nutricional conserva el anillo calórico y las barras de macronutrientes.
 - La lista de comidas ocupa todo el ancho disponible y mantiene el estado y las acciones existentes.
 - Hay que revisar en navegador alturas cortas y anchos móviles antes de publicar.
