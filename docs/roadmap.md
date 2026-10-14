@@ -5,7 +5,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 ## Estado actual
 
 - La app se publica como sitio estático. Los datos personales se mantienen por cuenta y `localStorage` conserva una copia de trabajo; el buzón compartido de propuestas se guarda aparte en tablas relacionales de Supabase.
-- El estado local actual es v8; admite importaciones v5-v8. Las sesiones realizadas se guardan con fecha.
+- El estado local actual es v8; las instalaciones existentes migran estados locales v5-v8. Las sesiones realizadas se guardan con fecha y no hay restauración personal desde archivo.
 - Los catálogos JSON están en versión 0.8.0 (90 alimentos, 112 recetas y 543 referencias de ingredientes), tienen JSON Schema y se cargan desde los módulos de la app. La primera exportación de propuestas añadió dos alimentos y cuatro recetas revisadas; la actualización 0.8.0 incorpora Ensalada templada de gulas y cinco alimentos nuevos. Las recetas pesan frutas/verduras enteras en gramos; inventario y compras las cuentan por unidades. Recuperación ósea usa etiquetas cualitativas de alimentos para favorecer fuentes de calcio, vitamina D y vitamina C en propuestas futuras. Las recetas no usan fotografías de platos.
 - La app genera, permite revisar y guardar un menú para el siguiente ciclo; el menú fijo actual permanece como ciclo inicial.
 - El esquema personal existente de Supabase tiene trece tablas con RLS. La octava migración de conflictos HTTP 409 sigue pendiente. El propietario informa que la novena migración del buzón de recetas y la asignación del admin ya se aplicaron. La exportación JSON admin está en la rama local y aún debe publicarse y validarse. Los snapshots tienen retención indefinida y no se purgan automáticamente; revisar el crecimiento global y por tabla al añadir usuarios y alrededor de 350 MB.
@@ -38,13 +38,13 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - Método de Auth aceptado en ADR-0009: correo + contraseña, registro libre y sin confirmación del correo. Auth y el cliente HTML están configurados; la migración transaccional/idempotente de sincronización está aplicada.
 - Prueba de aislamiento con dos usuarios: pendiente; debe cubrir lectura, inserción y referencias cruzadas con cuentas reales.
 - Publicar el HTML para activar la sincronización y permitir el traspaso inicial v8 desde el navegador que contiene los datos.
-- Comprobar en PC/móvil la conciliación automática de cambios independientes y simultáneos, los errores de conexión, el borrado de sesiones y la restauración confirmada antes de declarar validada la sincronización.
+- Comprobar en PC/móvil la conciliación automática de cambios independientes y simultáneos, los errores de conexión, el borrado de sesiones y el reinicio total confirmado antes de declarar validada la sincronización.
 
 ### E. Compra, inventario y robustez
 
 - Mantener una fuente de verdad clara para saldos y movimientos.
 - Revisar compras por envase, ajustes, consumos externos y reversos idempotentes.
-- Revisar accesibilidad, móvil, fechas locales, restauración de datos y experiencia de recuperación.
+- Revisar accesibilidad, móvil, fechas locales, continuidad de datos y experiencia de recuperación.
 
 ### F. Buzón compartido de propuestas de recetas — migración aplicada según el propietario; publicación y validación pendientes
 

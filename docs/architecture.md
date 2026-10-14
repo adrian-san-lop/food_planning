@@ -48,7 +48,7 @@ El cliente de Supabase se carga desde jsDelivr con la versión exacta `@supabase
 - Las sesiones se registran después de realizarse. Su energía neta estimada se aplica solo a la fecha de la sesión y a comidas aún pendientes; no cambia días futuros ni cantidades ya registradas.
 - Supabase conserva identidad en `auth.users` y los datos personales en sus tablas relacionales con RLS. El perfil se guarda en `profiles`; las credenciales no se copian a tablas públicas.
 - La migración `20261011120000_menuki_cloud_sync.sql` añade la operación transaccional e idempotente de sincronización, control de revisión para evitar sobrescribir cambios recientes y metadatos de ciclos/sesiones. La migración `20261011150000_profile_confirmation.sql` añade la confirmación del perfil y actualiza la sincronización para guardarla sin borrar una confirmación al recibir clientes antiguos. No se almacena el estado completo como JSON en una columna.
-- Reiniciar toda la cuenta o restaurar una copia JSON requiere una confirmación específica y usa `reset_menuki_state`, que reemplaza las filas propias en la misma transacción. Si la revisión cambia antes de que se ejecute una acción ya confirmada, el cliente actualiza la revisión y reintenta esa acción; esta vía no participa en la conciliación habitual.
+- El reinicio total requiere una confirmación específica y usa reset_menuki_state, que reemplaza las filas propias en la misma transacción. Si la revisión cambia antes de ejecutar la acción confirmada, el cliente actualiza la revisión y reintenta; el reinicio queda fuera de la conciliación habitual.
 - El primer acceso de una cuenta sin inicializar importa su estado local una sola vez. Los dispositivos siguientes leen el estado remoto. No hay cola offline; la app requiere conexión para sincronizar y muestra cuándo conserva cambios locales pendientes.
 - Los snapshots de ingredientes mantienen retención indefinida y no se purgan automáticamente. Vigilar el crecimiento de la base al añadir usuarios, con revisión alrededor de 350 MB.
 
@@ -102,12 +102,12 @@ Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es co
 ## Migración y recuperación
 
 - Supabase sincroniza la cuenta entre dispositivos cuando hay conexión. Al detectar una revisión nueva, el cliente carga el estado remoto y combina cualquier cambio local pendiente. Si una petición falla, la copia local se conserva y la interfaz permite reintentar. No hay cola offline.
-- Aceptar v5 como primer archivo importable y v8 como estado actual; admitir v5-v8, sin importar v1-v4. Tratar el stock v5 como saldo de apertura y no sumar otra vez sobre él compras/comidas que ya estén reflejadas. Al actualizar v5, convertir las cantidades antiguas en gramos a unidades de inventario; al actualizar v6/v7, conservar movimientos y stock, y convertir los snapshots históricos de consumo a unidades de receta.
-- La restauración de JSON personales es distinta de los catálogos de GitHub. No subir datos personales al repositorio.
+- Mantener la lectura y migración de estados locales v5-v8, con v8 como estado actual. No se ofrecen importación ni restauración personal desde archivo; no se añaden migraciones v1-v4. Tratar el stock v5 como saldo de apertura y no sumar otra vez sobre él compras/comidas que ya estén reflejadas. Al actualizar v5, convertir las cantidades antiguas en gramos a unidades de inventario; al actualizar v6/v7, conservar movimientos y stock, y convertir los snapshots históricos de consumo a unidades de receta.
+- La app no permite importar ni restaurar archivos JSON de estado personal. Los catálogos JSON del repositorio contienen datos genéricos y no deben incluir datos personales.
 
 ## Versiones y operación
 
-- El estado personal actual es v8; v5 es el primer formato de importación admitido. Se aceptan v5-v8; no implementar migraciones desde v1-v4.
+- El estado personal actual es v8; las instalaciones existentes pueden migrar estados locales v5-v8. No implementar migraciones desde v1-v4 ni ofrecer restauración personal JSON.
 - Los catálogos tienen versión propia (`catalogVersion`, actualmente `0.8.0`), independiente de la versión del estado personal. Incluyen 90 alimentos, 112 recetas y 543 referencias de ingredientes y se cargan desde JSON. `food.unit` expresa inventario/compra y `food.recipeUnit` la unidad de receta. `recoveryTags` son marcadores cualitativos para selección de menú, no valores medidos de micronutrientes. Las recetas no contienen claves ni fotografías de platos.
 - La app requiere conexión y no mantiene cola offline. No afirmar que un cambio se guardó remotamente hasta que la función RPC responda con éxito.
 - La vista de planificación permite proponer, editar, bloquear, regenerar y confirmar el menú del siguiente ciclo. La propuesta y el menú se sincronizan en `plan_cycles` y `planned_meals`.

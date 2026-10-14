@@ -31,8 +31,8 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 - Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
 - Aplicar la octava migración pendiente desde SQL Editor. La novena y la asignación admin ya se ejecutaron según el propietario.
 - Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` en SQL Editor para corregir la limpieza global; después comprobar que elimina las propuestas y sus filas hijas. La edición y el borrado individual ya funcionan según el propietario. Sigue pendiente validar el aislamiento con una cuenta normal y la limpieza global en la web publicada.
-- Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y restauración desde una copia confirmada.
-- Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
+- Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y el reinicio total confirmado.
+- Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de cambios grandes de uso. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?
 - ¿Qué navegadores y dispositivos se validarán antes de declarar lista la sincronización?
 

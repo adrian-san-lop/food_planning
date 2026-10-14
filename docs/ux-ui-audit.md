@@ -152,6 +152,6 @@ Marcar con claridad qué comidas son futuras y cuáles ya se pueden registrar. E
 - Verificar en dos dispositivos que los cambios independientes se combinan, que el valor remoto prevalece cuando ambos cambian el mismo campo y que el borrado de una sesión llega al otro dispositivo.
 - Confirmar que una comida futura no se puede registrar desde Inicio, el menú semanal ni el detalle de receta y que el control se habilita cuando llega la fecha.
 - Probar en un teléfono físico la búsqueda, el contador, el botón fijo de compra, el menú **Más** y las áreas seguras.
-- Verificar que la revisión remota se actualiza automáticamente, que **Reintentar** aparece solo tras un error y que reinicio/restauración siguen requiriendo confirmación.
+- Verificar que la revisión remota se actualiza automáticamente, que **Reintentar** aparece solo tras un error y que el reinicio total sigue requiriendo confirmación. La restauración personal desde JSON se retiró de la interfaz.
 
 La auditoría original describe observaciones de la interfaz publicada el 11 de octubre de 2026. Las mejoras indicadas y la actualización de conciliación e historial están en la copia local; quedan pendientes su publicación y las comprobaciones en dispositivos reales.

@@ -1,6 +1,6 @@
 # Requisitos del producto
 
-Estado de referencia: 13 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
+Estado de referencia: 14 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
 
 ## Propósito y usuarios
 
@@ -20,7 +20,7 @@ La posibilidad de combinar los gustos de varias personas en un menú común sigu
 - Recetas, instrucciones y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas. La aplicación no muestra fotografías de platos.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
 - Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; historial accesible desde **Actividad** en la barra inferior del móvil y desde **Actividad y peso** en escritorio. Cada sesión se puede eliminar de forma individual; el historial muestra 12 filas inicialmente y permite cargar más.
-- Estado de trabajo en `localStorage` y sincronización automática autenticada con Supabase. Se pueden restaurar archivos JSON v5-v8; no hay recordatorio periódico de copia.
+- Estado de trabajo en localStorage y sincronización automática autenticada con Supabase. Las instalaciones existentes conservan la migración de estados locales v5-v8; no hay restauración personal JSON desde la interfaz ni recordatorio periódico de copia.
 - En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Actividad; Perfil, Despensa, Recetas y Guía están bajo **Más**. El logo permanece en una barra superior fija con fondo diferenciado; el correo y el cierre de sesión están en Perfil. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
 - Inventario negativo permitido cuando se registra una comida que supera las existencias; se muestra el faltante y desmarcar la comida revierte el consumo.
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
@@ -114,5 +114,5 @@ Estos principios están aceptados. Las puntuaciones, umbrales y cantidades míni
 
 - Los catálogos son datos genéricos; no deben contener perfiles, pesos, preferencias personales, despensa, comidas completadas ni copias de seguridad.
 - GitHub Pages es alojamiento estático y de acceso público. Los datos personales no se guardan en el repositorio; Supabase los separa por `auth.uid()` y RLS. `localStorage` es una copia de trabajo, no la sincronización entre dispositivos.
-- No añadir colas offline, avisos en segundo plano ni notificaciones push. La sincronización se inicia automáticamente al guardar cambios y al detectar una revisión remota nueva; la interfaz solo ofrece reintento cuando falla. Reinicio total y restauración JSON conservan su confirmación explícita y usan el RPC de reemplazo; no participan en la conciliación habitual entre dispositivos.
+- No añadir colas offline, avisos en segundo plano ni notificaciones push. La sincronización se inicia automáticamente al guardar cambios y al detectar una revisión remota nueva; la interfaz solo ofrece reintento cuando falla. El reinicio total conserva su confirmación explícita y usa el RPC de reemplazo; no participa en la conciliación habitual entre dispositivos. La restauración personal desde JSON ya no está disponible.
 - El inicio de sesión y la sincronización relacional están implementados en el HTML y el esquema. La publicación del HTML actualizado, la prueba RLS con dos cuentas y la verificación PC/móvil siguen pendientes; véase [arquitectura](../architecture.md).
