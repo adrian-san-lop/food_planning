@@ -82,7 +82,7 @@ function mergePlan(base, local, remote) {
   if (same(remote, base)) return clone(local);
   if (![base, local, remote].every((plan) => plan && typeof plan === 'object' && !Array.isArray(plan))) return clone(remote);
 
-  const stableFields = ['active', 'start', 'catalogVersion', 'generatedAt'];
+  const stableFields = ['active', 'cycleId', 'start', 'catalogVersion', 'generatedAt'];
   if (!stableFields.every((field) => same(base[field], local[field]) && same(base[field], remote[field]))) return clone(remote);
 
   const merged = mergeValue(base, local, remote);
@@ -167,12 +167,21 @@ function mergeWeights(baseValues, localRows, remoteRows, deletedDates) {
   return { rows: [...merged.values()].sort((a, b) => a.date.localeCompare(b.date)), deletedDates: pendingDeletes };
 }
 
-function archiveKey(cycle) {
-  return [cycle?.start, cycle?.catalogVersion, JSON.stringify(cycle?.menus || [])].join('|');
-}
-
 function mergeArchives(baseRows, localRows, remoteRows) {
-  const toMap = (rows) => new Map((rows || []).filter(Boolean).map((row) => [archiveKey(row), row]));
+  const signature = (cycle) => [cycle?.start, cycle?.catalogVersion, JSON.stringify(cycle?.menus || [])].join('|');
+  const allRows = [...(baseRows || []), ...(localRows || []), ...(remoteRows || [])].filter(Boolean);
+  const idsBySignature = new Map();
+  for (const row of allRows) {
+    if (!row.cycleId) continue;
+    const key = signature(row);
+    if (!idsBySignature.has(key)) idsBySignature.set(key, new Set());
+    idsBySignature.get(key).add(row.cycleId);
+  }
+  const toMap = (rows) => new Map((rows || []).filter(Boolean).map((row) => {
+    const knownIds = idsBySignature.get(signature(row));
+    const normalized = !row.cycleId && knownIds?.size === 1 ? { ...row, cycleId: [...knownIds][0] } : row;
+    return [normalized.cycleId ? `id:${normalized.cycleId}` : `legacy:${signature(normalized)}`, normalized];
+  }));
   const base = toMap(baseRows);
   const local = toMap(localRows);
   const remote = toMap(remoteRows);
@@ -189,6 +198,7 @@ function mergeableState(state = {}) {
     profile: state.profile || {},
     profileConfirmed: state.profileConfirmed === true,
     noActiveCycle: state.noActiveCycle === true,
+    activeCycleId: state.activeCycleId || null,
     start: state.start,
     activeMenus: state.activeMenus || null,
     activeMenuCatalogVersion: state.activeMenuCatalogVersion || null,
@@ -229,11 +239,12 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   const remote = mergeableState(remoteState);
   const result = JSON.parse(JSON.stringify(remoteState));
   const activePlan = mergePlan(
-    { active: !base.noActiveCycle, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus },
-    { active: !local.noActiveCycle, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus },
-    { active: !remote.noActiveCycle, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus },
+    { active: !base.noActiveCycle, cycleId: base.activeCycleId, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus },
+    { active: !local.noActiveCycle, cycleId: local.activeCycleId, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus },
+    { active: !remote.noActiveCycle, cycleId: remote.activeCycleId, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus },
   );
   result.start = activePlan?.start ?? remote.start;
+  result.activeCycleId = activePlan?.cycleId ?? null;
   result.activeMenus = activePlan?.menus ?? null;
   result.activeMenuCatalogVersion = activePlan?.catalogVersion ?? null;
   result.activeMenuGeneratedAt = activePlan?.generatedAt ?? null;
