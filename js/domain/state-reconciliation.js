@@ -206,6 +206,7 @@ function mergeableState(state = {}) {
     activeMenuConfirmedAt: state.activeMenuConfirmedAt || null,
     activeMenuRecoveryFocus: state.activeMenuRecoveryFocus === true,
     done: state.done || {},
+    reversedDone: state.reversedDone || {},
     legacyStrengthDays: state.legacyStrengthDays || {},
     prep: state.prep || {},
     archives: state.archives || [],
@@ -223,13 +224,26 @@ export function createReconciliationBase(state) {
 
 function canonicalCompletions(state) {
   const completed = new Map();
+  const add = (sourceId, entry) => {
+    if (!entry?.operationId || !sourceId) return;
+    const key = String(sourceId);
+    if (!completed.has(key)) completed.set(key, new Set());
+    completed.get(key).add(String(entry.operationId));
+  };
   const collect = entries => {
     for (const [sourceId, entry] of Object.entries(entries || {})) {
-      if (entry?.operationId) completed.set(sourceId, String(entry.operationId));
+      add(sourceId, entry);
     }
   };
+  const collectReversed = entries => {
+    for (const entry of Object.values(entries || {})) add(entry?.mealKey, entry);
+  };
+  for (const archive of state.archives || []) {
+    collect(archive?.done);
+    collectReversed(archive?.reversedDone);
+  }
+  collectReversed(state.reversedDone);
   collect(state.done);
-  for (const archive of state.archives || []) collect(archive?.done);
   return completed;
 }
 
@@ -239,9 +253,9 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   const remote = mergeableState(remoteState);
   const result = JSON.parse(JSON.stringify(remoteState));
   const activePlan = mergePlan(
-    { active: !base.noActiveCycle, cycleId: base.activeCycleId, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus },
-    { active: !local.noActiveCycle, cycleId: local.activeCycleId, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus },
-    { active: !remote.noActiveCycle, cycleId: remote.activeCycleId, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus },
+    { active: !base.noActiveCycle, cycleId: base.activeCycleId, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus, reversedDone: base.reversedDone },
+    { active: !local.noActiveCycle, cycleId: local.activeCycleId, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus, reversedDone: local.reversedDone },
+    { active: !remote.noActiveCycle, cycleId: remote.activeCycleId, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus, reversedDone: remote.reversedDone },
   );
   result.start = activePlan?.start ?? remote.start;
   result.activeCycleId = activePlan?.cycleId ?? null;
@@ -250,6 +264,7 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   result.activeMenuGeneratedAt = activePlan?.generatedAt ?? null;
   result.activeMenuConfirmedAt = activePlan?.confirmedAt ?? null;
   result.activeMenuRecoveryFocus = activePlan?.recoveryFocus === true;
+  result.reversedDone = activePlan?.reversedDone || {};
   result.profile = mergeValue(base.profile, local.profile, remote.profile);
   result.profileConfirmed = mergeValue(base.profileConfirmed, local.profileConfirmed, remote.profileConfirmed);
   // Cycle existence must follow the same winning value as its date and menu.
@@ -270,13 +285,13 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   result.movements = mergeRowsByKey([], localState.movements, remoteState.movements, 'operationId')
     .filter((move) => {
       if (!move?.sourceId) return true;
-      const winner = winningCompletions.get(move.sourceId);
-      if (!winner) return true;
+      const winners = winningCompletions.get(move.sourceId);
+      if (!winners?.size) return true;
       const operationId = String(move.operationId || '');
       const rootOperationId = operationId.startsWith('revert:')
         ? operationId.slice(7).replace(new RegExp(`:${move.foodId}$`), '')
         : operationId.replace(new RegExp(`:${move.foodId}$`), '');
-      return rootOperationId === winner;
+      return winners.has(rootOperationId);
     })
     .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
   const activity = mergeActivitySessions(options.baseActivityIds, localState.activitySessions, remoteState.activitySessions, options.remoteActivityIds, localState.deletedActivitySessionIds);

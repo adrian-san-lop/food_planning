@@ -23,6 +23,7 @@ Last updated: 2026-10-13. This file is a short handoff index, not the full produ
 - Recipe submissions are raw ideas, not catalog entries: authenticated users submit type, name, free-text ingredients, and ordered steps. Amounts and nutrition are intentionally omitted. Admins can edit or delete one proposal through admin-only RPCs, then download a privacy-minimized, versioned JSON package and use a repository-connected Codex chat to enrich the remaining proposals. The owner reports that migration `20261013170000_recipe_proposal_admin_maintenance.sql` is applied and individual deletion works. Bulk purge needs migration `20261013180000_recipe_proposal_purge_where_clause.sql` after Supabase rejected `DELETE` without a WHERE clause.
 - Four initial planning principles are accepted. Exact scoring thresholds, dislike handling, and multi-person preference aggregation are not decided. See the planner specification and open questions.
 - Activity sessions are entered after they happen. Net estimated energy `(MET - 1) × weight_kg × duration_hours` affects only uncompleted meals on that date. Completed quantities stay fixed; the remaining daily target is distributed across the meals still pending, primarily through carbohydrates. Future dates use the base goal; history does not automatically learn or alter a routine. The manual-activity-summary idea remains open. See decision ADR-0005.
+- Selecting a start date with an archived cycle reactivates its existing cycle ID and menu. Menuki reverses its unreversed meal completions through compensating pantry movements, retains the completion and reversal history, and opens the meals as pending again. See ADR-0027.
 
 ## Data and safety rules
 
@@ -58,6 +59,7 @@ Last updated: 2026-10-13. This file is a short handoff index, not the full produ
 - [First-use and meal-registration decision](docs/decisions/0011-first-use-profile-and-meal-registration.md): profile review and future meal handling.
 - [Daily home and menu navigation decision](docs/decisions/0019-daily-home-and-menu-navigation.md): daily-only Inicio, week/day navigation in Menú, and the generic supermarket label in Compra.
 - [No-active-cycle recovery decision](docs/decisions/0024-no-active-cycle-recovery.md): keep the app available and ask for a cycle start date across all pages.
+- [Cycle date reuse and meal reversal decision](docs/decisions/0027-cycle-date-reuse-and-meal-reversal.md): reuse archived cycles and automatically unmark their meal completions.
 - [First-use quick guide decision](docs/decisions/0025-first-use-quick-guide.md): optional three-step onboarding from Inicio and Guía, reusing existing profile and cycle-date flows.
 - [Mobile profile account and toolbar decision](docs/decisions/0026-mobile-profile-account-toolbar.md): move email/sign-out to Perfil and keep a branded sticky toolbar on narrow screens.
 - [Mobile shopping and sync interface decision](docs/decisions/0012-mobile-shopping-and-sync-ui.md): automatic sync retry, mobile purchase flow, pantry labels, and grouped navigation.
