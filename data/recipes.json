@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.7.0",
-  "source": "Existing recipes from menuki.html plus curated generic recipes using catalog foods. Version 0.7.0 incorporates four reviewed recipes from the first admin proposal export.",
-  "status": "Catálogo 0.7.0: 111 recetas y 531 referencias de ingredientes, con cantidades base para una persona; la app adapta las raciones al perfil y a la actividad real registrada por fecha.",
+  "catalogVersion": "0.8.0",
+  "source": "Existing recipes from menuki.html plus curated generic recipes using catalog foods. Version 0.8.0 adds Ensalada templada de gulas as a one-person recipe.",
+  "status": "Catálogo 0.8.0: 112 recetas y 543 referencias de ingredientes, con cantidades base para una persona; la app adapta las raciones al perfil y a la actividad real registrada por fecha.",
   "recipes": [
     {
       "id": "yogur_platano",
@@ -4452,6 +4452,83 @@
         "Coloca las alitas y el boniato en una bandeja y hornea unos 35-40 minutos, dándoles la vuelta a mitad de cocción. Comprueba que la parte más gruesa de las alitas alcanza 74 °C."
       ],
       "tip": "Los 300 g de alitas se pesan con hueso; su aporte nutricional usa un rendimiento comestible aproximado.",
+      "description": ""
+    },
+    {
+      "id": "ensalada_templada_gulas",
+      "name": "Ensalada templada de gulas",
+      "mealType": "cena",
+      "baseServings": 1,
+      "timeMinutes": 15,
+      "ingredients": [
+        {
+          "foodId": "gulas",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "lettuce",
+          "amount": 80,
+          "unit": "g"
+        },
+        {
+          "foodId": "carrot",
+          "amount": 100,
+          "unit": "g"
+        },
+        {
+          "foodId": "onion",
+          "amount": 180,
+          "unit": "g"
+        },
+        {
+          "foodId": "garlic",
+          "amount": 3,
+          "unit": "g"
+        },
+        {
+          "foodId": "cayenne",
+          "amount": 0.5,
+          "unit": "g"
+        },
+        {
+          "foodId": "beetroot",
+          "amount": 50,
+          "unit": "g"
+        },
+        {
+          "foodId": "avocado",
+          "amount": 75,
+          "unit": "g"
+        },
+        {
+          "foodId": "curedCheese",
+          "amount": 20,
+          "unit": "g"
+        },
+        {
+          "foodId": "freshMozzarella",
+          "amount": 60,
+          "unit": "g"
+        },
+        {
+          "foodId": "oliveoil",
+          "amount": 5,
+          "unit": "g"
+        },
+        {
+          "foodId": "vinegar",
+          "amount": 5,
+          "unit": "ml"
+        }
+      ],
+      "steps": [
+        "Saltea las gulas en una sartén con el ajo troceado y la cayena entera hasta que estén calientes.",
+        "Trocea el cogollo o la lechuga, la cebolla dulce, la zanahoria, el aguacate, el queso curado y la mozzarella.",
+        "Pon todo en un bol junto con la remolacha y las gulas cocinadas.",
+        "Aliña al gusto con el aceite de oliva virgen extra, el vinagre y sal."
+      ],
+      "tip": "Las cantidades son para una ración: se estima la media bandeja como 100 g (envase catalogado de 200 g), medio aguacate como 75 g y las cantidades de lechuga, remolacha y quesos como aproximaciones. La cayena se pesa de forma aproximada; puedes retirarla al servir.",
       "description": ""
     }
   ]
