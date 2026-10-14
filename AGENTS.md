@@ -9,6 +9,11 @@ These instructions apply to the whole repository.
 - Check the active branch and working-tree status first. Preserve existing user changes and follow the Git workflow below when starting a new task.
 - Distinguish implemented behavior from accepted design decisions, proposals, and open questions.
 
+## Repository skills
+
+- Read and follow `.codex/landing-page-audit/SKILL.md` when asked to audit, review, or critique a landing page's visual design or conversion, or when given its URL, screenshot, or page component for design feedback. For Menuki's public homepage, the page is `index.html`.
+- The skill checks visual design and landing-page fundamentals, then returns specific, rule-backed findings grouped by severity. It can compare sections with Landingfolio examples when the MCP is available; otherwise use its rules-only workflow. It does not cover copywriting, accessibility, SEO, performance, or code quality. Keep an audit read-only unless the owner asks to implement fixes.
+
 ## Git workflow
 
 - Work in the existing repository checkout. Do not create or use Git worktrees for repository tasks.
