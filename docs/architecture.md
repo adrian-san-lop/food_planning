@@ -7,12 +7,14 @@ Estado de referencia: 13 de octubre de 2026. El propietario informa que la noven
 ```text
 Navegador
   └── GitHub Pages / HTML estático
-        ├── index.html (redirección relativa)
+        ├── index.html (landing pública responsive)
         ├── menuki.html (shell HTML)
         ├── assets/
-        │     └── css/app.css (estilos)
+        │     ├── css/app.css (estilos de la aplicación)
+        │     └── css/landing.css (landing pública)
         ├── js/
         │     ├── main.js (entrada ES; UI y orquestación restante)
+        │     ├── landing.js (interacciones de la landing pública)
         │     ├── ui/html.js (escape HTML y validación de URL por origen permitido)
         │     ├── domain/dates.js (fecha civil Europe/Madrid)
         │     ├── domain/inventory-units.js (conversiones de unidades)
@@ -29,7 +31,7 @@ Supabase Auth + PostgreSQL con RLS (servicio externo)
 
 El cliente de Supabase se carga desde jsDelivr con la versión exacta `@supabase/supabase-js@2.117.3`. Las pruebas automatizadas usan Node integrado; no añaden una dependencia de ejecución a la web publicada.
 
-- `index.html` está en la raíz de publicación de GitHub Pages y redirige de forma relativa al shell `menuki.html`, también en la raíz. El shell carga CSS y JavaScript mediante rutas relativas.
+- `index.html` es la landing pública en la raíz de GitHub Pages; `menuki.html` conserva el shell autenticado. La navegación de registro abre `menuki.html?auth=signup`, que preselecciona el formulario existente de Supabase Auth. La landing usa rutas relativas, una cabecera fija, diseño responsive y movimiento reducido cuando así lo prefiere el dispositivo.
 - La primera etapa reunió en una hoja los estilos de los ocho bloques `<style>` y convirtió el bloque de aplicación en un módulo ES. `assets/css/app.css` organiza base, shell, controles y vistas, y concentra las reglas responsive al final. Las plantillas de `main.js` ya no generan atributos `style`; los indicadores usan `<progress>`. Las recetas se muestran sin fotografías de platos; las imágenes de marca se mantienen en la interfaz. Vistas, gran parte del dominio y la orquestación de Auth/sincronización siguen en `main.js`.
 - Menuki guarda las fechas civiles como `YYYY-MM-DD`. `today()` resuelve el instante en `Europe/Madrid`; los objetos `Date` que se usan para operar con días representan medianoche UTC y solo son portadores de fecha. Los timestamps siguen siendo instantes ISO y se presentan en la zona de Madrid.
 - `js/data/catalogs.js` carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.

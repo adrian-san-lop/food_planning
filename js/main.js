@@ -74,7 +74,8 @@ const SUPABASE_URL='https://vkcedxvnmbmrmwvanznx.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY='sb_publishable_agL7NqBqKBDiBMUmIw78MQ_rBvvT_Dr';
 const LOCAL_STATE_KEY='mi_plan_saludable_v3_13oct';
 let KEY=LOCAL_STATE_KEY; // La copia de trabajo local se separa por cuenta
-let supabaseClient=null,authMode='login',authBusy=false,authMessage='',authMessageType='info';
+const entryAuthMode=new URLSearchParams(window.location.search).get('auth')==='signup'?'signup':'login';
+let supabaseClient=null,authMode=entryAuthMode,authBusy=false,authMessage='',authMessageType='info';
 let authSessionUserId=null,currentUserId=null,currentUserEmail='',appReadyUserId=null,openingUserId=null;
 const cloudArchivedCyclesByUser=new Map();
 const supabaseTransport=createSupabaseTransport({getClient:()=>supabaseClient,getUserId:()=>currentUserId});
@@ -787,6 +788,7 @@ function activateScheduledCycleIfDue(){if(!state?.nextMenu||state.noActiveCycle)
   document.getElementById('authTitle').textContent=titles[mode]||titles.login;
   document.getElementById('authDescription').textContent=descriptions[mode]||descriptions.login;
   document.getElementById('authTabs').hidden=reset||recovery;
+  document.getElementById('authSiteFooter').hidden=!isSignup;
   document.querySelectorAll('[data-auth-mode]').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.authMode===mode)));
   document.getElementById('authEmailField').hidden=recovery;
   document.getElementById('authPasswordField').hidden=reset;
@@ -828,7 +830,7 @@ function activateScheduledCycleIfDue(){if(!state?.nextMenu||state.noActiveCycle)
   if(event==='PASSWORD_RECOVERY'){passwordRecoveryActive=true;renderAuthScreen('recovery');return}
   if(event==='SIGNED_OUT'){closeAuthenticatedApp();return}
   if(session?.user){authSessionUserId=session.user.id;if(passwordRecoveryActive){renderAuthScreen('recovery');return}openAuthenticatedApp(session.user)}
-  else if(event==='INITIAL_SESSION')renderAuthScreen('login');
+  else if(event==='INITIAL_SESSION')renderAuthScreen(authMode);
  }
  function authErrorMessage(error){const message=String(error?.message||'');if(/invalid login credentials/i.test(message))return'El correo o la contraseña no son correctos.';if(/email not confirmed/i.test(message))return'El proyecto aún solicita confirmar el correo. Desactiva esa opción en Supabase Auth para aplicar la configuración acordada.';if(/user already registered|already been registered/i.test(message))return'Ya existe una cuenta con ese correo. Inicia sesión.';if(/password.*(minimum|least|length)|password should/i.test(message))return'La contraseña no cumple los requisitos configurados en Supabase.';return message?'No se pudo completar la operación: '+message:'No se pudo completar la operación. Comprueba la conexión e inténtalo de nuevo.'}
  async function handleAuthSubmit(event){
@@ -856,11 +858,11 @@ function activateScheduledCycleIfDue(){if(!state?.nextMenu||state.noActiveCycle)
   document.getElementById('authForgot').addEventListener('click',()=>renderAuthScreen('reset',''));
   document.getElementById('authBack').addEventListener('click',()=>{passwordRecoveryActive=false;renderAuthScreen('login')});
   const overlay=document.getElementById('catalogStatus');showLoadingOverlay('Comprobando acceso…','Conectando con Supabase Auth.');
-  const query=new URLSearchParams(location.search),fragment=new URLSearchParams(location.hash.slice(1));passwordRecoveryActive=query.get('type')==='recovery'||fragment.get('type')==='recovery';
-  if(!window.supabase?.createClient){renderAuthScreen('login','No se pudo cargar el servicio de acceso. Comprueba la conexión y vuelve a abrir la página.','error');return}
-  try{supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(error){renderAuthScreen('login','No se pudo iniciar el servicio de acceso. Recarga la página e inténtalo de nuevo.','error');return}
+  const query=new URLSearchParams(location.search),fragment=new URLSearchParams(location.hash.slice(1));authMode=query.get('auth')==='signup'?'signup':'login';passwordRecoveryActive=query.get('type')==='recovery'||fragment.get('type')==='recovery';
+  if(!window.supabase?.createClient){renderAuthScreen(authMode,'No se pudo cargar el servicio de acceso. Comprueba la conexión y vuelve a abrir la página.','error');return}
+  try{supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(error){renderAuthScreen(authMode,'No se pudo iniciar el servicio de acceso. Recarga la página e inténtalo de nuevo.','error');return}
   supabaseClient.auth.onAuthStateChange((event,session)=>{setTimeout(()=>handleAuthStateChange(event,session),0)});
-  supabaseClient.auth.getSession().then(({data,error})=>{if(error)throw error;if(passwordRecoveryActive){renderAuthScreen('recovery');return}if(data.session)return openAuthenticatedApp(data.session.user);renderAuthScreen('login')}).catch(error=>renderAuthScreen('login','No se pudo comprobar la sesión. Comprueba la conexión e inténtalo de nuevo. '+String(error?.message||''),'error'));
+  supabaseClient.auth.getSession().then(({data,error})=>{if(error)throw error;if(passwordRecoveryActive){renderAuthScreen('recovery');return}if(data.session)return openAuthenticatedApp(data.session.user);renderAuthScreen(authMode)}).catch(error=>renderAuthScreen(authMode,'No se pudo comprobar la sesión. Comprueba la conexión e inténtalo de nuevo. '+String(error?.message||''),'error'));
  }
 function plannerCard(){const saved=state.plannerDraft||state.nextMenu,date=saved?.start||nextCycleStart(),label=formatDate(dateFromISO(date),{day:'numeric',month:'long',year:'numeric'}),description=saved?(state.plannerDraft?'Tienes una propuesta sin confirmar.':'El siguiente menú está guardado y se activará al comenzar este ciclo.'):'Prepara ahora una propuesta revisable para las tres semanas siguientes.';return '<section class="planner-card panel"><div><div class="eyebrow">PRÓXIMO CICLO · DESDE '+label.toLocaleUpperCase('es-ES')+'</div><h3>'+ (saved?'Menú preparado':'Genera tu siguiente menú')+'</h3><p>'+description+' La generación usa el catálogo JSON v'+escapeHTML(catalogVersion)+'.</p></div><button class="btn '+(saved?'':'btn-primary')+'" data-action="planner-open">'+(state.plannerDraft?'Continuar revisión':state.nextMenu?'Revisar menú guardado':'Preparar propuesta')+'</button></section>'}
 function cycleStartPanel(){

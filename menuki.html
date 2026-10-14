@@ -13,10 +13,12 @@
 <body>
 <div class="catalog-overlay" id="catalogStatus" role="status" aria-live="polite"><div><strong>Cargando catálogos…</strong><p>La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.</p></div></div>
 <section class="auth-shell" id="authShell" hidden aria-labelledby="authTitle">
- <div class="auth-card">
-  <img class="auth-logo" src="./docs/images/menuki_name_logo.png" alt="Menuki · Mi plan saludable">
+ <div class="auth-layout">
+  <a class="auth-return" href="./index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7"/></svg><span>Volver a Menuki</span></a>
+  <div class="auth-card">
+  <a class="auth-logo-link" href="./index.html" aria-label="Menuki: volver a la página principal"><img class="auth-logo" src="./docs/images/menuki_name_logo.png" alt=""></a>
   <div class="auth-heading"><div class="eyebrow">TU ESPACIO PERSONAL</div><h1 id="authTitle">Accede a Menuki</h1><p id="authDescription">Entra con tu correo y contraseña para abrir la aplicación.</p></div>
-  <div class="auth-local-note"><strong>Sobre tus datos</strong><p>Con conexión, tus menús, despensa y registros se sincronizan con Supabase y quedan asociados a tu cuenta. Si este navegador ya tiene datos y la cuenta aún no está inicializada, se importarán en el primer acceso; en los demás dispositivos se cargarán desde Supabase.</p></div>
+  <!-- <div class="auth-local-note"><strong>Sobre tus datos</strong><p>Con conexión, tus menús, despensa y registros se sincronizan con Supabase y quedan asociados a tu cuenta. Si este navegador ya tiene datos y la cuenta aún no está inicializada, se importarán en el primer acceso; en los demás dispositivos se cargarán desde Supabase.</p></div> -->
   <div class="auth-tabs" id="authTabs" role="tablist" aria-label="Acceso a Menuki"><button type="button" data-auth-mode="login" role="tab" aria-selected="true">Iniciar sesión</button><button type="button" data-auth-mode="signup" role="tab" aria-selected="false">Crear cuenta</button></div>
   <form class="auth-form" id="authForm">
    <label class="auth-field" id="authEmailField" for="authEmail">Correo electrónico<input id="authEmail" name="email" type="email" autocomplete="email" required></label>
@@ -26,6 +28,11 @@
   <div class="auth-links"><button type="button" class="auth-link" id="authForgot">¿Has olvidado la contraseña?</button><button type="button" class="auth-link" id="authBack" hidden>Volver al inicio de sesión</button></div>
   <div class="auth-alert" id="authAlert" role="status" aria-live="polite" hidden></div>
   <p class="auth-foot">Puedes crear una cuenta con correo y contraseña. No se solicita nombre de usuario.</p>
+  </div>
+  <footer class="auth-site-footer" id="authSiteFooter" hidden>
+   <div class="auth-footer-copy"><a class="auth-footer-brand" href="./index.html"><img src="./docs/images/menuki_logo.png" width="30" height="30" alt=""><span>Menuki</span></a><p>Planifica tus comidas, organiza la compra y sigue tu progreso.</p></div>
+   <nav class="auth-footer-links" aria-label="Información de Menuki"><a href="./index.html">Página principal</a><a href="./index.html#como-funciona">Cómo funciona</a></nav>
+  </footer>
  </div>
 </section>
 <div class="app" inert hidden>

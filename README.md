@@ -4,7 +4,8 @@ Aplicación web de planificación nutricional con datos personales aislados por 
 
 ## Estado actual
 
-- `index.html` es la entrada de GitHub Pages y redirige a `menuki.html` en la raíz.
+- `index.html` es la landing pública y responsive de Menuki. La aplicación personal sigue disponible en `menuki.html`.
+- La landing explica el menú de tres semanas, las recetas, la compra, la despensa y el seguimiento. Su cabecera fija ofrece **Mi Área** y **Registrarse**; ambas llevan al formulario de Supabase Auth, que permite volver a la landing. Al elegir registro aparece un footer informativo con enlaces a la portada y a «Cómo funciona». El hero ocupa al menos el alto visible bajo la cabecera, y la sección «Sencillo desde el primer día» comienza al desplazarse.
 - El usuario inicia sesión con Supabase Auth; los datos personales se sincronizan en tablas relacionales y `localStorage` mantiene una copia de trabajo del navegador.
 - En móvil, Inicio prioriza en el primer pantallazo el banner, KPI y progreso nutricional del día; «Menú de hoy» con las comidas actuales aparece al desplazarse. En PC, banner, KPI, nutrición y menú siguen el flujo normal de la página, sin ocupar todo el alto de la pantalla. La navegación por semanas y días sigue en la página Menú.
 - En Inicio hay un acceso a revisar el perfil mientras sus datos sigan pendientes de confirmación y una guía rápida de tres pasos. Guía conserva ese acceso y organiza la explicación completa como un recorrido paso a paso, con las instrucciones de Compra y Despensa al principio.
@@ -70,7 +71,7 @@ Los scripts de commit y publicación mantienen su confirmación interactiva si s
 3. Selecciona la rama `dev` y la carpeta `/(root)`, y guarda.
 4. Espera a que termine la publicación y abre la dirección que muestra GitHub en esa misma sección.
 
-La raíz contiene `index.html`, que es la entrada del sitio, y `menuki.html`, que contiene la aplicación. La redirección es relativa y funciona también cuando GitHub Pages publica el repositorio bajo una subruta. GitHub indica que el archivo de entrada debe estar en la raíz de la carpeta publicada. La página publicada es accesible por Internet, aunque el repositorio sea privado, así que no se deben incluir copias de seguridad ni datos personales en el repositorio. [Crear un sitio de GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) · [Elegir la fuente de publicación](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
+La raíz contiene `index.html`, la landing pública del producto, y `menuki.html`, la aplicación autenticada. La landing usa rutas relativas para funcionar también cuando GitHub Pages publica el repositorio bajo una subruta. GitHub indica que el archivo de entrada debe estar en la raíz de la carpeta publicada. La página publicada es accesible por Internet, aunque el repositorio sea privado, así que no se deben incluir copias de seguridad ni datos personales en el repositorio. [Crear un sitio de GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site) · [Elegir la fuente de publicación](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
 ## Inventario y unidades
 
@@ -127,12 +128,13 @@ El dibujo del modelo distingue las trece tablas del estado por cuenta y las cuat
 
 ## Archivos principales
 
+- `index.html`: landing pública responsive, independiente del shell autenticado.
+- `assets/css/landing.css` y `js/landing.js`: estilos responsive, animaciones respetuosas con movimiento reducido e interacciones de demostración de la landing.
 - `menuki.html`: shell HTML de la aplicación.
 - `assets/css/app.css`: estilos extraídos del HTML y organizados por secciones; las reglas responsive quedan al final y las plantillas JavaScript no usan atributos `style`.
 - `js/main.js`: entrada ES del cliente; compone la interfaz y los módulos del dominio y de persistencia.
 - `js/domain/`, `js/data/`, `js/persistence/` y `js/ui/`: módulos de fechas, unidades, catálogos, propuestas de recetas, acceso a datos y codificación segura de HTML.
 - `package.json` y `tests/`: comprobaciones de dominio, catálogos y codificación HTML.
-- `index.html`: entrada que redirige a la aplicación.
 - `data/foods.json` y `data/recipes.json`: catálogos genéricos que carga la aplicación.
 - `data/foods.schema.json` y `data/recipes.schema.json`: contratos estructurales de los catálogos.
 - `context/context.md`: resumen breve en inglés para retomar el trabajo.
@@ -145,6 +147,7 @@ El dibujo del modelo distingue las trece tablas del estado por cuenta y las cuat
 - `docs/supabase_db_model.md`: diagrama, columnas, claves, relaciones y RLS del esquema de Supabase.
 - `docs/planner/specification.md`: catálogos, reglas aceptadas y propuestas del planificador.
 - `docs/roadmap.md`: etapas candidatas y criterios de aceptación que deben conservarse.
+- `docs/requisitos-legales-y-acceso.md`: requisitos y datos pendientes para las futuras páginas legales, privacidad y cookies de Menuki.
 - `docs/decisions/`: registro de decisiones con su estado.
 - `docs/open-questions.md`: propuestas y cuestiones que aún requieren decisión.
 - `supabase/`: migraciones SQL del esquema personal y de la sincronización relacional, además de comprobaciones estructurales de RLS/permisos.

@@ -3,17 +3,187 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="0; url=./menuki.html?v=20261013-ux-repair">
-  <link rel="canonical" href="./menuki.html">
+  <meta name="theme-color" content="#f5f5ee">
+  <meta name="description" content="Menuki te ayuda a organizar tus comidas: menú de tres semanas, recetas, compra, despensa y seguimiento diario desde cualquier dispositivo.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Menuki · Organiza tus comidas. Disfruta tu día.">
+  <meta property="og:description" content="Menú de 3 semanas, recetas y compra en un solo lugar.">
   <link rel="icon" type="image/png" href="./docs/images/menuki_logo.png">
   <link rel="apple-touch-icon" href="./docs/images/menuki_logo.png">
-  <title>Menuki · Mi Plan Saludable</title>
-  <script>
-    window.location.replace(new URL('./menuki.html?v=20261013-ux-repair', document.baseURI).href);
-  </script>
+  <link rel="stylesheet" href="./assets/css/landing.css?v=20261014-landing-v1">
+  <script src="./js/landing.js?v=20261014-landing-v1" defer></script>
+  <title>Menuki · Organiza tus comidas. Disfruta tu día.</title>
 </head>
 <body>
-  <p>Abriendo Mi Plan Saludable…</p>
-  <p><a href="./menuki.html?v=20261013-ux-repair">Si no se abre automáticamente, continúa aquí.</a></p>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="nav-shell">
+      <a class="brand-lockup" href="#inicio" aria-label="Menuki, inicio">
+        <img src="./docs/images/menuki_logo.png" width="42" height="42" alt="" fetchpriority="high">
+        <span>Menuki</span>
+      </a>
+      <nav class="section-nav" aria-label="Explorar Menuki">
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="#herramientas">Qué incluye</a>
+      </nav>
+      <nav class="account-nav" aria-label="Tu cuenta">
+        <a class="nav-area" href="./menuki.html">Mi Área</a>
+        <a class="button button-nav" href="./menuki.html?auth=signup">Registrarse</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+    <section class="hero content-shell" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-copy" data-reveal>
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> MENUKI · TU PLAN SALUDABLE</p>
+        <h1 id="hero-title">Organiza tus comidas.<br><span>Disfruta tu día.</span></h1>
+        <p class="hero-lede">Menú de 3 semanas, recetas y compra en un solo lugar.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="./menuki.html?auth=signup">Crear mi cuenta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="button button-secondary hero-secondary" href="#como-funciona">Ver cómo funciona <svg class="hero-scroll-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m-7-7 7 7 7-7"/></svg></a>
+        </div>
+        <div class="hero-note"><span class="note-check" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></svg></span> Hecho para tu día a día, en PC y móvil</div>
+      </div>
+
+      <div class="product-stage" role="group" aria-label="Vista de ejemplo interactiva de Menuki">
+        <div class="stage-orbit stage-orbit-one" aria-hidden="true"></div>
+        <div class="stage-orbit stage-orbit-two" aria-hidden="true"></div>
+        <div class="stage-leaf stage-leaf-sage" aria-hidden="true"></div>
+        <div class="stage-leaf stage-leaf-peach" aria-hidden="true"></div>
+
+        <article class="demo-card planner-card" aria-labelledby="plannerTitle">
+          <header class="demo-card-heading">
+            <span class="demo-icon demo-icon-green" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg></span>
+            <span class="demo-heading-copy"><strong id="plannerTitle">Mi plan de comidas</strong><small>Un ciclo a tu ritmo</small></span>
+            <span class="week-tag">Semana 1 de 3</span>
+          </header>
+          <div class="day-picker" role="group" aria-label="Prueba el menú de ejemplo por día">
+            <button type="button" data-demo-day="0" aria-pressed="true">Lun</button>
+            <button type="button" data-demo-day="1" aria-pressed="false">Mar</button>
+            <button type="button" data-demo-day="2" aria-pressed="false">Mié</button>
+            <button type="button" data-demo-day="3" aria-pressed="false">Jue</button>
+            <button type="button" data-demo-day="4" aria-pressed="false">Vie</button>
+            <button type="button" data-demo-day="5" aria-pressed="false">Sáb</button>
+            <button type="button" data-demo-day="6" aria-pressed="false">Dom</button>
+          </div>
+          <div class="demo-meals" aria-live="polite" aria-atomic="true">
+            <div class="demo-meal"><span class="meal-symbol meal-symbol-sun" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg></span><span><small>Desayuno</small><strong data-demo-meal="breakfast">Yogur con fruta</strong></span></div>
+            <div class="demo-meal"><span class="meal-symbol meal-symbol-meal" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3v7m4-7v7M8 3v18M18 3c-2 2-3 5-3 8h3v10"/></svg></span><span><small>Comida</small><strong data-demo-meal="lunch">Arroz con pollo</strong></span></div>
+            <div class="demo-meal"><span class="meal-symbol meal-symbol-night" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.9 13A8 8 0 0 1 11 3.1 8.5 8.5 0 1 0 20.9 13Z"/></svg></span><span><small>Cena</small><strong data-demo-meal="dinner">Merluza con verduras</strong></span></div>
+          </div>
+          <div class="planner-foot"><span><span class="tiny-pulse" aria-hidden="true"></span> Vista de ejemplo</span><span>+ 2 comidas más</span></div>
+        </article>
+
+        <article class="demo-card shopping-card" aria-labelledby="shoppingTitle">
+          <header class="compact-card-heading"><span class="demo-icon demo-icon-peach" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg></span><span><strong id="shoppingTitle">Lista de la compra</strong><small>Se crea con tu menú</small></span></header>
+          <div class="shopping-demo" role="group" aria-label="Lista de ejemplo; puedes marcar y desmarcar productos">
+            <button type="button" class="shopping-item is-checked" data-demo-check aria-pressed="true"><span class="fake-checkbox" aria-hidden="true"></span><span>Aguacate</span><span class="ingredient-dot ingredient-avocado" aria-hidden="true"></span></button>
+            <button type="button" class="shopping-item is-checked" data-demo-check aria-pressed="true"><span class="fake-checkbox" aria-hidden="true"></span><span>Tomate</span><span class="ingredient-dot ingredient-tomato" aria-hidden="true"></span></button>
+            <button type="button" class="shopping-item" data-demo-check aria-pressed="false"><span class="fake-checkbox" aria-hidden="true"></span><span>Espinacas</span><span class="ingredient-dot ingredient-greens" aria-hidden="true"></span></button>
+            <button type="button" class="shopping-item" data-demo-check aria-pressed="false"><span class="fake-checkbox" aria-hidden="true"></span><span>Yogur natural</span><span class="ingredient-dot ingredient-yogurt" aria-hidden="true"></span></button>
+          </div>
+          <div class="shopping-foot"><span>Lo que ya tienes se descuenta</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></div>
+        </article>
+
+        <article class="demo-card nutrition-card" aria-labelledby="nutritionTitle">
+          <div class="nutrition-ring" role="img" aria-label="Indicador de ejemplo: 720 kilocalorías"><span>720<small>kcal</small></span></div>
+          <div class="nutrition-copy"><strong id="nutritionTitle">Tu nutrición hoy</strong><span><i class="macro-dot macro-protein"></i>Proteínas <b>28%</b></span><span><i class="macro-dot macro-carbs"></i>Hidratos <b>45%</b></span><span><i class="macro-dot macro-fats"></i>Grasas <b>27%</b></span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="how-section section-tint" id="como-funciona" aria-labelledby="howTitle">
+      <div class="content-shell">
+        <div class="section-heading" data-reveal>
+          <p class="eyebrow">SENCILLO DESDE EL PRIMER DÍA</p>
+          <h2 id="howTitle">De la idea a tu mesa,<br><span>paso a paso.</span></h2>
+          <p>Menuki une la planificación con lo que compras y con lo que realmente haces.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="step-card" data-reveal>
+            <span class="step-number">01</span>
+            <span class="step-icon step-icon-green" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18M8 14h3m-3 3h7"/></svg></span>
+            <h3>Elige tu plan</h3>
+            <p>Revisa tu perfil y descubre un menú organizado para tres semanas.</p>
+          </article>
+          <article class="step-card" data-reveal>
+            <span class="step-number">02</span>
+            <span class="step-icon step-icon-peach" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h2l2.2 11.2a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L22 8H6"/><circle cx="10" cy="21" r="1"/><circle cx="18" cy="21" r="1"/></svg></span>
+            <h3>Organiza la compra</h3>
+            <p>Consulta una lista calculada con tu menú y lo que tienes en despensa.</p>
+          </article>
+          <article class="step-card" data-reveal>
+            <span class="step-number">03</span>
+            <span class="step-icon step-icon-sage" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h17"/><path d="m7 15 4-4 3 2 6-7"/></svg></span>
+            <h3>Registra tu progreso</h3>
+            <p>Marca tus comidas cuando las termines y sigue cómo avanza tu día.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="features-section content-shell" id="herramientas" aria-labelledby="featuresTitle">
+      <div class="feature-intro" data-reveal>
+        <p class="eyebrow">TODO EN SU SITIO</p>
+        <h2 id="featuresTitle">Tu plan acompaña<br>tu vida real.</h2>
+        <p>Planea con claridad, ajusta cuando lo necesites y lleva el seguimiento desde el ordenador o el móvil.</p>
+        <a class="text-action" href="./menuki.html?auth=signup">Empieza con Menuki <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="features-grid">
+        <article class="feature-card feature-card-menu" data-reveal>
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
+          <h3>Menú</h3><p>Consulta tus comidas del día y navega por el ciclo de tres semanas.</p>
+        </article>
+        <article class="feature-card feature-card-recipes" data-reveal>
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 3v7m4-7v7M8 3v18M18 3c-2 2-3 5-3 8h3v10"/></svg></span>
+          <h3>Recetas</h3><p>Encuentra ingredientes, cantidades y pasos para cada plato.</p>
+        </article>
+        <article class="feature-card feature-card-pantry" data-reveal>
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 7h14l1 14H4L5 7Z"/><path d="M9 7a3 3 0 0 1 6 0M9 12h6"/></svg></span>
+          <h3>Despensa</h3><p>Anota existencias y revisa qué ingredientes te faltan.</p>
+        </article>
+        <article class="feature-card feature-card-activity" data-reveal>
+          <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V5m0 14h17"/><path d="m7 15 4-4 3 2 6-7"/></svg></span>
+          <h3>Actividad</h3><p>Registra sesiones ya realizadas y consulta tu evolución.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="calm-section content-shell" aria-labelledby="calmTitle">
+      <div class="calm-card" data-reveal>
+        <div class="calm-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8 14.7 9.3 21.2 12l-6.5 2.7L12 21.2l-2.7-6.5L2.8 12l6.5-2.7L12 2.8Z"/></svg></div>
+        <div><p class="eyebrow">PEQUEÑOS HÁBITOS, GRANDES CAMBIOS</p><h2 id="calmTitle">Un poco más de orden.<br>Un día a la vez.</h2><p>Menuki te ayuda a planificar sin convertir cada comida en otra tarea pendiente.</p></div>
+        <a class="button button-primary" href="./menuki.html?auth=signup">Registrarme <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </section>
+
+    <section class="faq-section content-shell" aria-labelledby="faqTitle">
+      <div class="faq-heading" data-reveal><p class="eyebrow">PREGUNTAS FRECUENTES</p><h2 id="faqTitle">Antes de empezar</h2></div>
+      <div class="faq-list" data-reveal>
+        <details><summary>¿Qué puedo hacer con Menuki?<span aria-hidden="true"></span></summary><p>Organizar un menú de tres semanas, consultar recetas, preparar la compra, controlar la despensa y registrar comidas, actividad y peso.</p></details>
+        <details><summary>¿Puedo usarlo desde el móvil y el ordenador?<span aria-hidden="true"></span></summary><p>Sí. Entra con la misma cuenta y tus datos se sincronizan entre dispositivos cuando hay conexión.</p></details>
+        <details><summary>¿Tengo que registrar cada comida antes de comerla?<span aria-hidden="true"></span></summary><p>No. El menú es una planificación; registra una comida cuando ya la hayas terminado. Así el progreso y el consumo de ingredientes reflejan lo que realmente hiciste.</p></details>
+      </div>
+    </section>
+
+    <section class="final-cta content-shell" aria-labelledby="finalTitle">
+      <div class="final-cta-inner" data-reveal>
+        <div><p class="eyebrow">EMPIEZA A TU RITMO</p><h2 id="finalTitle">Tu próxima semana<br>puede empezar aquí.</h2></div>
+        <a class="button button-light" href="./menuki.html?auth=signup">Crear mi cuenta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <span class="final-leaf final-leaf-one" aria-hidden="true"></span><span class="final-leaf final-leaf-two" aria-hidden="true"></span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-shell">
+      <a class="brand-lockup footer-brand" href="#inicio"><img src="./docs/images/menuki_logo.png" width="36" height="36" alt=""><span>Menuki</span></a>
+      <p>Mi plan saludable, un día a la vez.</p>
+      <a href="./menuki.html">Mi Área</a>
+      <span class="footer-copy">© <span id="currentYear">2026</span> Menuki</span>
+    </div>
+  </footer>
 </body>
 </html>

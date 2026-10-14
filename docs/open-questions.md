@@ -43,3 +43,16 @@ El refactor incremental, las fuentes canónicas y el paquete de robustez vigente
 - ¿Vite o TypeScript resolverían una necesidad concreta en las siguientes etapas?
 
 La [auditoría front-end y back-end](front-end-audit.md) explica los criterios para reconsiderarlas.
+
+## Landing, acceso y cumplimiento legal
+
+Los requisitos funcionales y la lista de información pendiente están en [Requisitos legales y de acceso](requisitos-legales-y-acceso.md). Antes de redactar o publicar textos legales, hay que resolver:
+
+- ¿Quién será el titular/responsable que debe identificarse y cuáles son sus datos de contacto, domicilio e identificadores aplicables?
+- ¿Qué finalidades, bases jurídicas y plazos de conservación corresponden a cada dato y flujo de Menuki?
+- ¿Qué proveedores, subencargados, ubicaciones, transferencias y cookies/tecnologías equivalentes se usan realmente en producción?
+- ¿Qué tratamientos requieren consentimiento y cuáles pueden apoyarse en otra base jurídica? ¿Qué controles y mecanismo permanente de cambio de preferencias son necesarios para el inventario real?
+- ¿Debe mantenerse RAT y qué evaluación se requiere sobre el perfil, peso y actividad que registra Menuki?
+- ¿Quién recibe las solicitudes de derechos y cómo se verificará y atenderá cada una?
+
+El listado legal aportado por el propietario no se considera un texto jurídico aprobado. Validar aplicabilidad y redacción antes de su publicación.
