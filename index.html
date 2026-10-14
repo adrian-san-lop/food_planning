@@ -10,8 +10,8 @@
   <meta property="og:description" content="Prepara tu próximo ciclo de 21 días, adapta tus raciones al perfil y registra la actividad que realizas.">
   <link rel="icon" type="image/png" href="./docs/images/menuki_logo.png">
   <link rel="apple-touch-icon" href="./docs/images/menuki_logo.png">
-  <link rel="stylesheet" href="./assets/css/landing.css?v=20261014-landing-v4">
-  <script src="./js/landing.js?v=20261014-landing-v1" defer></script>
+  <link rel="stylesheet" href="./assets/css/landing.css?v=20261014-landing-v6">
+  <script src="./js/landing.js?v=20261014-landing-v3" defer></script>
   <title>Menuki · Come bien. Decide menos.</title>
 </head>
 <body>
@@ -131,7 +131,7 @@
         <p>Al terminar tus 21 días, prepara el ciclo siguiente. Tu perfil ajusta objetivos y raciones; la actividad real recalcula las comidas pendientes de ese día.</p>
         <a class="text-action" href="./menuki.html?auth=signup">Empieza con Menuki <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
-      <div class="features-grid">
+      <div class="features-grid" id="featureCards" data-feature-carousel role="region" aria-roledescription="carrusel" aria-label="Funciones de Menuki" tabindex="0">
         <article class="feature-card feature-card-menu" data-reveal>
           <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></span>
           <h3>Menú de 21 días</h3><p>Consulta cinco momentos de comida al día y navega por semanas y fechas.</p>
@@ -168,6 +168,13 @@
           <span class="feature-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 4c-8 0-14 4-14 11a5 5 0 0 0 5 5c7 0 9-6 9-16Z"/><path d="M6 18 15 9"/></svg></span>
           <h3>Opción de recuperación ósea</h3><p>Al activarla, las nuevas propuestas favorecen recetas con alimentos catalogados como fuentes de calcio y vitaminas D y C. Es una orientación, no un tratamiento ni una promesa de acelerar la consolidación.</p>
         </article>
+      </div>
+      <div class="features-carousel-controls" data-feature-carousel-controls hidden>
+        <span class="features-carousel-hint">Desliza o usa las flechas para ver todas las funciones</span>
+        <div class="features-carousel-buttons" role="group" aria-label="Controles del carrusel">
+          <button class="features-carousel-button" type="button" data-feature-previous aria-label="Ver funciones anteriores" aria-controls="featureCards" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7"/></svg></button>
+          <button class="features-carousel-button" type="button" data-feature-next aria-label="Ver funciones siguientes" aria-controls="featureCards"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-7-7 7 7-7 7"/></svg></button>
+        </div>
       </div>
     </section>
 

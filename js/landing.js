@@ -28,6 +28,44 @@
     revealItems.forEach((item) => revealObserver.observe(item));
   }
 
+  const track = document.querySelector('[data-feature-carousel]');
+  if (track) {
+    const controls = document.querySelector('[data-feature-carousel-controls]');
+    const previous = document.querySelector('[data-feature-previous]');
+    const next = document.querySelector('[data-feature-next]');
+    const desktop = window.matchMedia('(min-width: 1051px)');
+    const cards = [...track.querySelectorAll('.feature-card')];
+
+    if (controls && previous && next && cards.length) {
+      const updateButtons = () => {
+        previous.disabled = !desktop.matches || track.scrollLeft <= 1;
+        next.disabled = !desktop.matches || track.scrollLeft + track.clientWidth >= track.scrollWidth - 1;
+      };
+
+      const updateMode = () => {
+        const isDesktop = desktop.matches;
+        controls.hidden = !isDesktop;
+        track.tabIndex = isDesktop ? 0 : -1;
+        track.classList.toggle('is-enhanced', isDesktop);
+        if (!isDesktop) track.scrollLeft = 0;
+        updateButtons();
+      };
+
+      const scrollOneCard = (direction) => {
+        const card = cards[0];
+        const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 0;
+        track.scrollBy({ left: direction * (card.getBoundingClientRect().width + gap), behavior: reduceMotion ? 'auto' : 'smooth' });
+      };
+
+      previous.addEventListener('click', () => scrollOneCard(-1));
+      next.addEventListener('click', () => scrollOneCard(1));
+      track.addEventListener('scroll', updateButtons, { passive: true });
+      window.addEventListener('resize', updateButtons, { passive: true });
+      desktop.addEventListener('change', updateMode);
+      updateMode();
+    }
+  }
+
   const sampleMenus = [
     { breakfast: 'Yogur con fruta', lunch: 'Arroz con pollo', dinner: 'Merluza con verduras' },
     { breakfast: 'Tostada y tomate', lunch: 'Pasta con verduras', dinner: 'Tortilla de patata' },
