@@ -53,9 +53,12 @@ Las comidas pendientes pueden recalcular porciones al cambiar el perfil o al reg
 
 ### Compra y despensa
 
-- La compra puede calcularse para 3, 7 o 14 días, la semana visible o el ciclo pendiente; solo considera comidas futuras no realizadas.
+- La compra se calcula para 3, 7 o 14 días, o el resto del ciclo seleccionado; solo considera comidas de hoy o futuras no realizadas y nunca mezcla dos ciclos. Para un ciclo que todavía no ha comenzado, cuenta desde su primer día.
+- Mostrar únicamente **Ciclo actual** salvo que el próximo menú esté guardado y confirmado y falten entre uno y tres días para su inicio. Solo cuando se cumplan ambas condiciones, ofrecer los botones **Ciclo actual / Próximo ciclo** para cambiar la lista completa. Un borrador no habilita la compra anticipada.
+- Para la compra del próximo ciclo, calcular una despensa prevista descontando de las existencias reales las comidas pendientes del ciclo actual anteriores a ese inicio. Presentar esa cantidad como previsión; no crear movimientos ni alterar el saldo real. Mantener separados los artículos marcados y los extras de cada ciclo.
 - Restar existencias, mostrar faltantes y traducirlos a envases orientativos. Mostrar por establecimiento y sección (Supermercado y Frutería).
 - Marcar un artículo no lo añade al inventario. Solo confirmar/finalizar la compra incorpora el contenido realmente comprado. Los artículos no confirmados no se registran.
+- En escritorio, colocar **Finalizar compra** arriba junto a Guía. En móvil, fijarlo sobre la navegación inferior y reservar espacio para no tapar contenido. Mostrar el texto sin iconos. Finalizar incorpora solo lo seleccionado en la lista mostrada y conserva las selecciones del otro ciclo.
 - Permitir extras, correcciones manuales, desperdicios y consumos fuera del menú.
 - 7 y 14 días deben representar ventanas distintas. Pueden coincidir cuando el ciclo restante sea menor o igual que ambas ventanas, indicándolo.
 - Evitar recomendar 14 días de productos frescos sin explicar que requieren congelación o reposición.
@@ -64,7 +67,9 @@ Las comidas pendientes pueden recalcular porciones al cambiar el perfil o al reg
 
 El HTML tiene como ciclo inicial fijo del 13 de octubre al 2 de noviembre de 2026 (tres semanas). Esta fecha es un dato de la versión actual, no una regla para ciclos futuros. Los ciclos futuros deben guardar fechas y menú propios, mantener historial y no reiniciar la despensa ni los pesos.
 
-El aviso de renovación actual aparece dentro de la página cerca del final del ciclo; no es push. El producto acordado no envía avisos en segundo plano. Los días civiles deben calcularse en `Europe/Madrid`, sin depender de sumar intervalos fijos de milisegundos.
+La renovación usa el planificador interno: generar, revisar y confirmar el siguiente menú antes del cambio de ciclo. Al llegar la fecha, el menú confirmado se activa y el anterior se archiva. Si el ciclo termina sin otro menú confirmado disponible, bloquear el contenido de **Inicio y Menú** y mostrar un diálogo para generar el siguiente o continuar el borrador; las demás secciones siguen accesibles. Cerrar el aviso permite navegar, pero no desbloquea esas dos páginas. La app ya no ofrece copiar un encargo para generar el menú fuera de Menuki.
+
+El aviso de renovación se muestra al abrir la aplicación; no es push. El producto acordado no envía avisos en segundo plano. Los días civiles y el límite de tres días antes del próximo inicio se calculan en `Europe/Madrid`, sin sumar intervalos fijos de milisegundos.
 
 ### Cocina y seguimiento
 

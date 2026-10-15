@@ -31,3 +31,5 @@ Validar el plan con el uso real y decidir más adelante si hacen falta filtros p
 ## Evolución posterior
 
 La decisión de aplazar Supabase describía el primer MVP y quedó reemplazada para la persistencia personal por [ADR-0010](0010-supabase-relational-state-sync.md). Los catálogos JSON siguen siendo públicos y locales al repositorio; el perfil y los registros personales ahora se sincronizan en tablas relacionales.
+
+El 15 de octubre de 2026 se concreta la renovación: el planificador interno sustituye el encargo externo; Inicio y Menú se bloquean al terminar un ciclo sin otro confirmado disponible. La compra anticipada requiere un próximo menú confirmado y un inicio a tres días o menos, con listas separadas y previsión de despensa. El flujo vigente se detalla en [la especificación del planificador](../planner/specification.md#renovación-y-compra-anticipada).

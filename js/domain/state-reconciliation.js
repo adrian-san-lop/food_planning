@@ -100,8 +100,9 @@ function mergeCartExtras(baseRows, localRows, remoteRows) {
     const result = new Map();
     for (const row of rows || []) {
       if (!row?.id || !Number.isFinite(Number(row.size))) continue;
-      const key = `${row.id}|${Number(row.size)}`;
-      const current = result.get(key) || { id: row.id, size: Number(row.size), count: 0 };
+      const scope = row.scope || 'current';
+      const key = `${scope}|${row.id}|${Number(row.size)}`;
+      const current = result.get(key) || { id: row.id, size: Number(row.size), count: 0, ...(scope === 'current' ? {} : { scope }) };
       current.count += Math.max(0, Number(row.count) || 0);
       result.set(key, current);
     }
