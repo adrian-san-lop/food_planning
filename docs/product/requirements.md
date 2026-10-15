@@ -12,7 +12,7 @@ La posibilidad de combinar los gustos de varias personas en un menú común sigu
 
 ### Implementado en el HTML actual
 
-- La entrada pública de GitHub Pages es una landing en español que explica el menú de tres semanas, recetas, compra, despensa y seguimiento. La cabecera fija ofrece Mi Área y Registrarse tanto en escritorio como en móvil; el registro reutiliza Supabase Auth desde `menuki.html?auth=signup`. La demo de menú y compra es interactiva y el movimiento decorativo respeta `prefers-reduced-motion`.
+- La entrada pública de GitHub Pages es una landing en español que explica el menú de tres semanas, recetas, compra, despensa y seguimiento. La cabecera fija ofrece Iniciar sesión y Registrarse tanto en escritorio como en móvil; el registro reutiliza Supabase Auth desde `menuki.html?auth=signup`. La demo de menú y compra es interactiva y el movimiento decorativo respeta `prefers-reduced-motion`.
 - Un ciclo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios). El primer ciclo mantiene el menú fijo existente; los siguientes pueden generarse desde el catálogo.
 - Inicio muestra primero el banner, los KPI y el progreso nutricional de hoy, con tamaño y espaciado adaptados al ancho y alto de pantalla. «Menú de hoy» y sus comidas aparecen debajo del resumen al desplazarse; Inicio no ofrece navegación semanal ni por día.
 - Menú es una página separada: permite elegir una de las tres semanas y un día con el calendario de siete días; muestra el detalle de la fecha seleccionada.

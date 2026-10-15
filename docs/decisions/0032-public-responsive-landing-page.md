@@ -11,7 +11,7 @@ La raíz de GitHub Pages redirigía directamente a la aplicación autenticada. U
 ## Decisión
 
 1. `index.html` será la landing pública; `menuki.html` conservará la aplicación autenticada y el formulario de acceso.
-2. La cabecera permanece arriba al desplazarse y presenta el logo/nombre Menuki, **Mi Área** y **Registrarse** en ambos tamaños. Los enlaces Mi Área y Registrarse apuntan a la app; Registrarse usa `?auth=signup` para preseleccionar el modo de registro existente.
+2. La cabecera permanece arriba al desplazarse y presenta el logo/nombre Menuki, **Iniciar sesión** y **Registrarse** en ambos tamaños. Los enlaces Iniciar sesión y Registrarse apuntan a la app; Registrarse usa `?auth=signup` para preseleccionar el modo de registro existente.
 3. La portada explica el menú de tres semanas, recetas, compra, despensa y seguimiento. Incluye una demostración local interactiva del selector de días y de productos de compra; no modifica datos personales ni conecta esta demo con Supabase.
 4. Las animaciones de entrada y flotación son decorativas. Las secciones principales siguen disponibles sin JavaScript y las animaciones se desactivan cuando `prefers-reduced-motion` está activo. La página usa HTML semántico, controles accesibles, CSS y JavaScript nativos, sin añadir dependencias externas.
 5. La ilustración de producto se compone de componentes HTML/CSS y gráficos SVG; no se usan fotos genéricas de platos.

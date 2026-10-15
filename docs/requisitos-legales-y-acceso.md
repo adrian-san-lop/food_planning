@@ -20,7 +20,7 @@ El flujo actual comparte una sola pantalla para entrar y registrarse. El enlace 
 
 ### Criterios de aceptación
 
-- Una persona puede abrir **Mi Área**, iniciar sesión o elegir registro y volver a la landing mediante un control visible, sin depender del botón Atrás del navegador.
+- Una persona puede abrir **Iniciar sesión**, iniciar sesión o elegir registro y volver a la landing mediante un control visible, sin depender del botón Atrás del navegador.
 - Los enlaces funcionan desde la raíz y desde la ruta de publicación de GitHub Pages.
 - El footer y los enlaces son legibles, utilizables con teclado y adaptables a pantallas pequeñas.
 

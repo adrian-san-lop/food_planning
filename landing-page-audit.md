@@ -16,9 +16,9 @@ Sin hallazgos críticos en la revisión estática.
 
 ### 1. Los objetivos táctiles quedan por debajo de 44 px en móvil
 
-**Dónde:** cabecera, enlaces «Mi Área» y «Registrarse» (`index.html:30–32`); selector de días y lista de compra de la demostración (`index.html:62–85`). Reglas en `assets/css/landing.css:192,194`.
+**Dónde:** cabecera, enlaces «Iniciar sesión» y «Registrarse» (`index.html:30–32`); selector de días y lista de compra de la demostración (`index.html:62–85`). Reglas en `assets/css/landing.css:192,194`.
 **Incumple:** [landing-page.md](.codex/landing-page-audit/references/landing-page.md), regla *Mobile (390px)* sobre objetivos táctiles.
-**Por qué importa:** el botón de registro del encabezado tiene un mínimo de 36 px; «Mi Área» usa texto de 12 px con 8 px de relleno vertical. Los botones del selector y de la compra se quedan en 32 px. Son controles visibles y algunos permanecen en la cabecera fija, pero resultan más difíciles de tocar con precisión.
+**Por qué importa:** el botón de registro del encabezado tiene un mínimo de 36 px; «Iniciar sesión» usa texto de 12 px con 8 px de relleno vertical. Los botones del selector y de la compra se quedan en 32 px. Son controles visibles y algunos permanecen en la cabecera fija, pero resultan más difíciles de tocar con precisión.
 **Corrección:** dar a los enlaces de cuenta y a los controles de la demostración un área interactiva mínima de 44 px, manteniendo el tamaño visual del texto y los iconos.
 
 ### 2. El texto secundario pierde contraste sobre los fondos claros
