@@ -88,6 +88,15 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 
 El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
+### Renovación y compra anticipada
+
+- La generación se puede iniciar antes de terminar el ciclo actual. Un borrador sigue pendiente de revisión; solo **Guardar siguiente menú** confirma el próximo ciclo.
+- Si el ciclo termina y no existe otro menú confirmado disponible, Inicio y Menú muestran un contenido bloqueado y un diálogo que abre el planificador o permite continuar el borrador. El resto de las páginas sigue disponible. Se retira el antiguo encargo para ChatGPT.
+- Al recuperar un borrador cuya fecha ya pasó después de terminar el ciclo, la revisión propone comenzar hoy y exige confirmar de nuevo. No se activa un menú confirmado que ya haya terminado también.
+- Compra ofrece **Ciclo actual / Próximo ciclo** únicamente con un próximo menú confirmado y entre uno y tres días antes de su inicio. El día de inicio se activa automáticamente y pasa a ser el actual. Los períodos de 3, 7, 14 días o resto del ciclo se calculan dentro del ciclo seleccionado, sin cruzar a otro.
+- Para el próximo ciclo, estimar las existencias al inicio descontando solo las comidas pendientes del ciclo actual anteriores a esa fecha. Las comidas ya realizadas no se descuentan de nuevo. Esta previsión no escribe movimientos; las compras finalizadas sí aumentan el inventario real.
+- Los carritos y extras de cada ciclo quedan separados. Al activarse el siguiente, su selección pendiente pasa a la lista actual. La confirmación de una compra no borra la selección del otro ciclo.
+
 ## Gustos y restricciones: propuesta pendiente
 
 **No es una regla aceptada todavía.** Para personalizar sin modificar el catálogo compartido, guardar por persona sus gustos. Una posible escala es “me gusta”, “indiferente” y “prefiero evitar”. Las alergias/intolerancias podrían representarse por separado como exclusiones estrictas, nunca como una preferencia con una puntuación baja. Si no quedan recetas adecuadas, solicitar una decisión o ampliar el catálogo; no reintroducir en silencio un alimento excluido.

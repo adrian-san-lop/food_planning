@@ -22,6 +22,8 @@ El propietario ha aprobado el boceto de cuatro KPI con detalle diario de comidas
 
 ## Límites
 
+- Actualización del 15 de octubre de 2026: si termina el ciclo sin otro menú confirmado disponible, Inicio sustituye el dashboard por un bloqueo con acceso al planificador y muestra el diálogo de renovación. Menú aplica el mismo bloqueo; el resto de las secciones sigue disponible. El bloqueo termina al disponer de otro menú confirmado; si su fecha ya llegó, se activa antes de volver a mostrar el panel.
+
 - La actualización no modifica el formato de estado, los catálogos, la sincronización ni los cálculos nutricionales.
 - Las métricas semanales se derivan de los registros del estado actual, igual que en ADR-0035; no incorporan un agregado nuevo de ciclos archivados.
 - La revisión visual local usa un estado ficticio y las plantillas y catálogos reales, sin sesión ni escrituras en Supabase. No sustituye la revisión de la versión publicada ni el uso en dispositivos físicos.

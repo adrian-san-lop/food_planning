@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="./docs/images/menuki_logo.png">
 <meta name="description" content="Plan nutricional de 21 días con perfil adaptable, objetivos y macronutrientes calculados, recetas, compra e inventario.">
 <title>Menuki · Mi plan saludable</title>
- <link rel="stylesheet" href="./assets/css/app.css?v=20261015-european-date">
+ <link rel="stylesheet" href="./assets/css/app.css?v=20261015-cycle-shopping">
 </head>
 <body>
 <div class="catalog-overlay" id="catalogStatus" role="status" aria-live="polite"><div><strong>Cargando catálogos…</strong><p>La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.</p></div></div>
@@ -63,10 +63,23 @@
  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" hidden></nav>
 <dialog id="recipeDialog" aria-label="Detalles de la receta"><button type="button" class="dialog-close" data-action="close-modal" aria-label="Cerrar">✕</button><div id="modalContent"></div></dialog>
 <dialog id="plannerDialog" aria-label="Propuesta del siguiente menú"><button type="button" class="dialog-close" data-action="planner-close" aria-label="Cerrar">✕</button><div id="plannerContent"></div></dialog>
+<dialog id="cycleRenewalDialog" class="cycle-renewal-dialog" aria-labelledby="cycleRenewalTitle" aria-describedby="cycleRenewalDescription">
+ <div class="dialog-body"><div class="eyebrow">RENUEVA TU PLAN</div><h2 id="cycleRenewalTitle">Es hora de preparar un nuevo ciclo</h2><p id="cycleRenewalDescription">El ciclo anterior ha terminado. Genera, revisa y confirma el siguiente menú para volver a usar Inicio y Menú.</p><p class="muted">Puedes seguir usando Compra, Despensa, Perfil y Actividad y peso.</p><div class="dialog-actions"><button type="button" class="btn" data-action="close-cycle-renewal">Seguir navegando</button><button type="button" class="btn btn-primary" id="cycleRenewalAction" data-action="planner-open">Generar nuevo ciclo</button></div></div>
+</dialog>
 <dialog id="activityDialog" aria-label="Registrar una sesión de actividad"><button type="button" class="dialog-close" data-action="activity-close" aria-label="Cerrar">✕</button><div class="dialog-body activity-dialog-body"><div class="eyebrow">SEGUIMIENTO DE ACTIVIDAD</div><h2>Registrar sesión realizada</h2><p>Regístrala después de hacerla. La estimación solo ajusta el objetivo y las comidas pendientes de esa fecha.</p><form id="activityForm" class="activity-form"><label>Fecha<input id="activityDate" name="date" type="date" data-change="activity-date" required></label><label>Actividad y esfuerzo<select id="activityType" name="activityId" required></select></label><label>Duración (minutos)<input id="activityDuration" name="durationMinutes" type="number" min="1" max="600" step="1" required placeholder="45"></label><div id="activityDateSessions"></div><div class="dialog-actions"><button class="btn btn-primary" type="submit">Guardar sesión</button><button class="btn" type="button" data-action="activity-close">Cerrar</button></div></form></div></dialog>
 <dialog id="quickGuideDialog" class="quick-guide-dialog" aria-labelledby="quickGuideTitle"><button type="button" class="dialog-close" data-action="quick-guide-close" aria-label="Cerrar guía rápida">✕</button><div id="quickGuideContent" aria-live="polite" aria-atomic="true"></div></dialog>
+<dialog id="recordDeleteDialog" class="record-delete-dialog" aria-labelledby="recordDeleteTitle" aria-describedby="recordDeleteDescription recordDeleteSummary recordDeleteNote">
+ <div class="dialog-body">
+  <div class="record-delete-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M9 6V4h6v2M7 6l1 15h8l1-15M10 10v8m4-8v8"/></svg></div>
+  <h2 id="recordDeleteTitle">Eliminar registro</h2>
+  <p id="recordDeleteDescription"></p>
+  <p id="recordDeleteSummary" class="record-delete-summary"></p>
+  <p id="recordDeleteNote" class="record-delete-note"></p>
+  <div class="dialog-actions"><button type="button" class="btn" data-action="cancel-record-delete" autofocus>Cancelar</button><button type="button" class="btn btn-danger" id="recordDeleteConfirm" data-action="confirm-record-delete">Eliminar registro</button></div>
+ </div>
+</dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3"></script>
-<script type="module" src="./js/main.js?v=20261015-european-date"></script>
+<script type="module" src="./js/main.js?v=20261015-cycle-shopping"></script>
 </body>
 </html>

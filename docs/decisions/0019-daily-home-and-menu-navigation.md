@@ -14,7 +14,7 @@
 5. Mantener la orientación inicial de cinco pasos en Guía para conservar Inicio como resumen diario.
 6. En Compra, mostrar el establecimiento principal como **Supermercado**. El identificador interno de tienda y los datos de catálogo no cambian.
 7. En PC, dejar el logotipo de la barra lateral como única marca de cabecera y ocultar el logotipo repetido del área principal. Dar más presencia al banner de Inicio en escritorio; conservar su escala compacta en móvil.
-8. Cuando la fecha actual quede fuera del ciclo, mostrar su fecha de inicio o fin en un aviso destacado. Separar visualmente el objetivo nutricional de hoy del bloque del menú.
+8. Cuando el ciclo todavía no ha empezado, mostrar su fecha de inicio en un aviso destacado. Actualización del 15 de octubre de 2026: si termina sin otro menú confirmado disponible, bloquear Inicio y Menú y mostrar un diálogo para generar el siguiente o continuar el borrador; mantener accesibles las demás páginas. La renovación usa el planificador interno. Separar visualmente el objetivo nutricional de hoy del bloque del menú.
 9. En Menú, mostrar la fecha de inicio del plan antes de los controles de semanas y días, con una acción visible para editarla. El editor explica qué registros se archivan y cuáles se conservan.
 10. Desde el banner de Inicio, ofrecer un acceso que abra Menú directamente con el editor de fecha desplegado. En Inicio y Menú, identificar cada tipo de comida con un icono propio además de su nombre.
 
