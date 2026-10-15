@@ -10,8 +10,8 @@
   <meta property="og:description" content="Prepara tu próximo ciclo de 21 días, adapta tus raciones al perfil y registra la actividad que realizas.">
   <link rel="icon" type="image/png" href="./docs/images/menuki_name_logo.png">
   <link rel="apple-touch-icon" href="./docs/images/menuki_name_logo.png">
-  <link rel="stylesheet" href="./assets/css/landing.css?v=20261014-landing-v14">
-  <script src="./js/landing.js?v=20261014-landing-v3" defer></script>
+  <link rel="stylesheet" href="./assets/css/landing.css?v=20261015-auth-dialog-v5">
+  <script src="./js/landing.js?v=20261015-auth-dialog-v3" defer></script>
   <title>Menuki · Come bien. Decide menos.</title>
 </head>
 <body>
@@ -28,8 +28,8 @@
         <a href="#herramientas">Qué incluye</a>
       </nav>
       <nav class="account-nav" aria-label="Tu cuenta">
-        <a class="nav-area" href="./menuki.html">Iniciar sesión</a>
-        <a class="button button-nav" href="./menuki.html?auth=signup">Registrarse</a>
+        <a class="nav-area" href="./menuki.html" data-auth-open="login">Iniciar sesión</a>
+        <a class="button button-nav" href="./menuki.html?auth=signup" data-auth-open="signup">Registrarse</a>
       </nav>
     </div>
   </header>
@@ -41,7 +41,7 @@
         <h1 id="hero-title">¿Qué comemos<br class="hero-question-break"> hoy?<br><span>Ya está resuelto.</span></h1>
         <p class="hero-lede">Menús de 3 semanas, recetas de 20-30 min y compra organizada en un solo lugar. <br> Olvidate de hacer la lista de la compra.</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="./menuki.html?auth=signup">Crear mi cuenta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          <a class="button button-primary" href="./menuki.html?auth=signup" data-auth-open="signup">Crear mi cuenta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           <a class="button button-secondary hero-secondary" href="#como-funciona"><svg class="hero-play-icon" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13"/><path d="m13 10 9 6-9 6Z"/></svg><span>Ver cómo funciona</span><svg class="hero-scroll-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14m-7-7 7 7 7-7"/></svg></a>
         </div>
         <ul class="hero-benefits" aria-label="Ventajas de Menuki">
@@ -57,7 +57,7 @@
         <div class="stage-orbit stage-orbit-two" aria-hidden="true"></div>
         <div class="stage-leaf stage-leaf-sage" aria-hidden="true"></div>
         <div class="stage-leaf stage-leaf-peach" aria-hidden="true"></div>
-        <img class="stage-mascot" src="./assets/images/menuki-maskot-soft-3d.png" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
+        <img class="stage-mascot" src="./assets/images/romo-af-maskot.png" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
 
         <article class="demo-card planner-card" aria-labelledby="plannerTitle">
           <header class="demo-card-heading">
@@ -137,7 +137,7 @@
         <p class="eyebrow">QUÉ PUEDES HACER CON MENUKI</p>
         <h2 id="featuresTitle">Todo lo que necesitas <br>para resolver tus comidas.</h2>
         <p>Al terminar tus 21 días, prepara el ciclo siguiente. Tu perfil ajusta objetivos y raciones; la actividad real recalcula las comidas pendientes de ese día.</p>
-        <a class="text-action" href="./menuki.html?auth=signup">Empieza con Menuki <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="text-action" href="./menuki.html?auth=signup" data-auth-open="signup">Empieza con Menuki <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <div class="features-grid" id="featureCards" data-feature-carousel role="region" aria-roledescription="carrusel" aria-label="Funciones de Menuki" tabindex="0">
         <article class="feature-card feature-card-menu" data-reveal>
@@ -199,7 +199,7 @@
       <div class="calm-card" data-reveal>
         <div class="calm-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.8 14.7 9.3 21.2 12l-6.5 2.7L12 21.2l-2.7-6.5L2.8 12l6.5-2.7L12 2.8Z"/></svg></div>
         <div><p class="eyebrow">PARA DÍAS CON POCO TIEMPO</p><h2 id="calmTitle">Menos improvisar.<br>Más tiempo para ti.</h2><p>Menuki es para quien quiere comer bien sin decidir desde cero qué cocinar cada día. Abres el plan, ves la receta y te pones a cocinar.</p></div>
-        <a class="button button-primary" href="./menuki.html?auth=signup">Registrarme <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a class="button button-primary" href="./menuki.html?auth=signup" data-auth-open="signup">Registrarme <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </section>
 
@@ -222,8 +222,8 @@
     <section class="final-cta content-shell" aria-labelledby="finalTitle">
       <div class="final-cta-inner" data-reveal>
         <div><p class="eyebrow">EMPIEZA A TU RITMO</p><h2 id="finalTitle">Tu próxima semana<br>puede empezar aquí.</h2></div>
-        <a class="button button-light" href="./menuki.html?auth=signup">Crear mi cuenta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-        <img class="final-cta-mascot" src="./assets/images/menuki-maskot-soft-3d.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+        <a class="button button-light" href="./menuki.html?auth=signup" data-auth-open="signup">Crear mi cuenta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <img class="final-cta-mascot" src="./assets/images/romo-af-maskot.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
       </div>
     </section>
   </main>
@@ -232,9 +232,13 @@
     <div class="footer-shell">
       <a class="brand-lockup footer-brand" href="#inicio"><img src="./docs/images/menuki_name_logo.png" width="36" height="36" alt=""></a>
       <p>Mi plan saludable, un día a la vez.</p>
-      <a href="./menuki.html">Iniciar sesión</a>
+      <a href="./menuki.html" data-auth-open="login">Iniciar sesión</a>
       <span class="footer-copy">© <span id="currentYear">2026</span> Menuki</span>
     </div>
   </footer>
+  <dialog class="auth-dialog" id="landingAuthDialog" aria-label="Acceso a Menuki">
+    <button class="auth-dialog-close" id="landingAuthClose" type="button" aria-label="Cerrar ventana de acceso"><span class="auth-close-mark" aria-hidden="true"></span></button>
+    <iframe id="landingAuthFrame" title="Formulario para iniciar sesión o registrarse en Menuki" loading="eager"></iframe>
+  </dialog>
 </body>
 </html>

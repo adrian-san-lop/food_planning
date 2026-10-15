@@ -8,6 +8,101 @@
 
   if (year) year.textContent = String(new Date().getFullYear());
 
+  const authDialog = document.getElementById('landingAuthDialog');
+  const authFrame = document.getElementById('landingAuthFrame');
+  const authClose = document.getElementById('landingAuthClose');
+  let authOpener = null;
+  let authNavigationStarted = false;
+  let authFrameResizeObserver = null;
+
+  const syncAuthDialogSize = () => {
+    if (!authDialog?.open || !authFrame) return;
+    let frameDocument;
+    try {
+      frameDocument = authFrame.contentDocument;
+    } catch {
+      return;
+    }
+    const shell = frameDocument?.querySelector('.auth-shell');
+    const layout = frameDocument?.querySelector('.auth-layout');
+    if (!shell || !layout) return;
+    const contentHeight = layout.getBoundingClientRect().height;
+    if (!contentHeight) return;
+    const shellStyle = frameDocument.defaultView.getComputedStyle(shell);
+    const verticalPadding = (parseFloat(shellStyle.paddingTop) || 0) + (parseFloat(shellStyle.paddingBottom) || 0);
+    const viewportHeight = window.visualViewport?.height || window.innerHeight;
+    const availableHeight = Math.max(240, viewportHeight - 40);
+    authFrame.style.height = `${Math.min(Math.ceil(contentHeight + verticalPadding), availableHeight)}px`;
+  };
+
+  authFrame?.addEventListener('load', () => {
+    authFrameResizeObserver?.disconnect();
+    const layout = authFrame.contentDocument?.querySelector('.auth-layout');
+    if (layout && typeof ResizeObserver === 'function') {
+      authFrameResizeObserver = new ResizeObserver(() => window.requestAnimationFrame(syncAuthDialogSize));
+      authFrameResizeObserver.observe(layout);
+    }
+    window.requestAnimationFrame(syncAuthDialogSize);
+  });
+  window.addEventListener('resize', syncAuthDialogSize);
+  window.visualViewport?.addEventListener('resize', syncAuthDialogSize);
+
+  const openAuthDialog = (mode, opener = document.activeElement) => {
+    const selectedMode = mode === 'signup' ? 'signup' : 'login';
+    if (!authDialog || !authFrame || typeof authDialog.showModal !== 'function') {
+      window.location.assign(selectedMode === 'signup' ? './menuki.html?auth=signup' : './menuki.html');
+      return;
+    }
+
+    if (authDialog.open) return;
+    authOpener = opener;
+    authNavigationStarted = false;
+    authFrame.style.height = '';
+    authFrame.src = `./menuki.html?auth=${selectedMode}&auth_embed=1`;
+    authDialog.showModal();
+    document.documentElement.classList.add('auth-dialog-open');
+    document.body.classList.add('auth-dialog-open');
+  };
+
+  authDialog?.addEventListener('click', (event) => {
+    if (event.target === authDialog) authDialog.close();
+  });
+  authClose?.addEventListener('click', () => authDialog?.close());
+  authDialog?.addEventListener('close', () => {
+    authFrameResizeObserver?.disconnect();
+    authFrameResizeObserver = null;
+    authFrame?.setAttribute('src', 'about:blank');
+    authFrame?.style.removeProperty('height');
+    document.documentElement.classList.remove('auth-dialog-open');
+    document.body.classList.remove('auth-dialog-open');
+    if (!authNavigationStarted) authOpener?.focus();
+    authOpener = null;
+  });
+
+  document.querySelectorAll('[data-auth-open]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      openAuthDialog(link.dataset.authOpen, link);
+    });
+  });
+
+  window.addEventListener('message', (event) => {
+    if (event.origin !== window.location.origin || event.source !== authFrame?.contentWindow) return;
+    if (event.data?.type !== 'menuki-authenticated' || !authDialog?.open || authNavigationStarted) return;
+    authNavigationStarted = true;
+    authDialog.close();
+    window.location.assign('./menuki.html');
+  });
+
+  const requestedAuthMode = new URLSearchParams(window.location.search).get('auth');
+  if (requestedAuthMode === 'login' || requestedAuthMode === 'signup') {
+    const landingUrl = new URL(window.location.href);
+    landingUrl.searchParams.delete('auth');
+    window.history.replaceState(null, '', `${landingUrl.pathname}${landingUrl.search}${landingUrl.hash}`);
+    window.requestAnimationFrame(() => openAuthDialog(requestedAuthMode, null));
+  }
+
   const updateHeader = () => {
     header?.classList.toggle('is-scrolled', window.scrollY > 6);
   };

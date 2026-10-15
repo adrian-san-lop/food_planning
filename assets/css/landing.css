@@ -468,7 +468,93 @@ svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-wi
 @media(max-width:640px){
   .stage-mascot{display:none}
   .planner-card{width:100%}
-  .hero h1 span{color:var(--landing-green)}
+  .hero h1 span{color:var(--landing-orange)}
   .hero-benefits{display:none}
   .hero-note{display:flex}
 }
+
+/* Mobile hero scale: larger type, clearer demo, and full-width touch targets. */
+.site-header .brand-lockup img{width:clamp(148px,12vw,184px);height:auto;max-height:62px;object-fit:contain;object-position:left center}
+@media(max-width:640px){
+  .site-header .brand-lockup img{width:clamp(92px,32vw,128px);max-height:42px}
+  .hero{padding-top:clamp(20px,3svh,32px);padding-bottom:clamp(20px,3svh,32px)}
+  .hero-copy .eyebrow{margin-bottom:12px;font-size:10px;letter-spacing:1.4px}
+  .hero-question-break{display:initial}
+  .hero h1{font-size:clamp(44px,12vw,58px);line-height:1.01;letter-spacing:-1.8px}
+  .hero h1 span{color:var(--landing-orange)}
+  .hero-lede{max-width:38rem;margin-top:14px;font-size:clamp(16px,4.1vw,18px);line-height:1.45}
+  .hero-actions{align-items:stretch;gap:10px;margin-top:20px}
+  .hero-actions .button-primary,.hero-actions .hero-secondary{width:100%;max-width:380px;min-height:54px;justify-content:center;padding-inline:18px;border-radius:16px;font-size:15px}
+  .hero-actions svg{width:19px;height:19px}
+  .hero-note{margin-top:14px;font-size:12px;line-height:1.45}
+  .hero-note .note-check{width:21px;height:21px;flex:none}
+  .product-stage{min-height:340px;min-height:clamp(340px,44vh,380px);min-height:clamp(340px,44svh,380px);margin-top:16px}
+  .planner-card{padding:16px}
+  .planner-card .demo-card-heading{gap:8px}
+  .planner-card .demo-icon{width:34px;height:34px}
+  .planner-card .demo-icon svg{width:18px;height:18px}
+  .planner-card .demo-heading-copy strong{font-size:14px}
+  .planner-card .demo-heading-copy small{font-size:11px}
+  .planner-card .week-tag{padding:6px 7px;font-size:10px}
+  .planner-card .demo-meal{min-height:58px;gap:11px}
+  .planner-card .meal-symbol{width:36px;height:36px}
+  .planner-card .demo-meal small{font-size:12px}
+  .planner-card .demo-meal strong{font-size:15px}
+  .planner-card .planner-foot{padding-top:12px;font-size:12px}
+}
+
+@media(max-width:640px) and (max-height:760px){
+  .hero{padding-top:18px;padding-bottom:18px}
+  .hero-copy .eyebrow{margin-bottom:8px}
+  .hero h1{font-size:clamp(43px,11vw,52px)}
+  .hero-lede{margin-top:10px;font-size:15px;line-height:1.35}
+  .hero-actions{gap:8px;margin-top:14px}
+  .hero-actions .button-primary,.hero-actions .hero-secondary{min-height:50px}
+  .hero-note{margin-top:10px}
+  .product-stage{min-height:320px;min-height:clamp(320px,43vh,350px);min-height:clamp(320px,43svh,350px);margin-top:8px}
+  .planner-card{padding:12px}
+  .planner-card .demo-card-heading{gap:7px}
+  .planner-card .demo-icon{width:30px;height:30px}
+  .planner-card .demo-icon svg{width:16px;height:16px}
+  .planner-card .demo-heading-copy strong{font-size:13px}
+  .planner-card .demo-heading-copy small{font-size:10px}
+  .planner-card .week-tag{padding:5px;font-size:9px}
+  .planner-card .day-picker{margin:10px 0 8px}
+  .planner-card .demo-meal{min-height:48px;gap:9px}
+  .planner-card .meal-symbol{width:32px;height:32px}
+  .planner-card .demo-meal small{font-size:11px}
+  .planner-card .demo-meal strong{font-size:13px}
+  .planner-card .planner-foot{padding-top:8px;font-size:10px}
+}
+
+/* Wide desktop navigation: align the header with the full-width hero. */
+@media(min-width:1600px){
+  :root{--header-height:clamp(80px,4.2vw,88px)}
+  .site-header{background:rgba(255,254,250,.82);border-bottom-color:rgba(225,231,221,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+  .nav-shell{max-width:none;gap:clamp(28px,1.7vw,42px)}
+  .site-header .brand-lockup img{width:clamp(190px,9vw,220px);max-height:70px}
+  .section-nav{gap:clamp(30px,1.5vw,38px);margin-left:clamp(40px,3vw,76px)}
+  .section-nav a,.nav-area{font-size:clamp(15px,.8vw,17px)}
+  .account-nav{gap:clamp(28px,1.6vw,40px)}
+  .button-nav{min-width:164px;min-height:50px;padding-inline:24px;font-size:15px}
+}
+
+/* Reuse the existing Menuki Auth screen in a focused landing-page dialog. */
+.auth-dialog{position:fixed;inset:0;width:min(560px,calc(100vw - 32px));height:fit-content;max-width:none;max-height:calc(100dvh - 32px);margin:auto;padding:0;overflow:hidden;border:1px solid var(--landing-line);border-radius:24px;background:var(--landing-paper);color:var(--landing-ink);box-shadow:0 30px 100px rgba(24,46,35,.28)}
+.auth-dialog::backdrop{background:rgba(22,39,31,.5);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+.auth-dialog iframe{display:block;width:100%;height:520px;max-height:calc(100dvh - 72px);overflow:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;border:0;background:transparent}
+.auth-dialog-close{position:absolute;z-index:2;top:13px;right:14px;width:44px;height:44px;display:grid;place-items:center;padding:0;border:1px solid var(--landing-line);border-radius:50%;background:var(--landing-paper);color:var(--landing-deep);cursor:pointer;box-shadow:0 4px 14px rgba(36,60,50,.1);transition:background .18s ease}
+.auth-close-mark{position:relative;display:block;width:17px;height:17px;flex:none}
+.auth-close-mark::before,.auth-close-mark::after{position:absolute;top:50%;left:50%;width:17px;height:1.7px;border-radius:2px;background:currentColor;content:"";transform:translate(-50%,-50%) rotate(45deg)}
+.auth-close-mark::after{transform:translate(-50%,-50%) rotate(-45deg)}
+.auth-dialog-close:hover{background:var(--landing-sage)}
+.auth-dialog-close:hover .auth-close-mark{animation:auth-close-spin .58s cubic-bezier(.12,.78,.2,1) both}
+@keyframes auth-close-spin{to{transform:rotate(1440deg)}}
+.auth-dialog-close:focus-visible{outline:3px solid #8cb99a;outline-offset:3px}
+html.auth-dialog-open,body.auth-dialog-open{overflow:hidden;overscroll-behavior:none}
+@media(max-width:640px){
+  .auth-dialog{width:calc(100vw - 28px);max-height:calc(100dvh - 28px);border-radius:20px}
+  .auth-dialog iframe{height:520px;max-height:calc(100dvh - 68px)}
+  .auth-dialog-close{top:10px;right:10px}
+}
+@media(prefers-reduced-motion:reduce){.auth-dialog-close{transition:none}.auth-dialog-close:hover .auth-close-mark{animation:none}}

@@ -75,7 +75,9 @@ const SUPABASE_PUBLISHABLE_KEY='sb_publishable_agL7NqBqKBDiBMUmIw78MQ_rBvvT_Dr';
 const LOCAL_STATE_KEY='mi_plan_saludable_v3_13oct';
 let KEY=LOCAL_STATE_KEY; // La copia de trabajo local se separa por cuenta
 const entryAuthMode=new URLSearchParams(window.location.search).get('auth')==='signup'?'signup':'login';
-let supabaseClient=null,authMode=entryAuthMode,authBusy=false,authMessage='',authMessageType='info';
+const authEmbedMode=new URLSearchParams(window.location.search).get('auth_embed')==='1'&&window.parent!==window;
+let authEmbedCompletionSent=false;
+let supabaseClient=null,authMode=entryAuthMode,authBusy=false,authMessage='',authMessageType='info',authEmailTouched=false;
 let authSessionUserId=null,currentUserId=null,currentUserEmail='',appReadyUserId=null,openingUserId=null;
 const cloudArchivedCyclesByUser=new Map();
 const supabaseTransport=createSupabaseTransport({getClient:()=>supabaseClient,getUserId:()=>currentUserId});
@@ -778,6 +780,34 @@ function togglePlannerLock(button){if(!plannerProposal)return;const w=Number(but
 function savePlannerProposal(){if(!plannerProposal||!validMenuSnapshot(plannerProposal.menus)){showToast('La propuesta no es válida');return}state.nextMenu={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice())),confirmedAt:new Date().toISOString()};state.plannerDraft=null;save();const advanced=activateScheduledCycleIfDue();document.getElementById('plannerDialog').close();render();showToast(advanced?'El nuevo ciclo ya está activo':'Siguiente menú guardado para el '+formatDate(dateFromISO(state.nextMenu?.start||state.start),{day:'numeric',month:'long'}))}
 function activateScheduledCycleIfDue(){if(!state?.nextMenu||state.noActiveCycle)return false;const scheduled=dateFromISO(state.nextMenu.start);if(!scheduled||scheduled>today())return false;const next=state.nextMenu;archiveActiveCycle();state.start=next.start;state.activeCycleId=newCycleInstanceId();state.noActiveCycle=false;state.activeMenus=cloneMenus(next.menus);state.activeMenuCatalogVersion=next.catalogVersion;state.activeMenuGeneratedAt=next.generatedAt||null;state.activeMenuConfirmedAt=next.confirmedAt||null;state.activeMenuRecoveryFocus=!!next.recoveryFocus;state.done={};state.reversedDone={};state.legacyStrengthDays={};state.prep={};state.cart={};state.nextMenu=null;state.plannerDraft=null;MENUS=state.activeMenus;alignCurrentDay();save();return true}
  function authRedirectUrl(){return window.location.origin+window.location.pathname}
+ function completeAuth(user){if(!user?.id)return;if(authEmbedMode){if(!authEmbedCompletionSent){authEmbedCompletionSent=true;window.parent.postMessage({type:'menuki-authenticated'},window.location.origin)}return}openAuthenticatedApp(user)}
+const AUTH_EMAIL_LABEL_PATTERN=/^[\p{L}\p{N}](?:[\p{L}\p{N}-]{0,61}[\p{L}\p{N}])?$/u;
+const AUTH_EMAIL_LOCAL_PATTERN=/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
+const AUTH_PASSWORD_CHAR_PATTERN=/^[\p{L}0-9¡!._@*-]+$/u;
+function authEmailError(value){
+ const email=value.trim();if(!email)return'';
+ const at=email.lastIndexOf('@');if(email.length>254||at<1||at!==email.indexOf('@'))return'Escribe un correo válido, por ejemplo nombre@dominio.es.';
+ const local=email.slice(0,at),domain=email.slice(at+1),labels=domain.split('.');
+ if(local.length>64||local.startsWith('.')||local.endsWith('.')||local.includes('..')||!AUTH_EMAIL_LOCAL_PATTERN.test(local)||domain.length>253||labels.length<2||labels.some(label=>!label||label.length>63||!AUTH_EMAIL_LABEL_PATTERN.test(label))||labels[labels.length-1].length<2)return'Escribe un correo válido, por ejemplo nombre@dominio.es.';
+ return'';
+}
+function authPasswordError(value){
+ if(!value)return'';
+ if(value.length<6||value.length>20)return'La contraseña debe tener entre 6 y 20 caracteres.';
+ if(!AUTH_PASSWORD_CHAR_PATTERN.test(value))return'Usa solo letras, números y estos símbolos: ¡!._-@*.';
+ if(!/[0-9]/.test(value))return'Añade al menos un número.';
+ if(!/[¡!._@*-]/.test(value))return'Añade al menos un símbolo de esta lista: ¡!._-@*.';
+ return'';
+}
+function setAuthFeedback(element,message,isValid=false){element.textContent=message;element.className='auth-field-feedback'+(message?(isValid?' is-valid':' is-invalid'):'')}
+function updateAuthValidation(){
+ const email=document.getElementById('authEmail'),emailField=document.getElementById('authEmailField'),emailFeedback=document.getElementById('authEmailFeedback'),password=document.getElementById('authPassword'),passwordField=document.getElementById('authPasswordField'),passwordFeedback=document.getElementById('authPasswordFeedback'),confirmField=document.getElementById('authConfirmPasswordField'),confirm=document.getElementById('authConfirmPassword'),confirmFeedback=document.getElementById('authConfirmPasswordFeedback'),isSignup=authMode==='signup';
+ const emailError=email.disabled||emailField.hidden?'':authEmailError(email.value),emailFeedbackMessage=email.disabled||emailField.hidden||!authEmailTouched?'':(!email.value.trim()?'Escribe tu correo electrónico.':emailError);email.setCustomValidity(emailError);setAuthFeedback(emailFeedback,emailFeedbackMessage);
+ const passwordError=password.disabled||passwordField.hidden?'':authPasswordError(password.value);password.setCustomValidity(passwordError);setAuthFeedback(passwordFeedback,password.value?(passwordError||'Contraseña válida'): '',!passwordError);
+ confirmField.hidden=!isSignup;confirm.disabled=!isSignup;confirm.required=isSignup;
+ const mismatch=isSignup&&confirm.value&&confirm.value!==password.value;confirm.setCustomValidity(mismatch?'Las contraseñas no coinciden.':'');
+ setAuthFeedback(confirmFeedback,isSignup&&confirm.value?(mismatch?'Las contraseñas no coinciden':'Las contraseñas coinciden'):'',!mismatch);
+}
  function renderAuthScreen(mode=authMode,message=authMessage,level=authMessageType){
   authMode=mode;authMessage=message||'';authMessageType=level||'info';
   const shell=document.getElementById('authShell'),app=document.querySelector('.app'),mobile=document.getElementById('mobileNav'),overlay=document.getElementById('catalogStatus');
@@ -789,18 +819,24 @@ function activateScheduledCycleIfDue(){if(!state?.nextMenu||state.noActiveCycle)
   document.getElementById('authDescription').textContent=descriptions[mode]||descriptions.login;
   document.getElementById('authTabs').hidden=reset||recovery;
   document.getElementById('authSiteFooter').hidden=!isSignup;
-  document.querySelectorAll('[data-auth-mode]').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.authMode===mode)));
+  const authFoot=document.getElementById('authFoot');
+  authFoot.hidden=authEmbedMode&&(reset||recovery);
+  document.getElementById('authFootLogin').hidden=isSignup;
+  document.getElementById('authFootSignup').hidden=!isSignup;
+  document.querySelectorAll('#authTabs [data-auth-mode]').forEach(button=>button.setAttribute('aria-selected',String(button.dataset.authMode===mode)));
   document.getElementById('authEmailField').hidden=recovery;
   document.getElementById('authPasswordField').hidden=reset;
+  document.getElementById('authConfirmPasswordField').hidden=!isSignup;
   const email=document.getElementById('authEmail'),password=document.getElementById('authPassword');
-  email.required=!recovery;password.required=!reset;
+  email.required=!recovery;email.disabled=recovery;password.required=!reset;password.disabled=reset;
   password.autocomplete=(isSignup||recovery)?'new-password':'current-password';
-  document.getElementById('authPasswordField').firstChild.textContent=recovery?'Nueva contraseña':'Contraseña';
+  document.querySelector('#authPasswordField>label').textContent=recovery?'Nueva contraseña':'Contraseña';
   document.getElementById('authSubmit').textContent=authBusy?'Procesando…':({login:'Iniciar sesión',signup:'Crear cuenta',reset:'Enviar enlace',recovery:'Guardar contraseña'}[mode]||'Continuar');
   document.getElementById('authSubmit').disabled=authBusy;
   document.getElementById('authForgot').hidden=mode!=='login';
   document.getElementById('authBack').hidden=!(reset||recovery);
   const alert=document.getElementById('authAlert');alert.hidden=!authMessage;alert.className='auth-alert'+(authMessageType==='error'?' error':'');alert.textContent=authMessage;
+  updateAuthValidation();
  }
  function showLoadingOverlay(title,detail){const overlay=document.getElementById('catalogStatus');overlay.classList.remove('error');overlay.setAttribute('role','status');overlay.innerHTML='<div><strong>'+escapeHTML(title)+'</strong><p>'+escapeHTML(detail)+'</p></div>';overlay.hidden=false}
  function selectUserLocalState(userId){
@@ -829,23 +865,23 @@ function activateScheduledCycleIfDue(){if(!state?.nextMenu||state.noActiveCycle)
  function handleAuthStateChange(event,session){
   if(event==='PASSWORD_RECOVERY'){passwordRecoveryActive=true;renderAuthScreen('recovery');return}
   if(event==='SIGNED_OUT'){closeAuthenticatedApp();return}
-  if(session?.user){authSessionUserId=session.user.id;if(passwordRecoveryActive){renderAuthScreen('recovery');return}openAuthenticatedApp(session.user)}
+  if(session?.user){authSessionUserId=session.user.id;if(passwordRecoveryActive){renderAuthScreen('recovery');return}completeAuth(session.user)}
   else if(event==='INITIAL_SESSION')renderAuthScreen(authMode);
  }
  function authErrorMessage(error){const message=String(error?.message||'');if(/invalid login credentials/i.test(message))return'El correo o la contraseña no son correctos.';if(/email not confirmed/i.test(message))return'El proyecto aún solicita confirmar el correo. Desactiva esa opción en Supabase Auth para aplicar la configuración acordada.';if(/user already registered|already been registered/i.test(message))return'Ya existe una cuenta con ese correo. Inicia sesión.';if(/password.*(minimum|least|length)|password should/i.test(message))return'La contraseña no cumple los requisitos configurados en Supabase.';return message?'No se pudo completar la operación: '+message:'No se pudo completar la operación. Comprueba la conexión e inténtalo de nuevo.'}
  async function handleAuthSubmit(event){
-  event.preventDefault();if(authBusy||!supabaseClient)return;
-  const email=document.getElementById('authEmail').value.trim(),password=document.getElementById('authPassword').value;
+  event.preventDefault();const emailInput=document.getElementById('authEmail');authEmailTouched=true;emailInput.value=emailInput.value.trim();updateAuthValidation();if(!event.currentTarget.reportValidity()||authBusy||!supabaseClient)return;
+  const email=emailInput.value,password=document.getElementById('authPassword').value;
   authBusy=true;renderAuthScreen(authMode,'','info');
   try{
    if(authMode==='login'){
-    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;if(!data.session)throw Error('No se recibió una sesión de acceso.');passwordRecoveryActive=false;await openAuthenticatedApp(data.user);
+    const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error)throw error;if(!data.session)throw Error('No se recibió una sesión de acceso.');passwordRecoveryActive=false;completeAuth(data.user);
    }else if(authMode==='signup'){
-    const {data,error}=await supabaseClient.auth.signUp({email,password});if(error)throw error;if(!data.session){authBusy=false;renderAuthScreen('signup','No se inició sesión al crear la cuenta. Comprueba que la confirmación de correo está desactivada en Supabase Auth; si la cuenta ya existía, inicia sesión.','error');return}passwordRecoveryActive=false;await openAuthenticatedApp(data.user);
+    const {data,error}=await supabaseClient.auth.signUp({email,password});if(error)throw error;if(!data.session){authBusy=false;renderAuthScreen('signup','No se inició sesión al crear la cuenta. Comprueba que la confirmación de correo está desactivada en Supabase Auth; si la cuenta ya existía, inicia sesión.','error');return}passwordRecoveryActive=false;completeAuth(data.user);
    }else if(authMode==='reset'){
     const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:authRedirectUrl()});if(error)throw error;authBusy=false;renderAuthScreen('reset','Si existe una cuenta con ese correo, recibirás un enlace para cambiar la contraseña.');return;
    }else if(authMode==='recovery'){
-    const {error}=await supabaseClient.auth.updateUser({password});if(error)throw error;passwordRecoveryActive=false;const {data,error:sessionError}=await supabaseClient.auth.getSession();if(sessionError)throw sessionError;if(data.session){authSessionUserId=data.session.user.id;await openAuthenticatedApp(data.session.user)}else renderAuthScreen('login','Contraseña actualizada. Inicia sesión con la nueva contraseña.');
+    const {error}=await supabaseClient.auth.updateUser({password});if(error)throw error;passwordRecoveryActive=false;const {data,error:sessionError}=await supabaseClient.auth.getSession();if(sessionError)throw sessionError;if(data.session){authSessionUserId=data.session.user.id;completeAuth(data.session.user)}else renderAuthScreen('login','Contraseña actualizada. Inicia sesión con la nueva contraseña.');
    }
   }catch(error){renderAuthScreen(authMode,authErrorMessage(error),'error')}
   finally{authBusy=false;const shell=document.getElementById('authShell');if(!shell.hidden)renderAuthScreen(authMode,authMessage,authMessageType)}
@@ -853,7 +889,12 @@ function activateScheduledCycleIfDue(){if(!state?.nextMenu||state.noActiveCycle)
  async function signOutOfApp(button=document.getElementById('authSignOut')){mobileMoreOpen=false;mobileAccountOpen=false;const accountMenu=document.getElementById('mobileAccountDropdown'),accountToggle=document.getElementById('mobileAccountToggle');if(accountMenu)accountMenu.hidden=true;accountToggle?.setAttribute('aria-expanded','false');if(button?.id==='mobileAuthSignOut')accountToggle?.focus();if(!supabaseClient)return;if(button)button.disabled=true;try{const {error}=await supabaseClient.auth.signOut();if(error)throw error;closeAuthenticatedApp()}catch(error){showToast(authErrorMessage(error))}finally{if(button)button.disabled=false}}
  function startApp(){
   const app=document.querySelector('.app');app.hidden=true;app.inert=true;document.getElementById('mobileNav').hidden=true;
-  document.querySelectorAll('[data-auth-mode]').forEach(button=>button.addEventListener('click',()=>renderAuthScreen(button.dataset.authMode,'')));
+  if(authEmbedMode){document.documentElement.classList.add('auth-embedded');document.querySelectorAll('.auth-return,.auth-logo-link,.auth-footer-brand,.auth-footer-links a').forEach(link=>{link.target='_top'})}
+  document.getElementById('authShell').addEventListener('click',event=>{const button=event.target instanceof Element?event.target.closest('[data-auth-mode]'):null;if(!button)return;event.preventDefault();renderAuthScreen(button.dataset.authMode,'')});
+  const authEmail=document.getElementById('authEmail'),authPassword=document.getElementById('authPassword'),authConfirmPassword=document.getElementById('authConfirmPassword');
+  authEmail.addEventListener('input',updateAuthValidation);authEmail.addEventListener('blur',()=>{authEmailTouched=true;authEmail.value=authEmail.value.trim();updateAuthValidation()});authEmail.addEventListener('invalid',()=>{authEmailTouched=true;updateAuthValidation()});
+  authPassword.addEventListener('input',updateAuthValidation);authConfirmPassword.addEventListener('input',updateAuthValidation);
+  document.querySelectorAll('[data-password-toggle]').forEach(button=>button.addEventListener('click',()=>{const input=document.getElementById(button.dataset.passwordToggle);if(!input)return;const visible=input.type==='password';input.type=visible?'text':'password';button.setAttribute('aria-label',visible?'Ocultar contraseña':'Mostrar contraseña');button.setAttribute('aria-pressed',String(visible));button.querySelector('[data-eye-icon="show"]').hidden=visible;button.querySelector('[data-eye-icon="hide"]').hidden=!visible}));
   document.getElementById('authForm').addEventListener('submit',handleAuthSubmit);
   document.getElementById('authForgot').addEventListener('click',()=>renderAuthScreen('reset',''));
   document.getElementById('authBack').addEventListener('click',()=>{passwordRecoveryActive=false;renderAuthScreen('login')});
@@ -862,7 +903,7 @@ function activateScheduledCycleIfDue(){if(!state?.nextMenu||state.noActiveCycle)
   if(!window.supabase?.createClient){renderAuthScreen(authMode,'No se pudo cargar el servicio de acceso. Comprueba la conexión y vuelve a abrir la página.','error');return}
   try{supabaseClient=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}})}catch(error){renderAuthScreen(authMode,'No se pudo iniciar el servicio de acceso. Recarga la página e inténtalo de nuevo.','error');return}
   supabaseClient.auth.onAuthStateChange((event,session)=>{setTimeout(()=>handleAuthStateChange(event,session),0)});
-  supabaseClient.auth.getSession().then(({data,error})=>{if(error)throw error;if(passwordRecoveryActive){renderAuthScreen('recovery');return}if(data.session)return openAuthenticatedApp(data.session.user);renderAuthScreen(authMode)}).catch(error=>renderAuthScreen(authMode,'No se pudo comprobar la sesión. Comprueba la conexión e inténtalo de nuevo. '+String(error?.message||''),'error'));
+  supabaseClient.auth.getSession().then(({data,error})=>{if(error)throw error;if(passwordRecoveryActive){renderAuthScreen('recovery');return}if(data.session)return completeAuth(data.session.user);renderAuthScreen(authMode)}).catch(error=>renderAuthScreen(authMode,'No se pudo comprobar la sesión. Comprueba la conexión e inténtalo de nuevo. '+String(error?.message||''),'error'));
  }
 function plannerCard(){const saved=state.plannerDraft||state.nextMenu,date=saved?.start||nextCycleStart(),label=formatDate(dateFromISO(date),{day:'numeric',month:'long',year:'numeric'}),description=saved?(state.plannerDraft?'Tienes una propuesta sin confirmar.':'El siguiente menú está guardado y se activará al comenzar este ciclo.'):'Prepara ahora una propuesta revisable para las tres semanas siguientes.';return '<section class="planner-card panel"><div><div class="eyebrow">PRÓXIMO CICLO · DESDE '+label.toLocaleUpperCase('es-ES')+'</div><h3>'+ (saved?'Menú preparado':'Genera tu siguiente menú')+'</h3><p>'+description+' La generación usa el catálogo JSON v'+escapeHTML(catalogVersion)+'.</p></div><button class="btn '+(saved?'':'btn-primary')+'" data-action="planner-open">'+(state.plannerDraft?'Continuar revisión':state.nextMenu?'Revisar menú guardado':'Preparar propuesta')+'</button></section>'}
 function cycleStartPanel(){
