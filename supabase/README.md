@@ -8,11 +8,11 @@ Las credenciales pertenecen a Supabase Auth (`auth.users`). `public.profiles` gu
 
 ## Migraciones
 
-Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para las acciones confirmadas de reiniciar/restaurar. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state`. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, prepara respuestas HTTP 409 ante conflictos de revisión. La novena, `20261013160000_recipe_proposal_inbox.sql`, prepara cuatro tablas de propuestas/administradores y tres RPCs acotados. Ambas migraciones están preparadas pero pendientes de aplicar. La novena no altera las filas personales ni el RPC `sync_menuki_state`. En un proyecto nuevo, revisa y aplica los nueve archivos en orden. En el proyecto existente, aplica solo la octava y después la novena; no vuelvas a ejecutar las siete ya aplicadas.
+Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para las acciones confirmadas de reiniciar/restaurar. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state`. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, prepara respuestas HTTP 409 ante conflictos de revisión y sigue pendiente. El propietario informa que la novena, `20261013160000_recipe_proposal_inbox.sql`, ya se ejecutó y que la cuenta admin ya se asignó; crea cuatro tablas de propuestas/administradores y tres RPCs acotados. La novena no altera las filas personales ni el RPC `sync_menuki_state`. En un proyecto nuevo, revisa el estado real antes de ejecutar migraciones; en el proyecto existente no vuelvas a ejecutar scripts que ya se hayan aplicado.
 
 La migración crea `sync_menuki_state(jsonb, bigint)`: el cliente transmite el snapshot, la función obtiene el propietario mediante `auth.uid()`, guarda los registros en las tablas normalizadas y comprueba `sync_revision` para rechazar copias desactualizadas. La primera sincronización importa una sola vez el estado local si la cuenta no tiene ya registros; no sobrescribe silenciosamente filas remotas. La app no mantiene una cola offline.
 
-La migración de propuestas define `submit_recipe_proposal`, que recibe campos simples, valida sus límites y guarda la cabecera, los ingredientes y los pasos en una transacción. Usa un identificador de cliente para que un reintento no duplique la misma propuesta. `is_menuki_admin` comprueba una lista privada de roles y `clear_recipe_proposals` permite al administrador borrar el buzón completo con control de recuento. El borrado bloquea altas simultáneas y falla si el número de propuestas cambió desde la confirmación de la interfaz.
+La migración de propuestas define `submit_recipe_proposal`, que recibe campos simples, valida sus límites y guarda la cabecera, los ingredientes y los pasos en una transacción. Usa un identificador de cliente para que un reintento no duplique la misma propuesta. `is_menuki_admin` comprueba una lista privada de roles y `clear_recipe_proposals` permite al administrador borrar el buzón completo con control de recuento. La migración `20261013170000_recipe_proposal_admin_maintenance.sql` añade `update_recipe_proposal` y `delete_recipe_proposal`, RPCs que solo permiten al admin corregir una propuesta o eliminarla con sus filas hijas. Las dos comparan el contenido que el admin había leído con el contenido actual para rechazar operaciones obsoletas. No se conceden permisos directos de escritura en las tablas. El propietario confirmó que la migración de mantenimiento admin ya está aplicada y que las acciones individuales funcionan; la migración `20261013180000_recipe_proposal_purge_where_clause.sql` corrige la purga global después de que Supabase rechazara el DELETE sin cláusula WHERE.
 
 ### Asignar el administrador
 
@@ -40,7 +40,7 @@ El reinicio y la restauración de una copia JSON son operaciones explícitas dis
 
 Para revisar el esquema inicial, ejecuta `tests/001_schema_check.sql`. Es una comprobación estructural; no demuestra el aislamiento con dos sesiones autenticadas ni el recorrido completo de sincronización.
 
-SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Los siete primeros archivos describen las migraciones ya aplicadas; la octava y la novena siguen pendientes y deben aplicarse manualmente, en ese orden. No vuelvas a ejecutar los siete primeros scripts solo para registrarlos.
+SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Según el propietario, la novena migración ya se aplicó; la octava sigue pendiente. Antes de ejecutar SQL, compara el estado alojado y aplica solo la octava. No vuelvas a ejecutar migraciones ya aplicadas solo para registrarlas.
 
 ## Tablas utilizadas
 
@@ -59,9 +59,9 @@ Los IDs de alimentos y recetas se resuelven contra los catálogos JSON; no se du
 
 ## Pendiente de validar
 
-- Aplicar la octava migración desde SQL Editor y publicar el HTML actualizado en GitHub Pages. La migración `20261013120000_menuki_sync_conflict_http_409.sql` aún no está en el proyecto alojado.
-- Aplicar después la novena migración `20261013160000_recipe_proposal_inbox.sql`, asignar el primer administrador y publicar esta rama a través del flujo Git. La migración está preparada localmente; no se ha aplicado al proyecto alojado.
-- Validar con una cuenta normal y otra admin: envío, aislamiento de lectura, permisos del botón de borrado, confirmación del recuento y borrado en cascada de ingredientes y pasos.
+- Aplicar la octava migración desde SQL Editor. La novena y la décima se consideran aplicadas según confirmación del propietario; el HTML actualizado ya muestra las acciones admin.
+- Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` desde SQL Editor para corregir la purga global; no volver a ejecutar migraciones ya aplicadas. Esta corrección no modifica tablas.
+- Validar con una cuenta normal y otra admin: envío, aislamiento de lectura, JSON admin conforme al esquema v1, permisos del botón de borrado, confirmación del recuento y borrado en cascada de ingredientes y pasos.
 - Ejecutar la prueba de aislamiento con dos cuentas de Auth: lectura, inserción y referencias entre propietarios distintos.
 - Probar en la web publicada los cambios desde PC y móvil, los conflictos y la recuperación ante un error de red.
 - Definir una copia externa periódica y revisar el crecimiento de almacenamiento.

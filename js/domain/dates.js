@@ -44,6 +44,18 @@ export function dateFromISO(value) {
   return date;
 }
 
+export function formatEuropeanDate(value) {
+  if (!dateFromISO(value)) return '';
+  return value.split('-').reverse().join('/');
+}
+
+export function isoFromEuropeanDate(value) {
+  const match = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(value ?? '').trim());
+  if (!match || Number(match[3]) < 1) return null;
+  const iso = `${match[3]}-${match[2]}-${match[1]}`;
+  return dateFromISO(iso) ? iso : null;
+}
+
 export function isoDate(date) {
   return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, '0')}-${String(date.getUTCDate()).padStart(2, '0')}`;
 }

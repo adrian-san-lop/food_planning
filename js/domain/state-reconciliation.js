@@ -82,7 +82,7 @@ function mergePlan(base, local, remote) {
   if (same(remote, base)) return clone(local);
   if (![base, local, remote].every((plan) => plan && typeof plan === 'object' && !Array.isArray(plan))) return clone(remote);
 
-  const stableFields = ['start', 'catalogVersion', 'generatedAt'];
+  const stableFields = ['active', 'cycleId', 'start', 'catalogVersion', 'generatedAt'];
   if (!stableFields.every((field) => same(base[field], local[field]) && same(base[field], remote[field]))) return clone(remote);
 
   const merged = mergeValue(base, local, remote);
@@ -167,12 +167,21 @@ function mergeWeights(baseValues, localRows, remoteRows, deletedDates) {
   return { rows: [...merged.values()].sort((a, b) => a.date.localeCompare(b.date)), deletedDates: pendingDeletes };
 }
 
-function archiveKey(cycle) {
-  return [cycle?.start, cycle?.catalogVersion, JSON.stringify(cycle?.menus || [])].join('|');
-}
-
 function mergeArchives(baseRows, localRows, remoteRows) {
-  const toMap = (rows) => new Map((rows || []).filter(Boolean).map((row) => [archiveKey(row), row]));
+  const signature = (cycle) => [cycle?.start, cycle?.catalogVersion, JSON.stringify(cycle?.menus || [])].join('|');
+  const allRows = [...(baseRows || []), ...(localRows || []), ...(remoteRows || [])].filter(Boolean);
+  const idsBySignature = new Map();
+  for (const row of allRows) {
+    if (!row.cycleId) continue;
+    const key = signature(row);
+    if (!idsBySignature.has(key)) idsBySignature.set(key, new Set());
+    idsBySignature.get(key).add(row.cycleId);
+  }
+  const toMap = (rows) => new Map((rows || []).filter(Boolean).map((row) => {
+    const knownIds = idsBySignature.get(signature(row));
+    const normalized = !row.cycleId && knownIds?.size === 1 ? { ...row, cycleId: [...knownIds][0] } : row;
+    return [normalized.cycleId ? `id:${normalized.cycleId}` : `legacy:${signature(normalized)}`, normalized];
+  }));
   const base = toMap(baseRows);
   const local = toMap(localRows);
   const remote = toMap(remoteRows);
@@ -188,6 +197,8 @@ function mergeableState(state = {}) {
   return {
     profile: state.profile || {},
     profileConfirmed: state.profileConfirmed === true,
+    noActiveCycle: state.noActiveCycle === true,
+    activeCycleId: state.activeCycleId || null,
     start: state.start,
     activeMenus: state.activeMenus || null,
     activeMenuCatalogVersion: state.activeMenuCatalogVersion || null,
@@ -195,6 +206,7 @@ function mergeableState(state = {}) {
     activeMenuConfirmedAt: state.activeMenuConfirmedAt || null,
     activeMenuRecoveryFocus: state.activeMenuRecoveryFocus === true,
     done: state.done || {},
+    reversedDone: state.reversedDone || {},
     legacyStrengthDays: state.legacyStrengthDays || {},
     prep: state.prep || {},
     archives: state.archives || [],
@@ -212,13 +224,26 @@ export function createReconciliationBase(state) {
 
 function canonicalCompletions(state) {
   const completed = new Map();
+  const add = (sourceId, entry) => {
+    if (!entry?.operationId || !sourceId) return;
+    const key = String(sourceId);
+    if (!completed.has(key)) completed.set(key, new Set());
+    completed.get(key).add(String(entry.operationId));
+  };
   const collect = entries => {
     for (const [sourceId, entry] of Object.entries(entries || {})) {
-      if (entry?.operationId) completed.set(sourceId, String(entry.operationId));
+      add(sourceId, entry);
     }
   };
+  const collectReversed = entries => {
+    for (const entry of Object.values(entries || {})) add(entry?.mealKey, entry);
+  };
+  for (const archive of state.archives || []) {
+    collect(archive?.done);
+    collectReversed(archive?.reversedDone);
+  }
+  collectReversed(state.reversedDone);
   collect(state.done);
-  for (const archive of state.archives || []) collect(archive?.done);
   return completed;
 }
 
@@ -228,18 +253,24 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   const remote = mergeableState(remoteState);
   const result = JSON.parse(JSON.stringify(remoteState));
   const activePlan = mergePlan(
-    { start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus },
-    { start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus },
-    { start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus },
+    { active: !base.noActiveCycle, cycleId: base.activeCycleId, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus, reversedDone: base.reversedDone },
+    { active: !local.noActiveCycle, cycleId: local.activeCycleId, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus, reversedDone: local.reversedDone },
+    { active: !remote.noActiveCycle, cycleId: remote.activeCycleId, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus, reversedDone: remote.reversedDone },
   );
   result.start = activePlan?.start ?? remote.start;
+  result.activeCycleId = activePlan?.cycleId ?? null;
   result.activeMenus = activePlan?.menus ?? null;
   result.activeMenuCatalogVersion = activePlan?.catalogVersion ?? null;
   result.activeMenuGeneratedAt = activePlan?.generatedAt ?? null;
   result.activeMenuConfirmedAt = activePlan?.confirmedAt ?? null;
   result.activeMenuRecoveryFocus = activePlan?.recoveryFocus === true;
+  result.reversedDone = activePlan?.reversedDone || {};
   result.profile = mergeValue(base.profile, local.profile, remote.profile);
   result.profileConfirmed = mergeValue(base.profileConfirmed, local.profileConfirmed, remote.profileConfirmed);
+  // Cycle existence must follow the same winning value as its date and menu.
+  // Merging this flag separately can produce an active plan marked as missing
+  // (or vice versa), which may submit a snapshot without the selected cycle.
+  result.noActiveCycle = activePlan?.active !== true;
   result.done = mergeValue(base.done, local.done, remote.done);
   result.legacyStrengthDays = mergeValue(base.legacyStrengthDays, local.legacyStrengthDays, remote.legacyStrengthDays);
   result.prep = mergeValue(base.prep, local.prep, remote.prep);
@@ -254,13 +285,13 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   result.movements = mergeRowsByKey([], localState.movements, remoteState.movements, 'operationId')
     .filter((move) => {
       if (!move?.sourceId) return true;
-      const winner = winningCompletions.get(move.sourceId);
-      if (!winner) return true;
+      const winners = winningCompletions.get(move.sourceId);
+      if (!winners?.size) return true;
       const operationId = String(move.operationId || '');
       const rootOperationId = operationId.startsWith('revert:')
         ? operationId.slice(7).replace(new RegExp(`:${move.foodId}$`), '')
         : operationId.replace(new RegExp(`:${move.foodId}$`), '');
-      return rootOperationId === winner;
+      return winners.has(rootOperationId);
     })
     .sort((a, b) => String(a.createdAt).localeCompare(String(b.createdAt)));
   const activity = mergeActivitySessions(options.baseActivityIds, localState.activitySessions, remoteState.activitySessions, options.remoteActivityIds, localState.deletedActivitySessionIds);

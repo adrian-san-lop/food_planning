@@ -1,7 +1,7 @@
 # Decisión 0021: buzón compartido de propuestas de recetas
 
 - **Fecha:** 13 de octubre de 2026
-- **Estado:** Aceptada; interfaz y migración preparadas localmente; aplicación en Supabase y publicación pendientes
+- **Estado:** Aceptada; migración aplicada y admin asignado según el propietario; publicación y validación pendientes
 - **Alcance:** envío de ideas de recetas, revisión administrativa y limpieza posterior al alta manual en los catálogos
 
 ## Contexto
@@ -15,7 +15,7 @@
 3. Guardar la cabecera, los ingredientes y los pasos en tres tablas relacionadas; no almacenar el envío como una columna JSON. La cabecera conserva `submitter_id`, `client_id`, tipo, nombre y fecha. La clave `(submitter_id, client_id)` hace idempotentes los reintentos del cliente.
 4. El envío usa `submit_recipe_proposal`, una RPC transaccional separada de `sync_menuki_state`. Las propuestas son contenido compartido, no parte del estado personal de una cuenta.
 5. Usar `menuki_admins` para asignar roles y `is_menuki_admin()` para comprobarlos. El propietario concede el rol desde SQL Editor después de que exista la cuenta de Auth. El navegador no puede asignar roles y no contiene una contraseña administrativa.
-6. La cuenta normal puede enviar una propuesta, pero no leer el buzón, consultar propuestas ajenas, modificar filas o borrar registros. El administrador puede leer el buzón mediante RLS.
+6. La cuenta normal puede enviar una propuesta, pero no leer el buzón, consultar propuestas ajenas, modificar filas o borrar registros. El administrador lee mediante RLS y corrige o descarta propuestas individuales únicamente mediante las RPC admin-only definidas en [ADR-0023](0023-admin-recipe-proposal-review-actions.md).
 7. La IA se usa fuera de la app. El administrador concreta una receta para una persona, revisa las fuentes y cantidades, añade primero los alimentos nuevos a `foods.json` y después incorpora la receta a `recipes.json`. La app obtiene kcal y nutrientes del catálogo; el formulario no genera esos valores.
 8. El tipo `snack` del formulario se asigna a `media` o `tarde` al preparar la receta, porque esos son los tipos existentes del catálogo.
 9. Cuando todas las propuestas se hayan incorporado y publicado, el administrador puede eliminar todo el buzón con `clear_recipe_proposals`. El botón muestra el total y pide confirmación; el RPC valida el recuento esperado y bloquea altas concurrentes. Si el buzón cambió, la limpieza falla y exige actualizarlo y confirmar de nuevo.
@@ -26,7 +26,7 @@
 - La entrada del catálogo requiere juicio administrativo; una propuesta no altera los menús ni el catálogo activo.
 - La interfaz no accede a GitHub ni mantiene una clave de escritura. Los cambios de catálogo pasan por edición, revisión y publicación del repositorio.
 - La migración `20261013160000_recipe_proposal_inbox.sql` añade `menuki_admins`, `recipe_proposals`, `recipe_proposal_ingredients` y `recipe_proposal_steps`. Los contenidos se aíslan mediante RLS y permisos mínimos.
-- La migración, la asignación inicial de rol, la publicación y la validación de RLS con cuentas normal y admin siguen pendientes.
+- El propietario informa que ejecutó la migración y la asignación inicial del rol. La publicación y la validación de RLS con cuentas normal y admin siguen pendientes.
 
 ## Referencias
 

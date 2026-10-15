@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.6.0",
-  "source": "Existing foods plus curated generic additions with USDA FoodData Central references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance.",
-  "status": "Catálogo 0.6.0; recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
+  "catalogVersion": "0.8.0",
+  "source": "Existing foods plus curated generic additions with USDA FoodData Central, AESAN/BEDCA, and manufacturer nutrition references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance. Version 0.8.0 adds ingredients for Ensalada templada de gulas and updates the generic gulas estimate from the manufacturer's natural product label.",
+  "status": "Catálogo 0.8.0; 90 alimentos. Recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
   "foods": [
     {
       "id": "skyr",
@@ -1162,10 +1162,10 @@
       "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
-        "kcal": 170,
-        "protein_g": 8,
-        "carbohydrates_g": 8,
-        "fat_g": 11
+        "kcal": 163,
+        "protein_g": 9.5,
+        "carbohydrates_g": 7.8,
+        "fat_g": 10
       },
       "purchase": {
         "store": "supermercado",
@@ -1174,7 +1174,7 @@
         "unit": "g",
         "label": "200 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación genérica basada en la etiqueta oficial de La Gula del Norte Natural por 100 g (163 kcal, 9,5 g proteína, 7,8 g hidratos y 10 g grasa); otras marcas o variedades pueden diferir. https://laguladelnorte.es/producto/natural/"
     },
     {
       "id": "mackerel",
@@ -1796,6 +1796,153 @@
         "label": "botella pequeña de unos 150 ml"
       },
       "nutritionSource": "USDA FoodData Central, salsa de soja genérica; cantidades por 100 ml aproximadas a partir de la referencia nutricional por volumen. El contenido de sal depende de la marca. https://fdc.nal.usda.gov/food-search/?query=soy+sauce"
+    },
+    {
+      "id": "garlic",
+      "name": "Ajo fresco",
+      "unit": "g",
+      "recipeUnit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 149,
+        "protein_g": 6.36,
+        "carbohydrates_g": 33.06,
+        "fat_g": 0.5
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Verduras y hortalizas",
+        "quantity": 50,
+        "unit": "g",
+        "label": "cabeza de ajo de unos 50 g"
+      },
+      "nutritionSource": "USDA FoodData Central, ajo crudo (SR Legacy, NDB 11215); valores genéricos por 100 g: 149 kcal, 6,36 g de proteína, 33,06 g de carbohidratos y 0,5 g de grasa. https://fdc.nal.usda.gov/food-search/?query=garlic"
+    },
+    {
+      "id": "chickenWings",
+      "name": "Alitas de pollo enteras con hueso y piel",
+      "unit": "g",
+      "recipeUnit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 86.4,
+        "protein_g": 8.1,
+        "carbohydrates_g": 0,
+        "fat_g": 5.7
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Carnes y pescados",
+        "quantity": 500,
+        "unit": "g",
+        "label": "bandeja de 500 g (peso con hueso)"
+      },
+      "nutritionSource": "Estimación por 100 g de peso de compra con hueso: USDA FoodData Central, alita asada con carne y piel (FDC 173630: 254 kcal, 23,79 g de proteína y 16,87 g de grasa por 100 g comestibles), multiplicado por el rendimiento USDA Food Buying Guide para alitas enteras con hueso y piel (1 lb comprada -> 0,34 lb de carne cocida deshuesada con piel); aproximadamente 86,4 kcal, 8,1 g de proteína y 5,7 g de grasa por 100 g comprados. Es una estimación y el rendimiento varía con el tamaño y la cocción. https://fdc.nal.usda.gov/fdc-app.html#/food-details/173630/nutrients ; https://foodbuyingguide.fns.usda.gov/files/Reports/USDA_FBG_Section1_MeatsAndMeatAlternatesYieldTable.pdf"
+    },
+    {
+      "id": "beetroot",
+      "name": "Remolacha cocida en tiras",
+      "unit": "g",
+      "recipeUnit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 44,
+        "protein_g": 1.68,
+        "carbohydrates_g": 9.96,
+        "fat_g": 0.18
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Verduras y hortalizas",
+        "quantity": 200,
+        "unit": "g",
+        "label": "envase refrigerado de 200 g"
+      },
+      "nutritionSource": "USDA FoodData Central, SR Legacy, remolacha cocida, hervida y escurrida (FDC 169146), por 100 g; se usa como referencia genérica para remolacha cocida en tiras, cuyo envase puede variar. https://fdc.nal.usda.gov/fdc-app.html#/food-details/169146/nutrients"
+    },
+    {
+      "id": "cayenne",
+      "name": "Cayena seca entera",
+      "unit": "g",
+      "recipeUnit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 318,
+        "protein_g": 12.01,
+        "carbohydrates_g": 56.63,
+        "fat_g": 17.27
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Congelados y despensa",
+        "quantity": 20,
+        "unit": "g",
+        "label": "envase de especia de unos 20 g"
+      },
+      "nutritionSource": "USDA FoodData Central, SR Legacy, pimiento rojo o cayena seco (FDC 170932), por 100 g. https://fdc.nal.usda.gov/fdc-app.html#/food-details/170932/nutrients"
+    },
+    {
+      "id": "curedCheese",
+      "name": "Queso curado",
+      "unit": "g",
+      "recipeUnit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 448,
+        "protein_g": 35.77,
+        "carbohydrates_g": 0.51,
+        "fat_g": 34
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Lácteos y desayuno",
+        "quantity": 200,
+        "unit": "g",
+        "label": "porción o envase de unos 200 g"
+      },
+      "nutritionSource": "AESAN/BEDCA, queso curado genérico: 1874,76 kJ por 100 g (448 kcal tras conversión), 35,77 g de proteína, 0,51 g de hidratos y 34 g de grasa. Los quesos y grados de curación varían; revisar la etiqueta del producto comprado. https://www.bedca.net/bdpub/ ; https://www.contarproteinas.com/informacion_de_ingredientes/Queso-curado-generico-707"
+    },
+    {
+      "id": "freshMozzarella",
+      "name": "Mozzarella fresca",
+      "unit": "g",
+      "recipeUnit": "g",
+      "nutrition": {
+        "basis": "per_100g",
+        "kcal": 220,
+        "protein_g": 17,
+        "carbohydrates_g": 2,
+        "fat_g": 16
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Lácteos y desayuno",
+        "quantity": 125,
+        "unit": "g",
+        "label": "bola fresca de 125 g"
+      },
+      "nutritionSource": "Etiqueta oficial de Galbani Mozzarella Fresca Bola por 100 g (220 kcal, 17 g de proteína, 2 g de hidratos y 16 g de grasa), usada como referencia genérica; las marcas pueden diferir. https://galbani.es/quesos-galbani/galbani-mozzarella-fresca-bola-100g-y-125g/"
+    },
+    {
+      "id": "vinegar",
+      "name": "Vinagre de vino",
+      "unit": "ml",
+      "recipeUnit": "ml",
+      "nutrition": {
+        "basis": "per_100ml",
+        "kcal": 19,
+        "protein_g": 0,
+        "carbohydrates_g": 0.27,
+        "fat_g": 0
+      },
+      "purchase": {
+        "store": "supermercado",
+        "section": "Congelados y despensa",
+        "quantity": 500,
+        "unit": "ml",
+        "label": "botella de 500 ml"
+      },
+      "nutritionSource": "USDA FoodData Central, SR Legacy, vinagre de vino tinto (FDC 172240), por 100 g; aproximado a 100 ml según la porción USDA de 14,9 g por cucharada de 15 ml. https://fdc.nal.usda.gov/fdc-app.html#/food-details/172240/nutrients"
     }
   ]
 }

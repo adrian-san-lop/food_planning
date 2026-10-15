@@ -108,8 +108,8 @@ No recomiendo migrar ahora a un servidor Node, una aplicación de una sola pági
 
 ## Secuencia de trabajo sugerida
 
-1. **Etapas altas y paquetes medio y bajo implementados:** hoja CSS organizada, plantillas sin atributos `style`, entrada ES, módulos de fechas, unidades, catálogos y persistencia; fecha civil en `Europe/Madrid`; versión exacta del cliente Supabase; pruebas de dominio/catálogos/HTML y escape compartido. Preservar estado v8, importaciones v5-v8, catálogos 0.6.0, menú inicial, UI en español y sincronización.
-2. **Validar en navegador antes de publicar:** carga de recursos, fecha actual, comidas y sesiones en los límites del día de Madrid, activación de ciclos, Auth, conciliación automática de cambios, borrado de sesiones, reinicio/restauración confirmados, navegación y compra; comprobar PC y móvil.
+1. **Etapas altas y paquetes medio y bajo implementados:** hoja CSS organizada, plantillas sin atributos `style`, entrada ES, módulos de fechas, unidades, catálogos y persistencia; fecha civil en `Europe/Madrid`; versión exacta del cliente Supabase; pruebas de dominio/catálogos/HTML y escape compartido. Preservar estado v8 y las migraciones locales v5-v8, contratos e IDs estables de catálogos, menú inicial, UI en español y sincronización.
+2. **Validar en navegador antes de publicar:** carga de recursos, fecha actual, comidas y sesiones en los límites del día de Madrid, activación de ciclos, Auth, conciliación automática de cambios, borrado de sesiones, reinicio total confirmado, navegación y compra; comprobar PC y móvil.
 3. **Continuar la extracción gradualmente:** revisar primero las reglas de dominio (nutrición, planificador, inventario y normalización de estado), luego vistas/eventos y el resto de orquestación de nube. Evitar cambios de producto durante cada etapa y preservar los contratos existentes.
 4. **Completar las comprobaciones operativas por separado:** prueba de aislamiento RLS con dos cuentas, publicación en GitHub Pages y validación en dispositivos reales.
 5. **Evaluar herramienta de compilación con evidencia:** incorporar Vite o TypeScript solo si la separación muestra una necesidad concreta y dejar documentado el proceso de publicación desde `dev`.
@@ -118,7 +118,7 @@ No recomiendo migrar ahora a un servidor Node, una aplicación de una sola pági
 
 - Mantener `index.html` y `menuki.html` en la raíz y usar referencias relativas compatibles con GitHub Pages.
 - Mantener los JSON Schema, los IDs estables de alimentos y recetas, y la separación entre catálogos genéricos y datos personales.
-- Conservar estado v8 e importación/restauración v5-v8; no añadir migraciones v1-v4.
+- Conservar estado v8 y la migración local v5-v8; no ofrecer restauración personal JSON ni añadir migraciones v1-v4.
 - Mantener la sincronización autenticada, RLS, `auth.uid()`, el control `sync_revision`, las transacciones y la conciliación automática definida en ADR-0017.
 - No introducir cola offline, sincronización manual de uso normal, notificaciones en segundo plano ni claves secretas en el navegador.
 - Mantener las decisiones aceptadas del planificador, inventario y actividad. Las ideas aún propuestas siguen siendo preguntas abiertas.

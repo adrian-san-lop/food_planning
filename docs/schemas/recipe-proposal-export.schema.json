@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Menuki recipe proposal export",
+  "description": "Admin-only transfer package for raw recipe proposals. It contains no submitter identity or personal profile data.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format",
+    "formatVersion",
+    "exportedAt",
+    "catalogVersion",
+    "proposalCount",
+    "proposals"
+  ],
+  "properties": {
+    "format": {
+      "const": "menuki.recipe-proposal-export"
+    },
+    "formatVersion": {
+      "const": 1
+    },
+    "exportedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "catalogVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proposalCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "proposals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/proposal"
+      }
+    }
+  },
+  "$defs": {
+    "proposal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "mealType",
+        "name",
+        "submittedAt",
+        "ingredients",
+        "steps"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "mealType": {
+          "enum": [
+            "desayuno",
+            "comida",
+            "snack",
+            "cena"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "pattern": "\\S"
+        },
+        "submittedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ingredients": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 160,
+            "pattern": "\\S"
+          }
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500,
+            "pattern": "\\S"
+          }
+        }
+      }
+    }
+  }
+}

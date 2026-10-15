@@ -1,12 +1,12 @@
 # Modelo de datos de Supabase
 
-Última revisión: 13 de octubre de 2026. El proyecto tiene trece tablas existentes. La migración `20261013160000_recipe_proposal_inbox.sql` prepara cuatro tablas adicionales, todavía pendientes de aplicar; las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
+Última revisión: 13 de octubre de 2026. El proyecto tiene trece tablas personales existentes y cuatro tablas compartidas del buzón. El propietario informa que la migración `20261013160000_recipe_proposal_inbox.sql` ya se aplicó; la octava migración de conflictos sigue pendiente. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
-El HTML y Supabase Auth están integrados en el repositorio; las siete migraciones iniciales están aplicadas al proyecto. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, y la novena, `20261013160000_recipe_proposal_inbox.sql`, están pendientes. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta aplicar ambas migraciones en orden, publicar este HTML y probar el flujo real entre dispositivos, el buzón y el aislamiento con dos cuentas autenticadas.
+El HTML y Supabase Auth están integrados en el repositorio; las siete migraciones iniciales están aplicadas al proyecto. La novena y la asignación admin se consideran aplicadas según el propietario; la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, sigue pendiente. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta aplicar la octava, publicar este HTML y probar el flujo real entre dispositivos, el buzón y el aislamiento con dos cuentas autenticadas.
 
 ## Diagrama entidad-relación
 
-El diagrama muestra las trece tablas existentes y, con borde discontinuo, las cuatro tablas de propuestas preparadas en la novena migración. `auth.users` pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
+El diagrama muestra las trece tablas personales y, con borde discontinuo, las cuatro tablas compartidas del buzón creadas por la novena migración (aplicada según el propietario). `auth.users` pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
 
 ![Diagrama entidad-relación de la base de datos de Supabase](images/supabase_db_model.svg)
 
@@ -248,7 +248,7 @@ Guarda la selección, envase y estado marcado de cada artículo de la compra. La
 | sync_revision | bigint | No | DEFAULT 0; contador de control de concurrencia que rechaza escrituras con revisión desactualizada. |
 | updated_at | timestamptz | No | DEFAULT now(); no se actualiza automáticamente. |
 
-### menuki_admins — migración pendiente
+### menuki_admins — migración aplicada según el propietario
 
 Lista privada de cuentas a las que el propietario concedió el rol administrativo. No tiene permisos de acceso directo para los roles `anon` ni `authenticated`; las funciones de seguridad comprueban la pertenencia.
 
@@ -257,7 +257,7 @@ Lista privada de cuentas a las que el propietario concedió el rol administrativ
 | user_id | uuid | No | PK y FK → auth.users.id; ON DELETE CASCADE. |
 | granted_at | timestamptz | No | DEFAULT now(); momento de asignación. |
 
-### recipe_proposals — migración pendiente
+### recipe_proposals — migración aplicada según el propietario
 
 Cabecera del buzón compartido. Guarda la idea original, no la receta nutricional final. No se guardan cantidades, kcal ni nutrientes; el buzón se elimina globalmente después de que el administrador haya publicado las recetas en los JSON.
 
@@ -270,7 +270,7 @@ Cabecera del buzón compartido. Guarda la idea original, no la receta nutriciona
 | recipe_name | text | No | Entre 1 y 120 caracteres tras recortar espacios. |
 | created_at | timestamptz | No | DEFAULT now(); índice descendente para el buzón. |
 
-### recipe_proposal_ingredients — migración pendiente
+### recipe_proposal_ingredients — migración aplicada según el propietario
 
 Ingredientes en texto libre, conservados en el orden enviado. El límite de 30 filas y 160 caracteres por ingrediente se valida en la RPC y en las restricciones de tabla.
 
@@ -280,7 +280,7 @@ Ingredientes en texto libre, conservados en el orden enviado. El límite de 30 f
 | position | smallint | No | PK compuesta; posición entre 1 y 30. |
 | ingredient_text | text | No | Entre 1 y 160 caracteres tras recortar espacios. |
 
-### recipe_proposal_steps — migración pendiente
+### recipe_proposal_steps — migración aplicada según el propietario
 
 Pasos de preparación en texto libre y en el orden enviado. El límite de 30 filas y 500 caracteres por paso se valida en la RPC y en las restricciones de tabla.
 
@@ -296,8 +296,8 @@ Pasos de preparación en texto libre y en el orden enviado. El límite de 30 fil
 | --- | --- | --- | --- |
 | auth.users | profiles | 1 a 0..1 | profiles.user_id es PK y FK a auth.users.id. |
 | auth.users | user_settings | 1 a 0..1 | user_settings.user_id es PK y FK a auth.users.id. |
-| auth.users | menuki_admins | 1 a 0..1 | menuki_admins.user_id es PK y FK; solo el propietario de Supabase concede el rol. Migración pendiente. |
-| auth.users | recipe_proposals | 1 a N | recipe_proposals.submitter_id referencia a la cuenta que envió la idea. Migración pendiente. |
+| auth.users | menuki_admins | 1 a 0..1 | menuki_admins.user_id es PK y FK; solo el propietario de Supabase concede el rol. Novena migración aplicada según el propietario. |
+| auth.users | recipe_proposals | 1 a N | recipe_proposals.submitter_id referencia a la cuenta que envió la idea. Novena migración aplicada según el propietario. |
 | auth.users | plan_cycles, planned_meals, meal_completions, inventory_movements, weight_logs, training_logs, prep_tasks, shopping_sessions, shopping_session_items | 1 a N por tabla | Tablas iniciales aplicadas; cada una tiene FK user_id → auth.users.id para propiedad y RLS. |
 | auth.users | activity_sessions | 1 a N | FK user_id → auth.users.id; tabla aplicada con RLS. |
 | auth.users | meal_completion_ingredients | 1 a N | FK user_id → auth.users.id; aplicada con RLS por propietario. |
@@ -309,18 +309,18 @@ Pasos de preparación en texto libre y en el orden enviado. El límite de 30 fil
 | meal_completions | inventory_movements | 1 a N movimientos | FK compuesta inventory_movements (source_completion_id, user_id); se usa para los consumos de la comida. |
 | inventory_movements | inventory_movements | 1 a 0..1 reverso | FK compuesta (reverses_movement_id, user_id) y un índice único por movimiento revertido. |
 | shopping_sessions | shopping_session_items | 1 a N | FK compuesta shopping_session_items (session_id, user_id). |
-| recipe_proposals | recipe_proposal_ingredients | 1 a N | FK recipe_proposal_ingredients.proposal_id con ON DELETE CASCADE; posiciones 1..30. Migración pendiente. |
-| recipe_proposals | recipe_proposal_steps | 1 a N | FK recipe_proposal_steps.proposal_id con ON DELETE CASCADE; posiciones 1..30. Migración pendiente. |
+| recipe_proposals | recipe_proposal_ingredients | 1 a N | FK recipe_proposal_ingredients.proposal_id con ON DELETE CASCADE; posiciones 1..30. Novena migración aplicada según el propietario. |
+| recipe_proposals | recipe_proposal_steps | 1 a N | FK recipe_proposal_steps.proposal_id con ON DELETE CASCADE; posiciones 1..30. Novena migración aplicada según el propietario. |
 
 Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de planned_meals/prep_tasks con ciclos, `shopping_session_items` con sesiones y `meal_completion_ingredients` con comidas completadas usan ON DELETE CASCADE. Las FKs de comidas completadas, movimientos enlazados y ciclo sustituido usan ON DELETE RESTRICT para conservar la trazabilidad; una referencia restrictiva descendiente también puede impedir el borrado de un padre.
 
 ## Seguridad y estado de validación
 
-- RLS está habilitado en las trece tablas existentes y sus políticas filtran por `auth.uid() = user_id`. La migración pendiente habilita RLS en las otras cuatro.
+- RLS está habilitado en las trece tablas personales existentes y sus políticas filtran por `auth.uid() = user_id`. La novena migración, aplicada según el propietario, habilita RLS en las otras cuatro y restringe el buzón por rol admin.
 - El rol anon no tiene permisos de lectura, inserción, actualización ni borrado en estas tablas.
 - El rol authenticated recibe solo los permisos de tabla previstos; inventory_movements permite lectura e inserción, sin actualización ni borrado.
-- Las siete migraciones iniciales se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el reinicio/restauración transaccional; la séptima añadió `profiles.profile_confirmed`. La octava migración, pendiente, cambia los conflictos de revisión a `PT409`. La novena, pendiente, crea las cuatro tablas de propuestas y las funciones `is_menuki_admin`, `submit_recipe_proposal` y `clear_recipe_proposals`.
-- La novena migración no concede permisos directos de escritura en las tablas del buzón. Las cuentas autenticadas pueden consultar esas tablas solo si `is_menuki_admin()` confirma el rol; las cuentas normales envían mediante `submit_recipe_proposal`. `menuki_admins` no tiene políticas ni permisos de tabla para el navegador. `clear_recipe_proposals` comprueba el rol, bloquea altas concurrentes, valida el recuento confirmado y borra el padre dentro de una transacción, con cascada a ingredientes y pasos.
+- Las siete migraciones iniciales se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el RPC transaccional utilizado por el reinicio total; la séptima añadió `profiles.profile_confirmed`. La octava migración, pendiente, cambia los conflictos de revisión a `PT409`. La novena creó las cuatro tablas de propuestas y las funciones `is_menuki_admin`, `submit_recipe_proposal` y `clear_recipe_proposals`; el propietario informa que ya la ejecutó.
+- La novena migración no concede permisos directos de escritura en las tablas del buzón. Las cuentas autenticadas pueden consultar esas tablas solo si `is_menuki_admin()` confirma el rol; las cuentas normales envían mediante `submit_recipe_proposal`. `menuki_admins` no tiene políticas ni permisos de tabla para el navegador. `clear_recipe_proposals` comprueba el rol, bloquea altas concurrentes, valida el recuento confirmado y borra el padre dentro de una transacción, con cascada a ingredientes y pasos. La migración décima añade `update_recipe_proposal` y `delete_recipe_proposal`; las dos vuelven a comprobar el rol, comparan la versión del contenido revisado y actualizan o eliminan una sola propuesta transaccionalmente. El propietario informa que la décima migración ya se aplicó y que el borrado individual funciona. Supabase rechazó la purga porque el DELETE no tenía WHERE; la migración undécima `20261013180000_recipe_proposal_purge_where_clause.sql` añade `id IS NOT NULL` y sigue pendiente.
 - Consultas previas confirmaron que `activity_sessions` y `meal_completion_ingredients` tienen RLS y permisos mínimos; los snapshots no conceden UPDATE ni DELETE a `authenticated`. La aplicación del SQL de sincronización devolvió éxito; no se ha probado todavía con dos sesiones autenticadas ni desde GitHub Pages.
 - El HTML ya contiene inicio de sesión y sincronización; la publicación, el primer traspaso de datos local a remoto y la prueba entre PC/móvil siguen pendientes.
 - SQL Editor no registra por sí solo el historial de archivos de migración. Los archivos locales describen el orden aplicado, pero aún no existe una operación de Supabase CLI que los registre en su tabla de versiones.
@@ -332,8 +332,10 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 - Sesiones realizadas (aplicada): [20261010140000_actual_activity_sessions.sql](../supabase/migrations/20261010140000_actual_activity_sessions.sql).
 - Snapshots de ingredientes (aplicada): [20261011100000_meal_completion_ingredient_snapshots.sql](../supabase/migrations/20261011100000_meal_completion_ingredient_snapshots.sql).
 - Sincronización relacional (aplicada): [20261011120000_menuki_cloud_sync.sql](../supabase/migrations/20261011120000_menuki_cloud_sync.sql).
-- Reinicio/restauración confirmados (aplicada): [20261011130000_menuki_cloud_reset.sql](../supabase/migrations/20261011130000_menuki_cloud_reset.sql).
+- Reinicio total confirmado (aplicada): [20261011130000_menuki_cloud_reset.sql](../supabase/migrations/20261011130000_menuki_cloud_reset.sql).
 - Confirmación de revisión del perfil (aplicada): [20261011150000_profile_confirmation.sql](../supabase/migrations/20261011150000_profile_confirmation.sql).
-- Buzón de propuestas y rol admin (pendiente): [20261013160000_recipe_proposal_inbox.sql](../supabase/migrations/20261013160000_recipe_proposal_inbox.sql).
+- Buzón de propuestas y rol admin (aplicada según el propietario): [20261013160000_recipe_proposal_inbox.sql](../supabase/migrations/20261013160000_recipe_proposal_inbox.sql).
+- Edición y borrado admin de propuestas (aplicada según el propietario): [20261013170000_recipe_proposal_admin_maintenance.sql](../supabase/migrations/20261013170000_recipe_proposal_admin_maintenance.sql).
+- Corrección de la purga global (pendiente de aplicar): [20261013180000_recipe_proposal_purge_where_clause.sql](../supabase/migrations/20261013180000_recipe_proposal_purge_where_clause.sql).
 - Comprobación estructural: [001_schema_check.sql](../supabase/tests/001_schema_check.sql).
 - Guía de Supabase: [supabase/README.md](../supabase/README.md).

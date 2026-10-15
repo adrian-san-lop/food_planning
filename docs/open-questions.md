@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas en Supabase; la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, y la novena, `20261013160000_recipe_proposal_inbox.sql`, están preparadas y pendientes de aplicar. La conciliación automática, el historial de actividad y la interfaz del buzón están implementados localmente en la rama de tarea; aún no están publicados ni validados en navegador/teléfono. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas. El propietario informa que las migraciones novena y décima (`20261013160000_recipe_proposal_inbox.sql` y `20261013170000_recipe_proposal_admin_maintenance.sql`) y la asignación admin ya se ejecutaron en Supabase; la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) sigue pendiente. El propietario confirmó que el borrado individual funciona. La limpieza global falla porque Supabase rechaza un `DELETE` sin cláusula `WHERE`; la corrección está en `20261013180000_recipe_proposal_purge_where_clause.sql` y aún debe aplicarse. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
@@ -29,10 +29,10 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 
 - Publicar la app actualizada y comprobar la primera importación local v8 a Supabase, la conciliación de cambios independientes, el desempate de cambios simultáneos y la propagación del borrado de sesiones entre PC y móvil.
 - Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
-- Aplicar en orden las migraciones octava y novena desde SQL Editor. Registrar una cuenta normal como administrador en `menuki_admins` y validar que las cuentas normales pueden enviar propuestas, pero no consultarlas ni borrarlas.
-- Publicar el código de propuestas y validar el formulario, la vista admin, la protección contra borrado con un recuento obsoleto y la eliminación en cascada después de incorporar una propuesta de prueba a los JSON.
-- Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y restauración desde una copia confirmada.
-- Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de importaciones grandes. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
+- Aplicar la octava migración pendiente desde SQL Editor. La novena y la asignación admin ya se ejecutaron según el propietario.
+- Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` en SQL Editor para corregir la limpieza global; después comprobar que elimina las propuestas y sus filas hijas. La edición y el borrado individual ya funcionan según el propietario. Sigue pendiente validar el aislamiento con una cuenta normal y la limpieza global en la web publicada.
+- Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y el reinicio total confirmado.
+- Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de cambios grandes de uso. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
 - ¿Cómo se hará una copia externa segura si la base de datos remota queda pausada o inaccesible?
 - ¿Qué navegadores y dispositivos se validarán antes de declarar lista la sincronización?
 
@@ -43,3 +43,16 @@ El refactor incremental, las fuentes canónicas y el paquete de robustez vigente
 - ¿Vite o TypeScript resolverían una necesidad concreta en las siguientes etapas?
 
 La [auditoría front-end y back-end](front-end-audit.md) explica los criterios para reconsiderarlas.
+
+## Landing, acceso y cumplimiento legal
+
+Los requisitos funcionales y la lista de información pendiente están en [Requisitos legales y de acceso](requisitos-legales-y-acceso.md). Antes de redactar o publicar textos legales, hay que resolver:
+
+- ¿Quién será el titular/responsable que debe identificarse y cuáles son sus datos de contacto, domicilio e identificadores aplicables?
+- ¿Qué finalidades, bases jurídicas y plazos de conservación corresponden a cada dato y flujo de Menuki?
+- ¿Qué proveedores, subencargados, ubicaciones, transferencias y cookies/tecnologías equivalentes se usan realmente en producción?
+- ¿Qué tratamientos requieren consentimiento y cuáles pueden apoyarse en otra base jurídica? ¿Qué controles y mecanismo permanente de cambio de preferencias son necesarios para el inventario real?
+- ¿Debe mantenerse RAT y qué evaluación se requiere sobre el perfil, peso y actividad que registra Menuki?
+- ¿Quién recibe las solicitudes de derechos y cómo se verificará y atenderá cada una?
+
+El listado legal aportado por el propietario no se considera un texto jurídico aprobado. Validar aplicabilidad y redacción antes de su publicación.

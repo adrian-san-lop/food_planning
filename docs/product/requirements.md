@@ -1,6 +1,6 @@
 # Requisitos del producto
 
-Estado de referencia: 13 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
+Estado de referencia: 14 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
 
 ## Propósito y usuarios
 
@@ -12,28 +12,32 @@ La posibilidad de combinar los gustos de varias personas en un menú común sigu
 
 ### Implementado en el HTML actual
 
+- La entrada pública de GitHub Pages es una landing en español que explica el menú de tres semanas, recetas, compra, despensa y seguimiento. La cabecera fija ofrece Iniciar sesión y Registrarse tanto en escritorio como en móvil; el registro reutiliza Supabase Auth desde `menuki.html?auth=signup`. La demo de menú y compra es interactiva y el movimiento decorativo respeta `prefers-reduced-motion`.
 - Un ciclo de tres semanas con cinco espacios diarios: desayuno, media mañana, comida, media tarde y cena (105 espacios). El primer ciclo mantiene el menú fijo existente; los siguientes pueden generarse desde el catálogo.
-- Inicio muestra un resumen del día en este orden: banner, KPI, objetivo nutricional de hoy y menú de hoy. No incluye navegación semanal ni otras secciones.
+- Inicio muestra primero el banner, los KPI y el progreso nutricional de hoy, con tamaño y espaciado adaptados al ancho y alto de pantalla. «Menú de hoy» y sus comidas aparecen debajo del resumen al desplazarse; Inicio no ofrece navegación semanal ni por día.
 - Menú es una página separada: permite elegir una de las tres semanas y un día con el calendario de siete días; muestra el detalle de la fecha seleccionada.
-- En una primera visita, Guía explica los pasos básicos y dirige al perfil. Los valores de ejemplo no se consideran revisados hasta que la persona guarda el perfil explícitamente.
+- En Inicio, la persona puede revisar el perfil mientras sus datos sigan pendientes de confirmación y abrir una guía rápida de tres pasos. Guía conserva el recorrido completo y permite reabrir la guía breve. Esta ayuda es opcional y no crea un estado de onboarding; los valores de ejemplo no se consideran revisados hasta guardar el perfil explícitamente.
 - La app comprueba periódicamente la revisión de Supabase mientras está visible y al volver al primer plano o recuperar la conexión. Combina cambios independientes usando la última revisión remota como base; cuando dos dispositivos cambian el mismo valor, prevalece el valor de la revisión que Supabase aceptó más recientemente. No pide elegir una copia.
 - Recetas, instrucciones y adaptación de cantidades según el perfil y las sesiones de actividad ya realizadas. La aplicación no muestra fotografías de platos.
 - Lista de compra, formatos comerciales orientativos, inventario, consumos y ajustes.
 - Registro posterior de sesiones realizadas con fecha, actividad/esfuerzo y duración; historial accesible desde **Actividad** en la barra inferior del móvil y desde **Actividad y peso** en escritorio. Cada sesión se puede eliminar de forma individual; el historial muestra 12 filas inicialmente y permite cargar más.
-- Estado de trabajo en `localStorage` y sincronización automática autenticada con Supabase. Se pueden restaurar archivos JSON v5-v8; no hay recordatorio periódico de copia.
-- En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Actividad; Perfil, Despensa, Recetas y Guía están bajo **Más**. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
+- Estado de trabajo en localStorage y sincronización automática autenticada con Supabase. Las instalaciones existentes conservan la migración de estados locales v5-v8; no hay restauración personal JSON desde la interfaz ni recordatorio periódico de copia.
+- En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Actividad; Perfil, Despensa, Recetas y Guía están bajo **Más**. El logo permanece en una barra superior fija con fondo diferenciado; el correo y el cierre de sesión están en Perfil. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
 - Inventario negativo permitido cuando se registra una comida que supera las existencias; se muestra el faltante y desmarcar la comida revierte el consumo.
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
 - Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado local con fecha y versión del catálogo.
 - Activación del siguiente menú al llegar su fecha; el ciclo anterior se archiva junto con su menú y registros.
 
-### Propuestas de recetas — alcance aceptado; despliegue pendiente
+### Propuestas de recetas — revisión admin individual y exportación JSON
 
-La interfaz y el módulo cliente están implementados en la rama de tarea. La migración de Supabase, la asignación del primer administrador, la publicación y la validación de RLS están pendientes; la función no estará disponible en la web publicada hasta completar esos pasos.
+El propietario informa que aplicó las migraciones del buzón y de mantenimiento admin. La edición y el borrado individual funcionan. La limpieza global requiere aplicar `20261013180000_recipe_proposal_purge_where_clause.sql`: Supabase rechaza el borrado masivo si no tiene cláusula `WHERE`. Después debe validarse la limpieza en la web publicada y el aislamiento con una cuenta normal.
 
 - Cualquier cuenta autenticada puede enviar una propuesta con tipo (desayuno, comida, snack o cena), nombre de hasta 120 caracteres, hasta 30 ingredientes de texto libre (160 caracteres cada uno) y hasta 30 pasos ordenados (500 caracteres cada uno). El formulario empieza con un ingrediente y un paso.
 - No se piden cantidades, raciones, kcal ni nutrientes. Los datos son una idea inicial; la propuesta no se convierte automáticamente en una receta del catálogo.
 - Un rol de administrador asignado de forma privada en Supabase puede revisar todas las propuestas. El rol se comprueba en la base de datos y no se deriva de una contraseña o correo escrito en el HTML.
+- Solo el administrador puede descargar el buzón en el formato `menuki.recipe-proposal-export`, versión 1. El paquete sigue `docs/schemas/recipe-proposal-export.schema.json`, registra `exportedAt`, `catalogVersion` y el número de propuestas, y conserva por propuesta el ID estable, tipo, nombre, fecha, ingredientes y pasos. No incluye correo ni ID de cuenta remitente ni cambia Supabase.
+- Antes de exportar, el administrador puede editar tipo, nombre, ingredientes y pasos de una propuesta, guardando los cambios en Supabase. Puede eliminar una propuesta individual junto con sus ingredientes y pasos, sin afectar a las demás. La descarga siempre refleja el estado guardado en ese momento.
+- La edición y el borrado individual usan RPCs transaccionales que verifican en Supabase que la cuenta pertenece a `menuki_admins`; la visibilidad de los botones en el navegador no es una medida de autorización. No se conceden escrituras directas a las tablas del buzón. Si una propuesta cambió desde la última lectura, la operación se rechaza y el admin actualiza el buzón antes de reintentar.
 - El administrador utiliza IA fuera de la app para concretar una ración para una persona, cantidades y composición nutricional. Verifica y añade primero los alimentos nuevos a `data/foods.json`, después completa `data/recipes.json` y publica los cambios con el flujo Git del repositorio. La web no escribe en GitHub ni aloja una clave de escritura.
 - El formulario usa “Snack”; al crear la receta de catálogo, el administrador la asigna a `media` o `tarde`, que son los tipos equivalentes disponibles en el catálogo actual.
 - Tras incorporar y publicar todas las recetas del buzón, el administrador puede confirmar el borrado global de las propuestas. El borrado incluye sus ingredientes y pasos, no modifica cuentas ni datos personales y se rechaza si el número de propuestas cambió desde la confirmación.
@@ -69,7 +73,7 @@ El aviso de renovación actual aparece dentro de la página cerca del final del 
 - Registrar las sesiones después de realizarlas; se permiten varias por día. La estimación neta `(MET − 1) × peso_kg × horas` se suma al objetivo base solo para esa fecha. Sin sesión registrada, se conserva el objetivo base.
 - La meta de proteína y grasa se mantiene estable ante la sesión; la energía extra se cubre principalmente con cantidades de hidratos. No se crean previsiones ni se alteran días futuros.
 - Registrar peso con fecha y consultar su tendencia sin interpretar fluctuaciones puntuales como cambios de grasa.
-- Mantener la app responsive y accesible. El menú de Inicio prioriza los platos del día; Compra y Despensa agrupan sus productos en secciones plegables.
+- Mantener la app responsive y accesible. El menú semanal se consulta en la página Menú; Compra y Despensa agrupan sus productos en secciones plegables.
 
 ### Catálogos y siguiente ciclo
 
@@ -111,5 +115,5 @@ Estos principios están aceptados. Las puntuaciones, umbrales y cantidades míni
 
 - Los catálogos son datos genéricos; no deben contener perfiles, pesos, preferencias personales, despensa, comidas completadas ni copias de seguridad.
 - GitHub Pages es alojamiento estático y de acceso público. Los datos personales no se guardan en el repositorio; Supabase los separa por `auth.uid()` y RLS. `localStorage` es una copia de trabajo, no la sincronización entre dispositivos.
-- No añadir colas offline, avisos en segundo plano ni notificaciones push. La sincronización se inicia automáticamente al guardar cambios y al detectar una revisión remota nueva; la interfaz solo ofrece reintento cuando falla. Reinicio total y restauración JSON conservan su confirmación explícita y usan el RPC de reemplazo; no participan en la conciliación habitual entre dispositivos.
+- No añadir colas offline, avisos en segundo plano ni notificaciones push. La sincronización se inicia automáticamente al guardar cambios y al detectar una revisión remota nueva; la interfaz solo ofrece reintento cuando falla. El reinicio total conserva su confirmación explícita y usa el RPC de reemplazo; no participa en la conciliación habitual entre dispositivos. La restauración personal desde JSON ya no está disponible.
 - El inicio de sesión y la sincronización relacional están implementados en el HTML y el esquema. La publicación del HTML actualizado, la prueba RLS con dos cuentas y la verificación PC/móvil siguen pendientes; véase [arquitectura](../architecture.md).
