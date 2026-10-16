@@ -31,3 +31,5 @@ Fuentes consultadas:
 ## Implementación
 
 `foods.json` y `recipes.json` pasan a `catalogVersion` `0.5.0`. El esquema permite las etiquetas opcionales y el HTML las valida, puntúa las recetas al generar la propuesta, conserva en el borrador si Recuperación ósea estaba activa y presenta la cobertura cualitativa por día. Las propuestas ya guardadas sin esa marca pueden regenerarse para aplicar la nueva preferencia.
+
+La revisión visual del 16 de octubre destaca la recuperación utilizada al generar como tarjeta del resumen. «Cómo se prepara este menú» conserva las cifras de presencia cualitativa y su explicación. Si el perfil cambió después de generar la propuesta, se muestra un aviso para aplicar ese cambio con «Cambiar platos»; la tarjeta no convierte el estado actual del perfil en una preferencia ya aplicada.
