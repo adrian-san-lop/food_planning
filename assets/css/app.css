@@ -33,7 +33,7 @@ h1,h2,h3,p{margin-top:0}
 .brand-sub{color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1.6px;margin-top:4px}
 .small-kicker{text-transform:uppercase;letter-spacing:1.8px;font-size:10px;font-weight:800;color:var(--muted);margin:14px 12px 6px}
 .side-nav{display:flex;flex-direction:column;gap:4px}
-.nav-btn{width:100%;display:flex;align-items:center;gap:13px;color:var(--ink-soft);background:none;border:0;padding:12px 14px;border-radius:10px;text-align:left;font-weight:600;transition:.18s}
+.nav-btn{width:100%;display:flex;align-items:center;gap:13px;color:var(--ink-soft);background:none;border:0;padding:12px 14px;border-radius:10px;text-align:left;font-weight:600;transition:background .18s,color .18s}
 .nav-btn:hover{background:var(--surface-subtle);color:var(--ink)}
 .nav-btn.active{background:var(--accent);color:var(--white)}
 .nav-btn .icon svg{width:18px;height:18px}
@@ -209,12 +209,16 @@ h1,h2,h3,p{margin-top:0}
 .chip{border:1px solid var(--line);background:var(--white);padding:8px 12px;border-radius:30px;color:var(--ink-soft);font-size:12px;font-weight:700}
 .chip.active{background:var(--accent-tint);border-color:var(--accent-line);color:var(--accent-dark)}
 .recipe-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px}
-.recipe-tile{background:var(--white);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;text-align:left;padding:0;color:var(--ink);transition:.18s;box-shadow:var(--shadow)}
+.recipe-tile{display:flex;min-width:0;background:var(--white);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;text-align:left;padding:0;color:var(--ink);transition:.18s;box-shadow:var(--shadow)}
 .recipe-tile:hover{transform:translateY(-3px);border-color:var(--accent-line)}
 .tile-tag{display:inline-flex;border-radius:30px;background:var(--accent-tint);padding:6px 9px;font-size:10px;color:var(--accent-dark);font-weight:800;margin-bottom:9px}
-.tile-body{padding:16px}
-.tile-body h3{font-size:16px;letter-spacing:-.3px;line-height:1.27;margin:0 0 10px}
-.tile-meta{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:11px}
+.tile-body{display:flex;flex-direction:column;align-items:flex-start;min-width:0;width:100%;padding:16px}
+.tile-body h3{flex:1;min-width:0;font-size:16px;letter-spacing:-.3px;line-height:1.27;margin:0 0 10px;overflow-wrap:anywhere}
+.tile-meta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 12px;width:100%;color:var(--muted);font-size:11px;line-height:1.4;font-variant-numeric:tabular-nums}
+.tile-time{display:inline-flex;align-items:center;gap:5px;flex:none;white-space:nowrap}
+.tile-time .icon{display:flex;flex:none}.tile-time .icon svg{width:15px;height:15px}
+.tile-nutrition{display:flex;flex-wrap:wrap;gap:4px 10px;min-width:0}
+.tile-nutrition>span{white-space:nowrap}
 .shop-switch{display:inline-flex;padding:4px;border:1px solid var(--line);background:var(--white);border-radius:14px;gap:5px}
 .shop-switch button{padding:10px 18px;border:0;background:transparent;border-radius:10px;color:var(--muted);font-weight:750}
 .shop-switch button.active{background:var(--accent);color:var(--white)}
@@ -872,9 +876,10 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 .meal-body{padding:12px 13px}
 .meal-card h3{font-size:14px}
 .recipe-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.tile-body{padding:11px}
+.tile-body{padding:12px}
 .tile-body h3{font-size:13px}
-.tile-meta{font-size:10px}
+.tile-meta{flex-direction:column;align-items:flex-start;gap:6px;font-size:11px}
+.tile-nutrition{column-gap:8px}
 .plan-day-head{grid-template-columns:38px minmax(0,1fr) auto;column-gap:8px;row-gap:3px;padding:12px}
 .day-circle{width:38px;height:38px;font-size:17px}
 .plan-day-heading h3{font-size:14px}
@@ -1165,7 +1170,6 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 
 /* Inicio: one responsive dashboard, with bounded desktop rows and natural mobile flow. */
 .app.home-view .main{min-height:100svh}
-.app.home-view .nav-btn{transition:background .18s,color .18s}
 .dashboard-page--overview{--dashboard-gap:16px;display:grid;gap:var(--dashboard-gap);width:100%;min-width:0}
 .dashboard-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;min-width:0}
 .dashboard-heading>div:first-child{min-width:0}
@@ -1315,15 +1319,6 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .home-no-cycle .dashboard-lower{height:auto;min-height:320px;grid-template-rows:auto auto}
 }
 @media (min-width:700px) and (max-height:850px){
- .app.home-view .sidebar{gap:14px;padding-top:16px;padding-bottom:14px}
- .app.home-view .small-kicker{margin-top:3px}
- .app.home-view .side-nav{gap:1px}
- .app.home-view .nav-btn{padding:8px 12px;font-size:13px}
- .app.home-view .tip-side{padding:11px}
- .app.home-view .tip-side .tip-emoji{font-size:20px;margin-bottom:4px}
- .app.home-view .tip-side strong{font-size:16px}
- .app.home-view .tip-side p{font-size:11px;line-height:1.35}
- .app.home-view .privacy{padding-top:7px;font-size:9px}
  .dashboard-heading h1{font-size:26px}
  .dashboard-heading .eyebrow{font-size:9px}
  .dashboard-heading-actions .btn{min-height:34px;padding:7px 8px;font-size:11px}
@@ -1441,8 +1436,6 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .app.home-view .main{padding:clamp(20px,2vh,30px) var(--page-gutter)}
  .app.home-view .topbar{margin-bottom:10px}
  .app.home-view .cloud-sync-status{font-size:13px}
- .app.home-view .nav-btn{font-size:15px}
- .app.home-view .nav-btn .icon svg{width:20px;height:20px}
  .dashboard-page--overview{--dashboard-gap:clamp(16px,1.6vh,24px)}
  .dashboard-heading h1{font-size:clamp(34px,3.7vh,48px)}
  .dashboard-heading .eyebrow{margin-bottom:7px;font-size:clamp(11px,.65vw,14px)}
@@ -1542,11 +1535,6 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .plan-context-item p{font-size:13px}
 }
 @media (min-width:851px) and (min-height:851px) and (max-height:1000px){
- .app.home-view .sidebar{gap:16px;padding-top:18px;padding-bottom:18px}
- .app.home-view .small-kicker{margin-top:5px}
- .app.home-view .side-nav{gap:2px}
- .app.home-view .nav-btn{padding:9px 12px}
- .app.home-view .tip-side{padding:14px}
  .dashboard-day-summary .dashboard-day-overview{-webkit-line-clamp:2;font-size:13px;line-height:1.4}
  .dashboard-day-summary .dashboard-day-encouragement{font-size:11px}
 }
@@ -1716,14 +1704,6 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .profile-macro{font-size:20px}.profile-macro strong{font-size:23px}
 }
 @media(min-width:851px) and (max-width:1180px) and (min-height:768px){
- .app.profile-view{grid-template-columns:76px minmax(0,1fr)}
- .app.profile-view .sidebar{width:76px;padding:20px 10px;gap:20px}
- .app.profile-view .brand{padding:0;display:flex;justify-content:center}
- .app.profile-view .brand-logo,.app.profile-view .brand-sub,.app.profile-view .small-kicker,.app.profile-view .sidebar-bottom{display:none}
- .app.profile-view .brand-symbol{display:block;width:42px;height:42px;object-fit:contain}
- .app.profile-view .nav-btn{justify-content:center;min-height:46px;padding:12px 0}
- .app.profile-view .nav-btn>span:last-child{display:none}.app.profile-view .nav-btn .icon svg{width:22px;height:22px}
- .app.profile-view .side-nav{gap:10px}
  .profile-board{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);grid-template-areas:'results' 'form';gap:12px}
  .profile-form{grid-area:form;grid-template-columns:1fr 1.12fr;grid-template-rows:1fr 1fr;grid-template-areas:'personal goal' 'personal settings'}
  .profile-page--manual .profile-form{grid-template-rows:1fr 1fr}
@@ -1820,11 +1800,6 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .profile-help:hover .profile-tooltip,.profile-help-trigger:focus-visible+.profile-tooltip{display:block}
  .profile-help.is-dismissed:hover .profile-tooltip,.profile-help.is-dismissed .profile-help-trigger:focus-visible+.profile-tooltip{display:none}
 }
-@media(min-width:851px) and (min-height:700px) and (max-height:900px){
- .app.profile-view .sidebar{gap:20px;padding-top:20px;padding-bottom:20px}
- .app.profile-view .privacy,.app.profile-view .tip-side p,.app.profile-view .tip-emoji{display:none}
- .app.profile-view .tip-side strong{font-size:16px}
-}
 @media(min-width:1181px) and (max-width:1599px) and (min-height:768px), (min-width:1600px) and (min-height:768px) and (max-height:1079px){
  .profile-page--manual .profile-form{grid-template-rows:minmax(230px,1.48fr) minmax(140px,1fr) minmax(125px,.9fr)}
  .profile-page--manual .profile-fields--manual{grid-column:1;grid-row:2}
@@ -1832,4 +1807,42 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 }
 @media(min-width:1181px) and (max-height:850px){
  .profile-results .profile-stat-note{display:none}
+}
+
+/* Shared sidebar: viewport-based variants stay identical when navigating. */
+@media(min-width:851px){
+ .sidebar{height:100dvh;min-height:0;overflow-y:auto;scrollbar-width:thin}
+}
+@media(min-width:851px) and (max-height:850px){
+ .sidebar{gap:14px;padding-top:16px;padding-bottom:14px}
+ .sidebar .small-kicker{margin-top:3px}
+ .sidebar .side-nav{gap:1px}
+ .sidebar .nav-btn{padding:8px 12px;font-size:13px}
+ .sidebar .tip-side{padding:11px}
+ .sidebar .tip-side .tip-emoji{font-size:20px;margin-bottom:4px}
+ .sidebar .tip-side strong{font-size:16px}
+ .sidebar .tip-side p{font-size:11px;line-height:1.35}
+ .sidebar .privacy{padding-top:7px;font-size:9px}
+}
+@media(min-width:851px) and (min-height:851px) and (max-height:1000px){
+ .sidebar{gap:16px;padding-top:18px;padding-bottom:18px}
+ .sidebar .small-kicker{margin-top:5px}
+ .sidebar .side-nav{gap:2px}
+ .sidebar .nav-btn{padding:9px 12px}
+ .sidebar .tip-side{padding:14px}
+}
+@media(min-width:1600px) and (min-height:1000px){
+ .sidebar .nav-btn{font-size:15px}
+ .sidebar .nav-btn .icon svg{width:20px;height:20px}
+}
+@media(min-width:851px) and (max-width:1180px) and (min-height:768px){
+ .app{grid-template-columns:76px minmax(0,1fr)}
+ .sidebar{width:76px;padding:20px 10px;gap:20px}
+ .sidebar .brand{padding:0;display:flex;justify-content:center}
+ .sidebar .brand-logo,.sidebar .brand-sub,.sidebar .small-kicker,.sidebar .sidebar-bottom{display:none}
+ .sidebar .brand-symbol{display:block;width:42px;height:42px;object-fit:contain}
+ .sidebar .nav-btn{justify-content:center;min-height:46px;padding:12px 0}
+ .sidebar .nav-btn>span:last-child{display:none}
+ .sidebar .nav-btn .icon svg{width:22px;height:22px}
+ .sidebar .side-nav{gap:10px}
 }

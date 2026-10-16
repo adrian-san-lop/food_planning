@@ -1,7 +1,7 @@
 # Decisión 0018: priorizar el menú y simplificar compra y despensa
 
 - **Fecha:** 13 de octubre de 2026
-- **Actualización:** 16 de octubre de 2026, ficha compacta de recetas
+- **Actualización:** 16 de octubre de 2026, ficha compacta de recetas y tarjetas del recetario móvil
 - **Estado:** Aceptada e implementada localmente
 - **Alcance:** presentación de Inicio, Recetario, fichas de recetas, Compra y Despensa
 
@@ -18,6 +18,7 @@
 
 9. Alinear a la derecha el número de alimentos/artículos en los encabezados de categoría de Compra y Despensa. En PC, mostrar los artículos de cada categoría de Compra en dos o tres columnas según el ancho disponible; mantener una sola columna en móvil.
 10. Ajustar la ficha de receta a su contenido y centrarla, con un máximo del 86 % del alto visible y 820 px. Las cuatro cifras nutricionales comparten una fila, con una única nota de estimación por ración. Retirar el texto introductorio genérico cuando el catálogo no tenga descripción. Ingredientes y preparación permanecen completos, en dos columnas de escritorio y una en móvil. El consejo y el contexto de cantidades se consultan en un desplegable. El contenido central tiene scroll cuando hace falta; cabecera, X centrada y pie con acción de registro permanecen fuera de ese desplazamiento. El catálogo sin una comida asociada ofrece cerrar la receta; las comidas futuras mantienen el registro deshabilitado.
+11. En el listado móvil del recetario, conservar dos columnas, categoría, nombre completo y datos de cada receta. Agrupar reloj y tiempo sin saltos internos y situar debajo las cifras de calorías y proteínas, manteniendo juntas cifras y unidades. Las tarjetas de cada fila estiran el espacio del título para alinear los metadatos. En anchos mayores, los grupos comparten fila cuando caben. No cambian catálogo, cálculos, búsqueda, filtros ni apertura de la ficha.
 
 ## Consecuencias
 
@@ -28,3 +29,4 @@
 - No cambian los datos personales, la persistencia ni la sincronización con Supabase.
 - Los contadores se sitúan junto al control de despliegue, en el extremo derecho del encabezado. La cuadrícula de Compra solo se activa en pantallas de escritorio suficientemente anchas; en móvil conserva la lista vertical.
 - El rediseño de la ficha del 16 de octubre conserva cantidades, disponibilidad, registro y reversos existentes. Registrar desde la ficha mantiene la posición de lectura y el foco del botón. Su revisión visual en navegador y en dispositivos físicos queda pendiente; las comprobaciones de sintaxis no acreditan ese comportamiento.
+- El ajuste posterior del listado se revisó por HTTP con el shell, CSS, renderizador y 112 recetas reales del proyecto, usando estado personal sintético local. No se detectaron desbordamientos en 320, 360, 390, 430, 768 y 1366 px de ancho; se comprobó la apertura y el cierre de una receta. La revisión en dispositivos físicos y en la publicación sigue pendiente.
