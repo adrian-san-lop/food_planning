@@ -6,6 +6,8 @@
 - **Alcance:** Inicio en escritorio, tablet y móvil
 - **Relación:** amplía ADR-0035 y sustituye su distribución móvil; mantiene la navegación diaria de ADR-0019.
 
+El estilo visual se actualiza el 16 de octubre con Roboto, superficies blancas, fondo neutro y verde esmeralda según [ADR-0016](0016-css-sections-and-template-presentation.md). La distribución y los datos de este panel siguen definidos aquí; el nuevo aspecto requiere revisión visual en navegador.
+
 ## Contexto
 
 El propietario ha aprobado el boceto de cuatro KPI con detalle diario de comidas y ha pedido reducir el tamaño de las tarjetas inferiores. El espacio disponible debe mostrar también los objetivos y ajustes personales, evitando estirar las filas para llenar pantallas grandes.

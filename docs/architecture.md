@@ -1,5 +1,9 @@
 # Arquitectura
 
+## Estilo de la aplicación
+
+La actualización visual del 16 de octubre de 2026 centraliza los colores de la aplicación y del acceso en un único `:root` de `assets/css/app.css`. Roboto variable se sirve desde `assets/fonts/roboto-latin-wght-normal.woff2`, precargada por `menuki.html`; su licencia SIL OFL está en la misma carpeta. Los componentes y la gráfica de peso consumen los mismos roles de color. Se mantienen la hoja CSS nativa y el flujo responsive existente. La landing pública usa su hoja separada. Véase [ADR-0016](decisions/0016-css-sections-and-template-presentation.md).
+
 Estado de referencia: 13 de octubre de 2026. El propietario informa que la novena migración (`20261013160000_recipe_proposal_inbox.sql`) y la asignación del rol admin ya se ejecutaron en Supabase. La octava migración de conflictos `SYNC_CONFLICT` sigue pendiente. La edición/borrado individual y la exportación JSON están implementados localmente en `dev`; la migración admin nueva aún debe aplicarse y las acciones deben validarse en navegador.
 
 ## Arquitectura actual

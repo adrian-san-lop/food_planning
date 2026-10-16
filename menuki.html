@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#f5f5ee">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" type="image/png" href="./docs/images/menuki_logo.png">
 <link rel="apple-touch-icon" href="./docs/images/menuki_logo.png">
 <meta name="description" content="Plan nutricional de 21 días con perfil adaptable, objetivos y macronutrientes calculados, recetas, compra e inventario.">
 <title>Menuki · Mi plan saludable</title>
- <link rel="stylesheet" href="./assets/css/app.css?v=20261016-compact-recipe">
+<link rel="preload" href="./assets/fonts/roboto-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+ <link rel="stylesheet" href="./assets/css/app.css?v=20261016-profile-dashboard">
 </head>
 <body>
 <div class="catalog-overlay" id="catalogStatus" role="status" aria-live="polite"><div><strong>Cargando catálogos…</strong><p>La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.</p></div></div>
@@ -44,7 +45,7 @@
 </section>
 <div class="app" inert hidden>
  <aside class="sidebar" aria-label="Navegación principal">
-   <div class="brand"><img class="brand-logo" src="./docs/images/menuki_name_logo.png" alt="Menuki"><div class="brand-sub">Mi plan saludable</div></div>
+   <div class="brand"><img class="brand-logo" src="./docs/images/menuki_name_logo.png" alt="Menuki"><img class="brand-symbol" src="./docs/images/menuki_logo.png" alt="Menuki" width="42" height="42"><div class="brand-sub">Mi plan saludable</div></div>
    <div><div class="small-kicker">Tu espacio</div><nav id="sideNav" class="side-nav"></nav></div>
    <div class="sidebar-bottom"><div class="tip-side"><div class="tip-emoji">🌱</div><strong>Pequeños hábitos,<br>grandes cambios.</strong><p>Come variado, cuida tu recuperación y deja que el progreso llegue con constancia.</p></div><div class="privacy">🔒 Tus datos se asocian a tu cuenta y se sincronizan con Supabase cuando hay conexión. Este navegador conserva una copia de trabajo.</div></div>
  </aside>
@@ -68,6 +69,14 @@
 </dialog>
 <dialog id="activityDialog" aria-label="Registrar una sesión de actividad"><button type="button" class="dialog-close" data-action="activity-close" aria-label="Cerrar">✕</button><div class="dialog-body activity-dialog-body"><div class="eyebrow">SEGUIMIENTO DE ACTIVIDAD</div><h2>Registrar sesión realizada</h2><p>Regístrala después de hacerla. La estimación solo ajusta el objetivo y las comidas pendientes de esa fecha.</p><form id="activityForm" class="activity-form"><label>Fecha<input id="activityDate" name="date" type="date" data-change="activity-date" required></label><label>Actividad y esfuerzo<select id="activityType" name="activityId" required></select></label><label>Duración (minutos)<input id="activityDuration" name="durationMinutes" type="number" min="1" max="600" step="1" required placeholder="45"></label><div id="activityDateSessions"></div><div class="dialog-actions"><button class="btn btn-primary" type="submit">Guardar sesión</button><button class="btn" type="button" data-action="activity-close">Cerrar</button></div></form></div></dialog>
 <dialog id="quickGuideDialog" class="quick-guide-dialog" aria-labelledby="quickGuideTitle"><button type="button" class="dialog-close" data-action="quick-guide-close" aria-label="Cerrar guía rápida">✕</button><div id="quickGuideContent" aria-live="polite" aria-atomic="true"></div></dialog>
+<dialog id="profileHelpDialog" class="profile-help-dialog" aria-labelledby="profileHelpTitle">
+ <div class="dialog-body"><h2 id="profileHelpTitle">Cómo calcula Menuki</h2>
+  <p>El objetivo es una estimación según tus datos y tu movimiento habitual. Las sesiones se registran cuando ocurren y suman energía solo a esa fecha. Proteínas y grasas se mantienen estables; las raciones de hidratos absorben principalmente el ajuste.</p>
+  <p>Con perfiles muy distintos al original, ajustar raciones puede no alcanzar las calorías o proteínas necesarias. Menuki señalará esas diferencias. Las comidas ya realizadas conservan sus cantidades; solo se actualizan las pendientes.</p>
+  <p>Revisa las medias de peso, apetito, actividad, rendimiento y recuperación después de 2–3 semanas. Estos valores no son mediciones clínicas: la fórmula no detecta el metabolismo individual ni estima el porcentaje de grasa. Con enfermedades, embarazo o una lesión que requiera atención, consulta a un profesional.</p>
+  <div class="dialog-actions"><button type="button" class="btn btn-primary" data-action="profile-guide-close" autofocus>Entendido</button></div>
+ </div>
+</dialog>
 <dialog id="recordDeleteDialog" class="record-delete-dialog" aria-labelledby="recordDeleteTitle" aria-describedby="recordDeleteDescription recordDeleteSummary recordDeleteNote">
  <div class="dialog-body">
   <div class="record-delete-symbol" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M9 6V4h6v2M7 6l1 15h8l1-15M10 10v8m4-8v8"/></svg></div>
@@ -80,6 +89,6 @@
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3"></script>
-<script type="module" src="./js/main.js?v=20261016-compact-recipe"></script>
+<script type="module" src="./js/main.js?v=20261016-profile-dashboard"></script>
 </body>
 </html>
