@@ -326,18 +326,57 @@ dialog::backdrop{background:rgba(17,37,29,.66);backdrop-filter:blur(4px)}
 .quick-guide-entry p{margin:4px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
 .quick-guide-entry .btn{flex:none}
 .dialog-body{padding:27px 31px 33px}
-.dialog-top{display:flex;justify-content:space-between;gap:15px;align-items:start}
 .dialog-body h2{font-family:Georgia,serif;font-size:31px;font-weight:500;letter-spacing:-.8px;margin:8px 0}
 .dialog-body .intro{color:var(--muted);font-size:13px;line-height:1.65}
-.dialog-metrics{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin:18px 0 22px}
-.dialog-metric{padding:10px 14px;background:var(--accent-tint);border-radius:12px}
-.dialog-metric b{display:block;font-size:19px}
-.dialog-metric small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
-.dialog-cols{display:grid;grid-template-columns:.8fr 1.2fr;gap:25px}
-.dialog-cols h3{font-size:15px;margin:8px 0 13px}
 .ingredient-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}
 .ingredient-row span:last-child{white-space:nowrap;font-weight:730}
-.recipe-tip{padding:15px 17px;background:#f7efe5;border-radius:13px;font-size:12px;color:#795d46;line-height:1.6;margin-top:18px}
+.recipe-dialog{max-width:780px;max-height:min(86vh,820px);max-height:min(86dvh,820px);overflow:hidden}
+.recipe-dialog #modalContent{display:flex;flex-direction:column;min-height:0;max-height:inherit}
+.recipe-dialog .recipe-dialog-close{position:absolute;top:12px;right:12px;float:none;margin:0;width:40px;height:40px}
+.recipe-dialog-close svg{display:block;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.recipe-dialog-header{flex:none;padding:20px 24px 14px}
+.recipe-title-block{padding-right:40px}
+.recipe-title-block .eyebrow{margin:0;color:var(--orange);font-size:10px;line-height:1.5;letter-spacing:1px}
+.recipe-title-block h2{margin:6px 0 0;font:500 28px/1.15 Georgia,serif;letter-spacing:-.6px;overflow-wrap:anywhere}
+.recipe-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin:14px 0 0;padding:10px 0;border-radius:12px;background:var(--accent-tint)}
+.recipe-metrics>div{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;padding:0 8px;text-align:center}
+.recipe-metrics>div+div{border-left:1px solid #cfdfd3}
+.recipe-metrics dt{order:1;color:var(--ink-soft);font-size:11px;line-height:1.3}
+.recipe-metrics dd{margin:0;font-size:21px;line-height:1.2;font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums}
+.recipe-metrics dd span{font-size:12px;font-weight:500}
+.recipe-metric-note{margin:6px 0 0;color:var(--muted);font-size:11px;line-height:1.4}
+.recipe-dialog-content{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:0 20px 16px 24px}
+.recipe-description{margin:0 0 14px;color:var(--ink-soft);font-size:13px;line-height:1.5}
+.recipe-sections{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);align-items:start;gap:24px}
+.recipe-sections section{min-width:0}
+.recipe-sections h3{margin:0 0 6px;font-size:14px;line-height:1.4}
+.recipe-sections .ingredient-row{padding:7px 0;font-size:13px}
+.recipe-sections .ingredient-row>span:first-child{min-width:0;overflow-wrap:anywhere}
+.recipe-sections .ingredient-row>span:last-child{flex:none}
+.recipe-sections .ingredient-row .muted-detail{margin-top:2px;font-size:11px;line-height:1.35;font-weight:400;white-space:normal}
+.recipe-sections .steps-list{gap:8px;margin:0}
+.recipe-sections .steps-list li{gap:8px;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
+.recipe-sections .steps-list .step-n{width:22px;height:22px}
+.recipe-more{margin-top:14px;border-radius:10px;background:#f7efe5;color:#795d46;font-size:12px;line-height:1.5}
+.recipe-more summary{min-height:44px;padding:12px;cursor:pointer;font-weight:650}
+.recipe-more>div{padding:0 12px 12px}
+.recipe-more p{margin:0}
+.recipe-more p+p{margin-top:8px}
+.recipe-dialog-footer{display:flex;flex:none;justify-content:flex-end;padding:12px 24px 16px;border-top:1px solid var(--line);background:var(--white)}
+.recipe-dialog-footer .btn{min-height:44px;justify-content:center;white-space:normal;text-align:center}
+@media(max-width:650px){
+ .recipe-dialog{width:calc(100% - 24px);border-radius:20px}
+ .recipe-dialog-header{padding:18px 18px 12px}
+ .recipe-title-block{padding-right:34px}
+ .recipe-title-block h2{font-size:24px;line-height:1.15}
+ .recipe-metrics{padding:9px 0;margin-top:12px}
+ .recipe-metrics>div{padding:0 5px}
+ .recipe-metrics dd{font-size:19px}
+ .recipe-dialog-content{padding:0 14px 14px 18px}
+ .recipe-sections{grid-template-columns:minmax(0,1fr);gap:16px}
+ .recipe-dialog-footer{padding:10px 18px 14px}
+ .recipe-dialog-footer .btn{width:100%}
+}
 .mini-select{background:#f6f9f4;border:1px solid #d3dfd3;border-radius:10px;padding:9px;color:var(--ink-soft);font-size:11px;font-weight:750}
 .dialog-actions{margin-top:22px;display:flex;gap:8px;flex-wrap:wrap}
 .mobile-nav{display:none}
@@ -798,9 +837,6 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 .shop-stats{padding:15px}
 .dialog-body{padding:19px 17px 25px}
 .dialog-body h2{font-size:25px}
-.dialog-cols{grid-template-columns:1fr;gap:10px}
-.dialog-metric{padding:9px 10px}
-.dialog-metric b{font-size:16px}
 .toast{right:10px;left:10px;bottom:80px;max-width:none}
 .field input{width:145px}}
 
@@ -1127,20 +1163,23 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 .weekly-meal-label{color:var(--muted);font-size:10px;line-height:1.3}
 .weekly-meal-day.is-today .weekly-meal-label{color:var(--accent-dark);font-weight:800}
 .weekly-meal-day.is-future{opacity:.65}
-.dashboard-lower{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:var(--dashboard-gap);min-width:0;min-height:0}
-.dashboard-nutrition-card,.dashboard-menu--overview{display:flex;flex-direction:column;min-width:0;min-height:0;margin:0;padding:18px;border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:var(--shadow)}
-.dashboard-nutrition-card .meter-heading{flex:none;display:flex;margin:0 0 16px}
-.dashboard-nutrition-card .meter-heading h2,.dashboard-menu-heading h2,.dashboard-plan h2{margin:0;font:500 clamp(23px,1.9vw,29px)/1.12 Georgia,serif;letter-spacing:-.5px}
+.dashboard-lower{--nutrition-ring-size:clamp(88px,calc(24dvh - 110px),220px);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"menu nutrition" "menu summary";align-items:stretch;gap:var(--dashboard-gap);min-width:0;min-height:0}
+.dashboard-menu--overview{grid-area:menu}
+.dashboard-nutrition-card{grid-area:nutrition}
+.dashboard-day-summary{grid-area:summary}
+.dashboard-nutrition-card,.dashboard-menu--overview,.dashboard-day-summary{display:flex;flex-direction:column;min-width:0;min-height:0;margin:0;padding:18px;border:1px solid var(--line);border-radius:20px;background:var(--white);box-shadow:var(--shadow)}
+.dashboard-nutrition-card .meter-heading{flex:none;display:flex;margin:0 0 10px}
+.dashboard-nutrition-card .meter-heading h2,.dashboard-menu-heading h2,.dashboard-day-heading h2,.dashboard-plan h2{margin:0;font:500 clamp(23px,1.9vw,29px)/1.12 Georgia,serif;letter-spacing:-.5px}
 .dashboard-nutrition-card .nutrition-desktop-view{display:flex;flex:1 1 auto;align-items:center;min-height:0}
-.dashboard-nutrition-card .nutrition-desktop-layout{display:grid;grid-template-columns:minmax(125px,.85fr) minmax(0,1.4fr);align-items:center;gap:clamp(16px,2vw,30px);width:100%;min-width:0}
-.dashboard-nutrition-card .nutrition-desktop-calories{display:grid;justify-items:center;gap:10px;min-width:0}
-.dashboard-nutrition-card .nutrition-desktop-ring{position:relative;display:grid;place-items:center;width:100%;max-width:184px;aspect-ratio:1;border-radius:50%;background:conic-gradient(var(--accent) var(--progress),#e9eee5 0);color:var(--ink)}
+.dashboard-nutrition-card .nutrition-desktop-layout{display:grid;grid-template-columns:minmax(88px,.8fr) minmax(0,1.5fr);align-items:center;gap:clamp(12px,1.5vw,24px);width:100%;min-width:0}
+.dashboard-nutrition-card .nutrition-desktop-calories{display:grid;justify-items:center;gap:6px;min-width:0}
+.dashboard-nutrition-card .nutrition-desktop-ring{position:relative;display:grid;place-items:center;width:100%;max-width:var(--nutrition-ring-size);aspect-ratio:1;border-radius:50%;background:conic-gradient(var(--accent) var(--progress),#e9eee5 0);color:var(--ink)}
 .dashboard-nutrition-card .nutrition-desktop-ring::before{position:absolute;inset:11px;border-radius:50%;background:var(--white);content:""}
 .dashboard-nutrition-card .nutrition-desktop-ring>div{position:relative;z-index:1;display:grid;justify-items:center;gap:4px}
 .dashboard-nutrition-card .nutrition-desktop-ring strong{font-size:clamp(32px,3vw,42px);line-height:1.05;font-variant-numeric:tabular-nums}
 .dashboard-nutrition-card .nutrition-desktop-ring span{color:var(--muted);font-size:12px;text-align:center}
 .dashboard-nutrition-card .nutrition-desktop-meals{color:var(--muted);font-size:12px;line-height:1.35;text-align:center}
-.dashboard-nutrition-card .nutrition-desktop-macros{display:grid;gap:22px;min-width:0}
+.dashboard-nutrition-card .nutrition-desktop-macros{display:grid;gap:14px;min-width:0}
 .dashboard-nutrition-card .nutrition-desktop-macro>div{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:3px 8px;color:var(--ink-soft);font-size:14px;line-height:1.3}
 .dashboard-nutrition-card .nutrition-desktop-macro strong{color:var(--ink);font-size:13px;font-weight:750;white-space:nowrap;font-variant-numeric:tabular-nums}
 .dashboard-nutrition-card .nutrition-desktop-macro progress{display:block;appearance:none;width:100%;height:8px;margin-top:7px;border:0;border-radius:20px;overflow:hidden;background:#e9eee5;color:var(--accent)}
@@ -1149,7 +1188,18 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 .dashboard-nutrition-card .nutrition-desktop-macro progress::-moz-progress-bar{border-radius:20px;background:currentColor}
 .dashboard-nutrition-card .nutrition-desktop-macro.protein progress{color:var(--orange)}
 .dashboard-nutrition-card .nutrition-desktop-macro.fats progress{color:#a9c5a8}
-.dashboard-nutrition-card .target-note{flex:none;margin:14px 0 0;padding:10px 0 0;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.4}
+.dashboard-nutrition-card .target-note{flex:none;margin:8px 0 0;padding:8px 0 0;border-top:1px solid var(--line);color:var(--muted);font-size:11px;line-height:1.4}
+.dashboard-day-summary{gap:8px;padding:14px 18px;background:linear-gradient(135deg,var(--white),#f3f6ee)}
+.dashboard-day-heading{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dashboard-day-heading>.icon{color:var(--accent)}
+.dashboard-day-overview{margin:0;color:var(--ink-soft);font-size:14px;line-height:1.5;overflow-wrap:anywhere}
+.dashboard-day-quickest{display:flex;align-items:center;gap:9px;min-width:0;padding:6px 10px;border:1px solid var(--line);border-radius:12px;background:var(--white)}
+.dashboard-day-quickest>.icon{color:var(--orange)}
+.dashboard-day-quickest>div{flex:1;min-width:0}
+.dashboard-day-quickest>div>span{display:block;color:var(--muted);font-size:11px;line-height:1.3}
+.dashboard-day-quickest strong{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;margin-top:2px;color:var(--ink);font-size:13px;line-height:1.3;font-weight:700}
+.dashboard-day-minutes{flex:none;padding:4px 7px;border-radius:8px;background:var(--accent-tint);color:var(--accent-dark);font-size:12px;font-weight:750;white-space:nowrap}
+.dashboard-day-encouragement{margin:auto 0 0;color:var(--accent-dark);font-size:12px;line-height:1.4}
 .dashboard-menu--overview{container-type:inline-size}
 .dashboard-menu-heading{flex:none;margin:0 0 10px}
 .dashboard-menu-heading .eyebrow{margin:0 0 4px;font-size:10px;letter-spacing:1px}
@@ -1213,12 +1263,13 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .dashboard-nutrition-card .nutrition-mobile-view{display:none}
  .dashboard-nutrition-card .nutrition-title-desktop{display:inline}
  .dashboard-nutrition-card .nutrition-title-mobile{display:none}
- .dashboard-lower{height:100%}
+ .dashboard-lower{height:100%;grid-template-rows:minmax(0,1.3fr) minmax(0,1fr)}
+ .dashboard-day-overview{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;overflow:hidden}
  .app.home-view.home-no-cycle{height:auto;min-height:100dvh}
  .app.home-view.home-no-cycle .main{height:auto;min-height:100dvh}
  .app.home-view.home-no-cycle #viewRoot{flex:none}
  .home-no-cycle .dashboard-page--overview{height:auto;max-height:none;grid-template-rows:auto auto auto auto}
- .home-no-cycle .dashboard-lower{height:auto;min-height:320px}
+ .home-no-cycle .dashboard-lower{height:auto;min-height:320px;grid-template-rows:auto auto}
 }
 @media (min-width:700px) and (max-height:850px){
  .app.home-view .sidebar{gap:14px;padding-top:16px;padding-bottom:14px}
@@ -1243,15 +1294,27 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .weekly-meal-day{grid-template-rows:9px 23px 11px;gap:2px;padding:1px 0}
  .weekly-meal-day svg{height:23px}
  .weekly-meal-count,.weekly-meal-label{font-size:9px}
- .dashboard-nutrition-card,.dashboard-menu--overview{padding:14px 16px}
- .dashboard-nutrition-card .meter-heading{margin-bottom:10px}
- .dashboard-nutrition-card .meter-heading h2,.dashboard-menu-heading h2{font-size:23px}
- .dashboard-nutrition-card .nutrition-desktop-ring{max-width:148px}
- .dashboard-nutrition-card .nutrition-desktop-ring::before{inset:9px}
- .dashboard-nutrition-card .nutrition-desktop-macros{gap:16px}
+ .dashboard-nutrition-card,.dashboard-menu--overview,.dashboard-day-summary{padding:12px 14px}
+ .dashboard-lower{--nutrition-ring-size:clamp(78px,calc(20dvh - 70px),98px)}
+ .dashboard-nutrition-card{padding:10px 12px}
+ .dashboard-nutrition-card .meter-heading{margin-bottom:6px}
+ .dashboard-nutrition-card .meter-heading h2,.dashboard-menu-heading h2,.dashboard-day-heading h2{font-size:21px}
+ .dashboard-nutrition-card .nutrition-desktop-ring::before{inset:7px}
+ .dashboard-nutrition-card .nutrition-desktop-ring strong{font-size:28px}
+ .dashboard-nutrition-card .nutrition-desktop-ring span{font-size:10px}
+ .dashboard-nutrition-card .nutrition-desktop-meals{font-size:10px}
+ .dashboard-nutrition-card .nutrition-desktop-calories{gap:4px}
+ .dashboard-nutrition-card .nutrition-desktop-macros{gap:10px}
  .dashboard-nutrition-card .nutrition-desktop-macro>div{font-size:12px}
  .dashboard-nutrition-card .nutrition-desktop-macro strong{font-size:12px}
- .dashboard-nutrition-card .target-note{margin-top:10px;padding-top:8px;font-size:11px}
+ .dashboard-nutrition-card .target-note{margin-top:6px;padding-top:6px;font-size:10px;line-height:1.3}
+ .dashboard-day-summary{gap:5px;padding:10px 12px}
+ .dashboard-day-overview{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:12px;line-height:1.35}
+ .dashboard-day-quickest{gap:6px;padding:5px 8px;border-radius:9px}
+ .dashboard-day-quickest>div>span{font-size:10px}
+ .dashboard-day-quickest strong{font-size:11px;-webkit-line-clamp:1}
+ .dashboard-day-minutes{font-size:11px;padding:3px 5px}
+ .dashboard-day-encouragement{font-size:10px;line-height:1.3}
  .dashboard-menu-heading{margin-bottom:7px}
  .dashboard-menu-heading .eyebrow{font-size:9px}
  .dashboard-menu--overview .plan-day-head{padding-bottom:7px}
@@ -1285,7 +1348,7 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .dashboard-stats .stat-top{font-size:11px}
  .dashboard-stats .stat-icon{width:26px;height:26px}
  .dashboard-stats .stat-note{font-size:10px}
- .dashboard-nutrition-card .nutrition-desktop-layout{grid-template-columns:minmax(95px,.8fr) minmax(0,1fr);gap:12px}
+ .dashboard-nutrition-card .nutrition-desktop-layout{grid-template-columns:minmax(78px,.7fr) minmax(0,1fr);gap:10px}
  .dashboard-nutrition-card .nutrition-desktop-ring span{font-size:10px}
  .dashboard-nutrition-card .nutrition-desktop-meals{font-size:10px}
  .dashboard-nutrition-card .nutrition-desktop-macro>div{font-size:11px}
@@ -1356,20 +1419,27 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .weekly-meal-day svg{width:30px;height:42px}
  .weekly-meal-count{font-size:12px}
  .weekly-meal-label{font-size:13px}
- .dashboard-nutrition-card,.dashboard-menu--overview{padding:clamp(20px,2vh,30px)}
- .dashboard-nutrition-card .meter-heading{margin-bottom:20px}
- .dashboard-nutrition-card .meter-heading h2,.dashboard-menu-heading h2{font-size:clamp(28px,2.6vh,38px)}
- .dashboard-nutrition-card .nutrition-desktop-layout{grid-template-columns:minmax(190px,.9fr) minmax(0,1.4fr);gap:clamp(24px,2.4vw,60px)}
- .dashboard-nutrition-card .nutrition-desktop-calories{gap:16px}
- .dashboard-nutrition-card .nutrition-desktop-ring{max-width:clamp(210px,21vh,300px)}
- .dashboard-nutrition-card .nutrition-desktop-ring::before{inset:clamp(12px,1.2vh,18px)}
- .dashboard-nutrition-card .nutrition-desktop-ring strong{font-size:clamp(44px,5vh,72px)}
- .dashboard-nutrition-card .nutrition-desktop-ring span{font-size:clamp(14px,1.3vh,18px)}
- .dashboard-nutrition-card .nutrition-desktop-meals{font-size:clamp(13px,1.2vh,16px)}
- .dashboard-nutrition-card .nutrition-desktop-macros{gap:clamp(24px,3vh,40px)}
- .dashboard-nutrition-card .nutrition-desktop-macro>div,.dashboard-nutrition-card .nutrition-desktop-macro strong{font-size:clamp(15px,.9vw,20px)}
- .dashboard-nutrition-card .nutrition-desktop-macro progress{height:10px;margin-top:10px}
- .dashboard-nutrition-card .target-note{margin-top:18px;padding-top:14px;font-size:clamp(13px,.75vw,16px);line-height:1.45}
+ .dashboard-nutrition-card,.dashboard-menu--overview,.dashboard-day-summary{padding:clamp(18px,1.8vh,26px)}
+ .dashboard-nutrition-card .meter-heading{margin-bottom:10px}
+ .dashboard-nutrition-card .meter-heading h2,.dashboard-menu-heading h2,.dashboard-day-heading h2{font-size:clamp(28px,2.6vh,38px)}
+ .dashboard-nutrition-card .nutrition-desktop-layout{grid-template-columns:minmax(110px,.8fr) minmax(0,1.4fr);gap:clamp(18px,1.6vw,36px)}
+ .dashboard-nutrition-card .nutrition-desktop-calories{gap:6px}
+ .dashboard-nutrition-card .nutrition-desktop-ring::before{inset:clamp(8px,.8vh,12px)}
+ .dashboard-nutrition-card .nutrition-desktop-ring strong{font-size:clamp(32px,3.5vh,50px)}
+ .dashboard-nutrition-card .nutrition-desktop-ring span{font-size:clamp(11px,1vh,14px)}
+ .dashboard-nutrition-card .nutrition-desktop-meals{font-size:clamp(11px,1vh,14px)}
+ .dashboard-nutrition-card .nutrition-desktop-macros{gap:clamp(12px,1.4vh,20px)}
+ .dashboard-nutrition-card .nutrition-desktop-macro>div,.dashboard-nutrition-card .nutrition-desktop-macro strong{font-size:clamp(13px,.8vw,17px)}
+ .dashboard-nutrition-card .nutrition-desktop-macro progress{height:8px;margin-top:5px}
+ .dashboard-nutrition-card .target-note{margin-top:8px;padding-top:7px;font-size:clamp(11px,.65vw,14px);line-height:1.4}
+ .dashboard-day-summary{gap:clamp(8px,1vh,14px)}
+ .dashboard-day-overview{font-size:clamp(14px,.8vw,18px);line-height:1.4}
+ .dashboard-day-heading>.icon svg{width:24px;height:24px}
+ .dashboard-day-quickest{padding:8px 12px;gap:10px}
+ .dashboard-day-quickest>div>span{font-size:12px}
+ .dashboard-day-quickest strong{font-size:clamp(14px,.8vw,18px)}
+ .dashboard-day-minutes{font-size:14px}
+ .dashboard-day-encouragement{font-size:clamp(12px,.7vw,15px)}
  .dashboard-menu-heading{margin-bottom:14px}
  .dashboard-menu-heading .eyebrow{margin-bottom:6px;font-size:clamp(11px,.7vw,14px)}
  .dashboard-menu--overview .plan-day-head{grid-template-columns:48px minmax(0,1fr) auto;column-gap:13px;padding-bottom:12px}
@@ -1413,7 +1483,7 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .dashboard-stats .stat-value{font-size:42px;margin:6px 0}
  .weekly-meal-day{grid-template-rows:12px 34px 15px;gap:2px}
  .weekly-meal-day svg{height:34px}
- .dashboard-nutrition-card,.dashboard-menu--overview{padding:18px 22px}
+ .dashboard-nutrition-card,.dashboard-menu--overview,.dashboard-day-summary{padding:16px 20px}
  .dashboard-menu-heading{margin-bottom:10px}
  .dashboard-menu--overview .plan-day-head{grid-template-columns:40px minmax(0,1fr) auto;padding-bottom:8px}
  .dashboard-menu--overview .day-circle{width:40px;height:40px;font-size:20px}
@@ -1432,6 +1502,8 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .app.home-view .side-nav{gap:2px}
  .app.home-view .nav-btn{padding:9px 12px}
  .app.home-view .tip-side{padding:14px}
+ .dashboard-day-overview{-webkit-line-clamp:2;font-size:13px;line-height:1.4}
+ .dashboard-day-encouragement{font-size:11px}
 }
 
 /* Phones and short viewports scroll naturally; every card and action remains reachable. */
@@ -1453,9 +1525,16 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .weekly-meal-day{grid-template-rows:10px 29px 12px;gap:2px}
  .weekly-meal-day svg{width:17px;height:29px}
  .weekly-meal-label,.weekly-meal-count{font-size:9px}
- .dashboard-lower{grid-template-columns:1fr;height:auto}
- .dashboard-nutrition-card,.dashboard-menu--overview{padding:18px}
- .dashboard-nutrition-card .meter-heading h2,.dashboard-menu-heading h2{font-size:26px}
+ .dashboard-lower{grid-template-columns:1fr;grid-template-rows:auto auto auto;grid-template-areas:"menu" "nutrition" "summary";height:auto}
+ .dashboard-nutrition-card,.dashboard-menu--overview,.dashboard-day-summary{padding:18px}
+ .dashboard-nutrition-card .meter-heading h2,.dashboard-menu-heading h2,.dashboard-day-heading h2{font-size:26px}
+ .dashboard-day-summary{gap:12px}
+ .dashboard-day-overview{display:block;overflow:visible;font-size:14px;line-height:1.5;-webkit-line-clamp:unset}
+ .dashboard-day-quickest{padding:10px;gap:9px}
+ .dashboard-day-quickest>div>span{font-size:11px}
+ .dashboard-day-quickest strong{font-size:13px;-webkit-line-clamp:unset}
+ .dashboard-day-minutes{font-size:12px}
+ .dashboard-day-encouragement{font-size:12px}
  .dashboard-nutrition-card .nutrition-desktop-view{display:none}
  .dashboard-nutrition-card .nutrition-mobile-view{display:grid;grid-template-columns:minmax(100px,120px) minmax(0,1fr);align-items:center;gap:16px}
  .dashboard-nutrition-card .nutrition-calorie-ring{width:100%;max-width:120px}
@@ -1493,7 +1572,7 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .dashboard-heading h1{font-size:26px}
  .dashboard-stats .stat{padding:12px 10px}
  .dashboard-stats .stat-top{font-size:11px;gap:4px}
- .dashboard-nutrition-card,.dashboard-menu--overview,.dashboard-plan{padding:15px}
+ .dashboard-nutrition-card,.dashboard-menu--overview,.dashboard-day-summary,.dashboard-plan{padding:15px}
  .dashboard-nutrition-card .nutrition-mobile-view{grid-template-columns:96px minmax(0,1fr);gap:12px}
  .dashboard-nutrition-card .nutrition-mobile-macro>div{font-size:11px}
  .dashboard-menu--overview .meal-table-row{grid-template-columns:22px minmax(0,1fr) 50px 30px;gap:6px}

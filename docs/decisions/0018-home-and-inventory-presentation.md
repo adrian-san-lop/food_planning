@@ -1,8 +1,9 @@
 # Decisión 0018: priorizar el menú y simplificar compra y despensa
 
 - **Fecha:** 13 de octubre de 2026
+- **Actualización:** 16 de octubre de 2026, ficha compacta de recetas
 - **Estado:** Aceptada e implementada localmente
-- **Alcance:** presentación de Inicio, Recetario, Compra y Despensa
+- **Alcance:** presentación de Inicio, Recetario, fichas de recetas, Compra y Despensa
 
 ## Decisiones
 
@@ -16,6 +17,7 @@
 8. Mostrar **Copiar lista** y **Ver despensa** antes del selector **Compra para**. En escritorio, Despensa presenta los alimentos en tres columnas amplias, dos en pantallas medianas y una en móvil.
 
 9. Alinear a la derecha el número de alimentos/artículos en los encabezados de categoría de Compra y Despensa. En PC, mostrar los artículos de cada categoría de Compra en dos o tres columnas según el ancho disponible; mantener una sola columna en móvil.
+10. Ajustar la ficha de receta a su contenido y centrarla, con un máximo del 86 % del alto visible y 820 px. Las cuatro cifras nutricionales comparten una fila, con una única nota de estimación por ración. Retirar el texto introductorio genérico cuando el catálogo no tenga descripción. Ingredientes y preparación permanecen completos, en dos columnas de escritorio y una en móvil. El consejo y el contexto de cantidades se consultan en un desplegable. El contenido central tiene scroll cuando hace falta; cabecera, X centrada y pie con acción de registro permanecen fuera de ese desplazamiento. El catálogo sin una comida asociada ofrece cerrar la receta; las comidas futuras mantienen el registro deshabilitado.
 
 ## Consecuencias
 
@@ -25,3 +27,4 @@
 - La versión común de ambos catálogos pasa a `0.6.0` para identificar el contrato sin metadatos de fotografía.
 - No cambian los datos personales, la persistencia ni la sincronización con Supabase.
 - Los contadores se sitúan junto al control de despliegue, en el extremo derecho del encabezado. La cuadrícula de Compra solo se activa en pantallas de escritorio suficientemente anchas; en móvil conserva la lista vertical.
+- El rediseño de la ficha del 16 de octubre conserva cantidades, disponibilidad, registro y reversos existentes. Registrar desde la ficha mantiene la posición de lectura y el foco del botón. Su revisión visual en navegador y en dispositivos físicos queda pendiente; las comprobaciones de sintaxis no acreditan ese comportamiento.

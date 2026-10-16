@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="./docs/images/menuki_logo.png">
 <meta name="description" content="Plan nutricional de 21 días con perfil adaptable, objetivos y macronutrientes calculados, recetas, compra e inventario.">
 <title>Menuki · Mi plan saludable</title>
- <link rel="stylesheet" href="./assets/css/app.css?v=20261015-cycle-shopping">
+ <link rel="stylesheet" href="./assets/css/app.css?v=20261016-compact-recipe">
 </head>
 <body>
 <div class="catalog-overlay" id="catalogStatus" role="status" aria-live="polite"><div><strong>Cargando catálogos…</strong><p>La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.</p></div></div>
@@ -61,7 +61,7 @@
  </main>
 </div>
  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" hidden></nav>
-<dialog id="recipeDialog" aria-label="Detalles de la receta"><button type="button" class="dialog-close" data-action="close-modal" aria-label="Cerrar">✕</button><div id="modalContent"></div></dialog>
+<dialog id="recipeDialog" class="recipe-dialog" aria-labelledby="recipeDialogTitle"><button type="button" class="dialog-close recipe-dialog-close" data-action="close-modal" aria-label="Cerrar receta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><div id="modalContent"></div></dialog>
 <dialog id="plannerDialog" aria-label="Propuesta del siguiente menú"><button type="button" class="dialog-close" data-action="planner-close" aria-label="Cerrar">✕</button><div id="plannerContent"></div></dialog>
 <dialog id="cycleRenewalDialog" class="cycle-renewal-dialog" aria-labelledby="cycleRenewalTitle" aria-describedby="cycleRenewalDescription">
  <div class="dialog-body"><div class="eyebrow">RENUEVA TU PLAN</div><h2 id="cycleRenewalTitle">Es hora de preparar un nuevo ciclo</h2><p id="cycleRenewalDescription">El ciclo anterior ha terminado. Genera, revisa y confirma el siguiente menú para volver a usar Inicio y Menú.</p><p class="muted">Puedes seguir usando Compra, Despensa, Perfil y Actividad y peso.</p><div class="dialog-actions"><button type="button" class="btn" data-action="close-cycle-renewal">Seguir navegando</button><button type="button" class="btn btn-primary" id="cycleRenewalAction" data-action="planner-open">Generar nuevo ciclo</button></div></div>
@@ -80,6 +80,6 @@
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3"></script>
-<script type="module" src="./js/main.js?v=20261015-cycle-shopping"></script>
+<script type="module" src="./js/main.js?v=20261016-compact-recipe"></script>
 </body>
 </html>
