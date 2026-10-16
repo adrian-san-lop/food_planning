@@ -9,7 +9,7 @@
 <meta name="description" content="Plan nutricional de 21 días con perfil adaptable, objetivos y macronutrientes calculados, recetas, compra e inventario.">
 <title>Menuki · Mi plan saludable</title>
 <link rel="preload" href="./assets/fonts/roboto-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
- <link rel="stylesheet" href="./assets/css/app.css?v=20261016-planner-review">
+ <link rel="stylesheet" href="./assets/css/app.css?v=20261016-menu-fluid-viewport">
 </head>
 <body>
 <div class="catalog-overlay" id="catalogStatus" role="status" aria-live="polite"><div><strong>Cargando catálogos…</strong><p>La app está leyendo los alimentos y las recetas desde los ficheros del proyecto.</p></div></div>
@@ -64,6 +64,8 @@
  <nav class="mobile-nav" id="mobileNav" aria-label="Navegación móvil" hidden></nav>
 <dialog id="recipeDialog" class="recipe-dialog" aria-labelledby="recipeDialogTitle"><button type="button" class="dialog-close recipe-dialog-close" data-action="close-modal" aria-label="Cerrar receta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><div id="modalContent"></div></dialog>
 <dialog id="plannerDialog" aria-labelledby="plannerReviewTitle"><button type="button" class="dialog-close" data-action="planner-close" aria-label="Cerrar propuesta">✕</button><div id="plannerContent"></div></dialog>
+<dialog id="cycleStartDialog" class="cycle-date-dialog" aria-labelledby="cycleStartHeading"><button type="button" class="dialog-close" data-action="cancel-cycle-start" aria-label="Cerrar cambio de fecha"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button><div id="cycleStartContent"></div></dialog>
+<dialog id="menuHelpDialog" class="menu-help-dialog" aria-labelledby="menuHelpTitle"><div class="dialog-body"><h2 id="menuHelpTitle"></h2><div id="menuHelpContent"></div><div class="dialog-actions"><button type="button" class="btn btn-primary" data-action="menu-help-close" autofocus>Entendido</button></div></div></dialog>
 <dialog id="cycleRenewalDialog" class="cycle-renewal-dialog" aria-labelledby="cycleRenewalTitle" aria-describedby="cycleRenewalDescription">
  <div class="dialog-body"><div class="eyebrow">RENUEVA TU PLAN</div><h2 id="cycleRenewalTitle">Es hora de preparar un nuevo ciclo</h2><p id="cycleRenewalDescription">El ciclo anterior ha terminado. Genera, revisa y confirma el siguiente menú para volver a usar Inicio y Menú.</p><p class="muted">Puedes seguir usando Compra, Despensa, Perfil y Actividad y peso.</p><div class="dialog-actions"><button type="button" class="btn" data-action="close-cycle-renewal">Seguir navegando</button><button type="button" class="btn btn-primary" id="cycleRenewalAction" data-action="planner-open">Generar nuevo ciclo</button></div></div>
 </dialog>
@@ -89,6 +91,6 @@
 </dialog>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.3"></script>
-<script type="module" src="./js/main.js?v=20261016-planner-review"></script>
+<script type="module" src="./js/main.js?v=20261016-shopping-cards"></script>
 </body>
 </html>

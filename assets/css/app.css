@@ -505,6 +505,8 @@ dialog::backdrop{background:rgba(var(--shadow-rgb),.66);backdrop-filter:blur(4px
 .pack-unit{color:var(--ink-soft);font-size:12px;min-width:105px}
 .pack-adjust{grid-column:1/-1;color:var(--muted);font-size:11px}
 .pack-adjust input{width:85px;margin:5px 8px;border:1px solid var(--line);border-radius:6px;padding:5px}
+.pack-stock>span{display:inline}
+.pack-quantity{font-weight:600;white-space:nowrap}
 @media(min-width:1000px){.shop-store .shop-group-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));gap:0 12px}}
 .extra-purchase{display:flex;flex-wrap:wrap;gap:8px}
 .extra-purchase select{min-width:170px;max-width:100%;padding:10px;border:1px solid var(--line);border-radius:9px}
@@ -1903,3 +1905,319 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .sidebar .nav-btn .icon svg{width:22px;height:22px}
  .sidebar .side-nav{gap:10px}
 }
+
+/* Menú: compact cycle navigation, selected-day meals and shared nutrition. */
+.menu-dashboard{--menu-gap:14px;display:grid;gap:var(--menu-gap);min-width:0}
+.menu-header{display:flex;align-items:center;justify-content:space-between;gap:16px;min-width:0}
+.menu-header h1{margin:0 0 10px;font-size:clamp(27px,2.1vw,38px);line-height:1.12;letter-spacing:-.8px}
+.menu-cycle-meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px;color:var(--ink-soft);font-size:14px;line-height:1.4}
+.menu-cycle-meta>span:first-child{display:inline-flex;align-items:center;gap:8px}
+.menu-cycle-position{padding:4px 11px;border-radius:20px;background:var(--accent-tint);color:var(--accent-dark);font-size:13px;font-weight:700}
+.menu-header-actions{display:grid;justify-items:end;gap:5px;flex:none}
+.menu-header-actions .btn{min-height:44px}
+.menu-header-actions .menu-quantities-help{min-height:32px;padding:5px 0;font-size:12px;font-weight:550;color:var(--muted)}
+.menu-quantities-help:hover{color:var(--accent-dark);background:transparent;text-decoration:underline;text-underline-offset:3px}
+.menu-dashboard .weeks-overview{grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--menu-gap);margin:0}
+.menu-dashboard .week-chip{min-height:0;gap:7px;padding:12px 16px;justify-content:center;text-align:left}
+.menu-dashboard .menu-week-heading{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;width:100%;color:var(--ink);font-size:16px;letter-spacing:0;text-transform:none}
+.menu-dashboard .menu-week-heading b{font-size:18px;line-height:1.2;font-weight:750}
+.menu-dashboard .menu-week-stage{padding:3px 8px;border-radius:20px;background:var(--surface-subtle);color:var(--muted);font-size:11px;letter-spacing:0;text-transform:none}
+.menu-dashboard .week-chip.active .menu-week-stage{background:var(--accent-line);color:var(--accent-dark)}
+.menu-dashboard .menu-week-meta{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:3px 8px;width:100%;color:var(--ink-soft);font-size:13px;letter-spacing:0;text-transform:none}
+.menu-dashboard .menu-week-meta>span,.menu-dashboard .menu-week-meta strong>span{font-size:inherit;letter-spacing:0;text-transform:none;color:inherit}
+.menu-dashboard .menu-week-meta strong{font-size:13px;font-weight:650;white-space:nowrap;font-variant-numeric:tabular-nums}
+.menu-dashboard .week-chip-progress{height:5px;margin:0}
+.menu-dashboard .week-strip{margin:0;gap:8px}
+.menu-dashboard .day-btn{padding:9px 5px;gap:5px;justify-content:center;border-radius:13px}
+.menu-dashboard .day-short{font-size:11px}
+.menu-dashboard .day-num{font-size:32px;line-height:1;font-variant-numeric:tabular-nums}
+.menu-dashboard .day-progress{width:70%;max-width:110px;height:5px;margin-top:1px;background:var(--track)}
+.menu-dashboard .day-progress::-webkit-progress-bar{background:var(--track)}
+.menu-dashboard .day-progress::-webkit-progress-value{background:var(--accent)}
+.menu-dashboard .day-progress::-moz-progress-bar{background:var(--accent)}
+.menu-dashboard .day-btn.selected .day-progress{background:rgba(255,255,255,.22)}
+.menu-dashboard .day-btn.selected .day-progress::-webkit-progress-bar{background:rgba(255,255,255,.22)}
+.menu-dashboard .day-btn.selected .day-progress::-webkit-progress-value{background:var(--white)}
+.menu-dashboard .day-btn.selected .day-progress::-moz-progress-bar{background:var(--white)}
+.menu-detail-grid{display:grid;grid-template-columns:minmax(0,1.85fr) minmax(310px,1fr);align-items:stretch;gap:var(--menu-gap);min-width:0;min-height:0}
+.menu-day-card{display:flex;flex-direction:column;min-width:0;min-height:0;margin:0}
+.menu-day-header{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;padding:17px 18px 10px}
+.menu-day-header h2{margin:0;font-size:clamp(20px,1.45vw,27px);line-height:1.2;letter-spacing:-.35px}
+.menu-day-header>div>p{margin:5px 0 0;font-size:13px;line-height:1.35;color:var(--muted)}
+.menu-day-actions{display:flex;align-items:center;gap:6px}
+.menu-day-actions .btn{min-height:44px;font-size:13px;padding:9px 11px}
+.menu-day-actions .menu-help-trigger{width:40px;min-width:40px;min-height:44px;padding:8px;border:0;background:transparent;color:var(--muted)}
+.menu-day-header .menu-day-activity{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:0;padding:7px 10px;border-radius:8px;background:var(--surface-subtle);font-size:12px;line-height:1.3;color:var(--ink-soft)}
+.menu-day-activity .icon svg{width:16px;height:16px}
+.menu-day-card .plan-day-body{display:grid;flex:1;grid-template-rows:repeat(5,minmax(62px,1fr));min-height:0;padding:0 18px 10px;border:0}
+.menu-day-card .meal-table-row{grid-template-columns:104px minmax(0,1fr) 78px 44px;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);min-width:0}
+.menu-day-card .meal-table-row:last-child{border:0}
+.menu-day-card .meal-copy{min-width:0}
+.menu-day-card .cat{display:flex;flex-direction:row;justify-content:flex-start;align-items:center;gap:8px;font-size:13px;line-height:1.25}
+.menu-day-card .cat .icon svg{width:20px;height:20px}
+.menu-day-card .name{font-size:clamp(16px,.98vw,21px);line-height:1.25;text-align:left;overflow-wrap:anywhere}
+.menu-day-card .sub{margin-top:4px;font-size:13px;line-height:1.3;color:var(--muted)}
+.menu-day-card .kcal{font-size:14px;font-weight:700;white-space:nowrap}
+.menu-day-card .meal-check{width:44px;height:44px}
+.menu-day-card .meal-check:focus-visible,.menu-dashboard button:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.menu-day-card .meal-check .icon svg{width:21px;height:21px}
+.menu-side{display:grid;grid-template-rows:minmax(150px,.65fr) minmax(220px,1fr);gap:var(--menu-gap);min-width:0;min-height:0}
+.menu-next-cycle{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:14px;min-width:0;margin:0;padding:18px}
+.menu-next-heading{display:flex;align-items:center;gap:10px;min-width:0}
+.menu-next-heading>div{min-width:0;flex:1}
+.menu-next-heading h2{margin:0;font-size:clamp(20px,1.4vw,25px);line-height:1.2;letter-spacing:-.35px}
+.menu-next-icon{display:grid;place-items:center;flex:none;width:42px;height:42px;background:var(--accent-tint);border-radius:12px;color:var(--accent)}
+.menu-next-heading .menu-next-dates{margin:5px 0 0;font-size:13px;line-height:1.35;color:var(--muted)}
+.menu-next-status{flex:none;padding:5px 8px;border-radius:20px;background:var(--accent-tint);color:var(--accent-dark);font-size:11px;font-weight:700;white-space:nowrap}
+.menu-next-status.is-draft{background:var(--warning-surface);color:var(--warning-ink)}
+.menu-next-cycle .menu-next-description{margin:0;font-size:14px;line-height:1.45;color:var(--ink-soft)}
+.menu-next-cycle .btn{width:100%;min-height:44px;justify-content:center;font-size:14px;white-space:normal;text-align:center}
+.menu-next-cycle--due{border-color:var(--warning-line)}
+.menu-next-cycle .menu-next-reminder{margin:0;font-size:12px;line-height:1.35;color:var(--warning-ink)}
+.menu-nutrition{--nutrition-ring-size:clamp(96px,9vw,174px);grid-area:auto;padding:18px}
+.menu-nutrition .meter-heading{margin-bottom:12px}
+.menu-nutrition .meter-heading h2{font-size:clamp(21px,1.45vw,27px);line-height:1.2}
+.menu-nutrition .nutrition-desktop-layout{grid-template-columns:minmax(90px,.85fr) minmax(0,1.4fr);gap:14px}
+.menu-nutrition .nutrition-desktop-ring strong{font-size:clamp(26px,2vw,40px)}
+.menu-nutrition .nutrition-desktop-ring span{font-size:11px}
+.menu-nutrition .nutrition-desktop-meals{font-size:11px;line-height:1.35}
+.menu-nutrition .nutrition-desktop-macros{gap:12px}
+.menu-nutrition .nutrition-desktop-macro>div{font-size:13px;gap:3px 5px}
+.menu-nutrition .nutrition-desktop-macro strong{font-size:13px}
+.menu-nutrition .nutrition-desktop-macro progress{height:7px;margin-top:5px}
+.menu-nutrition .target-note{margin-top:10px;font-size:11px;line-height:1.4}
+.cycle-date-dialog{max-width:470px;max-height:calc(100dvh - 32px)}
+.cycle-date-dialog .dialog-body{padding:26px}
+.cycle-date-dialog .dialog-close{width:40px;height:40px;margin-bottom:-52px;color:var(--ink-soft)}
+.cycle-date-dialog .dialog-close svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.cycle-date-dialog h2{font-size:25px;line-height:1.2;letter-spacing:-.5px;margin:16px 0 7px}
+.cycle-date-dialog .cycle-start-intro{margin:0 0 20px;color:var(--muted);font-size:14px}
+.cycle-date-dialog .cycle-start-form{display:grid;grid-template-columns:minmax(0,1fr);gap:9px}
+.cycle-date-dialog .cycle-start-form label{grid-column:auto;font-size:14px}
+.cycle-date-dialog .cycle-start-form label>span{font-size:11px}
+.cycle-date-dialog .cycle-date-control{grid-column:auto;grid-row:auto;min-height:48px}
+.cycle-date-dialog .cycle-start-feedback{grid-column:auto;grid-row:auto;font-size:13px}
+.cycle-date-dialog .cycle-start-actions{grid-column:auto;grid-row:auto;display:flex;justify-content:flex-end;margin-top:12px}
+.cycle-date-warning{margin:3px 0;padding:10px 12px;border-radius:10px;background:var(--warning-surface);color:var(--warning-ink);font-size:13px;line-height:1.45}
+.cycle-date-details{margin-top:6px;color:var(--muted);font-size:13px;line-height:1.5}
+.cycle-date-details summary{cursor:pointer;color:var(--accent-dark);font-weight:650;padding:5px 0}
+.cycle-date-details p{margin:6px 0 0}
+.menu-help-dialog{max-width:540px;max-height:calc(100dvh - 32px)}
+.menu-help-dialog h2{font-size:25px;line-height:1.2;margin-top:0}
+.menu-help-dialog p,.menu-help-dialog li{font-size:15px;line-height:1.6;color:var(--ink-soft)}
+.menu-help-dialog ul{padding-left:20px}.menu-help-dialog li+li{margin-top:8px}
+@media(min-width:851px){
+ .app.menu-view{
+  --menu-space:clamp(10px,min(1.1vw,1.6dvh),24px);
+  --menu-padding:clamp(14px,min(1.25vw,1.8dvh),28px);
+  --menu-text:clamp(16px,min(1.05vw,2.1dvh),24px);
+  --menu-meta:clamp(12px,min(.88vw,1.7dvh),18px);
+  --menu-small:clamp(11px,min(.74vw,1.45dvh),15px);
+  --menu-panel-title:clamp(20px,min(1.65vw,2.6dvh),32px);
+  --menu-control:clamp(44px,min(2.3vw,4.5dvh),58px);
+ }
+ .menu-dashboard{--menu-gap:var(--menu-space);width:100%}
+ .menu-header{gap:var(--menu-space)}
+ .menu-header h1{font-size:clamp(28px,min(2vw,3.5dvh),46px);margin-bottom:clamp(6px,1dvh,14px)}
+ .menu-cycle-meta{font-size:var(--menu-meta);gap:8px var(--menu-space)}
+ .menu-cycle-position{font-size:var(--menu-meta)}
+ .menu-header-actions .btn{font-size:var(--menu-meta)}
+ .menu-header-actions .menu-quantities-help{font-size:var(--menu-small)}
+ .menu-dashboard .week-chip{padding:clamp(10px,1.4dvh,20px) var(--menu-padding);gap:clamp(6px,.8dvh,12px)}
+ .menu-dashboard .menu-week-heading b{font-size:clamp(17px,min(1.4vw,2.4dvh),28px)}
+ .menu-dashboard .menu-week-stage{font-size:var(--menu-small)}
+ .menu-dashboard .menu-week-meta,.menu-dashboard .menu-week-meta strong{font-size:var(--menu-meta)}
+ .menu-dashboard .week-chip-progress{height:clamp(5px,.55dvh,8px)}
+ .menu-dashboard .week-strip{gap:clamp(6px,.6vw,14px)}
+ .menu-dashboard .day-btn{padding:clamp(8px,1.15dvh,18px) 5px;gap:clamp(4px,.6dvh,9px)}
+ .menu-dashboard .day-short{font-size:var(--menu-small)}
+ .menu-dashboard .day-num{font-size:clamp(30px,min(2.5vw,4.3dvh),54px)}
+ .menu-dashboard .day-progress{max-width:clamp(80px,8vw,180px);height:clamp(5px,.55dvh,8px)}
+ .menu-day-header{gap:clamp(6px,1dvh,14px);padding:var(--menu-padding) var(--menu-padding) clamp(6px,1dvh,14px)}
+ .menu-day-header h2{font-size:var(--menu-panel-title)}
+ .menu-day-header>div>p{font-size:var(--menu-meta);margin-top:clamp(3px,.5dvh,7px)}
+ .menu-day-actions .btn{min-height:var(--menu-control);font-size:var(--menu-meta)}
+ .menu-day-actions .menu-help-trigger{width:var(--menu-control);min-width:var(--menu-control)}
+ .menu-day-header .menu-day-activity{padding:clamp(5px,.7dvh,10px) 10px;font-size:var(--menu-small)}
+ .menu-day-activity .icon svg{width:clamp(16px,1.1vw,24px);height:clamp(16px,1.1vw,24px)}
+ .menu-day-card .plan-day-body{padding:0 var(--menu-padding) clamp(6px,1dvh,14px)}
+ .menu-day-card .meal-table-row{grid-template-columns:clamp(86px,6.6vw,162px) minmax(0,1fr) clamp(66px,4.9vw,120px) var(--menu-control);gap:clamp(8px,min(.8vw,1.2dvh),18px);padding:clamp(5px,.8dvh,12px) 0}
+ .menu-day-card .cat{gap:clamp(5px,.5vw,10px);font-size:var(--menu-meta)}
+ .menu-day-card .cat .icon svg{width:clamp(17px,1.15vw,28px);height:clamp(17px,1.15vw,28px)}
+ .menu-day-card .name{font-size:var(--menu-text)}
+ .menu-day-card .sub{font-size:var(--menu-meta);margin-top:clamp(3px,.45dvh,7px)}
+ .menu-day-card .kcal{font-size:var(--menu-meta)}
+ .menu-day-card .meal-check{width:var(--menu-control);height:var(--menu-control)}
+ .menu-day-card .meal-check .icon svg{width:clamp(21px,1.3vw,30px);height:clamp(21px,1.3vw,30px)}
+ .menu-next-cycle,.menu-nutrition{padding:var(--menu-padding)}
+ .menu-next-cycle{gap:clamp(9px,1.4dvh,22px)}
+ .menu-next-heading{gap:clamp(8px,.8vw,18px);flex-wrap:wrap}
+ .menu-next-heading h2{font-size:var(--menu-panel-title)}
+ .menu-next-icon{width:var(--menu-control);height:var(--menu-control)}
+ .menu-next-heading .menu-next-dates{font-size:var(--menu-meta)}
+ .menu-next-status,.menu-next-cycle .menu-next-reminder{font-size:var(--menu-small)}
+ .menu-next-cycle .menu-next-description{font-size:clamp(13px,min(.95vw,1.8dvh),20px)}
+ .menu-next-cycle .btn{min-height:var(--menu-control);font-size:var(--menu-meta)}
+ .menu-nutrition{--nutrition-ring-size:clamp(88px,min(11vw,calc(30dvh - 115px)),240px)}
+ .menu-nutrition .nutrition-desktop-view{display:flex}
+ .menu-nutrition .nutrition-mobile-view{display:none}
+ .menu-nutrition .nutrition-title-desktop{display:inline}
+ .menu-nutrition .nutrition-title-mobile{display:none}
+ .menu-nutrition .meter-heading{margin-bottom:clamp(8px,1.1dvh,18px)}
+ .menu-nutrition .meter-heading h2{font-size:var(--menu-panel-title)}
+ .menu-nutrition .nutrition-desktop-layout{gap:var(--menu-space)}
+ .menu-nutrition .nutrition-desktop-ring::before{inset:clamp(8px,1dvh,15px)}
+ .menu-nutrition .nutrition-desktop-ring strong{font-size:clamp(26px,min(2.5vw,4.5dvh),64px)}
+ .menu-nutrition .nutrition-desktop-ring span,.menu-nutrition .nutrition-desktop-meals{font-size:var(--menu-small)}
+ .menu-nutrition .nutrition-desktop-macros{gap:clamp(9px,1.6dvh,24px)}
+ .menu-nutrition .nutrition-desktop-macro>div,.menu-nutrition .nutrition-desktop-macro strong{font-size:var(--menu-meta)}
+ .menu-nutrition .nutrition-desktop-macro progress{height:clamp(6px,.8dvh,12px);margin-top:clamp(4px,.6dvh,8px)}
+ .menu-nutrition .target-note{font-size:var(--menu-small);margin-top:clamp(7px,1dvh,14px);padding-top:clamp(6px,.9dvh,13px)}
+}
+@media(min-width:1181px) and (min-height:640px), (min-width:1000px) and (min-height:700px), (min-width:851px) and (min-height:768px){
+ .app.menu-view .main{height:100dvh;min-height:0;display:flex;flex-direction:column;padding-top:clamp(10px,1.5dvh,24px);padding-bottom:clamp(10px,1.5dvh,24px)}
+ .app.menu-view .topbar{flex:none;min-height:16px;margin-bottom:clamp(6px,1dvh,16px)}
+ .app.menu-view #viewRoot{display:flex;flex:1;min-height:0}
+ .app.menu-view .menu-dashboard{flex:1;grid-template-rows:auto auto auto minmax(0,1fr);min-height:0}
+ .menu-detail-grid{height:auto;max-height:none;align-self:stretch}
+ .menu-side{grid-template-rows:minmax(min-content,.62fr) minmax(195px,1fr)}
+ .menu-day-card .plan-day-body{grid-template-rows:repeat(5,minmax(0,1fr))}
+ .menu-day-card .name{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+}
+@media(min-width:851px) and (max-height:730px){
+ .app.menu-view{--menu-space:8px;--menu-padding:12px;--menu-text:16px;--menu-meta:12px;--menu-small:11px;--menu-panel-title:20px}
+ .menu-header h1{font-size:28px;margin-bottom:5px}
+ .menu-header-actions{gap:2px}
+ .menu-header-actions .menu-quantities-help{min-height:26px;font-size:12px;line-height:1.2}
+ .menu-dashboard .week-chip{padding:8px 12px;gap:5px}
+ .menu-dashboard .menu-week-heading b{font-size:17px}
+ .menu-dashboard .day-btn{padding:7px 5px;gap:4px}
+ .menu-dashboard .day-num{font-size:30px}
+ .menu-day-header{padding:10px 12px 6px;gap:6px}
+ .menu-day-header .menu-day-activity{padding:4px 8px}
+ .menu-day-card .meal-table-row{padding:4px 0}
+ .menu-next-cycle{gap:6px;padding:10px}
+ .menu-next-icon{width:34px;height:34px}
+ .menu-next-status{padding:4px 6px}
+ .menu-nutrition .nutrition-desktop-macros{gap:7px}
+ .menu-nutrition .nutrition-desktop-ring strong{font-size:28px}
+ .menu-nutrition{padding:10px}
+ .menu-nutrition .meter-heading{margin-bottom:6px}
+ .menu-nutrition .target-note{margin-top:6px;padding-top:6px;line-height:1.3}
+}
+@media(min-width:1181px) and (max-height:680px){
+ .app.menu-view{--menu-space:6px}
+ .menu-nutrition .nutrition-desktop-calories{gap:4px}
+}
+@media(min-width:851px) and (max-width:999px) and (max-height:767px){
+ .app.menu-view .menu-detail-grid{grid-template-columns:minmax(0,1fr)}
+ .menu-side{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto}
+}
+@media(min-width:851px) and (max-width:1100px){
+ .menu-detail-grid{grid-template-columns:minmax(0,1.7fr) minmax(300px,1fr)}
+ .menu-day-header{grid-template-columns:minmax(0,1fr);gap:7px}
+ .menu-day-header>div:first-child{display:flex;align-items:baseline;flex-wrap:wrap;gap:5px 10px}
+ .menu-day-header>div>p{margin:0;font-size:12px}
+ .menu-day-actions{justify-content:flex-end}
+ .menu-day-card .meal-table-row{grid-template-columns:75px minmax(0,1fr) 65px var(--menu-control);gap:7px}
+ .menu-day-card .cat{font-size:11px;gap:4px}
+}
+@media(max-width:850px){
+ .menu-header{align-items:flex-start;flex-direction:column;gap:12px}
+ .menu-header h1{font-size:27px}
+ .menu-header-actions{justify-items:start;gap:4px}
+ .menu-header-actions .menu-quantities-help{font-size:12px}
+ .menu-detail-grid{grid-template-columns:minmax(0,1fr)}
+ .menu-side{display:flex;flex-direction:column}
+ .menu-next-cycle{order:2}
+ .menu-nutrition{order:1;--nutrition-ring-size:132px}
+ .menu-nutrition .nutrition-desktop-view{display:flex}
+ .menu-nutrition .nutrition-mobile-view{display:none}
+ .menu-nutrition .nutrition-title-desktop{display:inline}
+ .menu-nutrition .nutrition-title-mobile{display:none}
+ .menu-nutrition .nutrition-desktop-layout{grid-template-columns:minmax(96px,.8fr) minmax(0,1.3fr)}
+ .menu-day-header{padding:16px}
+ .menu-day-card .plan-day-body{padding:0 16px 8px}
+ .menu-day-card .meal-table-row{grid-template-columns:90px minmax(0,1fr) 70px 44px;gap:9px}
+}
+@media(max-width:580px){
+ .menu-dashboard{--menu-gap:12px}
+ .menu-dashboard .weeks-overview{display:grid;gap:7px;overflow:visible;scroll-snap-type:none;padding:0}
+ .menu-dashboard .week-chip{padding:10px 8px;border-radius:12px;gap:7px;min-width:0}
+ .menu-dashboard .menu-week-heading b{font-size:15px}
+ .menu-dashboard .menu-week-stage{display:none}
+ .menu-dashboard .menu-week-meta{display:grid;gap:5px;font-size:11px;line-height:1.35}
+ .menu-dashboard .menu-week-meta strong{font-size:12px}
+ .menu-dashboard .menu-week-meta strong>span{display:none}
+ .menu-dashboard .week-strip{gap:5px}
+ .menu-dashboard .day-btn{padding:9px 2px;gap:5px;border-radius:10px}
+ .menu-dashboard .day-short{font-size:9px}
+ .menu-dashboard .day-num{font-size:27px}
+ .menu-dashboard .day-progress{width:70%;height:4px}
+ .menu-day-header{grid-template-columns:minmax(0,1fr);padding:14px 12px 10px}
+ .menu-day-header h2{font-size:20px}
+ .menu-day-actions{justify-content:space-between}
+ .menu-day-actions .btn{font-size:13px}
+ .menu-day-card .plan-day-body{padding:0 12px 5px;grid-template-rows:repeat(5,auto)}
+ .menu-day-card .meal-table-row{grid-template-columns:minmax(0,1fr) 64px 44px;gap:4px 8px;padding:12px 0}
+ .menu-day-card .cat{grid-column:1/-1;font-size:12px}
+ .menu-day-card .cat .icon svg{width:16px;height:16px}
+ .menu-day-card .meal-copy{grid-column:1;grid-row:2}
+ .menu-day-card .name{font-size:16px;line-height:1.3}
+ .menu-day-card .sub{font-size:12px;line-height:1.4}
+ .menu-day-card .kcal{grid-column:2;grid-row:2;font-size:12px}
+ .menu-day-card .meal-check{grid-column:3;grid-row:2}
+ .menu-nutrition{padding:16px;--nutrition-ring-size:120px}
+ .menu-nutrition .nutrition-desktop-layout{gap:12px;grid-template-columns:minmax(90px,.8fr) minmax(0,1.3fr)}
+ .menu-nutrition .nutrition-desktop-macro>div,.menu-nutrition .nutrition-desktop-macro strong{font-size:12px}
+ .menu-nutrition .nutrition-desktop-ring::before{inset:8px}
+ .menu-next-cycle{padding:16px}
+ .cycle-date-dialog .dialog-body{padding:22px 18px}
+ .cycle-date-dialog h2{font-size:23px}
+}
+@media(prefers-reduced-motion:reduce){.menu-dashboard .day-btn{transition:none}.menu-dashboard .day-btn:hover{transform:none}}
+
+/* Desktop shopping: product information and pack controls have separate rows. */
+@media(min-width:851px){
+ .app.shopping-view .shop-store h2{font-size:clamp(26px,1.8vw,32px)}
+ .app.shopping-view .shop-store .shop-group{padding:0 18px}
+ .app.shopping-view .shop-store .shop-group-title{padding:16px 0;font-size:clamp(17px,1vw,21px);line-height:1.35}
+ .app.shopping-view .shop-store .shop-group-title>span{font-size:14px}
+ .app.shopping-view .shop-store .shop-group-items{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:16px;padding:16px 0 18px}
+ .app.shopping-view .pack-row{display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:16px;min-width:0;margin:0;padding:18px;border-radius:14px;transition:border-color .15s,background .15s}
+ .app.shopping-view .pack-row:hover{border-color:var(--accent-line)}
+ .app.shopping-view .pack-check{flex:1;align-items:flex-start;gap:12px;min-width:0;min-height:44px}
+ .app.shopping-view .pack-check>input{flex:none;width:24px;height:24px;margin:1px 0 0;cursor:pointer}
+ .app.shopping-view .pack-check>span{display:flex;flex:1;flex-direction:column;gap:12px;min-width:0}
+ .app.shopping-view .pack-check strong{font-size:clamp(18px,1.12vw,23px);font-weight:750;line-height:1.3;overflow-wrap:anywhere}
+ .app.shopping-view .pack-stock{display:flex;flex-wrap:wrap;gap:7px 10px;margin:0;font-size:14px;line-height:1.45;color:var(--muted)}
+ .app.shopping-view .pack-stock>span:not(.pack-stock-separator){display:inline-flex;align-items:baseline;flex-wrap:wrap;gap:4px 7px}
+ .app.shopping-view .pack-stock .pack-stock-separator{display:none}
+ .app.shopping-view .pack-stock>span+span:not(.pack-stock-separator){padding-left:10px;border-left:1px solid var(--line)}
+ .app.shopping-view .pack-quantity{font-size:15px;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+ .app.shopping-view .pack-missing .pack-quantity{color:var(--accent-dark)}
+ .app.shopping-view .pack-controls{display:grid;grid-template-columns:44px 60px 44px minmax(0,1fr);align-items:center;gap:8px;min-width:0;padding:0}
+ .app.shopping-view .pack-step{display:grid;place-items:center;width:44px;height:44px;padding:0;border-radius:10px;font-size:23px;font-weight:500;line-height:1}
+ .app.shopping-view .pack-controls>input{width:60px;height:44px;min-width:0;padding:8px 4px;font-size:18px;font-weight:700;color:var(--ink);background:var(--white);font-variant-numeric:tabular-nums}
+ .app.shopping-view .pack-unit{min-width:0;padding-left:3px;text-align:right;font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+ .app.shopping-view .pack-adjust{padding:12px 0 0;margin:0;border-top:1px solid var(--line);font-size:14px;line-height:1.4}
+ .app.shopping-view .pack-adjust summary{width:fit-content;max-width:100%;padding:4px 0;color:var(--accent-dark);font-weight:550;cursor:pointer}
+ .app.shopping-view .pack-adjust summary:hover{text-decoration:underline;text-underline-offset:3px}
+ .app.shopping-view .pack-adjust>label{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:8px;font-size:14px;line-height:1.4;color:var(--ink-soft)}
+ .app.shopping-view .pack-adjust input{flex:none;width:110px;max-width:100%;height:44px;margin:0;padding:9px 10px;border-radius:9px;background:var(--white);color:var(--ink);font:inherit;font-size:16px;text-align:right}
+ .app.shopping-view .pack-row.is-checked{align-self:start;padding:16px 18px;background:var(--accent-tint);border-color:var(--accent-line)}
+ .app.shopping-view .pack-row.is-checked .pack-check{flex:none;min-height:32px;align-items:center}
+ .app.shopping-view .pack-row.is-checked .pack-check>input{margin:0}
+ .app.shopping-view .pack-check input:focus-visible,.app.shopping-view .pack-controls input:focus-visible,.app.shopping-view .pack-step:focus-visible,.app.shopping-view .pack-adjust summary:focus-visible,.app.shopping-view .pack-adjust input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+}
+@media(min-width:1700px){
+ .app.shopping-view .shop-store .shop-group-items{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+ .app.shopping-view .pack-row{padding:22px;gap:18px}
+ .app.shopping-view .pack-stock{font-size:15px}
+ .app.shopping-view .pack-quantity,.app.shopping-view .pack-unit{font-size:16px}
+ .app.shopping-view .pack-adjust{font-size:15px}
+}
+@media(min-width:851px) and (max-width:1023px) and (max-height:767px){
+ .app.shopping-view .shop-store .shop-group-items{grid-template-columns:minmax(0,1fr)}
+}
+@media(prefers-reduced-motion:reduce){.app.shopping-view .pack-row{transition:none}}
