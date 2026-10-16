@@ -15,6 +15,7 @@ La landing llevaba a `menuki.html` al iniciar sesión o registrarse. Ese cambio 
 3. El iframe comunica a la landing únicamente que Auth completó el acceso; no envía correo, credenciales ni datos personales por `postMessage`. La landing comprueba el origen y la ventana de origen, cierra el diálogo y abre `menuki.html` para continuar allí con la sesión persistida.
 4. Si JavaScript o el elemento `<dialog>` no está disponible, los enlaces conservan su destino anterior como alternativa. `menuki.html` sigue ofreciendo el formulario independiente y su enlace para volver a la landing.
 5. En escritorio, los formularios incluyen un enlace breve para cambiar directamente entre «Iniciar sesión» y «Crear cuenta». En móvil se omite el texto adicional bajo el formulario para conservar una ventana compacta. El footer y sus enlaces siguen disponibles solo cuando el formulario de registro se abre como página independiente.
+6. Al cerrar sesión desde la aplicación, limpiar su estado de cuenta y volver a la landing mediante `location.replace('./index.html')`, tanto desde Perfil como desde el menú móvil. El destino relativo conserva el prefijo de GitHub Pages y sustituye la entrada de la aplicación en el historial. Si `SIGNED_OUT` llega al iframe de acceso, conservar el formulario dentro del diálogo.
 
 ## Consecuencias
 

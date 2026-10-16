@@ -88,6 +88,23 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 
 El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
+### Presentación de la revisión
+
+La cabecera mantiene «Revisa el siguiente ciclo» y, a su derecha, **Cambiar platos** y **Guardar**. Solo la lista central se desplaza; las acciones y la X siguen visibles. Se retira el botón inferior Cerrar. «Cambiar platos» conserva la regeneración de comidas no bloqueadas y explica esa acción con «Renueva únicamente los desbloqueados» al pasar el ratón o recibir foco de teclado.
+
+El resumen muestra fecha de inicio, 21 días, 105 comidas y los indicadores de variedad. Las tarjetas laterales presentan el objetivo y el ajuste de raciones del perfil actual, que utiliza la vista previa de cantidades. La recuperación destacada corresponde a `recoveryFocus`, conservado al generar la propuesta; no se deduce retrospectivamente del perfil. Si ambas preferencias de recuperación difieren, un aviso visible pide usar «Cambiar platos» para aplicar el cambio conservando los bloqueos. No se añade ningún campo persistido.
+
+«Cómo se prepara este menú» agrupa las explicaciones sobre stock, cálculo base sin sesiones previstas, bloqueo manual, ausencia de filtros personales y la presencia cualitativa de calcio/vitaminas. Esas cifras siguen contando días con ingredientes etiquetados; no expresan cantidades ni objetivos de ingesta. Los cambios de selector, bloqueo y regeneración conservan el desplazamiento y el foco del control. En móvil, las acciones se distribuyen debajo del título y el resumen se apila para mantener accesibles los controles.
+
+### Renovación y compra anticipada
+
+- La generación se puede iniciar antes de terminar el ciclo actual. Un borrador sigue pendiente de revisión; solo **Guardar** confirma el próximo ciclo.
+- Si el ciclo termina y no existe otro menú confirmado disponible, Inicio y Menú muestran un contenido bloqueado y un diálogo que abre el planificador o permite continuar el borrador. El resto de las páginas sigue disponible. Se retira el antiguo encargo para ChatGPT.
+- Al recuperar un borrador cuya fecha ya pasó después de terminar el ciclo, la revisión propone comenzar hoy y exige confirmar de nuevo. No se activa un menú confirmado que ya haya terminado también.
+- Compra ofrece **Ciclo actual / Próximo ciclo** únicamente con un próximo menú confirmado y entre uno y tres días antes de su inicio. El día de inicio se activa automáticamente y pasa a ser el actual. Los períodos de 3, 7, 14 días o resto del ciclo se calculan dentro del ciclo seleccionado, sin cruzar a otro.
+- Para el próximo ciclo, estimar las existencias al inicio descontando solo las comidas pendientes del ciclo actual anteriores a esa fecha. Las comidas ya realizadas no se descuentan de nuevo. Esta previsión no escribe movimientos; las compras finalizadas sí aumentan el inventario real.
+- Los carritos y extras de cada ciclo quedan separados. Al activarse el siguiente, su selección pendiente pasa a la lista actual. La confirmación de una compra no borra la selección del otro ciclo.
+
 ## Gustos y restricciones: propuesta pendiente
 
 **No es una regla aceptada todavía.** Para personalizar sin modificar el catálogo compartido, guardar por persona sus gustos. Una posible escala es “me gusta”, “indiferente” y “prefiero evitar”. Las alergias/intolerancias podrían representarse por separado como exclusiones estrictas, nunca como una preferencia con una puntuación baja. Si no quedan recetas adecuadas, solicitar una decisión o ampliar el catálogo; no reintroducir en silencio un alimento excluido.

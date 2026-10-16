@@ -110,7 +110,7 @@ Mostrar el paso actual y permitir saltar tareas que no sean necesarias todavía.
 
 ### 2. Reducir la carga de Inicio
 
-Priorizar una sola acción relevante, por ejemplo **Revisar mi perfil** si aún no está confirmado, o **Ver el menú de hoy** cuando ya lo esté. Dejar los detalles de sincronización y mantenimiento en un estado compacto o en Ajustes.
+Priorizar una sola acción relevante, por ejemplo **Mi Perfil** si aún no está confirmado, o **Ver el menú de hoy** cuando ya lo esté. Dejar los detalles de sincronización y mantenimiento en un estado compacto o en Ajustes.
 
 ### 3. Elección entre copias — propuesta sustituida
 
