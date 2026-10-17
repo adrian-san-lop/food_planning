@@ -98,7 +98,7 @@ svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-wi
 .shopping-item.is-checked>span:nth-child(2){color:#879389;text-decoration:line-through;text-decoration-color:#bdcabe}
 .shopping-foot{display:flex;align-items:center;justify-content:space-between;gap:7px;padding-top:9px;color:var(--landing-muted);font-size:8px}
 .nutrition-card{z-index:4;right:11%;bottom:16px;width:55%;display:flex;align-items:center;gap:18px;padding:16px 18px;transform:rotate(2deg);animation:card-enter .8s .36s both,card-float 7.5s 1.4s ease-in-out infinite}
-.nutrition-ring{width:94px;height:94px;flex:none;display:grid;place-items:center;border-radius:50%;background:conic-gradient(var(--landing-green) 0 44%,#d5e0c6 44% 72%,#e8b999 72% 84%,#e8eee4 84% 100%);position:relative}
+.nutrition-ring{width:94px;height:94px;flex:none;display:grid;place-items:center;border-radius:50%;background:conic-gradient(var(--landing-green) 0 44%,#d5e0c6 44% 72%,#bd7854 72% 84%);position:relative}
 .nutrition-ring::before{position:absolute;inset:8px;border-radius:50%;background:var(--landing-paper);content:""}
 .nutrition-ring>span{position:relative;display:grid;justify-items:center;font-size:19px;font-weight:780;letter-spacing:-.5px}
 .nutrition-ring small{color:var(--landing-muted);font-size:9px;font-weight:550;letter-spacing:0}
