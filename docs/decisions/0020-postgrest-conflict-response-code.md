@@ -1,7 +1,7 @@
 # ADR-0020: Devolver conflictos de sincronización como HTTP 409
 
 - **Fecha:** 13 de octubre de 2026
-- **Estado:** Aceptada; migración SQL preparada y pendiente de aplicar en Supabase
+- **Estado:** Aceptada; corrección aplicada y problema resuelto en Supabase según confirmación del administrador comunicada el 17/10/2026
 - **Alcance:** arquitectura de sincronización
 
 ## Contexto
@@ -12,16 +12,16 @@
 
 - Devolver el conflicto de revisión con SQLSTATE `PT409` y conservar el mensaje `SYNC_CONFLICT`.
 - Aplicar el cambio tanto a `sync_menuki_state` como a `reset_menuki_state`, sin cambiar la comprobación `sync_revision`, la transacción, RLS, `auth.uid()` ni la conciliación del cliente.
-- Mantener compatibilidad en el cliente con respuestas `PT409`, el mensaje `SYNC_CONFLICT` y el código antiguo `40001` mientras se completa la actualización de Supabase.
+- El cliente reconoce `PT409` y el mensaje `SYNC_CONFLICT`; conserva también el código `40001` para respuestas antiguas.
 - Usar una nueva migración que sustituye únicamente la excepción de conflicto en las definiciones instaladas de ambas funciones. La migración no cambia tablas ni filas y conserva el resto de la lógica desplegada.
 
 ## Consecuencias
 
 - PostgREST responde con HTTP 409 en vez de tratar el conflicto de revisión como un error transitorio que debe reintentar.
 - El cliente sigue leyendo la revisión remota, conciliando las copias y reintentando de forma limitada.
-- La migración `20261013120000_menuki_sync_conflict_http_409.sql` debe aplicarse desde SQL Editor antes de considerar corregido el proyecto alojado. SQL Editor no registra automáticamente los archivos locales.
+- La corrección de `20261013120000_menuki_sync_conflict_http_409.sql` consta como aplicada y resuelta según el administrador (confirmación comunicada el 17/10/2026). SQL Editor no registra automáticamente los archivos locales; no repetir su ejecución por un listado documental antiguo.
 - El recuento de errores de Postgres no representa el tamaño de la base de datos. La medida de 27 MB comunicada el 13 de octubre de 2026 queda por debajo del umbral interno de revisión de 350 MB.
 
-## Pendiente
+## Estado y validación
 
-Aplicar la octava migración en Supabase y confirmar que cesa la repetición de `SYNC_CONFLICT`; después, validar la conciliación desde el cliente publicado.
+El administrador confirma que el problema de conflictos HTTP 409 está resuelto en Supabase. Se registra esta confirmación sin atribuirle una verificación independiente de logs o del proyecto remoto. La prueba completa de conciliación desde el cliente publicado y entre dispositivos continúa pendiente de validación documentada.

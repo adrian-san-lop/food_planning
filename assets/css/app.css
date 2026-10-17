@@ -1701,7 +1701,7 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .goal-choices{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
  .goal-option-content{min-height:0;padding:10px 7px;gap:7px}
  .goal-option input:checked+.goal-option-content{padding:9px 6px}
- .goal-option-content i{font-size:26px}.goal-option-content b{font-size:15px}.goal-option-content small{font-size:12px}
+ .goal-option-content i{font-size:90px}.goal-option-content b{font-size:15px}.goal-option-content small{font-size:12px}
  .profile-settings .profile-section-body{display:grid;grid-template-columns:1.15fr 1fr 1fr;align-items:center;gap:10px}
  .profile-settings .profile-field{align-self:center}
  .profile-settings .profile-toggle small{display:none}

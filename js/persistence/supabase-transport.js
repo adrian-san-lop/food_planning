@@ -3,6 +3,7 @@ const TABLES = [
   'planned_meals',
   'meal_completions',
   'meal_completion_ingredients',
+  'meal_completion_shortfalls',
   'inventory_movements',
   'weight_logs',
   'activity_sessions',
@@ -13,6 +14,8 @@ const TABLES = [
 ];
 
 export function createSupabaseTransport({ getClient, getUserId }) {
+  let shortfallsAvailable = null;
+
   async function readRows(table) {
     const rows = [];
     for (let from = 0; ; from += 1000) {
@@ -38,14 +41,38 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     return data;
   }
 
+  function isMissingShortfallsTable(error) {
+    return error?.code === 'PGRST205'
+      || error?.code === '42P01'
+      || /could not find the table ['"]?public\.meal_completion_shortfalls['"]? in the schema cache/i.test(error?.message || '');
+  }
+
+  async function readOptionalShortfalls() {
+    try {
+      const rows = await readRows('meal_completion_shortfalls');
+      shortfallsAvailable = true;
+      return rows;
+    } catch (error) {
+      if (!isMissingShortfallsTable(error)) throw error;
+      shortfallsAvailable = false;
+      return [];
+    }
+  }
+
+  async function probeShortfalls() {
+    await readOptionalShortfalls();
+    return shortfallsAvailable;
+  }
+
   async function fetchSnapshot() {
-    const [settings, profile, ...rows] = await Promise.all([
+    const [settings, profile, shortfalls, ...rows] = await Promise.all([
       readOne('user_settings'),
       readOne('profiles'),
-      ...TABLES.map((table) => readRows(table)),
+      readOptionalShortfalls(),
+      ...TABLES.filter((table) => table !== 'meal_completion_shortfalls').map((table) => readRows(table)),
     ]);
     const [cycles, plannedMeals, completions, ingredients, movements, weights, activities, training, prep, shoppingSessions, shoppingItems] = rows;
-    return { settings, profile, cycles, plannedMeals, completions, ingredients, movements, weights, activities, training, prep, shoppingSessions, shoppingItems };
+    return { settings, profile, cycles, plannedMeals, completions, ingredients, shortfalls, shortfallsAvailable, movements, weights, activities, training, prep, shoppingSessions, shoppingItems };
   }
 
   function submitSnapshot(rpcName, snapshot, expectedRevision) {
@@ -55,5 +82,5 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     });
   }
 
-  return { readRows, readOne, fetchSnapshot, submitSnapshot };
+  return { readRows, readOne, fetchSnapshot, probeShortfalls, supportsShortfalls: () => shortfallsAvailable, submitSnapshot };
 }

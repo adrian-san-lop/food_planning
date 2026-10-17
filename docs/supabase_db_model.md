@@ -1,12 +1,12 @@
 # Modelo de datos de Supabase
 
-Última revisión: 13 de octubre de 2026. El proyecto tiene trece tablas personales existentes y cuatro tablas compartidas del buzón. El propietario informa que la migración `20261013160000_recipe_proposal_inbox.sql` ya se aplicó; la octava migración de conflictos sigue pendiente. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
+Última revisión documental: 17 de octubre de 2026. El modelo documenta catorce tablas personales y cuatro tablas compartidas del buzón. El propietario confirma que `20261017100000_nonnegative_inventory_shortfalls.sql` y la corrección `20261017110000_fix_zero_quantity_meal_constraint.sql` se aplicaron en Supabase el 17/10/2026; esta última resolvió el error `23514` al eliminar la regla obsoleta que rechazaba movimientos meal con cantidad cero. También informa que `20261013160000_recipe_proposal_inbox.sql` se aplicó; la corrección HTTP 409 está aplicada y resuelta según confirmación del administrador del 17/10/2026. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
-El HTML y Supabase Auth están integrados en el repositorio; las siete migraciones iniciales están aplicadas al proyecto. La novena y la asignación admin se consideran aplicadas según el propietario; la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, sigue pendiente. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta aplicar la octava, publicar este HTML y probar el flujo real entre dispositivos, el buzón y el aislamiento con dos cuentas autenticadas.
+El HTML y Supabase Auth están integrados en el repositorio; las siete migraciones iniciales están aplicadas al proyecto. La novena, la décima y la asignación admin se consideran aplicadas según el propietario; la corrección HTTP 409 de la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, está aplicada y resuelta según el administrador (17/10/2026). La app sincroniza mediante una función transaccional con las tablas normalizadas. Quedan por validar el flujo completo del cliente publicado entre dispositivos, el buzón y el aislamiento con dos cuentas autenticadas. La corrección de purga global sigue pendiente de confirmación. Esta revisión no ha consultado el proyecto remoto, por lo que la aplicación de faltantes se registra según la confirmación del propietario.
 
 ## Diagrama entidad-relación
 
-El diagrama muestra las trece tablas personales y, con borde discontinuo, las cuatro tablas compartidas del buzón creadas por la novena migración (aplicada según el propietario). `auth.users` pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
+El diagrama muestra las catorce tablas personales, incluida `meal_completion_shortfalls`, y, con borde discontinuo, las cuatro tablas compartidas del buzón creadas por la novena migración (aplicada según el propietario). `auth.users` pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
 
 ![Diagrama entidad-relación de la base de datos de Supabase](images/supabase_db_model.svg)
 
@@ -19,7 +19,7 @@ PK significa clave primaria y FK significa clave foránea. Las tablas de la apli
 - TIMESTAMPTZ almacena marcas temporales con zona horaria. Los campos DATE representan fechas de calendario sin hora.
 - Los campos updated_at tienen DEFAULT now() al insertar. No hay triggers que los actualicen automáticamente en cada modificación.
 - Los IDs food_id y recipe_id son identificadores de los catálogos JSON. No tienen FK SQL porque esos catálogos no se duplican en PostgreSQL.
-- Las cantidades de inventario y compra usan la unidad `unit` del alimento (g, ml o ud); las recetas usan `recipeUnit`. En el inventario, quantity lleva signo: entradas positivas y consumos/salidas negativas. Para frutas y verduras enteras, los movimientos y compras usan `ud`, aunque las cantidades de receta estén en gramos.
+- Las cantidades de inventario y compra usan la unidad `unit` del alimento (g, ml o ud); las recetas usan `recipeUnit`. En el inventario, quantity lleva signo: entradas positivas y consumos/salidas negativas. Las porciones de fruta entera usan `ud` en receta e inventario. El pan de molde usa rebanadas en receta y gramos en movimientos/compra, con conversión aproximada de 25 g por rebanada. Las verduras que se trocean siguen en gramos de receta y pueden comprarse/guardarse por unidad.
 - La tabla de movimientos es append-only para el rol de la aplicación: puede leer e insertar, pero no actualizar ni borrar.
 - `training_logs` y `profiles.training_bonus_kcal` son heredados; el cálculo actual usa `activity_sessions`.
 
@@ -128,9 +128,21 @@ Guarda una fila inmutable por ingrediente de una comida completada. Conserva la 
 
 La tabla permite varias líneas para un mismo food_id, porque conserva el índice de línea original. RLS permite SELECT e INSERT de filas propias; el rol de la aplicación no recibe UPDATE ni DELETE. La reversión de la comida conserva estos snapshots y crea movimientos inversos; no los modifica. No hay caducidad temporal ni tarea de purga; se conservan mientras exista la comida completada y la cuenta. El tamaño total y por tabla se revisará conforme se incorporen usuarios, con una revisión al acercarse a 350 MB.
 
+### meal_completion_shortfalls
+
+Guarda en unidades de inventario la parte de un ingrediente que no estaba cubierta por el saldo cuando se registró la comida. No se suma al libro de existencias ni a la cantidad de la lista de compra. La migración `20261017100000_nonnegative_inventory_shortfalls.sql` la crea y copia los faltantes históricos desde `inventory_movements.shortfall_quantity`; ambas migraciones constan como aplicadas en Supabase según el propietario el 17/10/2026. La aplicación solo puede leer filas propias; la escritura ocurre dentro de `sync_menuki_state`.
+
+| Columna | Tipo | Nulable | Clave o regla |
+| --- | --- | --- | --- |
+| completion_id | uuid | No | PK compuesta; FK compuesta a meal_completions (id, user_id), ON DELETE CASCADE. |
+| user_id | uuid | No | FK → auth.users.id; ON DELETE CASCADE. |
+| food_id | text | No | ID del catálogo JSON; no es una FK SQL. |
+| quantity | numeric(14,4) | No | Cantidad faltante positiva, en unidad de inventario. |
+| unit | text | No | g, ml o ud. |
+| created_at | timestamptz | No | DEFAULT now(). |
 ### inventory_movements
 
-Libro de entradas y salidas. El saldo de cada alimento se calcula sumando quantity; no existe una segunda columna de saldo autoritativo.
+Libro de entradas y salidas. El saldo de cada alimento se calcula sumando quantity y nunca puede ser negativo. Los movimientos de comida descuentan solo el saldo disponible; los faltantes se guardan en `meal_completion_shortfalls` y no afectan el saldo ni las compras.
 
 No hay una tabla purchases separada: cada línea comprada se representa como un movimiento con movement_kind = purchase y quantity positiva.
 
@@ -146,11 +158,11 @@ No hay una tabla purchases separada: cada línea comprada se representa como un 
 | operation_group_id | text | Sí | Agrupa líneas de una misma operación. |
 | source_completion_id | uuid | Sí | Junto con user_id, FK → meal_completions (id, user_id); ON DELETE RESTRICT. |
 | reverses_movement_id | uuid | Sí | Junto con user_id, FK → inventory_movements (id, user_id); ON DELETE RESTRICT. |
-| shortfall_quantity | numeric(14,4) | No | DEFAULT 0; entre 0 y abs(quantity). Solo se permite para consumos meal. |
+| shortfall_quantity | numeric(14,4) | No | DEFAULT 0; campo heredado para lecturas históricas; los faltantes nuevos se guardan en meal_completion_shortfalls. |
 | note | text | Sí | Nota opcional. |
 | created_at | timestamptz | No | DEFAULT now(). |
 
-Reglas principales: meal exige quantity negativa y source_completion_id; purchase y opening requieren quantity positiva; waste requiere quantity negativa; reversal debe tener reverses_movement_id y los demás tipos no. Un movimiento solo puede tener un reverso enlazado. La aplicación puede insertar el consumo completo y registrar el faltante aunque el saldo previo no alcance.
+Reglas principales: meal admite quantity negativa o cero y exige source_completion_id; un movimiento meal de cero es un marcador idempotente que no cambia el saldo. Purchase y opening requieren quantity positiva; waste requiere quantity negativa; reversal debe tener reverses_movement_id y los demás tipos no. Un movimiento solo puede tener un reverso enlazado. Los movimientos meal registran solo la salida cubierta por el saldo. El faltante queda ligado a la comida en `meal_completion_shortfalls`.
 
 ### weight_logs
 
@@ -306,7 +318,8 @@ Pasos de preparación en texto libre y en el orden enviado. El límite de 30 fil
 | plan_cycles | plan_cycles | 0..1 ciclo anterior a 0..N ciclos sucesores | FK compuesta (supersedes_cycle_id, user_id); el enlace es opcional. |
 | planned_meals | meal_completions | 1 a N registros históricos | FK compuesta meal_completions (planned_meal_id, user_id); solo uno puede quedar sin revertir. |
 | meal_completions | meal_completion_ingredients | 1 a N líneas | FK compuesta (completion_id, user_id); aplicada en la cuarta migración; cada línea conserva cantidad y unidad de receta. |
-| meal_completions | inventory_movements | 1 a N movimientos | FK compuesta inventory_movements (source_completion_id, user_id); se usa para los consumos de la comida. |
+| meal_completions | meal_completion_shortfalls | 1 a N faltantes | FK compuesta (completion_id, user_id); creada por la migración aditiva ejecutada según confirmación del propietario el 17/10/2026. |
+| meal_completions | inventory_movements | 1 a N movimientos | FK compuesta inventory_movements (source_completion_id, user_id); se usa para las salidas realmente descontadas. |
 | inventory_movements | inventory_movements | 1 a 0..1 reverso | FK compuesta (reverses_movement_id, user_id) y un índice único por movimiento revertido. |
 | shopping_sessions | shopping_session_items | 1 a N | FK compuesta shopping_session_items (session_id, user_id). |
 | recipe_proposals | recipe_proposal_ingredients | 1 a N | FK recipe_proposal_ingredients.proposal_id con ON DELETE CASCADE; posiciones 1..30. Novena migración aplicada según el propietario. |
@@ -316,10 +329,10 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 
 ## Seguridad y estado de validación
 
-- RLS está habilitado en las trece tablas personales existentes y sus políticas filtran por `auth.uid() = user_id`. La novena migración, aplicada según el propietario, habilita RLS en las otras cuatro y restringe el buzón por rol admin.
+- RLS está habilitado en las catorce tablas personales según la ejecución de la migración de faltantes confirmada por el propietario el 17/10/2026; sus políticas filtran por `auth.uid() = user_id`. La tabla de faltantes permite lectura propia y limita la escritura al RPC transaccional. Esta configuración remota no se ha verificado independientemente. La novena migración, aplicada según el propietario, habilita RLS en las cuatro tablas compartidas y restringe el buzón por rol admin.
 - El rol anon no tiene permisos de lectura, inserción, actualización ni borrado en estas tablas.
-- El rol authenticated recibe solo los permisos de tabla previstos; inventory_movements permite lectura e inserción, sin actualización ni borrado.
-- Las siete migraciones iniciales se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el RPC transaccional utilizado por el reinicio total; la séptima añadió `profiles.profile_confirmed`. La octava migración, pendiente, cambia los conflictos de revisión a `PT409`. La novena creó las cuatro tablas de propuestas y las funciones `is_menuki_admin`, `submit_recipe_proposal` y `clear_recipe_proposals`; el propietario informa que ya la ejecutó.
+- El rol authenticated recibe solo los permisos de tabla previstos; `inventory_movements` es de solo lectura directa y los movimientos se escriben mediante `sync_menuki_state`. `meal_completion_shortfalls` también es de solo lectura directa y se escribe en la misma transacción.
+- El propietario confirma que la migración de faltantes `20261017100000_nonnegative_inventory_shortfalls.sql` y `20261017110000_fix_zero_quantity_meal_constraint.sql` están aplicadas en Supabase; la segunda retira la antigua regla que provocaba el error `23514` y conserva `inventory_movements_check2`, que protege las referencias de reverso. Las siete migraciones iniciales se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el RPC transaccional utilizado por el reinicio total; la séptima añadió `profiles.profile_confirmed`. La corrección de la octava migración cambia los conflictos de revisión a `PT409` y está aplicada y resuelta según confirmación del administrador del 17/10/2026. La novena creó las cuatro tablas de propuestas y las funciones `is_menuki_admin`, `submit_recipe_proposal` y `clear_recipe_proposals`; el propietario informa que ya la ejecutó.
 - La novena migración no concede permisos directos de escritura en las tablas del buzón. Las cuentas autenticadas pueden consultar esas tablas solo si `is_menuki_admin()` confirma el rol; las cuentas normales envían mediante `submit_recipe_proposal`. `menuki_admins` no tiene políticas ni permisos de tabla para el navegador. `clear_recipe_proposals` comprueba el rol, bloquea altas concurrentes, valida el recuento confirmado y borra el padre dentro de una transacción, con cascada a ingredientes y pasos. La migración décima añade `update_recipe_proposal` y `delete_recipe_proposal`; las dos vuelven a comprobar el rol, comparan la versión del contenido revisado y actualizan o eliminan una sola propuesta transaccionalmente. El propietario informa que la décima migración ya se aplicó y que el borrado individual funciona. Supabase rechazó la purga porque el DELETE no tenía WHERE; la migración undécima `20261013180000_recipe_proposal_purge_where_clause.sql` añade `id IS NOT NULL` y sigue pendiente.
 - Consultas previas confirmaron que `activity_sessions` y `meal_completion_ingredients` tienen RLS y permisos mínimos; los snapshots no conceden UPDATE ni DELETE a `authenticated`. La aplicación del SQL de sincronización devolvió éxito; no se ha probado todavía con dos sesiones autenticadas ni desde GitHub Pages.
 - El HTML ya contiene inicio de sesión y sincronización; la publicación, el primer traspaso de datos local a remoto y la prueba entre PC/móvil siguen pendientes.

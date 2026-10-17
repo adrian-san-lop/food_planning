@@ -5,6 +5,8 @@
 - **Alcance:** resumen, menú de hoy y cabecera del día en Inicio y Menú
 - **Relación:** reemplaza parcialmente ADR-0030; conserva el orden diario de ADR-0019 y los indicadores móviles definidos en ADR-0028.
 
+Actualización de vigencia (17/10/2026): ADR-0035 y ADR-0036 sustituyen la distribución y los KPI descritos aquí. Inicio conserva el menú de hoy; el dashboard actual comparte cuatro KPI entre escritorio y móvil y coloca el menú antes de la nutrición en el flujo móvil. Las observaciones sobre el banner, la racha y el orden nutrición/menú se conservan como antecedentes.
+
 ## Contexto
 
 En móvil, Inicio debe enseñar con claridad el progreso diario sin que el encabezado del menú quede cortado al final del primer pantallazo. En escritorio, el resumen y el menú deben conservar un flujo natural sin estirar el contenido para llenar la pantalla. Ocultar el menú por completo elimina un acceso importante a las comidas del día. En Menú, la cabecera del día debe ser fácil de leer y no mezclar la fecha con información secundaria.

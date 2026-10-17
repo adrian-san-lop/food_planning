@@ -4,6 +4,8 @@
 - **Fecha:** 11 de octubre de 2026
 - **Contexto:** Auditoría UX/UI de Menuki, mejoras de prioridad alta
 
+Actualización de vigencia (17/10/2026): la secuencia inicial de cinco pasos se conserva abajo como antecedente. ADR-0025 y ADR-0029 definen la guía rápida actual de tres pasos desde Inicio/Guía y el recorrido completo en Guía. La confirmación del perfil y la restricción de comidas futuras siguen vigentes.
+
 ## Decisión
 
 1. **Orientar a quien entra por primera vez.** Inicio muestra una secuencia breve de cinco pasos y recomienda empezar por el perfil. Los datos genéricos de ejemplo se identifican como tales. La app no los considera revisados hasta que el usuario guarda explícitamente el formulario.

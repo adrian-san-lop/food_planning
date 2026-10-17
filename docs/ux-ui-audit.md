@@ -1,10 +1,11 @@
 # Auditoría UX/UI de Menuki
 
-- **Fecha:** 11 de octubre de 2026
+- **Fecha de la auditoría histórica:** 11 de octubre de 2026
+- **Actualización de estado documental:** 17 de octubre de 2026
 - **Aplicación revisada:** [Menuki en GitHub Pages](https://adrian-san-lop.github.io/food_planning/menuki.html)
 - **Alcance:** recorrido de primera visita y tareas habituales en escritorio y en vista móvil adaptable. Las observaciones describen la versión publicada durante la auditoría; el estado de implementación posterior se indica a continuación.
 
-## Resumen
+## Resumen de la versión auditada (histórico)
 
 La app ofrece las secciones necesarias para consultar el menú, gestionar la despensa, preparar la compra y revisar el perfil. El problema principal es que, al iniciar sesión, no guía al usuario por un primer recorrido ni le indica si debe completar el perfil. La pantalla de inicio invita a explorar el menú, mientras muestra datos de perfil ya rellenados cuyo estado no se explica.
 
@@ -12,19 +13,19 @@ La primera visita también presenta una decisión sobre datos locales y Supabase
 
 La experiencia cambia con el tamaño de pantalla: en escritorio las secciones se encuentran en una barra lateral; en móvil pasan a una barra inferior con ocho opciones. La compra y la despensa siguen siendo recorridos largos en móvil.
 
-## Actualización de comportamiento — 13 de octubre de 2026
+## Comportamiento vigente — actualización del 17 de octubre de 2026
 
-La elección manual entre copias y la pantalla descritas en esta auditoría son observaciones históricas de la versión revisada y quedan sustituidas por [ADR-0017](decisions/0017-automatic-reconciliation-and-activity-history.md). El cliente local consulta las revisiones remotas y combina cambios automáticamente. En móvil, **Actividad** está en la barra inferior; el historial aparece al inicio de **Actividad y peso** y cada sesión muestra una acción «Eliminar sesión». Estos cambios están en la copia local de `dev`; la publicación y las comprobaciones reales entre dispositivos siguen pendientes.
+La elección manual entre copias y la pantalla descritas en esta auditoría son observaciones históricas de la versión revisada y quedan sustituidas por [ADR-0017](decisions/0017-automatic-reconciliation-and-activity-history.md). El cliente consulta las revisiones remotas y combina cambios automáticamente. Según ADR-0028, la barra inferior móvil contiene Inicio, Menú, Compra y Más; Actividad y peso se abre desde el menú superior de cuenta. El historial aparece al inicio de esa vista y cada sesión muestra «Eliminar sesión», con confirmación mediante diálogo según ADR-0039. ADR-0036 sustituye los KPI móviles antiguos por cuatro indicadores semanales compartidos con escritorio. La restauración personal JSON fue retirada por ADR-0029. La corrección HTTP 409 está aplicada y resuelta según confirmación del administrador del 17/10/2026. Las comprobaciones completas entre dispositivos y en teléfono físico siguen pendientes de validación documentada.
 
 ## Estado de las mejoras de prioridad alta
 
 La guía de primera visita, la confirmación del perfil y el bloqueo de registro anticipado están implementados. La publicación y la comprobación con usuario nuevo siguen pendientes.
 
-- **Primera visita y perfil:** Inicio guía por cinco pasos y dirige a revisar los valores genéricos. El perfil queda marcado como revisado al guardarlo; esa marca se sincroniza con Supabase.
+- **Primera visita y perfil:** Inicio ofrece una guía rápida opcional de tres pasos y un acceso a revisar el perfil mientras no esté confirmado; Guía contiene el recorrido completo (ADR-0025 y ADR-0029). El perfil queda marcado como revisado al guardarlo; esa marca se sincroniza con Supabase.
 - **Sincronización entre dispositivos:** el antiguo panel de elección de copias fue retirado. El cliente reconcilia cambios remotos y locales automáticamente, con la política descrita en ADR-0017.
 - **Planificación y registro:** las comidas futuras aparecen como planificadas y el control para registrarlas está deshabilitado hasta la fecha correspondiente.
 
-Las observaciones siguientes describen lo que se encontró antes de estas mejoras. Las propuestas de prioridad media y baja se han implementado en la rama de esta iteración; faltan la publicación y la validación en un teléfono físico.
+Las observaciones siguientes describen lo que se encontró antes de estas mejoras. Las mejoras posteriores están descritas en las decisiones vigentes y en README; las observaciones originales no son un diagnóstico nuevo de producción. La validación integral publicada y en teléfono físico sigue pendiente de documentación.
 
 ## Alcance y método
 
@@ -53,7 +54,7 @@ Las observaciones siguientes describen lo que se encontró antes de estas mejora
 
 - La barra lateral mantiene visibles las ocho áreas principales y permite cambiar de sección sin perder el contexto.
 - La vista amplia separa bien los bloques de contenido y las tarjetas del menú muestran el tipo de comida y el resumen nutricional.
-- La despensa incluye búsqueda y filtros por menús, stock y déficit.
+- La despensa incluye búsqueda y filtros por menús, stock y faltantes de comidas.
 - En la compra se entiende que marcar artículos prepara la lista y que **Finalizar compra** actualiza la despensa.
 
 ### Fricciones encontradas

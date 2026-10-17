@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1400" viewBox="0 0 1800 1400" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1430" viewBox="0 0 1800 1430" role="img" aria-labelledby="title description">
   <title id="title">Modelo relacional de Supabase de Mi Plan Saludable</title>
-  <desc id="description">Trece tablas personales y cuatro tablas del buzón compartido creadas por una migración que el propietario informa como aplicada. Incluye claves principales, claves foráneas y relaciones principales.</desc>
+  <desc id="description">Catorce tablas personales y cuatro tablas del buzón compartido. Incluye claves principales, claves foráneas y relaciones principales.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="strokeWidth">
       <path d="M0,0 L10,4 L0,8 Z" fill="#58708d"/>
@@ -24,9 +24,9 @@
     </style>
   </defs>
 
-  <rect class="bg" width="1800" height="1400"/>
+  <rect class="bg" width="1800" height="1430"/>
   <text class="title" x="40" y="44">Mi Plan Saludable · modelo relacional de Supabase</text>
-  <text class="subtitle" x="40" y="70">13 tablas personales · 4 tablas del buzón compartido (migración aplicada según el propietario) · los catálogos JSON permanecen fuera de PostgreSQL</text>
+  <text class="subtitle" x="40" y="70">14 tablas personales · 4 tablas compartidas del buzón · los catálogos JSON permanecen fuera de PostgreSQL</text>
 
   <!-- Relaciones dibujadas detrás de las entidades -->
   <path class="edge" d="M195 190 L195 250"/>
@@ -171,6 +171,15 @@
     <text class="hint" x="948" y="857">food_id apunta al catálogo JSON</text>
     <text class="hint" x="948" y="879">El saldo se obtiene sumando movimientos</text>
   </g>
+  <g>
+    <rect class="entity" x="930" y="930" width="390" height="145"/>
+    <rect class="head" x="930" y="930" width="390" height="37" rx="12"/>
+    <text class="name" x="948" y="955">meal_completion_shortfalls</text>
+    <text class="key" x="948" y="991">PK · completion_id, ingredient_index</text>
+    <text class="key" x="948" y="1014">FK compuesta · completion_id, user_id</text>
+    <text class="hint" x="948" y="1042">Faltante informativo por ingrediente</text>
+    <text class="hint" x="948" y="1062">No modifica existencias ni compras</text>
+  </g>
 
   <!-- Lista de compra -->
   <g>
@@ -232,5 +241,6 @@
   <line x1="40" y1="1300" x2="1760" y2="1300" stroke="#d1dae5" stroke-width="1"/>
   <text class="legend" x="40" y="1327">PK = clave primaria · FK = clave foránea · Las tablas personales usan RLS por auth.uid().</text>
   <text class="legend" x="40" y="1353">El borde discontinuo distingue las cuatro tablas compartidas del buzón de las tablas personales.</text>
-  <text class="legend" x="40" y="1379">El detalle completo de columnas, tipos, restricciones y claves está en las tablas de este documento.</text>
+  <text class="legend" x="40" y="1378">Migraciones de faltantes y de corrección de movimientos de cantidad cero aplicadas en Supabase según el propietario.</text>
+  <text class="legend" x="40" y="1405">El detalle completo de columnas, tipos, restricciones y claves está en las tablas de este documento.</text>
 </svg>

@@ -19,6 +19,7 @@ Si cambia una receta o una etiqueta del catálogo, el historial debe poder mostr
 - Conservar los snapshots sin caducidad temporal mientras exista la comida completada y la cuenta. No programar purgas por antigüedad. El borrado de una cuenta sigue eliminando sus datos relacionados en cascada.
 - Vigilar manualmente el tamaño total y por tabla a medida que se incorporen usuarios. Revisar el crecimiento al alcanzar aproximadamente 350 MB del límite Free de 500 MB; ese umbral inicia una revisión, no un borrado automático.
 - Mantener `inventory_movements` en unidades de inventario. La tabla de snapshots no es otra fuente de saldo.
+- La decisión posterior ADR-0040 define que los movimientos de comida descuentan solo las existencias disponibles; los faltantes se conservan por separado y no se incorporan automáticamente a la compra.
 - Crear el evento, las líneas de snapshot y los movimientos de inventario en una única operación transaccional e idempotente. La migración de sincronización implementa el guardado transaccional; eventos locales previos sin detalle de ingredientes permanecen sin cantidades inventadas.
 
 ## Consecuencias

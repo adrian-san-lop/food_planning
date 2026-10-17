@@ -23,7 +23,7 @@ export function loadLocalState({ key, cleanState, emptyState, getStorage = () =>
 }
 
 export function saveLocalState({ key, state, getStorage = () => globalThis.localStorage, updateEditedAt = true }) {
-  state.v = 8;
+  state.v = 10;
   try {
     const storage = getStorage();
     storage.setItem(key, JSON.stringify(state));

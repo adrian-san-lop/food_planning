@@ -13,7 +13,7 @@ La interfaz, las reglas del dominio y el acceso a datos estaban concentrados en 
 1. Mantener GitHub Pages, HTML, CSS y JavaScript nativos. `menuki.html` será el shell de la interfaz y cargará `assets/css/app.css` y `js/main.js` como módulo ES. No introducir todavía framework ni paso de compilación.
 2. Extraer responsabilidades de manera incremental. En esta etapa, los módulos separan fecha civil, validación/carga de catálogos, conversiones de unidades, copia local y transporte de lecturas/RPC de Supabase. Las vistas, la orquestación de dominio restante y parte del flujo de autenticación/sincronización siguen en `js/main.js`.
 3. Representar fechas civiles como `YYYY-MM-DD` y como objetos `Date` portadores a medianoche UTC solo para hacer aritmética de calendario. Resolver el día actual y presentar instantes con `Europe/Madrid`; mantener los timestamps como instantes ISO.
-4. Conservar sin cambios los catálogos, el estado v8, las importaciones v5-v8, el comportamiento del planificador, las reglas de inventario y los contratos de sincronización con Supabase.
+4. Conservar sin cambios los catálogos, el estado v8, las migraciones automáticas de estados locales v5-v8, el comportamiento del planificador, las reglas de inventario y los contratos de sincronización con Supabase.
 
 ## Consecuencias y validación pendiente
 

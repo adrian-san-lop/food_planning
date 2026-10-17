@@ -1,13 +1,15 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.8.0",
-  "source": "Existing foods plus curated generic additions with USDA FoodData Central, AESAN/BEDCA, and manufacturer nutrition references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance. Version 0.8.0 adds ingredients for Ensalada templada de gulas and updates the generic gulas estimate from the manufacturer's natural product label.",
-  "status": "Catálogo 0.8.0; 90 alimentos. Recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
+  "catalogVersion": "0.9.1",
+  "source": "Existing foods plus curated generic additions with USDA FoodData Central, AESAN/BEDCA, and manufacturer nutrition references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance. Version 0.8.0 adds ingredients for Ensalada templada de gulas and updates the generic gulas estimate from the manufacturer's natural product label. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams.",
+  "status": "Catálogo 0.9.1; 90 alimentos. Recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
   "foods": [
     {
       "id": "skyr",
       "name": "Yogur natural alto en proteínas",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -29,7 +31,9 @@
     {
       "id": "greek",
       "name": "Yogur griego natural",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -51,7 +55,9 @@
     {
       "id": "milk",
       "name": "Leche semidesnatada",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "ml",
       "recipeUnit": "ml",
       "nutrition": {
@@ -73,7 +79,9 @@
     {
       "id": "cheese",
       "name": "Queso fresco",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -136,9 +144,9 @@
     },
     {
       "id": "bread",
-      "name": "Pan integral",
+      "name": "Pan integral de molde",
       "unit": "g",
-      "recipeUnit": "g",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 250,
@@ -153,7 +161,10 @@
         "unit": "g",
         "label": "400 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "approximateEdibleWeight_g_per_unit": 25,
+      "recipeUnitLabel": "rebanada",
+      "recipeUnitLabelPlural": "rebanadas"
     },
     {
       "id": "rice",
@@ -221,7 +232,9 @@
     {
       "id": "eggs",
       "name": "Huevos",
-      "recoveryTags": ["vitamin_d"],
+      "recoveryTags": [
+        "vitamin_d"
+      ],
       "unit": "ud",
       "recipeUnit": "ud",
       "nutrition": {
@@ -327,7 +340,9 @@
     {
       "id": "salmon",
       "name": "Salmón",
-      "recoveryTags": ["vitamin_d"],
+      "recoveryTags": [
+        "vitamin_d"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -370,7 +385,9 @@
     {
       "id": "tuna",
       "name": "Atún al natural (escurrido)",
-      "recoveryTags": ["vitamin_d"],
+      "recoveryTags": [
+        "vitamin_d"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -392,7 +409,10 @@
     {
       "id": "sardines",
       "name": "Sardinas en conserva con espina (escurridas)",
-      "recoveryTags": ["calcium", "vitamin_d"],
+      "recoveryTags": [
+        "calcium",
+        "vitamin_d"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -414,7 +434,9 @@
     {
       "id": "lentils",
       "name": "Lentejas cocidas escurridas",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -436,7 +458,9 @@
     {
       "id": "chickpeas",
       "name": "Garbanzos cocidos escurridos",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -479,7 +503,9 @@
     {
       "id": "tomato",
       "name": "Tomate fresco",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "ud",
       "recipeUnit": "g",
       "nutrition": {
@@ -523,7 +549,9 @@
     {
       "id": "pepper",
       "name": "Pimiento",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "ud",
       "recipeUnit": "g",
       "nutrition": {
@@ -612,7 +640,10 @@
     {
       "id": "broccoli",
       "name": "Brócoli",
-      "recoveryTags": ["calcium", "vitamin_c"],
+      "recoveryTags": [
+        "calcium",
+        "vitamin_c"
+      ],
       "unit": "ud",
       "recipeUnit": "g",
       "nutrition": {
@@ -677,7 +708,9 @@
     {
       "id": "spinach",
       "name": "Espinacas",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -742,7 +775,9 @@
     {
       "id": "potato",
       "name": "Patata",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "ud",
       "recipeUnit": "g",
       "nutrition": {
@@ -765,7 +800,9 @@
     {
       "id": "sweetpotato",
       "name": "Boniato",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "ud",
       "recipeUnit": "g",
       "nutrition": {
@@ -789,7 +826,7 @@
       "id": "banana",
       "name": "Plátano",
       "unit": "ud",
-      "recipeUnit": "g",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 90,
@@ -811,7 +848,7 @@
       "id": "apple",
       "name": "Manzana",
       "unit": "ud",
-      "recipeUnit": "g",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 52,
@@ -832,9 +869,11 @@
     {
       "id": "kiwi",
       "name": "Kiwi",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "ud",
-      "recipeUnit": "g",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 61,
@@ -855,9 +894,11 @@
     {
       "id": "mandarin",
       "name": "Mandarina",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "ud",
-      "recipeUnit": "g",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 47,
@@ -878,9 +919,11 @@
     {
       "id": "orange",
       "name": "Naranja",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "ud",
-      "recipeUnit": "g",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 47,
@@ -902,7 +945,7 @@
       "id": "pear",
       "name": "Pera",
       "unit": "ud",
-      "recipeUnit": "g",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 57,
@@ -923,7 +966,9 @@
     {
       "id": "berries",
       "name": "Frutos rojos",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -946,7 +991,7 @@
       "id": "seasonFruit",
       "name": "Fruta de temporada",
       "unit": "ud",
-      "recipeUnit": "g",
+      "recipeUnit": "ud",
       "nutrition": {
         "basis": "per_100g",
         "kcal": 55,
@@ -988,7 +1033,9 @@
     {
       "id": "almonds",
       "name": "Almendras",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1073,7 +1120,9 @@
     {
       "id": "beans",
       "name": "Alubias cocidas escurridas",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1179,7 +1228,9 @@
     {
       "id": "mackerel",
       "name": "Caballa en conserva escurrida",
-      "recoveryTags": ["vitamin_d"],
+      "recoveryTags": [
+        "vitamin_d"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1412,7 +1463,9 @@
     {
       "id": "edamame",
       "name": "Edamame sin vaina cocido (congelado)",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1434,7 +1487,9 @@
     {
       "id": "blackBeans",
       "name": "Alubias negras cocidas, escurridas",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1456,7 +1511,9 @@
     {
       "id": "redLentilsDry",
       "name": "Lentejas rojas secas",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1478,7 +1535,9 @@
     {
       "id": "soyProteinTextured",
       "name": "Proteína de soja texturizada seca",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1584,7 +1643,9 @@
     {
       "id": "cauliflower",
       "name": "Coliflor fresca",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1606,7 +1667,9 @@
     {
       "id": "redCabbage",
       "name": "Lombarda fresca",
-      "recoveryTags": ["vitamin_c"],
+      "recoveryTags": [
+        "vitamin_c"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1691,7 +1754,9 @@
     {
       "id": "chiaSeeds",
       "name": "Semillas de chía",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1713,7 +1778,9 @@
     {
       "id": "pumpkinSeeds",
       "name": "Pipas de calabaza peladas",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1735,7 +1802,9 @@
     {
       "id": "tahini",
       "name": "Tahini (pasta de sésamo)",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {
@@ -1757,7 +1826,9 @@
     {
       "id": "cottageCheese",
       "name": "Queso cottage bajo en grasa",
-      "recoveryTags": ["calcium"],
+      "recoveryTags": [
+        "calcium"
+      ],
       "unit": "g",
       "recipeUnit": "g",
       "nutrition": {

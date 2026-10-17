@@ -40,7 +40,7 @@ Son referencias poblacionales aproximadas, no mediciones individuales ni valores
 
 - Al guardar o quitar una sesión, se recalculan el objetivo estimado, las cantidades de comidas pendientes de esa fecha y la compra derivada. Las comidas ya registradas no cambian.
 - Los días sin una sesión registrada conservan el objetivo base; la generación de un menú para el siguiente ciclo no supone días de actividad.
-- El formato de estado local pasa a v7. Se admiten importaciones v5, v6 y v7; no se añaden migraciones desde v1–v4. Las marcas históricas de fuerza se conservan como legado y se ignoran.
+- Esta etapa introdujo el estado local v7. ADR-0006 lo elevó a v8; actualmente se migran automáticamente los estados locales v5-v8 de instalaciones existentes, sin importación personal desde archivo (ADR-0029); no se añaden migraciones desde v1–v4. Las marcas históricas de fuerza se conservan como legado y se ignoran.
 - El catálogo de recetas pasa a 0.3.0 para reflejar la retirada de alternativas específicas de días de fuerza.
 
 ## Pendiente

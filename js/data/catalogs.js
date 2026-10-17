@@ -45,8 +45,21 @@ export function validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recove
 
     if (
       food.unit !== food.recipeUnit
-      && !(food.unit === 'ud' && food.recipeUnit === 'g' && Number(food.approximateEdibleWeight_g_per_unit) > 0)
+      && !(
+        ['g', 'ud'].includes(food.unit)
+        && ['g', 'ud'].includes(food.recipeUnit)
+        && Number(food.approximateEdibleWeight_g_per_unit) > 0
+      )
     ) throw new Error(`No se puede convertir la unidad de receta a inventario en ${food.name}.`);
+
+    if (
+      (food.recipeUnitLabel || food.recipeUnitLabelPlural)
+      && (food.recipeUnit !== 'ud' || food.recipeUnitLabelPlural && !food.recipeUnitLabel)
+      || food.recipeUnitLabel !== undefined && typeof food.recipeUnitLabel !== 'string'
+      || food.recipeUnitLabelPlural !== undefined && typeof food.recipeUnitLabelPlural !== 'string'
+    ) {
+      throw new Error(`La etiqueta de unidad de receta solo se admite para unidades en piezas (${food.name}).`);
+    }
 
     if (
       food.purchase.unit !== food.unit

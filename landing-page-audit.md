@@ -1,4 +1,6 @@
-# Auditoría de landing — Menuki
+# Auditoría de landing — Menuki (histórica)
+
+**Vigencia documental — 17/10/2026:** este informe conserva una revisión estática anterior. La landing evolucionó con el hero con mascota y el diálogo de acceso documentados en las dos ADR-0033, que amplían ADR-0032. Sus números de línea, medidas y propuestas no constituyen hallazgos actuales. Se conserva como antecedente; el comportamiento vigente está en README y en esas decisiones. Esta actualización documental no repite la auditoría visual ni confirma el estado de cada hallazgo.
 
 **Revisado:** `index.html`, `assets/css/landing.css` y `js/landing.js`. Revisión estática del código; no se obtuvo una captura renderizada en este turno. Las observaciones responsive se derivan de las reglas para 390 px.
 **Categoría:** aplicación personal de planificación de comidas.
@@ -51,6 +53,6 @@ Sin hallazgos críticos en la revisión estática.
 - La página alterna fondos y reserva el verde oscuro para el CTA final, y mantiene una familia serif para titulares y sans serif para el cuerpo.
 - La demostración está marcada como ejemplo, y el JavaScript limita su interacción a cambiar comidas y marcar productos; no se conecta con datos personales (`index.html:50,76,81`; `js/landing.js`).
 
-## Siguiente paso
+## Uso de este informe
 
-¿Quieres que aplique los tres hallazgos importantes y deje el ajuste de espaciado como pulido opcional?
+Consultar las decisiones posteriores y el código vigente antes de reutilizar sus recomendaciones. Una auditoría nueva debe revisar la versión actual y seguir la skill del repositorio; este informe histórico no autoriza cambios.

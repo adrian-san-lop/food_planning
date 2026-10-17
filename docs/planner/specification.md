@@ -15,17 +15,17 @@ Los catálogos son JSON genéricos e independientes de los datos personales:
 - [`foods.json`](../../data/foods.json): 90 alimentos.
 - [`recipes.json`](../../data/recipes.json): 112 recetas y 543 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.8.0`. Esta versión incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
+Ambos catálogos usan actualmente `catalogVersion` `0.9.1`. La versión `0.9.0` actualizó frutas enteras a piezas y pan de molde a rebanadas; `0.9.1` limita el pan a rebanadas enteras, máximo dos por comida. La versión `0.8.0` incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
 
 Distribución actual de recetas por tipo:
 
 | Tipo | Recetas actuales | Espacios por ciclo |
 | --- | ---: | ---: |
-| Desayuno | 18 | 21 |
-| Media mañana (`media`) | 18 | 21 |
+| Desayuno | 19 | 21 |
+| Media mañana (`media`) | 19 | 21 |
 | Comida | 25 | 21 |
 | Media tarde (`tarde`) | 20 | 21 |
-| Cena | 26 | 21 |
+| Cena | 29 | 21 |
 
 La biblioteca permite variedad dentro de cada semana, pero no una receta diferente para cada espacio del ciclo completo en todos los tipos. Como se aceptan repeticiones, esto no bloquea el planificador. Las preferencias personales reducirán el conjunto elegible; por eso conviene ampliar la biblioteca según las carencias reales y no perseguir un número arbitrario.
 
@@ -33,17 +33,17 @@ La biblioteca permite variedad dentro de cada semana, pero no una receta diferen
 
 ### Alimentos
 
-Cada alimento usa un `id` estable, nombre, unidad de inventario (`unit`), unidad de receta (`recipeUnit`), datos nutricionales con base explícita, formato orientativo de compra y, si se compra por pieza pero se cocina por peso, peso comestible aproximado por pieza. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
+Cada alimento usa un `id` estable, nombre, unidad de inventario (`unit`), unidad de receta (`recipeUnit`), datos nutricionales con base explícita, formato orientativo de compra y, si la receta y el inventario usan unidades distintas, peso comestible aproximado por pieza o rebanada. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
 
 Algunos alimentos llevan `recoveryTags` (`calcium`, `vitamin_d`, `vitamin_c`) para marcar fuentes alimentarias relevantes cuando está activa la recuperación ósea. Son etiquetas cualitativas de selección: el catálogo no contiene cantidades de esos micronutrientes y la app no calcula objetivos ni ingestas de calcio o vitaminas.
 
-El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades de receta en `ud`; los alimentos que se cocinan por peso usan `per_100g`. Para piezas compradas por unidad, la receta se convierte a inventario usando su peso comestible aproximado, y la conversión inversa se usa para la compra planificada.
+El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades de receta en `ud`; los alimentos que se cocinan por peso usan `per_100g`. Para frutas con receta e inventario en `ud`, no hace falta conversión de saldo; la base por 100 g y el peso comestible aproximado estiman nutrientes por pieza. El pan de molde usa rebanadas enteras en receta, con máximo dos por comida, y convierte a gramos de inventario usando aproximadamente 25 g por rebanada.
 
-Unidades admitidas: `g`, `ml` y `ud`. Las frutas y verduras enteras de [requisitos](../product/requirements.md) usan `recipeUnit: g` y `unit: ud`; los huevos usan `ud` en ambas medidas; los líquidos usan `ml`. La leche se compra como 1 L; café molido se mide en gramos.
+Unidades admitidas: `g`, `ml` y `ud`. Las porciones de fruta entera de [requisitos](../product/requirements.md) usan `recipeUnit: ud` y `unit: ud`; las verduras troceadas mantienen `recipeUnit: g` y pueden usar `unit: ud`; el pan de molde usa `recipeUnit: ud` (rebanadas) y `unit: g`; los huevos usan `ud` en ambas medidas y los líquidos `ml`. La leche se compra como 1 L; café molido se mide en gramos.
 
 ### Recetas
 
-Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, ingredientes, pasos y notas. No contiene fotografía: la interfaz presenta platos e ingredientes sin imágenes de comida. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra el peso de receta, pero informa el stock y los faltantes en unidad de inventario. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
+Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, ingredientes, pasos y notas. No contiene fotografía: la interfaz presenta platos e ingredientes sin imágenes de comida. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra la cantidad en la unidad de receta, con la etiqueta «rebanada(s)» para el pan, e informa el stock y los faltantes en unidad de inventario. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
 
 Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el contrato, mantener los IDs existentes o documentar una migración explícita; no renombrar IDs a la ligera.
 
@@ -84,7 +84,7 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 4. Muestrear combinaciones y puntuarlas con la lógica nutricional/raciones actual, variedad, menor repetición reciente, recetas no usadas en el menú actual y cobertura del stock. Si Recuperación ósea está activa, la puntuación también favorece las etiquetas cualitativas descritas arriba. El stock solo aporta preferencia; no elimina candidatos. Las ponderaciones son detalles iniciales de implementación, no umbrales aprobados.
 5. Completar los cinco tipos de comida para 21 días. Se permiten repeticiones si la biblioteca lo requiere.
 6. Revisar la propuesta, cambiar cada receta por otra del mismo tipo, bloquearla o desbloquearla y regenerar el resto. Una receta seleccionada manualmente queda bloqueada inicialmente.
-7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en el estado local v8; el sincronizador lo persiste en `plan_cycles` y `planned_meals`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
+7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en el estado local v10; el sincronizador lo persiste en `plan_cycles` y `planned_meals`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
 
 El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
@@ -115,4 +115,4 @@ Si se incorpora un menú compartido por varias personas, falta decidir cómo com
 
 ## Datos y privacidad
 
-El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v8 conserva una copia local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v10 conserva una copia local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).

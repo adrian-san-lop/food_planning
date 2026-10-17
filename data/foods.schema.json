@@ -25,6 +25,8 @@
         "name": { "type": "string", "minLength": 1 },
         "unit": { "enum": ["g", "ml", "ud"], "description": "Unit used for pantry balances, stock movements, and purchase package contents." },
         "recipeUnit": { "enum": ["g", "ml", "ud"], "description": "Unit used to measure this food in recipe ingredients." },
+        "recipeUnitLabel": { "type": "string", "minLength": 1, "description": "Optional singular display label when the recipe unit is ud, for example rebanada." },
+        "recipeUnitLabelPlural": { "type": "string", "minLength": 1, "description": "Optional plural display label for recipeUnitLabel." },
         "nutrition": { "$ref": "#/$defs/nutrition" },
         "recoveryTags": {
           "type": "array",
@@ -32,7 +34,7 @@
           "items": { "enum": ["calcium", "vitamin_d", "vitamin_c"] },
           "uniqueItems": true
         },
-        "approximateEdibleWeight_g_per_unit": { "type": "number", "exclusiveMinimum": 0, "description": "Approximate edible grams per piece, used to convert between recipe grams and pantry units." },
+        "approximateEdibleWeight_g_per_unit": { "type": "number", "exclusiveMinimum": 0, "description": "Approximate edible grams per piece or slice, used to convert recipe portions, inventory amounts, and nutrition estimates." },
         "purchase": { "$ref": "#/$defs/purchase" },
         "nutritionSource": { "type": "string", "minLength": 1 }
       },
@@ -40,7 +42,8 @@
         { "properties": { "unit": { "const": "g" }, "recipeUnit": { "const": "g" } }, "required": ["unit", "recipeUnit"] },
         { "properties": { "unit": { "const": "ml" }, "recipeUnit": { "const": "ml" } }, "required": ["unit", "recipeUnit"] },
         { "properties": { "unit": { "const": "ud" }, "recipeUnit": { "const": "ud" } }, "required": ["unit", "recipeUnit"] },
-        { "properties": { "unit": { "const": "ud" }, "recipeUnit": { "const": "g" } }, "required": ["unit", "recipeUnit", "approximateEdibleWeight_g_per_unit"] }
+        { "properties": { "unit": { "const": "ud" }, "recipeUnit": { "const": "g" } }, "required": ["unit", "recipeUnit", "approximateEdibleWeight_g_per_unit"] },
+        { "properties": { "unit": { "const": "g" }, "recipeUnit": { "const": "ud" } }, "required": ["unit", "recipeUnit", "approximateEdibleWeight_g_per_unit"] }
       ],
       "allOf": [
         {

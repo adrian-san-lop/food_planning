@@ -2,7 +2,7 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas. El propietario informa que las migraciones novena y décima (`20261013160000_recipe_proposal_inbox.sql` y `20261013170000_recipe_proposal_admin_maintenance.sql`) y la asignación admin ya se ejecutaron en Supabase; la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) sigue pendiente. El propietario confirmó que el borrado individual funciona. La limpieza global falla porque Supabase rechaza un `DELETE` sin cláusula `WHERE`; la corrección está en `20261013180000_recipe_proposal_purge_where_clause.sql` y aún debe aplicarse. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas. El propietario informa que las migraciones novena y décima (`20261013160000_recipe_proposal_inbox.sql` y `20261013170000_recipe_proposal_admin_maintenance.sql`) y la asignación admin ya se ejecutaron en Supabase; la corrección HTTP 409 de la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) está aplicada y resuelta según confirmación del administrador comunicada el 17/10/2026. El propietario confirmó que el borrado individual funciona. El último fallo comunicado de limpieza global se debía al rechazo de un `DELETE` sin cláusula `WHERE`; la corrección está en `20261013180000_recipe_proposal_purge_where_clause.sql` y aún debe aplicarse. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
@@ -29,7 +29,6 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 
 - Publicar la app actualizada y comprobar la primera importación local v8 a Supabase, la conciliación de cambios independientes, el desempate de cambios simultáneos y la propagación del borrado de sesiones entre PC y móvil.
 - Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
-- Aplicar la octava migración pendiente desde SQL Editor. La novena y la asignación admin ya se ejecutaron según el propietario.
 - Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` en SQL Editor para corregir la limpieza global; después comprobar que elimina las propuestas y sus filas hijas. La edición y el borrado individual ya funcionan según el propietario. Sigue pendiente validar el aislamiento con una cuenta normal y la limpieza global en la web publicada.
 - Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y el reinicio total confirmado.
 - Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de cambios grandes de uso. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.
