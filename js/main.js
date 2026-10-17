@@ -9,6 +9,7 @@ import { loadLocalState, saveLocalState } from './persistence/local-state.js?v=2
 import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261013-ux-repair';
 import { createRecipeProposalService } from './persistence/recipe-proposals.js?v=20261013-admin-proposal-maintenance';
 import { escapeAttribute, escapeHTML } from './ui/html.js?v=20261013-ux-repair';
+import { setupLegalDialogs } from './ui/legal-dialog.js?v=20261017-legal-dialog';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 const SHORT=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 const SLOTS=['Desayuno','Media mañana','Comida','Media tarde','Cena'];
@@ -84,6 +85,7 @@ let KEY=LOCAL_STATE_KEY; // La copia de trabajo local se separa por cuenta
 const entryAuthMode=new URLSearchParams(window.location.search).get('auth')==='signup'?'signup':'login';
 const authEmbedMode=new URLSearchParams(window.location.search).get('auth_embed')==='1'&&window.parent!==window;
 let authEmbedCompletionSent=false;
+let authLegalDialogs=null;
 let supabaseClient=null,authMode=entryAuthMode,authBusy=false,authMessage='',authMessageType='info',authEmailTouched=false;
 let authSessionUserId=null,currentUserId=null,currentUserEmail='',appReadyUserId=null,openingUserId=null;
 const cloudArchivedCyclesByUser=new Map();
@@ -872,7 +874,7 @@ function activateScheduledCycleIfDue(){
  state.done={};state.reversedDone={};state.legacyStrengthDays={};state.prep={};state.cart=cart;state.nextMenu=null;state.plannerDraft=null;shopCycle='current';MENUS=state.activeMenus;alignCurrentDay();save();return true;
 }
  function authRedirectUrl(){return window.location.origin+window.location.pathname}
- function completeAuth(user){if(!user?.id)return;if(authEmbedMode){if(!authEmbedCompletionSent){authEmbedCompletionSent=true;window.parent.postMessage({type:'menuki-authenticated'},window.location.origin)}return}openAuthenticatedApp(user)}
+ function completeAuth(user){if(!user?.id)return;authLegalDialogs?.close({restore:false});if(authEmbedMode){if(!authEmbedCompletionSent){authEmbedCompletionSent=true;window.parent.postMessage({type:'menuki-authenticated'},window.location.origin)}return}openAuthenticatedApp(user)}
 const AUTH_EMAIL_LABEL_PATTERN=/^[\p{L}\p{N}](?:[\p{L}\p{N}-]{0,61}[\p{L}\p{N}])?$/u;
 const AUTH_EMAIL_LOCAL_PATTERN=/^[A-Za-z0-9.!#$%&'*+/=?^_`{|}~-]+$/;
 const AUTH_PASSWORD_CHAR_PATTERN=/^[\p{L}0-9¡!._@*-]+$/u;
@@ -938,6 +940,7 @@ function updateAuthValidation(){
  function ensureCatalogs(){if(catalogsLoaded)return Promise.resolve();if(!catalogsPromise)catalogsPromise=loadCatalogs().then(()=>{catalogsLoaded=true}).catch(error=>{catalogsPromise=null;throw error});return catalogsPromise}
  async function openAuthenticatedApp(user){
   if(!user?.id||passwordRecoveryActive)return;
+  authLegalDialogs?.close({restore:false});
   const id=user.id;authSessionUserId=id;currentUserEmail=user.email||'Sesión iniciada';
   if(currentUserId!==id){currentUserId=id;appReadyUserId=null;state=undefined;persistent=true;cloudReady=false;cloudRevision=0;lastCloudRefreshAt=0;menukiAdmin=false;proposalInbox=[];proposalInboxLoaded=false;proposalInboxLoading=false;proposalInboxBusy=false;proposalInboxError='';proposalEditingId=null;proposalEditingDraft=null;proposalActionToken++;proposalLoadToken++;proposalExportToken++;proposalExporting=false;recipeProposalDraft=newRecipeProposalDraft();recipeProposalClientId=newRecipeProposalClientId();view='inicio';selectUserLocalState(id)}
   if(appReadyUserId===id){document.getElementById('authShell').hidden=true;document.querySelector('.app').hidden=false;document.querySelector('.app').inert=false;document.getElementById('mobileNav').hidden=false;return}
@@ -991,7 +994,8 @@ function updateAuthValidation(){
  async function signOutOfApp(button=document.getElementById('authSignOut')){mobileMoreOpen=false;mobileAccountOpen=false;const accountMenu=document.getElementById('mobileAccountDropdown'),accountToggle=document.getElementById('mobileAccountToggle');if(accountMenu)accountMenu.hidden=true;accountToggle?.setAttribute('aria-expanded','false');if(button?.id==='mobileAuthSignOut')accountToggle?.focus();if(!supabaseClient)return;if(button)button.disabled=true;try{const {error}=await supabaseClient.auth.signOut();if(error)throw error;closeAuthenticatedApp()}catch(error){showToast(authErrorMessage(error))}finally{if(button)button.disabled=false}}
  function startApp(){
   const app=document.querySelector('.app');app.hidden=true;app.inert=true;document.getElementById('mobileNav').hidden=true;
-  if(authEmbedMode){document.documentElement.classList.add('auth-embedded');document.querySelectorAll('.auth-return,.auth-logo-link,.auth-footer-brand,.auth-footer-links a').forEach(link=>{link.target='_top'})}
+  authLegalDialogs=setupLegalDialogs({embedded:authEmbedMode,canOpen:()=>!document.getElementById('authShell').hidden});
+  if(authEmbedMode){document.documentElement.classList.add('auth-embedded');document.querySelectorAll('.auth-return,.auth-logo-link,.auth-footer-brand,.auth-footer-links a[href^="./index.html"]').forEach(link=>{link.target='_top'})}
   document.getElementById('authShell').addEventListener('click',event=>{const button=event.target instanceof Element?event.target.closest('[data-auth-mode]'):null;if(!button)return;event.preventDefault();renderAuthScreen(button.dataset.authMode,'')});
   const authEmail=document.getElementById('authEmail'),authPassword=document.getElementById('authPassword'),authConfirmPassword=document.getElementById('authConfirmPassword');
   authEmail.addEventListener('input',updateAuthValidation);authEmail.addEventListener('blur',()=>{authEmailTouched=true;authEmail.value=authEmail.value.trim();updateAuthValidation()});authEmail.addEventListener('invalid',()=>{authEmailTouched=true;updateAuthValidation()});

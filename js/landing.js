@@ -1,3 +1,5 @@
+import { setupLegalDialogs } from './ui/legal-dialog.js?v=20261017-legal-dialog';
+
 (() => {
   const root = document.documentElement;
   const header = document.getElementById('siteHeader');
@@ -10,6 +12,7 @@
 
   const authDialog = document.getElementById('landingAuthDialog');
   const authFrame = document.getElementById('landingAuthFrame');
+  const legalDialogs = setupLegalDialogs({ authFrame });
   const authClose = document.getElementById('landingAuthClose');
   let authOpener = null;
   let authNavigationStarted = false;
@@ -91,6 +94,7 @@
     if (event.origin !== window.location.origin || event.source !== authFrame?.contentWindow) return;
     if (event.data?.type !== 'menuki-authenticated' || !authDialog?.open || authNavigationStarted) return;
     authNavigationStarted = true;
+    legalDialogs.close({ restore: false });
     authDialog.close();
     window.location.assign('./menuki.html');
   });

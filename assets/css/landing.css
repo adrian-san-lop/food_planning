@@ -558,3 +558,10 @@ html.auth-dialog-open,body.auth-dialog-open{overflow:hidden;overscroll-behavior:
   .auth-dialog-close{top:10px;right:10px}
 }
 @media(prefers-reduced-motion:reduce){.auth-dialog-close{transition:none}.auth-dialog-close:hover .auth-close-mark{animation:none}}
+/* Legal links stay in a separate footer row without changing the hero. */
+.footer-legal{width:min(100% - 64px,1280px);display:flex;align-items:center;flex-wrap:wrap;gap:4px 24px;margin-inline:auto;padding:8px 0 20px;border-top:1px solid var(--landing-line)}
+.footer-legal a{display:inline-flex;align-items:center;min-height:44px;color:var(--landing-deep);font-size:13px;font-weight:650;text-decoration:underline;text-underline-offset:3px}
+.footer-legal a:focus-visible{outline:3px solid var(--landing-green);outline-offset:3px;border-radius:4px}
+.footer-legal span{color:var(--landing-muted);font-size:12px}
+@media(max-width:1100px){.footer-legal{width:calc(100% - 48px)}}
+@media(max-width:640px){.footer-legal{width:calc(100% - 36px);gap:2px 18px}.footer-legal span{width:100%;padding-top:8px}}
