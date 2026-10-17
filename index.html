@@ -10,8 +10,10 @@
   <meta property="og:description" content="Prepara tu próximo ciclo de 21 días, adapta tus raciones al perfil y registra la actividad que realizas.">
   <link rel="icon" type="image/png" href="./docs/images/menuki_logo.png">
   <link rel="apple-touch-icon" href="./docs/images/menukie_logo.png">
-  <link rel="stylesheet" href="./assets/css/landing.css?v=20261015-auth-dialog-v5">
-  <script src="./js/landing.js?v=20261015-auth-dialog-v3" defer></script>
+  <link rel="stylesheet" href="./assets/css/landing.css?v=20261017-legal-drafts">
+  <link rel="stylesheet" href="./assets/css/legal.css?v=20261017-legal-dialog">
+  <link rel="stylesheet" href="./assets/css/legal-dialog.css?v=20261017-legal-dialog">
+  <script type="module" src="./js/landing.js?v=20261017-legal-dialog"></script>
   <title>Menuki · Come bien. Decide menos.</title>
 </head>
 <body>
@@ -38,7 +40,7 @@
     <section class="hero content-shell" id="inicio" aria-labelledby="hero-title">
       <div class="hero-copy" data-reveal>
         <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> COME BIEN. DECIDE MENOS.</p>
-        <h1 id="hero-title">¿Qué comemos<br class="hero-question-break"> hoy?<!--<br><span>Ya está resuelto.</span>--></h1>
+       <h1 id="hero-title">¿Qué comemos<br class="hero-question-break"> hoy?<!--<br><span>Ya está resuelto.</span>--></h1>
         <p class="hero-lede">Menús de 3 semanas, recetas de 20-30 min y compra organizada en un solo lugar. <br> Olvidate de hacer la lista de la compra.</p>
         <div class="hero-actions">
           <a class="button button-primary" href="./menuki.html?auth=signup" data-auth-open="signup">Crear mi cuenta <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
@@ -235,6 +237,13 @@
       <a href="./menuki.html" data-auth-open="login">Iniciar sesión</a>
       <span class="footer-copy">© <span id="currentYear">2026</span> Menuki</span>
     </div>
+    <nav class="footer-legal" aria-label="Información legal del proyecto">
+      <a href="./privacidad.html">Privacidad y protección de datos</a>
+      <a href="./cookies.html">Cookies y almacenamiento</a>
+      <a href="./aviso-legal.html">Aviso legal</a>
+      <a href="./condiciones.html">Condiciones de uso</a>
+      <span>Borradores · Proyecto en desarrollo</span>
+    </nav>
   </footer>
   <dialog class="auth-dialog" id="landingAuthDialog" aria-label="Acceso a Menuki">
     <button class="auth-dialog-close" id="landingAuthClose" type="button" aria-label="Cerrar ventana de acceso"><span class="auth-close-mark" aria-hidden="true"></span></button>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta name="theme-color" content="#ffffff">
+  <title>Cookies y almacenamiento · Menuki · Borrador</title>
+  <link rel="icon" href="./docs/images/menuki_logo.png" type="image/png">
+  <link rel="stylesheet" href="./assets/css/legal.css?v=20261017-legal-dialog">
+</head>
+<body class="legal-page">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="legal-header"><div class="legal-header-inner"><a class="legal-brand" href="./index.html" aria-label="Menuki: página principal"><img src="./docs/images/menuki_name_logo.png" alt="Menuki" width="168" height="50"></a><a class="legal-return" href="./index.html">Volver a Menuki</a></div></header>
+  <main class="legal-main legal-document" id="contenido">
+    <p class="legal-eyebrow">Información del proyecto</p>
+    <h1>Cookies y almacenamiento</h1>
+    <p class="legal-lede">Qué se conserva en tu navegador y para qué se utiliza.</p>
+    <p class="legal-date">Versión de trabajo: <time datetime="2026-10-17">17 de octubre de 2026</time>.</p>
+    <aside class="legal-draft" aria-label="Estado del documento"><strong>Borrador · Pendiente de completar</strong><p>El inventario parte del código del proyecto. Falta contrastarlo con las cookies y solicitudes reales de la web publicada y revisar su clasificación. Este documento todavía no es la política definitiva.</p></aside>
+    <nav class="legal-nav" aria-label="Información legal"><a href="./privacidad.html">Privacidad</a><a href="./cookies.html" aria-current="page">Cookies y almacenamiento</a><a href="./aviso-legal.html">Aviso legal</a><a href="./condiciones.html">Condiciones de uso</a></nav>
+    <section class="legal-section" aria-labelledby="uso">
+      <h2 id="uso">1. Uso actual</h2>
+      <p>El código propio de Menuki no escribe cookies mediante <code>document.cookie</code> ni incorpora analítica o publicidad. Sí utiliza <strong>almacenamiento local del navegador</strong> para mantener la sesión y una copia de trabajo de la aplicación.</p>
+      <p>Una cookie y el almacenamiento local son mecanismos distintos. Que el navegador guarde información mediante <code>localStorage</code> no lo excluye de las normas sobre almacenamiento y acceso al dispositivo.</p>
+      <p>La landing y estas páginas legales no incorporan código propio que guarde preferencias o datos personales en el navegador. Al abrir el formulario de acceso se carga la aplicación y su biblioteca de autenticación.</p>
+    </section>
+    <section class="legal-section" aria-labelledby="inventario">
+      <h2 id="inventario">2. Inventario del almacenamiento local</h2>
+      <article class="legal-storage"><h3>Sesión de acceso</h3><p><strong>Identificador:</strong> familia <code>sb-…-auth-token</code>, gestionada por Supabase Auth en el origen de Menuki.</p><p><strong>Finalidad:</strong> mantener y renovar la sesión solicitada. Contiene información de sesión y tokens de acceso.</p><p><strong>Duración:</strong> depende de la sesión y su configuración en Supabase; debe confirmarse antes de aprobar esta política. La sesión persistente puede continuar después de cerrar el navegador. Al cerrar sesión, la biblioteca elimina su sesión local.</p></article>
+      <article class="legal-storage"><h3>Copia de trabajo por cuenta</h3><p><strong>Identificador:</strong> <code>mi_plan_saludable_v3_13oct:user:…</code>.</p><p><strong>Finalidad:</strong> conservar la copia de trabajo de perfil, menú, compras, despensa e historiales. Los datos remotos se sincronizan con Supabase cuando hay conexión.</p><p><strong>Duración:</strong> no tiene caducidad automática en el código. Permanece al cerrar sesión y se actualiza durante el uso. El navegador puede eliminarlo al borrar los datos del sitio.</p></article>
+      <article class="legal-storage"><h3>Datos técnicos de sincronización</h3><p><strong>Identificadores:</strong> <code>mi_plan_saludable_v3_13oct:sync:user:…</code> y la marca <code>:edited_at</code> de la copia de trabajo.</p><p><strong>Finalidad:</strong> conciliar revisiones y cambios entre dispositivos. La información de conciliación puede incluir una copia base de datos personales, además de identificadores y fechas.</p><p><strong>Duración:</strong> sin caducidad automática; se actualiza con la copia de trabajo y las sincronizaciones.</p></article>
+      <article class="legal-storage"><h3>Copia de instalaciones anteriores</h3><p><strong>Identificador:</strong> <code>mi_plan_saludable_v3_13oct</code> y su posible marca <code>:edited_at</code>.</p><p><strong>Finalidad:</strong> migrar la copia antigua al espacio de una cuenta en el primer acceso que corresponda.</p><p><strong>Duración:</strong> el código retira la clave principal antigua al trasladarla a la cuenta; una marca auxiliar anterior puede permanecer hasta borrar los datos del sitio.</p></article>
+      <p class="legal-note">Este inventario muestra nombres y finalidades. Nunca publica tokens, identificadores reales de cuenta ni el contenido de tus registros.</p>
+    </section>
+    <section class="legal-section" aria-labelledby="terceros">
+      <h2 id="terceros">3. Servicios externos</h2>
+      <p>GitHub Pages aloja la web; la aplicación carga la biblioteca de acceso desde jsDelivr y se comunica con Supabase para autenticación y datos. Las fuentes, imágenes y catálogos del proyecto se sirven desde Menuki.</p>
+      <p>GitHub informa de que registra la dirección IP de quienes visitan páginas alojadas en GitHub Pages por motivos de seguridad. Esto no equivale a una herramienta de analítica incorporada por Menuki.</p>
+      <p class="legal-pending">Falta revisar las respuestas de red, posibles cookies de los proveedores, duraciones y configuración real, tanto antes como después del acceso. No se afirma que los proveedores estén libres de cookies.</p>
+    </section>
+    <section class="legal-section" aria-labelledby="control">
+      <h2 id="control">4. Control y preferencias</h2>
+      <p>Esta versión no incorpora categorías opcionales de analítica o publicidad ni un panel de consentimiento. Su necesidad se decidirá con el inventario de producción: si se incorporan tecnologías sujetas a consentimiento, deberán permanecer desactivadas hasta elegir y permitir aceptar, rechazar, configurar y revisar la decisión.</p>
+      <p>Puedes borrar los datos del sitio desde la configuración de tu navegador. Esto puede cerrar la sesión y eliminar cambios aún no sincronizados. <strong>No elimina por sí mismo tu cuenta ni los datos remotos.</strong></p>
+      <p>La información sobre el responsable y el canal de derechos se completará en <a href="./privacidad.html#derechos">Privacidad y protección de datos</a>.</p>
+    </section>
+    <section class="legal-section legal-sources" aria-labelledby="referencias"><h2 id="referencias">Referencias</h2><p><a href="https://www.aepd.es/guias/guia-cookies.pdf">Guía sobre el uso de las cookies de la AEPD</a>, <a href="https://www.boe.es/buscar/act.php?id=BOE-A-2002-13758#a22">artículo 22 de la LSSI-CE</a>, <a href="https://supabase.com/docs/reference/javascript/auth">persistencia de sesión de Supabase</a> y <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages">información de GitHub Pages</a>.</p></section>
+  </main>
+  <footer class="legal-footer"><div class="legal-footer-inner"><span>Menuki · Documentación del proyecto en preparación</span><a href="./index.html">Página principal</a></div></footer>
+</body>
+</html>
