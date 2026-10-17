@@ -46,7 +46,7 @@ La [auditoría front-end y back-end](front-end-audit.md) explica los criterios p
 
 ## Landing, acceso y cumplimiento legal
 
-Los requisitos funcionales y la lista de información pendiente están en [Requisitos legales y de acceso](requisitos-legales-y-acceso.md). Antes de redactar o publicar textos legales, hay que resolver:
+La base de páginas legales está implementada como borrador desde el 17/10/2026. El propietario prevé uso comercial y autoriza dejar titularidad y contacto en blanco durante el desarrollo; considera Supabase temporal, sin haber elegido proveedor definitivo ni plazos. Esto no aprueba los avisos, la base jurídica o los canales operativos. El inventario estático y la matriz preparatoria están en [Requisitos legales y de acceso](requisitos-legales-y-acceso.md). Antes de aprobar los textos definitivos, hay que resolver:
 
 - ¿Quién será el titular/responsable que debe identificarse y cuáles son sus datos de contacto, domicilio e identificadores aplicables?
 - ¿Qué finalidades, bases jurídicas y plazos de conservación corresponden a cada dato y flujo de Menuki?

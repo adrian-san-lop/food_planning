@@ -762,6 +762,9 @@ html.auth-embedded .auth-foot-standalone{display:none}
 html.auth-embedded .auth-foot-embedded{display:inline}
 .auth-foot-embedded{display:none}
 .auth-foot-action{padding:0;border:0;background:none;color:var(--accent-dark);font:inherit;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.auth-legal-notice{margin:0;color:var(--muted);font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.auth-legal-notice a{color:var(--accent-dark);font-weight:650;text-underline-offset:3px}
+.auth-legal-notice a:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:4px}
 html.auth-embedded .auth-foot-action{cursor:pointer}
 .auth-account{display:flex;align-items:center;justify-content:flex-end;gap:9px;flex-wrap:wrap;margin:-10px 0 12px;color:var(--muted);font-size:11px}
 .top-actions .auth-account{margin:0}
