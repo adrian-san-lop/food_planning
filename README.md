@@ -147,8 +147,8 @@ El dibujo del modelo distingue las catorce tablas personales del estado por cuen
 - `menuki.html`: shell HTML de la aplicación.
 - `assets/css/app.css`: estilos extraídos del HTML y organizados por secciones; las reglas responsive quedan al final y las plantillas JavaScript no usan atributos `style`.
 - `js/main.js`: entrada ES del cliente; compone la interfaz y los módulos del dominio y de persistencia.
-- `js/domain/`, `js/data/`, `js/persistence/` y `js/ui/`: módulos de fechas, unidades, catálogos, propuestas de recetas, acceso a datos y codificación segura de HTML.
-- `package.json` y `tests/`: comprobaciones de dominio, catálogos y codificación HTML.
+- `js/domain/`, `js/data/`, `js/persistence/` y `js/ui/`: módulos de fechas, nutrición, inventario, conciliación, catálogos, estado local, mapeo relacional, transporte, codificación segura de HTML y vistas del buzón de recetas.
+- `package.json` y `tests/`: 34 comprobaciones automatizadas de dominio, estado local, mapeo Supabase, conciliación, catálogos, codificación HTML y vistas del buzón.
 - `data/foods.json` y `data/recipes.json`: catálogos genéricos que carga la aplicación.
 - `data/foods.schema.json` y `data/recipes.schema.json`: contratos estructurales de los catálogos.
 - `context/context.md`: resumen breve en inglés para retomar el trabajo.
@@ -158,6 +158,8 @@ El dibujo del modelo distingue las catorce tablas personales del estado por cuen
 - `docs/product/requirements.md`: alcance y flujos del producto.
 - `docs/architecture.md`: estado actual y arquitectura prevista.
 - `docs/front-end-audit.md`: auditoría de arquitectura y propuestas de evolución.
+- `docs/decisions/0041-client-domain-and-persistence-modules.md`: estado y límites de la extracción incremental de dominio y persistencia.
+- `docs/decisions/0042-recipe-proposal-views.md`: extracción de formularios y vistas del buzón de propuestas.
 - `docs/supabase_db_model.md`: diagrama, columnas, claves, relaciones y RLS del esquema de Supabase.
 - `docs/planner/specification.md`: catálogos, reglas aceptadas y propuestas del planificador.
 - `docs/roadmap.md`: etapas candidatas y criterios de aceptación que deben conservarse.

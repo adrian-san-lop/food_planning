@@ -17,15 +17,21 @@ Navegador
         │     ├── css/app.css (estilos de la aplicación)
         │     └── css/landing.css (landing pública)
         ├── js/
-        │     ├── main.js (entrada ES; UI y orquestación restante)
+        │     ├── main.js (entrada ES; vistas, eventos y orquestación restante)
         │     ├── landing.js (interacciones de la landing pública)
         │     ├── ui/html.js (escape HTML y validación de URL por origen permitido)
+        │     ├── ui/legal-dialog.js (diálogo legal compartido)
+        │     ├── ui/recipe-proposal-views.js (formularios y vistas del buzón de recetas)
         │     ├── domain/dates.js (fecha civil Europe/Madrid)
+        │     ├── domain/nutrition.js (objetivos, macros y ajuste de raciones)
+        │     ├── domain/inventory-ledger.js (movimientos idempotentes y saldo de despensa)
         │     ├── domain/cycle-shopping.js (fin de ciclo, confirmación, ventana de compra y fechas de cobertura)
         │     ├── domain/inventory-units.js (conversiones de unidades)
         │     ├── domain/state-reconciliation.js (conciliación de cambios de estado)
         │     ├── data/catalogs.js (carga y validación de JSON)
-        │     ├── persistence/local-state.js (copia de trabajo local)
+        │     ├── persistence/local-state.js (lectura y escritura de la copia local)
+        │     ├── persistence/state-normalization.js (normalización y migraciones locales v5-v10)
+        │     ├── persistence/cloud-state-mapper.js (mapeo estado/snapshot relacional)
         │     ├── persistence/recipe-proposals.js (envío, consulta, edición y limpieza del buzón)
         │     └── persistence/supabase-transport.js (lecturas y RPC)
         └── data/*.json + esquemas JSON
@@ -39,12 +45,12 @@ El cliente de Supabase se carga desde jsDelivr con la versión exacta `@supabase
 Actualización del 15 de octubre de 2026: el planificador interno gestiona la renovación, con bloqueo de Inicio y Menú cuando termina el ciclo sin otro confirmado disponible. La compra del siguiente solo se ofrece con confirmación y de uno a tres días antes del inicio. La previsión de despensa se calcula sobre una copia del saldo, sin movimientos. Las selecciones y extras se separan por ciclo: los artículos planificados mantienen el alimento después del primer `:` de `item_key`, y los extras del próximo codifican su ámbito en la misma clave existente. La lectura relacional y la conciliación conservan ese ámbito; no se añade ninguna tabla, columna ni migración.
 
 - `index.html` es la landing pública en la raíz de GitHub Pages; `menuki.html` conserva el shell autenticado. Las acciones de acceso y registro abren un diálogo que reutiliza el formulario de `menuki.html` en un iframe del mismo origen; al completar el acceso se navega a la aplicación. Sin JavaScript o sin soporte de diálogo, los enlaces relativos abren el acceso independiente; `menuki.html?auth=signup` preselecciona el registro. La landing usa rutas relativas, una cabecera fija, diseño responsive y movimiento reducido cuando así lo prefiere el dispositivo.
-- La primera etapa reunió en una hoja los estilos de los ocho bloques `<style>` y convirtió el bloque de aplicación en un módulo ES. `assets/css/app.css` organiza base, shell, controles y vistas, y concentra las reglas responsive al final. Las plantillas de `main.js` ya no generan atributos `style`; los indicadores usan `<progress>`. Las recetas se muestran sin fotografías de platos; las imágenes de marca se mantienen en la interfaz. Vistas, gran parte del dominio y la orquestación de Auth/sincronización siguen en `main.js`.
+- La primera etapa reunió en una hoja los estilos de los ocho bloques `<style>` y convirtió el bloque de aplicación en un módulo ES. `assets/css/app.css` organiza base, shell, controles y vistas, y concentra las reglas responsive al final. Las plantillas de `main.js` ya no generan atributos `style`; los indicadores usan `<progress>`. Las recetas se muestran sin fotografías de platos; las imágenes de marca se mantienen en la interfaz. Las extracciones del 17 de octubre separan la normalización local v5-v10, el mapeo del estado relacional, el cálculo nutricional, los movimientos de despensa y las vistas del buzón de recetas. `main.js` todavía conserva la mayoría de vistas, eventos y la coordinación de Auth/sincronización. Véanse [ADR-0041](decisions/0041-client-domain-and-persistence-modules.md) y [ADR-0042](decisions/0042-recipe-proposal-views.md).
 - Menuki guarda las fechas civiles como `YYYY-MM-DD`. `today()` resuelve el instante en `Europe/Madrid`; los objetos `Date` que se usan para operar con días representan medianoche UTC y solo son portadores de fecha. Los timestamps siguen siendo instantes ISO y se presentan en la zona de Madrid.
 - `js/data/catalogs.js` carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
-- `js/ui/html.js` centraliza la codificación de texto y atributos y solo permite URL HTTPS de orígenes indicados explícitamente. Las vistas todavía usan plantillas HTML, pero escapan los valores variables del catálogo y del estado personal antes de insertarlos.
+- `js/ui/html.js` centraliza la codificación de texto y atributos y solo permite URL HTTPS de orígenes indicados explícitamente. `js/ui/recipe-proposal-views.js` genera las vistas del buzón desde estado inyectado, sin acoplar el renderizado a la capa remota. Las demás vistas todavía usan plantillas HTML; deben escapar los valores variables del catálogo y del estado personal antes de insertarlos.
 - Los indicadores de comidas completadas usan elementos `<progress>` con etiquetas accesibles en sus botones; el color y la disposición se definen en CSS.
-- `npm test` ejecuta pruebas integradas para fechas, conversiones, validación de catálogos y codificación HTML/URL. Las pruebas de navegador con Auth, sincronización y RLS requieren cuentas y publicación y siguen pendientes.
+- `npm test` ejecuta pruebas integradas para fechas, normalización local v5-v10, mapeo de estado relacional, nutrición, inventario, conciliación, validación de catálogos y codificación HTML/URL. Las pruebas de navegador con Auth, sincronización remota y RLS requieren cuentas y publicación y siguen pendientes.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
 - En Inicio, el acceso a revisar el perfil se muestra hasta que la persona confirma sus datos. Una guía rápida opcional de tres pasos explica perfil y fecha, menú y registro de comidas, compra/despensa y seguimiento. La guía también se puede abrir desde Guía, que conserva el recorrido completo. El paso de fecha reutiliza el editor existente; si no hay ciclo, remite al selector global. La guía no guarda un indicador de onboarding. La confirmación del perfil sigue sincronizada mediante la columna profile_confirmed.
 - El cliente consulta `user_settings.sync_revision` mientras la página está visible cada 15 segundos y al volver al foco o recuperar la conexión. Solo descarga el estado completo si la revisión cambió.
@@ -138,6 +144,8 @@ Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es co
 - [Decisión de sincronizar el estado personal con Supabase](decisions/0010-supabase-relational-state-sync.md)
 - [Decisión de simplificar sincronización y uso móvil](decisions/0012-mobile-shopping-and-sync-ui.md)
 - [Decisión de modularizar el cliente y fijar la fecha civil de Menuki](decisions/0013-front-end-modules-and-madrid-dates.md)
+- [Decisión de extraer dominio y persistencia del cliente](decisions/0041-client-domain-and-persistence-modules.md)
+- [Decisión de extraer las vistas de propuestas de recetas](decisions/0042-recipe-proposal-views.md)
 - [Decisión sobre fuentes canónicas de datos](decisions/0014-canonical-data-sources.md)
 - [Decisión de fijar Supabase JS y reforzar comprobaciones del cliente](decisions/0015-medium-priority-client-hardening.md)
 - [Decisión de organizar CSS y retirar estilos inline de las plantillas](decisions/0016-css-sections-and-template-presentation.md)

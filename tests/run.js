@@ -1,6 +1,12 @@
 import './catalogs.test.js';
 import './domain.test.js';
+import './inventory-ledger.test.js';
+import './nutrition.test.js';
+import './reconciliation.test.js';
 import './recipe-portions.test.js';
 import './html.test.js';
 import './supabase-transport.test.js';
 import './local-state.test.js';
+import './state-normalization.test.js';
+import './cloud-state-mapper.test.js';
+import './recipe-proposal-views.test.js';
