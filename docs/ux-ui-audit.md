@@ -54,7 +54,7 @@ Las observaciones siguientes describen lo que se encontró antes de estas mejora
 
 - La barra lateral mantiene visibles las ocho áreas principales y permite cambiar de sección sin perder el contexto.
 - La vista amplia separa bien los bloques de contenido y las tarjetas del menú muestran el tipo de comida y el resumen nutricional.
-- La despensa incluye búsqueda y filtros por menús, stock y faltantes de comidas.
+- La despensa incluye búsqueda y filtros por menús y stock; no muestra faltantes históricos de comidas.
 - En la compra se entiende que marcar artículos prepara la lista y que **Finalizar compra** actualiza la despensa.
 
 ### Fricciones encontradas

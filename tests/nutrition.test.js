@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createNutritionService } from '../js/domain/nutrition.js';
+import { ACTIVITY_FACTORS, createNutritionService, normalizeActivityLevel } from '../js/domain/nutrition.js';
 
 const foods = {
   chicken: ['Pollo', 'g', 165, 31, 0, 3.6],
@@ -8,7 +8,7 @@ const foods = {
   bread: ['Pan', 'ud', 70, 2, 12, 1],
   oliveoil: ['Aceite', 'g', 884, 0, 0, 100],
 };
-const profile = { sex: 'manual', manualRmr: 1600, height: 170, age: 30, weight: 70, activity: 'low', goal: 'maintain', injury: false, autoPortions: true };
+const profile = { sex: 'manual', manualRmr: 1600, height: 170, age: 30, weight: 70, activity: 'sedentary', goal: 'maintain', injury: false, autoPortions: true };
 
 function service() {
   return createNutritionService({ getFood: () => foods, getEffectiveWeight: (value) => value.weight });
@@ -22,6 +22,40 @@ test('nutrition targets add only same-day net activity to the baseline', () => {
   assert.equal(withActivity.calories, baseline.calories + 300);
   assert.equal(withActivity.protein, baseline.protein);
   assert.equal(withActivity.fat, baseline.fat);
+});
+
+test('resting energy uses the current Mifflin equation and all six movement factors', () => {
+  const nutrition = service();
+  const male = { ...profile, sex: 'male', age: 30, height: 180, weight: 80 };
+  const female = { ...profile, sex: 'female', age: 30, height: 165, weight: 60 };
+  assert.equal(nutrition.nutritionProfile(male).rmr, 1780);
+  assert.equal(nutrition.nutritionProfile(female).rmr, 1320.25);
+  assert.deepEqual(ACTIVITY_FACTORS, {
+    very_sedentary: 1.10,
+    sedentary: 1.20,
+    light: 1.37,
+    moderate: 1.55,
+    intense: 1.72,
+    very_intense: 1.90,
+  });
+  for (const [activity, factor] of Object.entries(ACTIVITY_FACTORS)) {
+    assert.equal(nutrition.nutritionProfile({ ...male, activity }).maintenance, 1780 * factor);
+  }
+});
+
+test('manually entered resting energy remains the basis for movement multipliers', () => {
+  const nutrition = service();
+  const result = nutrition.nutritionProfile({ ...profile, manualRmr: 1600, activity: 'very_intense' });
+  assert.equal(result.rmr, 1600);
+  assert.equal(result.maintenance, 1600 * 1.90);
+});
+
+test('legacy movement selections map to the nearest new multiplier', () => {
+  assert.equal(normalizeActivityLevel('very_low'), 'sedentary');
+  assert.equal(normalizeActivityLevel('low'), 'light');
+  assert.equal(normalizeActivityLevel('medium'), 'light');
+  assert.equal(normalizeActivityLevel('high'), 'moderate');
+  assert.equal(normalizeActivityLevel('unknown'), 'sedentary');
 });
 
 test('recipe macro calculation uses catalog units and portions keep bread as whole slices', () => {

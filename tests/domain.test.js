@@ -55,11 +55,11 @@ test('inventory conversions follow the JSON food metadata', () => {
   assert.deepEqual(units.normalizeQuantityMap({ broccoli: '400', unknown: 9, rice: 'nope' }, (id, amount) => amount), { broccoli: 400 });
 });
 
-test('inventory consumption floors the pantry at zero and records only the missing amount separately', () => {
+test('inventory consumption deducts available pantry stock and floors the balance at zero', () => {
   const round = (value) => Math.round(value * 100) / 100;
-  assert.deepEqual(consumeAvailableStock(500, 700, round), { deducted: 500, shortfall: 200, balance: 0 });
-  assert.deepEqual(consumeAvailableStock(0, 700, round), { deducted: 0, shortfall: 700, balance: 0 });
-  assert.deepEqual(consumeAvailableStock(500, 300, round), { deducted: 300, shortfall: 0, balance: 200 });
+  assert.deepEqual(consumeAvailableStock(500, 700, round), { deducted: 500, balance: 0 });
+  assert.deepEqual(consumeAvailableStock(0, 700, round), { deducted: 0, balance: 0 });
+  assert.deepEqual(consumeAvailableStock(500, 300, round), { deducted: 300, balance: 200 });
 });
 
 test('projected pantry balances never go below zero and legacy meal reversals restore actual deduction', () => {

@@ -1,10 +1,10 @@
-const CURRENT_STATE_VERSION = 10;
-const SUPPORTED_STATE_VERSIONS = [5, 6, 7, 8, 9, 10];
+const CURRENT_STATE_VERSION = 11;
+const SUPPORTED_STATE_VERSIONS = [5, 6, 7, 8, 9, 10, 11];
 const RECIPE_GRAMS_TO_PIECES = new Set(['banana', 'apple', 'kiwi', 'mandarin', 'orange', 'pear', 'seasonFruit', 'bread']);
 
 /**
  * Builds the normalizer for Menuki's browser working copy. Conversion rules are
- * injected so this module can be tested against the real v5-v10 migration path.
+ * injected so this module can be tested against the supported v5-v11 migration path.
  */
 export function createStateNormalizer({
   emptyState,
@@ -78,7 +78,7 @@ export function createStateNormalizer({
       if (RECIPE_GRAMS_TO_PIECES.has(id)) amount = foodStockUnit(id) === 'ud' ? amount * foodPieceWeight(id) : amount;
       else amount = stockToRecipeAmount(id, amount);
     }
-    return sourceVersion < CURRENT_STATE_VERSION && RECIPE_GRAMS_TO_PIECES.has(id)
+    return sourceVersion < 10 && RECIPE_GRAMS_TO_PIECES.has(id)
       ? storedRecipeToCurrentAmount(id, amount, 'g')
       : amount;
   }
@@ -103,12 +103,12 @@ export function createStateNormalizer({
       const actualDeducted = sourceVersion === 8
         ? normalizeLegacyDeduction(deducted, shortfall, roundAmount)
         : deducted;
+      const { shortfall: _discardedShortfall, ...entryWithoutShortfall } = entry;
       out[key] = {
-        ...entry,
+        ...entryWithoutShortfall,
         operationId: entry.operationId || `v${sourceVersion}-meal:${key}`,
         usage,
         deducted: actualDeducted,
-        shortfall,
         ...(sourceVersion < 8 ? { legacySnapshot: true } : {}),
       };
     }

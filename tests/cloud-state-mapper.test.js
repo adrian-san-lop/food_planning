@@ -5,13 +5,12 @@ import { addDays, dateFromISO, dateDiff, isoDate, today } from '../js/domain/dat
 
 const menus = Array.from({ length: 3 }, () => Array.from({ length: 7 }, () => Array(5).fill('recipe')));
 
-function createMapper({ shortfallsAvailable = true } = {}) {
+function createMapper() {
   return createCloudStateMapper({
     getUserId: () => 'test-user',
     getFood: () => ({ apple: ['Manzana', 'ud'], rice: ['Arroz', 'g'] }),
     getRecipes: () => ({ recipe: { type: 'desayuno', ingredients: [] } }),
     getCatalogVersion: () => 'catalog-test',
-    getShortfallsAvailability: () => shortfallsAvailable,
     archivedCyclesByUser: new Map(),
     addDays,
     dateFromISO,
@@ -94,18 +93,19 @@ test('cloud mapper restores an active cycle, a completed meal and its ingredient
     plannedMeals,
     prep: [],
     ingredients: [{ completion_id: 'completion-1', food_id: 'apple', quantity: 1, recipe_unit: 'ud' }],
-    movements: [{ id: 'movement-1', operation_id: 'meal-op:apple', food_id: 'apple', quantity: -1, movement_kind: 'meal', source_completion_id: 'completion-1', created_at: '2026-10-17T10:00:00.000Z' }],
-    shortfalls: [],
+    movements: [{ id: 'movement-1', operation_id: 'meal-op:apple', food_id: 'apple', quantity: -1, shortfall_quantity: 0.4, movement_kind: 'meal', source_completion_id: 'completion-1', created_at: '2026-10-17T10:00:00.000Z' }],
+    shortfalls: [{ completion_id: 'completion-1', food_id: 'apple', quantity: 0.4, unit: 'ud' }],
     completions: [{ id: 'completion-1', planned_meal_id: completedMeal.id, recipe_id_snapshot: 'recipe', operation_id: 'meal-op', completed_at: '2026-10-17T10:00:00.000Z' }],
     weights: [], activities: [], training: [], shoppingSessions: [], shoppingItems: [], settings: {},
   });
   assert.equal(state.noActiveCycle, false);
   assert.equal(state.start, '2026-10-13');
   assert.equal(state.done['2026-10-13#0'].usage.apple, 1);
-  assert.equal(state.done['2026-10-13#0'].deducted.apple, 1);
+  assert.equal(state.done['2026-10-13#0'].deducted.apple, 0.6);
+  assert.equal(Object.hasOwn(state.done['2026-10-13#0'], 'shortfall'), false);
 });
 
-test('cloud mapper keeps the zero-quantity meal marker when shortfalls are supported', async () => {
+test('cloud mapper keeps zero-quantity meal markers without creating shortfall records', async () => {
   const mapper = createMapper();
   const snapshot = await mapper.buildCloudSnapshot({
     noActiveCycle: false,
@@ -120,4 +120,5 @@ test('cloud mapper keeps the zero-quantity meal marker when shortfalls are suppo
   assert.equal(snapshot.movements[0].movement_kind, 'meal');
   assert.equal(snapshot.movements[0].quantity, 0);
   assert.equal(snapshot.movements[0].completion_operation_id, 'meal-op');
+  assert.equal(Object.hasOwn(snapshot.completions[0], 'shortfalls'), false);
 });

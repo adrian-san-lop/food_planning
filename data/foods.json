@@ -1903,7 +1903,7 @@
       },
       "purchase": {
         "store": "supermercado",
-        "section": "Carnes y pescados",
+        "section": "Carnes, pescado y huevos",
         "quantity": 500,
         "unit": "g",
         "label": "bandeja de 500 g (peso con hueso)"

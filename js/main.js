@@ -3,16 +3,16 @@ import { weeklyMealSummary, dashboardCycleSummary } from './domain/dashboard.js?
 import { cycleHasEnded, confirmedCycleIsAvailable, canBuyNextCycle, shoppingDates, nextCycleCartScope } from './domain/cycle-shopping.js?v=20261015-cycle-shopping';
 import { loadCatalogs as fetchCatalogs } from './data/catalogs.js?v=20261017-whole-bread-slices';
 import { createInventoryUnitService } from './domain/inventory-units.js?v=20261017-whole-bread-slices';
-import { createNutritionService } from './domain/nutrition.js?v=20261017-nutrition-domain';
-import { consumeAvailableStock, normalizeLegacyDeduction, projectAvailableStock } from './domain/inventory-balance.js?v=20261017-nonnegative-stock';
+import { ACTIVITY_FACTORS, createNutritionService, normalizeActivityLevel } from './domain/nutrition.js?v=20261018-activity-levels';
+import { consumeAvailableStock, normalizeLegacyDeduction, projectAvailableStock } from './domain/inventory-balance.js?v=20261018-no-meal-shortfalls';
 import { createInventoryLedger } from './domain/inventory-ledger.js?v=20261017-inventory-ledger';
 import { scaleBreadSlices } from './domain/recipe-portions.js?v=20261017-whole-bread-slices';
 import { createRecipeProposalExport, serializeRecipeProposalExport } from './domain/recipe-proposal-export.js?v=20261013-admin-proposal-maintenance';
 import { createReconciliationBase, reconcileStates } from './domain/state-reconciliation.js?v=20261015-cycle-shopping';
-import { loadLocalState, saveLocalState } from './persistence/local-state.js?v=20261017-whole-bread-slices';
-import { createStateNormalizer } from './persistence/state-normalization.js?v=20261017-state-normalizer';
-import { createCloudStateMapper } from './persistence/cloud-state-mapper.js?v=20261017-cloud-state-mapper';
-import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261017-shortfalls-compat';
+import { loadLocalState, saveLocalState } from './persistence/local-state.js?v=20261018-no-meal-shortfalls';
+import { createStateNormalizer } from './persistence/state-normalization.js?v=20261018-state-v11';
+import { createCloudStateMapper } from './persistence/cloud-state-mapper.js?v=20261018-no-meal-shortfalls';
+import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261018-no-shortfalls';
 import { createRecipeProposalService } from './persistence/recipe-proposals.js?v=20261013-admin-proposal-maintenance';
 import { escapeAttribute, escapeHTML } from './ui/html.js?v=20261013-ux-repair';
 import { createRecipeProposalViews } from './ui/recipe-proposal-views.js?v=20261017-proposal-views';
@@ -118,16 +118,16 @@ const FIRST_CYCLE_START='2026-10-13';
 const WEEK_TITLES=['Equilibrio y primeras recetas','Más variedad sin complicaciones','Nuevas ideas para terminar fuerte'];
 let persistent=true;
 function initialStart(){return FIRST_CYCLE_START}
-function emptyState(){return {v:10,start:initialStart(),noActiveCycle:false,activeCycleId:null,profile:defaultProfile(),profileConfirmed:false,cart:{},cartExtras:[],done:{},reversedDone:{},legacyStrengthDays:{},activitySessions:[],deletedActivitySessionIds:[],stock:{},movements:[],purchases:[],weights:[],deletedWeightDates:[],resetCloudPending:false,prep:{},archives:[],activeMenus:null,activeMenuCatalogVersion:null,activeMenuGeneratedAt:null,activeMenuConfirmedAt:null,activeMenuRecoveryFocus:false,nextMenu:null,plannerDraft:null,lastBackupAt:null}}
+function emptyState(){return {v:11,start:initialStart(),noActiveCycle:false,activeCycleId:null,profile:defaultProfile(),profileConfirmed:false,cart:{},cartExtras:[],done:{},reversedDone:{},legacyStrengthDays:{},activitySessions:[],deletedActivitySessionIds:[],stock:{},movements:[],purchases:[],weights:[],deletedWeightDates:[],resetCloudPending:false,prep:{},archives:[],activeMenus:null,activeMenuCatalogVersion:null,activeMenuGeneratedAt:null,activeMenuConfirmedAt:null,activeMenuRecoveryFocus:false,nextMenu:null,plannerDraft:null,lastBackupAt:null}}
 function mealUsage(recipe){const ans={};for(const item of recipe.ingredients)ans[item.id]=(ans[item.id]||0)+item.rest;return ans}
 // Valores de ejemplo no personales; se pueden editar desde «Mi perfil».
-const DEFAULT_PROFILE={sex:'manual',age:30,height:170,weight:70,activity:'low',goal:'maintain',injury:false,autoPortions:true,followWeight:false,manualRmr:1600};
+const DEFAULT_PROFILE={sex:'manual',age:30,height:170,weight:70,activity:'sedentary',goal:'maintain',injury:false,autoPortions:true,followWeight:false,manualRmr:1600};
 function defaultProfile(){return {...DEFAULT_PROFILE}}
 function sanitizeProfile(raw){
  const p={...defaultProfile(),...(raw&&typeof raw==='object'?raw:{})};
  delete p.trainingBonus;
  if(!['male','female','manual'].includes(p.sex))p.sex='male';
- if(!['very_low','low','medium','high'].includes(p.activity))p.activity='very_low';
+ p.activity=normalizeActivityLevel(p.activity);
  if(!['maintain','recomp','fat_loss','muscle_gain'].includes(p.goal))p.goal='maintain';
  for(const [id,min,max] of [['age',18,95],['height',125,220],['weight',35,250],['manualRmr',800,3500]]){
   let v=Number(p[id]);p[id]=Number.isFinite(v)?Math.max(min,Math.min(max,v)):DEFAULT_PROFILE[id];
@@ -180,7 +180,7 @@ function validMenuSnapshot(menus,allowSnackInterchange=false){return Array.isArr
 function isUuid(value){return typeof value==='string'&&/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(value)}
 function newCycleInstanceId(){if(globalThis.crypto?.randomUUID)return globalThis.crypto.randomUUID();const bytes=new Uint8Array(16);if(globalThis.crypto?.getRandomValues)globalThis.crypto.getRandomValues(bytes);else for(let i=0;i<bytes.length;i++)bytes[i]=Math.floor(Math.random()*256);bytes[6]=(bytes[6]&15)|128;bytes[8]=(bytes[8]&63)|128;const hex=[...bytes].map(x=>x.toString(16).padStart(2,'0')).join('');return hex.slice(0,8)+'-'+hex.slice(8,12)+'-'+hex.slice(12,16)+'-'+hex.slice(16,20)+'-'+hex.slice(20)}
 const {cleanState,rebuildStock}=createStateNormalizer({emptyState,getFood:()=>FOOD,inventoryUnits:inventoryUnitService,normalizeLegacyDeduction,dateFromISO,isoDate,today,activityById:ACTIVITY_BY_ID,sanitizeProfile,validMenuSnapshot,isUuid,cloneMenus,roundAmount});
-const cloudStateMapper=createCloudStateMapper({getUserId:()=>currentUserId,getFood:()=>FOOD,getRecipes:()=>REC,getCatalogVersion:()=>catalogVersion,getShortfallsAvailability:()=>supabaseTransport.supportsShortfalls(),archivedCyclesByUser:cloudArchivedCyclesByUser,addDays,dateFromISO,dateDiff,isoDate,today,validMenuSnapshot,cloneMenus,isUuid,emptyState,cleanState,rebuildStock,defaultProfile,sanitizeProfile,foodStockUnit,foodRecipeUnit,storedRecipeToCurrentAmount,commercialPack});
+const cloudStateMapper=createCloudStateMapper({getUserId:()=>currentUserId,getFood:()=>FOOD,getRecipes:()=>REC,getCatalogVersion:()=>catalogVersion,archivedCyclesByUser:cloudArchivedCyclesByUser,addDays,dateFromISO,dateDiff,isoDate,today,validMenuSnapshot,cloneMenus,isUuid,emptyState,cleanState,rebuildStock,defaultProfile,sanitizeProfile,foodStockUnit,foodRecipeUnit,storedRecipeToCurrentAmount,commercialPack});
 const {buildCloudSnapshot,stateFromCloud}=cloudStateMapper;
 function load(){
  return loadLocalState({key:KEY,cleanState,emptyState,getStorage:()=>localStorage,onError:()=>{persistent=false}});
@@ -194,7 +194,7 @@ function cloudStatus(message,level='idle'){
  if(button){button.disabled=cloudSyncInFlight;button.textContent=cloudSyncInFlight?'Sincronizando…':'Reintentar';button.hidden=level!=='error'||!cloudReady}
 
 }
-function cloudSyncedStatus(){const ready=supabaseTransport.supportsShortfalls()!==false;cloudStatus(ready?'Sincronizado con Supabase':'Falta aplicar la migración de faltantes en Supabase',ready?'ok':'pending')}
+function cloudSyncedStatus(){cloudStatus('Sincronizado con Supabase','ok')}
 function cloudErrorForUser(error){
  const message=String(error?.message||'').replace(/\s+/g,' ').trim(),code=String(error?.code||'').trim();
  if(message.includes('REMOTE_DATA_EXISTS_RELOAD'))return 'Supabase ya tiene datos para esta cuenta, pero no consta la importación inicial. No se ha enviado la copia local para evitar sobrescribir esos datos. Código REMOTE_DATA_EXISTS_RELOAD.';
@@ -207,20 +207,19 @@ function cloudMetaKey(){return SYNC_META_PREFIX+(currentUserId||'')}
 function readCloudMeta(){try{return JSON.parse(localStorage.getItem(cloudMetaKey())||'null')}catch{return null}}
 function writeCloudMeta(revision,fingerprint,snapshot=null,baseState=null,replaceKnown=false){
  try{
-  const previous=readCloudMeta()||{},movementOps=new Set(replaceKnown?[]:previous.movementOps||[]),completionOps=new Set(replaceKnown?[]:previous.completionOps||[]),activityIds=new Set(replaceKnown?[]:previous.activityIds||[]),weightValues=replaceKnown?{}:{...(previous.weightValues||{})},shortfallMap=new Map((replaceKnown?[]:previous.shortfalls||[]).map(x=>[x.completion_operation_id+':'+x.food_id,x]));
+  const previous=readCloudMeta()||{},movementOps=new Set(replaceKnown?[]:previous.movementOps||[]),completionOps=new Set(replaceKnown?[]:previous.completionOps||[]),activityIds=new Set(replaceKnown?[]:previous.activityIds||[]),weightValues=replaceKnown?{}:{...(previous.weightValues||{})};
   for(const row of snapshot?.movements||[])movementOps.add(row.operation_id);
   for(const row of snapshot?.completions||[])completionOps.add(row.operation_id);
   for(const row of snapshot?.activity_sessions||[])activityIds.add(row.client_id);
   for(const id of snapshot?.deleted_activity_ids||[])activityIds.delete(id);
   for(const row of snapshot?.weights||[])weightValues[row.measured_on]=Number(row.weight_kg);
-  for(const row of snapshot?.shortfalls||[])shortfallMap.set(row.completion_operation_id+':'+row.food_id,row);
   for(const date of snapshot?.deleted_weight_dates||[])delete weightValues[date];
-  localStorage.setItem(cloudMetaKey(),JSON.stringify({revision:Number(revision)||0,fingerprint,movementOps:[...movementOps],completionOps:[...completionOps],shortfalls:[...shortfallMap.values()],activityIds:[...activityIds],weightValues,baseState:baseState?createReconciliationBase(baseState):previous.baseState||null,updatedAt:new Date().toISOString()}));
+  localStorage.setItem(cloudMetaKey(),JSON.stringify({revision:Number(revision)||0,fingerprint,movementOps:[...movementOps],completionOps:[...completionOps],activityIds:[...activityIds],weightValues,baseState:baseState?createReconciliationBase(baseState):previous.baseState||null,updatedAt:new Date().toISOString()}));
  }catch{persistent=false}
 }
 function reduceCloudSnapshot(snapshot,meta){
  if(Array.isArray(meta?.movementOps)){const known=new Set(meta.movementOps);snapshot.movements=snapshot.movements.filter(x=>!known.has(x.operation_id))}
- if(Array.isArray(meta?.completionOps)){const known=new Set(meta.completionOps),knownShortfalls=new Map((meta.shortfalls||[]).map(x=>[x.completion_operation_id+':'+x.food_id,Number(x.quantity)]));snapshot.completions=snapshot.completions.filter(x=>!known.has(x.operation_id)||!!x.reversed_at||(x.shortfalls||[]).some(row=>Math.abs((knownShortfalls.get(x.operation_id+':'+row.food_id)||0)-Number(row.quantity))>.001))}
+ if(Array.isArray(meta?.completionOps)){const known=new Set(meta.completionOps);snapshot.completions=snapshot.completions.filter(x=>!known.has(x.operation_id)||!!x.reversed_at)}
  if(Array.isArray(meta?.activityIds)){const known=new Set(meta.activityIds);snapshot.activity_sessions=snapshot.activity_sessions.filter(x=>!known.has(x.client_id))}
  if(meta?.weightValues){snapshot.weights=snapshot.weights.filter(x=>Number(meta.weightValues[x.measured_on])!==Number(x.weight_kg))}
  return snapshot;
@@ -233,7 +232,6 @@ async function fetchCloudSnapshot(){
 }
 async function initializeCloudState(user){
  cloudReady=false;cloudSyncLastError=null;cloudStatus('Conectando los datos de tu cuenta…','working');
- await supabaseTransport.probeShortfalls();
  const localExists=!!localStorage.getItem(KEY),localState=load();
  state=localState;
  const settings=await supabaseTransport.readOne('user_settings',user.id);
@@ -250,8 +248,7 @@ async function initializeCloudState(user){
  }
  const localChanged=localExists&&meta?.fingerprint&&(await stateFingerprint(localState))!==meta.fingerprint;
  const localHasUntrackedData=localExists&&!meta?.fingerprint&&hasMeaningfulLocalState(localState);
- const unpersistedShortfalls=supabaseTransport.supportsShortfalls()===true&&hasUnpersistedShortfalls(localState,stateFromCloud(remote));
- if(localChanged||localHasUntrackedData||unpersistedShortfalls){
+ if(localChanged||localHasUntrackedData){
   await reconcileCloudState(remote,localState,meta);
   const mergedFingerprint=await stateFingerprint(state),remoteFingerprint=await stateFingerprint(stateFromCloud(remote));
   if(mergedFingerprint!==remoteFingerprint){cloudStatus('Cambios combinados · sincronizando','pending');scheduleCloudSync()}
@@ -262,31 +259,14 @@ async function initializeCloudState(user){
  cloudSyncedStatus();
 }
 function hasMeaningfulLocalState(value){return !!(value.profileConfirmed||Object.keys(value.done||{}).length||value.movements?.length||value.weights?.length||value.activitySessions?.length||value.archives?.length||value.nextMenu||value.plannerDraft||Object.keys(value.cart||{}).length||value.cartExtras?.length||value.activeMenus||JSON.stringify(value.profile)!==JSON.stringify(defaultProfile()))}
-function shortfallsByOperation(value){const rows=new Map(),add=entries=>{for(const entry of Object.values(entries||{}))if(entry?.operationId)for(const [foodId,quantity] of Object.entries(entry.shortfall||{}))rows.set(entry.operationId+':'+foodId,Number(quantity))};add(value?.done);add(value?.reversedDone);for(const cycle of value?.archives||[]){add(cycle.done);add(cycle.reversedDone)}return rows}
-function hasUnpersistedShortfalls(localState,remoteState){const local=shortfallsByOperation(localState),remote=shortfallsByOperation(remoteState);for(const [key,quantity] of local)if(quantity>(remote.get(key)||0)+.001)return true;return false}
-
-function cloudMetaSnapshot(remote,includeShortfalls=remote.shortfallsAvailable!==false){
- const completionOpsById=new Map((remote.completions||[]).map(x=>[x.id,x.operation_id]));
- const shortfalls=includeShortfalls?(remote.shortfalls?.length
-  ?remote.shortfalls.map(x=>({completion_operation_id:completionOpsById.get(x.completion_id),food_id:x.food_id,quantity:Number(x.quantity)})).filter(x=>x.completion_operation_id)
-  :(remote.completions||[]).flatMap(x=>(x.shortfalls||[]).map(row=>({completion_operation_id:x.operation_id,food_id:row.food_id,quantity:Number(row.quantity)})))):[];
- return {movements:(remote.movements||[]).map(x=>({operation_id:x.operation_id})),completions:(remote.completions||[]).map(x=>({operation_id:x.operation_id})),shortfalls,activity_sessions:(remote.activities||[]).map(x=>({client_id:x.client_id||x.id})),weights:(remote.weights||[]).map(x=>({measured_on:x.measured_on,weight_kg:x.weight_kg}))}
-}
+function cloudMetaSnapshot(remote){return {movements:(remote.movements||[]).map(x=>({operation_id:x.operation_id})),completions:(remote.completions||[]).map(x=>({operation_id:x.operation_id})),activity_sessions:(remote.activities||[]).map(x=>({client_id:x.client_id||x.id})),weights:(remote.weights||[]).map(x=>({measured_on:x.measured_on,weight_kg:x.weight_kg}))}}
 async function adoptCloudState(remote){
- const remoteState=preserveLocalShortfalls(stateFromCloud(remote),state),revision=Number(remote.settings?.sync_revision)||0;
+ const remoteState=stateFromCloud(remote),revision=Number(remote.settings?.sync_revision)||0;
  state=remoteState;MENUS=state.activeMenus?cloneMenus(state.activeMenus):cloneMenus(FIXED_MENUS);cloudRevision=revision;cloudReady=true;saveLocalOnly();
  writeCloudMeta(revision,await stateFingerprint(remoteState),cloudMetaSnapshot(remote),remoteState,true);
 }
-function preserveEntryShortfalls(remoteEntries,localEntries){for(const [key,entry] of Object.entries(remoteEntries||{})){const local=localEntries?.[key];if(local?.operationId&&local.operationId===entry?.operationId&&Object.keys(local.shortfall||{}).length)entry.shortfall={...local.shortfall,...(entry.shortfall||{})}}}
-function preserveLocalShortfalls(remoteState,localState){
- if(!localState||!remoteState)return remoteState;
- preserveEntryShortfalls(remoteState.done,localState.done);
- preserveEntryShortfalls(remoteState.reversedDone,localState.reversedDone);
- for(const remoteCycle of remoteState.archives||[]){const localCycle=(localState.archives||[]).find(item=>(remoteCycle.cycleId&&item.cycleId===remoteCycle.cycleId)||item.start===remoteCycle.start);if(!localCycle)continue;preserveEntryShortfalls(remoteCycle.done,localCycle.done);preserveEntryShortfalls(remoteCycle.reversedDone,localCycle.reversedDone)}
- return remoteState;
-}
 async function reconcileCloudState(remote,localState=state,meta=readCloudMeta()){
- const remoteState=preserveLocalShortfalls(stateFromCloud(remote),localState),revision=Number(remote.settings?.sync_revision)||0;
+ const remoteState=stateFromCloud(remote),revision=Number(remote.settings?.sync_revision)||0;
  const merged=reconcileStates(meta?.baseState||emptyState(),localState,remoteState,{baseActivityIds:meta?.activityIds||[],baseWeightValues:meta?.weightValues||{},remoteActivityIds:(remote.activities||[]).map(x=>x.client_id||x.id)});
  const cleaned=cleanState(merged);if(!cleaned)throw Error('No se pudieron combinar los cambios locales con la cuenta. La copia local se conserva.');
  state=cleaned;rebuildStock(state);MENUS=state.activeMenus?cloneMenus(state.activeMenus):cloneMenus(FIXED_MENUS);cloudRevision=revision;cloudReady=true;saveLocalOnly();
@@ -314,7 +294,7 @@ async function syncCloudNow(immediate=false){
    if(state===undefined)return false;
    const localChangedDuringSync=JSON.stringify(state)!==JSON.stringify(submitted),submittedActiveCycleId=fullSnapshot.cycles.find(cycle=>cycle.status==='active')?.id||null;
    let canonicalSnapshot=null,canonicalState=null;
-   if(snapshot.movements.some(move=>move.movement_kind==='meal')&&supabaseTransport.supportsShortfalls()!==false){
+   if(snapshot.movements.some(move=>move.movement_kind==='meal')){
     canonicalSnapshot=await fetchCloudSnapshot();canonicalState=stateFromCloud(canonicalSnapshot);cloudRevision=Number(canonicalSnapshot.settings?.sync_revision)||cloudRevision;
     if(localChangedDuringSync){const merged=reconcileStates(submitted,state,canonicalState,{baseActivityIds:meta?.activityIds||[],baseWeightValues:meta?.weightValues||{},remoteActivityIds:(canonicalSnapshot.activities||[]).map(x=>x.client_id||x.id)});const cleaned=cleanState(merged);if(!cleaned)throw Error('No se pudieron combinar los cambios locales con el inventario confirmado por Supabase. La copia local se conserva.');state=cleaned}
     else state=canonicalState;
@@ -326,7 +306,7 @@ async function syncCloudNow(immediate=false){
    for(const id of submitted.deletedActivitySessionIds||[])state.deletedActivitySessionIds=(state.deletedActivitySessionIds||[]).filter(x=>x!==id);
    for(const date of submitted.deletedWeightDates||[])state.deletedWeightDates=(state.deletedWeightDates||[]).filter(x=>x!==date);
    const acknowledged=JSON.parse(JSON.stringify(canonicalState||submitted));if(stateWasUnchanged&&submittedActiveCycleId)acknowledged.activeCycleId=submittedActiveCycleId;acknowledged.resetCloudPending=false;acknowledged.deletedActivitySessionIds=[];acknowledged.deletedWeightDates=[];
-   saveLocalOnly();writeCloudMeta(cloudRevision,await stateFingerprint(acknowledged),cloudMetaSnapshot(canonicalSnapshot||fullSnapshot,supabaseTransport.supportsShortfalls()!==false),acknowledged,true);cloudSyncLastError=null;cloudSyncRetryTask='sync';cloudSyncedStatus();
+   saveLocalOnly();writeCloudMeta(cloudRevision,await stateFingerprint(acknowledged),cloudMetaSnapshot(canonicalSnapshot||fullSnapshot),acknowledged,true);cloudSyncLastError=null;cloudSyncRetryTask='sync';cloudSyncedStatus();
    if(localChangedDuringSync||cloudSyncPending){cloudSyncPending=false;scheduleCloudSync()}
    return true;
   }
@@ -494,17 +474,44 @@ function energyStatus(day,week=visibleWeek,dateOverride=null,hasMenu=true,{menuS
  return '<section class="panel nutrition-meter dashboard-nutrition-card'+(menuSummary?' menu-nutrition':'')+'" aria-labelledby="'+titleId+'"><div class="meter-heading"><h2 id="'+titleId+'"><span class="nutrition-title-desktop">'+(menuSummary?'Resumen del día':'Objetivo nutricional de hoy')+'</span><span class="nutrition-title-mobile">'+(menuSummary?'Resumen del día':'Tu nutrición hoy')+'</span></h2></div>'+content+'<p class="target-note">'+note+'</p></section>';
 }
 
+const PROFILE_ACTIVITY_LEVELS=[
+ ['very_sedentary','Muy sedentario · ×1,10','Pasas casi todo el día sentado o tumbado y apenas te desplazas en tus tareas cotidianas.','Casi todo el día sentado.'],
+ ['sedentary','Sedentario · ×1,20','Tu trabajo suele ser sentado; haces los desplazamientos y tareas habituales.','Trabajo sentado y tareas habituales.'],
+ ['light','Ligera · ×1,37','Pasas ratos frecuentes de pie o caminando durante el día.','De pie o caminando a ratos.'],
+ ['moderate','Moderada · ×1,55','Gran parte del día estás en movimiento o haces trabajo físico moderado.','En movimiento gran parte del día.'],
+ ['intense','Intensa · ×1,72','Tu jornada incluye muchas horas de trabajo físico exigente, caminatas o cargas.','Trabajo físico exigente.'],
+ ['very_intense','Muy intensa · ×1,90','Tu trabajo es muy exigente físicamente durante casi toda la jornada.','Trabajo muy exigente y continuado.'],
+];
+let profileActivityOpener=null;
+function profileActivityDescription(level){return PROFILE_ACTIVITY_LEVELS.find(([id])=>id===level)?.[3]||''}
+function openProfileActivityDialog(opener){
+ const form=document.getElementById('profileForm'),dialog=document.getElementById('profileActivityDialog');
+ if(view!=='perfil'||!form||!dialog)return;
+ const selected=form.elements.activity.value;
+ document.getElementById('profileActivityOptions').innerHTML=PROFILE_ACTIVITY_LEVELS.map(([id,label,description])=>{const [name,factor]=label.split(' · ');return '<button type="button" class="profile-activity-option" data-action="profile-activity-select" data-level="'+escapeAttribute(id)+'" aria-pressed="'+(id===selected)+'"><span class="profile-activity-option-heading"><strong>'+escapeHTML(name)+'</strong><span>'+escapeHTML(factor)+'</span></span><span class="profile-activity-option-description">'+escapeHTML(description)+'</span></button>'}).join('');
+ profileActivityOpener=opener;
+ if(!dialog.open)dialog.showModal();
+ dialog.querySelector('[aria-pressed="true"]')?.focus();
+}
+function closeProfileActivityDialog(){document.getElementById('profileActivityDialog')?.close()}
+function selectProfileActivity(level){
+ const form=document.getElementById('profileForm');
+ if(view!=='perfil'||!form||!PROFILE_ACTIVITY_LEVELS.some(([id])=>id===level)){closeProfileActivityDialog();return}
+ form.elements.activity.value=level;updateProfilePreview();closeProfileActivityDialog();
+}
 function profileHelp(id,label,description){
  const tooltipId='profileHelp-'+id;
  return '<span class="profile-help"><button type="button" class="profile-help-trigger" data-action="profile-help" aria-label="'+escapeAttribute(label)+'" aria-describedby="'+tooltipId+'" aria-controls="'+tooltipId+'" aria-expanded="false">'+ic('info')+'</button><span id="'+tooltipId+'" class="profile-tooltip" role="tooltip">'+escapeHTML(description)+'</span></span>';
 }
 function profileSummaryMarkup(p=state.profile,weightOverride){
  const base=nutritionTarget(0,p,weightOverride);
- const stat=(title,mobile,value,unit,note)=>'<article class="profile-stat"><span class="profile-stat-label"><span class="profile-label-wide">'+title+'</span><span class="profile-label-mobile">'+mobile+'</span></span><strong class="profile-stat-value">'+value+' <small>'+unit+'</small></strong><span class="profile-stat-note">'+note+'</span></article>';
+ const stat=(title,value,unit)=>'<div class="profile-stat"><span class="profile-stat-label">'+title+'</span><strong class="profile-stat-value">'+value+' <small>'+unit+'</small></strong></div>';
  const macro=(label,value,variant)=>'<div class="profile-macro '+variant+'"><span>'+label+'</span><strong>'+nformat(value)+' g</strong></div>';
- const target='<section class="profile-energy"><div class="profile-energy-value"><span>Tu objetivo diario</span><strong>'+nformat(base.calories)+' <small>kcal</small></strong><span class="profile-energy-note">Se aplicará al guardar</span></div><div class="profile-macros">'+macro('Proteínas',base.protein,'protein')+macro('Hidratos',base.carb,'carbs')+macro('Grasas',base.fat,'fats')+'</div></section>';
- const recovery=p.injury?'<div class="profile-recovery-status">'+ic('bone')+'<strong>Recuperación ósea activa</strong></div>':'';
- return '<div class="profile-preview-layout"><div class="profile-stats">'+stat('Peso para el cálculo','Peso',qty(base.weight),'kg',p.followWeight&&state.weights.length?'Media de tus registros':'Peso de referencia')+stat('Energía en reposo','Energía',nformat(base.rmr),'kcal','Estimación diaria')+stat('Mantenimiento','Mante&shy;nimiento',nformat(base.maintenance),'kcal','Con tu movimiento habitual')+'</div>'+target+recovery+'</div>';
+ const recovery=p.injury?'<span class="profile-recovery-status">'+ic('bone')+'<span>Recuperación activa</span></span>':'';
+ const target='<section class="panel profile-target-panel" aria-labelledby="profileTargetTitle"><header class="profile-summary-heading"><h2 id="profileTargetTitle">Objetivo diario</h2><div class="profile-summary-badges"><span id="profileGoalBadge" class="badge-soft">'+escapeHTML(GOAL_NAMES[p.goal]||'')+'</span>'+recovery+'</div></header><div class="profile-energy"><div class="profile-energy-value"><strong>'+nformat(base.calories)+' <small>kcal</small></strong><span class="profile-energy-note">Se aplicará al guardar</span></div><div class="profile-macros">'+macro('Proteínas',base.protein,'protein')+macro('Hidratos',base.carb,'carbs')+macro('Grasas',base.fat,'fats')+'</div></div></section>';
+ const weightNote=p.followWeight&&state.weights.length?'El peso es la media de hasta tres registros recientes.':'Se usa el peso de referencia del perfil.';
+ const reference='<section class="panel profile-reference-panel" aria-labelledby="profileReferenceTitle"><header class="profile-summary-heading"><h2 id="profileReferenceTitle">Datos del cálculo</h2>'+profileHelp('reference','Ayuda sobre los datos del cálculo',weightNote+' Energía es el gasto estimado en reposo. Mantenimiento aplica el factor de movimiento habitual, sin sesiones de ejercicio.')+'</header><div class="profile-stats">'+stat('Peso',qty(base.weight),'kg')+stat('En reposo',nformat(base.rmr),'kcal')+stat('Mantenimiento',nformat(base.maintenance),'kcal')+'</div></section>';
+ return '<div class="profile-preview-layout">'+target+reference+'</div>';
 }
 function profileFormData(){
  const form=document.getElementById('profileForm');if(!form)return null;
@@ -515,7 +522,7 @@ function updateProfilePreview(){const form=document.getElementById('profileForm'
  // En un borrador con nuevo peso no usamos un peso anterior del seguimiento.
  const effective=p.followWeight&&state.weights.length?undefined:p.weight;
  preview.innerHTML=profileSummaryMarkup(p,effective);
- }const badge=document.getElementById('profileGoalBadge');if(badge)badge.textContent=GOAL_NAMES[p.goal]||'';const custom=document.getElementById('manualRmrField');if(custom)custom.hidden=form.elements.sex.value!=='manual';document.querySelector('.profile-page')?.classList.toggle('profile-page--manual',p.sex==='manual');}
+ }const description=document.getElementById('profileActivityDescription');if(description)description.textContent=profileActivityDescription(p.activity);const custom=document.getElementById('manualRmrField');if(custom)custom.hidden=form.elements.sex.value!=='manual';document.querySelector('.profile-page')?.classList.toggle('profile-page--manual',p.sex==='manual');}
 function profileView(){
  const p=state.profile,last=state.weights.length?[...state.weights].sort((a,b)=>b.date.localeCompare(a.date))[0]:null;
  const select=(name,options)=>options.map(([key,label])=>'<option value="'+escapeAttribute(key)+'" '+(p[name]===key?'selected':'')+'>'+escapeHTML(label)+'</option>').join('');
@@ -531,11 +538,11 @@ function profileView(){
  +'<div class="profile-fields profile-fields--manual" id="manualRmrField" '+(p.sex!=='manual'?'hidden':'')+'>'+num('manualRmr','Metabolismo en reposo · kcal',800,3500,10)+'</div>'
  +'<div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="followWeight" '+checked('followWeight')+'><span><b>Usar mis registros de peso</b><small>'+(last?'Último: '+qty(last.kg)+' kg · '+formatEuropeanDate(last.date):'Sin registros · se usa el peso de referencia')+'</small></span></label>'+profileHelp('followWeight','Ayuda sobre el peso','Al activar esta opción, se usa la media de hasta tres registros recientes para evitar reaccionar a una fluctuación. Si la desactivas, se usa el peso de referencia.')+'</div></div></section>'
  +'<section class="panel profile-form-section profile-goal" aria-labelledby="profileGoalTitle"><header class="profile-section-heading"><h2 id="profileGoalTitle">Tu objetivo</h2></header><div class="goal-choices">'+goals+'</div></section>'
- +'<section class="panel profile-form-section profile-settings" aria-labelledby="profileActivityTitle"><header class="profile-section-heading"><h2 id="profileActivityTitle">Actividad y ajustes</h2>'+profileHelp('activity','Ayuda sobre la actividad','El nivel representa tus pasos y tareas habituales, sin entrenamientos. Registra cada sesión cuando la completes: solo ajustará ese día y sus comidas pendientes.')+'</header><div class="profile-section-body">'
- +'<label class="profile-field">Movimiento diario<select name="activity">'+select('activity',[['very_low','Muy bajo · casa, pocos pasos (×1,20)'],['low','Bajo · algunos paseos (×1,30)'],['medium','Medio · actividad frecuente (×1,40)'],['high','Alto · muchos desplazamientos (×1,52)']])+'</select></label>'
+ +'<section class="panel profile-form-section profile-settings" aria-labelledby="profileActivityTitle"><header class="profile-section-heading"><h2 id="profileActivityTitle">Actividad y ajustes</h2>'+profileHelp('activity','Ayuda sobre la actividad','El nivel representa tu movimiento habitual durante el día, sin contar las sesiones que registras en Menuki. Esas sesiones se suman solo al objetivo y las comidas pendientes de su fecha.')+'</header><div class="profile-section-body">'
+ +'<div class="profile-movement"><div class="profile-movement-heading"><label for="profileActivity">Movimiento diario</label><button type="button" class="profile-compare-levels" data-action="profile-activity-open" aria-haspopup="dialog">Comparar niveles</button></div><select id="profileActivity" name="activity" aria-describedby="profileActivityDescription">'+select('activity',PROFILE_ACTIVITY_LEVELS.map(([key,label])=>[key,label]))+'</select><p id="profileActivityDescription" class="profile-activity-description">'+escapeHTML(profileActivityDescription(p.activity))+'</p></div>'
  +'<div class="profile-control-row profile-control-row--warning"><label class="profile-toggle"><input type="checkbox" name="injury" '+checked('injury')+'><span><b>Recuperación ósea</b><small>Apoyo al preparar nuevos menús</small></span></label>'+profileHelp('injury','Ayuda sobre la recuperación','Limita los recortes de energía y modera los superávits. Al preparar nuevas propuestas, favorece alimentos catalogados como fuentes de calcio, vitamina D y vitamina C. No calcula micronutrientes ni modifica el menú activo.')+'</div>'
  +'<div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="autoPortions" '+checked('autoPortions')+'><span><b>Raciones automáticas</b><small>Adapta las comidas pendientes</small></span></label>'+profileHelp('portions','Ayuda sobre las cantidades','Adapta raciones de proteínas, cereales, pan, patata, aceite y frutos secos. No cambia los platos ni los ingredientes principales. Si lo desactivas, solo cambian las metas.')+'</div></div></section></form>'
- +'<section class="panel profile-results" aria-labelledby="profileResultsTitle"><header class="profile-results-heading"><h2 id="profileResultsTitle">Tu plan, de un vistazo</h2><span id="profileGoalBadge" class="badge-soft">'+escapeHTML(GOAL_NAMES[p.goal])+'</span></header><div id="profilePreview">'+profileSummaryMarkup(p)+'</div></section></div>'
+ +'<aside class="profile-results" aria-label="Vista previa del plan"><div id="profilePreview">'+profileSummaryMarkup(p)+'</div></aside></div>'
  +'<footer class="panel profile-actionbar"><button type="button" class="btn profile-guide-button" data-action="profile-guide-open">'+ic('info')+' Cómo calcula Menuki</button><div class="profile-actions"><span id="profileSaveNote" class="profile-save-note">Al guardar se actualizan las comidas pendientes y la compra.</span><button type="button" class="btn" data-action="restore-profile">Valores iniciales</button><button form="profileForm" type="submit" class="btn btn-primary" aria-describedby="profileSaveNote">'+(state.profileConfirmed?'Guardar cambios':'Confirmar y guardar')+'</button></div></footer></div>';
 }
 
@@ -762,6 +769,9 @@ function updateAuthValidation(){
  }
  async function signOutOfApp(button=document.getElementById('authSignOut')){mobileMoreOpen=false;mobileAccountOpen=false;const accountMenu=document.getElementById('mobileAccountDropdown'),accountToggle=document.getElementById('mobileAccountToggle');if(accountMenu)accountMenu.hidden=true;accountToggle?.setAttribute('aria-expanded','false');if(button?.id==='mobileAuthSignOut')accountToggle?.focus();if(!supabaseClient)return;if(button)button.disabled=true;try{const {error}=await supabaseClient.auth.signOut();if(error)throw error;closeAuthenticatedApp()}catch(error){showToast(authErrorMessage(error))}finally{if(button)button.disabled=false}}
  function startApp(){
+  const activityLevelsDialog=document.getElementById('profileActivityDialog');
+  activityLevelsDialog.addEventListener('click',event=>{if(event.target===activityLevelsDialog)closeProfileActivityDialog()});
+  activityLevelsDialog.addEventListener('close',()=>{if(activityLevelsDialog.open)return;const opener=profileActivityOpener;profileActivityOpener=null;if(view==='perfil'&&!document.querySelector('.app').hidden)(opener?.isConnected?opener:document.querySelector('[data-action="profile-activity-open"]'))?.focus({preventScroll:true})});
   const app=document.querySelector('.app');app.hidden=true;app.inert=true;document.getElementById('mobileNav').hidden=true;
   authLegalDialogs=setupLegalDialogs({embedded:authEmbedMode,canOpen:()=>!document.getElementById('authShell').hidden});
   if(authEmbedMode){document.documentElement.classList.add('auth-embedded');document.querySelectorAll('.auth-return,.auth-logo-link,.auth-footer-brand,.auth-footer-links a[href^="./index.html"]').forEach(link=>{link.target='_top'})}
@@ -931,23 +941,25 @@ function finishCart(){
 }
 
 function activeFoods(){const ids=new Set();MENUS.forEach(week=>week.forEach(day=>day.forEach(id=>REC[id].ingredients.forEach(i=>ids.add(i.id)))));return ids}
-function pantryShortfalls(){const totals={};for(const entry of Object.values(state.done||{})){for(const [id,amount] of Object.entries(entry?.shortfall||{})){if(FOOD[id]&&Number(amount)>0)totals[id]=(totals[id]||0)+Number(amount)}}return totals}
-function pantryList(){const used=usedTotals(),active=activeFoods(),shortfalls=pantryShortfalls(),norm=x=>x.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,''),q=norm(pantrySearch);return Object.keys(FOOD).filter(id=>(pantryFilter==='all'||pantryFilter==='stock'&&Number(state.stock[id]||0)>0||pantryFilter==='deficit'&&Number(shortfalls[id]||0)>0||pantryFilter==='used'&&active.has(id))&&norm(FOOD[id][0]).includes(q)).sort((a,b)=>(CATALOG[a]?.[0]||'z').localeCompare(CATALOG[b]?.[0]||'z')||(CATALOG[a]?.[1]||'z').localeCompare(CATALOG[b]?.[1]||'z')||FOOD[a][0].localeCompare(FOOD[b][0],'es'))}
+function pantryList(){const active=activeFoods(),norm=x=>x.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,''),q=norm(pantrySearch);return Object.keys(FOOD).filter(id=>(pantryFilter==='all'||pantryFilter==='stock'&&Number(state.stock[id]||0)>0||pantryFilter==='used'&&active.has(id))&&norm(FOOD[id][0]).includes(q)).sort((a,b)=>(CATALOG[a]?.[0]||'z').localeCompare(CATALOG[b]?.[0]||'z')||(CATALOG[a]?.[1]||'z').localeCompare(CATALOG[b]?.[1]||'z')||FOOD[a][0].localeCompare(FOOD[b][0],'es'))}
 function pantryListHTML(){
- const ids=pantryList(),used=usedTotals(),shortfalls=pantryShortfalls();if(!ids.length)return '<div class="empty"><span>🧺</span>Sin ingredientes con estos filtros.</div>';
+ const ids=pantryList(),used=usedTotals();if(!ids.length)return '<div class="empty"><span>🧺</span>Sin ingredientes con estos filtros.</div>';
  const groups=new Map();
  for(const id of ids){const catalog=CATALOG[id]||['merc','Otros',100],group=(catalog[0]==='merc'?'Supermercado':'Frutería')+' · '+catalog[1];if(!groups.has(group))groups.set(group,[]);groups.get(group).push(id)}
  return [...groups.entries()].map(([group,items])=>{
   const slug=group.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-');
   const rows=items.map(id=>{
    const balance=Number(state.stock[id]||0),unit=foodStockUnit(id),safeId=escapeAttribute(id),safeUnit=escapeHTML(unit),safeBalance=escapeAttribute(balance);
-   return '<div class="pantry-row"><div><strong>'+escapeHTML(FOOD[id][0])+'</strong><small>Consumido en el ciclo: '+itemQuantity(id,used[id]||0)+'</small>'+(Number(shortfalls[id]||0)>.001?'<small>Faltante registrado: '+itemQuantity(id,shortfalls[id])+'</small>':'')+'</div><div class="pantry-value"><label for="stock-'+safeId+'">Saldo ('+safeUnit+')</label><input id="stock-'+safeId+'" type="number" min="0" step="'+(unit==='ud' ? .25 : 0.1)+'" max="1000000" data-change="stock-quantity" data-food="'+safeId+'" value="'+safeBalance+'" aria-label="Saldo de despensa de '+escapeAttribute(FOOD[id][0])+'"></div></div>';
+   return '<div class="pantry-row"><div><strong>'+escapeHTML(FOOD[id][0])+'</strong><small>Consumido en el ciclo: '+itemQuantity(id,used[id]||0)+'</small></div><div class="pantry-value"><label for="stock-'+safeId+'">Saldo ('+safeUnit+')</label><input id="stock-'+safeId+'" type="number" min="0" step="'+(unit==='ud' ? .25 : 0.1)+'" max="1000000" data-change="stock-quantity" data-food="'+safeId+'" value="'+safeBalance+'" aria-label="Saldo de despensa de '+escapeAttribute(FOOD[id][0])+'"></div></div>';
   }).join('');
    return '<details class="shop-group pantry-category" data-accordion-id="pantry-'+escapeAttribute(slug)+'"'+(pantrySearch?' open':'')+'><summary class="shop-group-title" data-action="toggle-accordion">'+escapeHTML(group)+'<span>'+items.length+' alimentos</span></summary><div class="pantry-grid">'+rows+'</div></details>';
  }).join('');
 }
-function pantryView(){const doneMeals=totalDone(),used=usedTotals(),shortfalls=pantryShortfalls(),positive=Object.values(state.stock).filter(n=>Number(n)>0).length,shortfallRows=Object.entries(shortfalls).sort((a,b)=>b[1]-a[1]).slice(0,8);return '<div class="page-intro"><div class="eyebrow">CONTROL REAL DE INGREDIENTES</div><h1>Mi despensa e ingredientes consumidos</h1><p>Registra lo que tienes y lo que compras. Al completar una receta, solo se descuenta lo disponible y el faltante queda anotado por separado.</p></div><div class="shop-top-actions"><button class="btn" data-action="navigate" data-view="compra">Ver compra</button><button class="btn" data-action="navigate" data-view="guia">Guía</button></div><div class="stat-grid compact-stats">'+[['Comidas realizadas',doneMeals+'/105','registros del ciclo'],['Ingredientes consumidos',Object.keys(used).length,'referencias diferentes'],['Con saldo positivo',positive,'productos en despensa'],['Con faltantes registrados',Object.keys(shortfalls).length,'ingredientes con faltante']].map(x=>'<div class="stat"><div class="stat-top">'+x[0]+'</div><div class="stat-value">'+x[1]+'</div><div class="stat-note">'+x[2]+'</div></div>').join('')+'</div><div class="soft-banner soft-banner--pantry"><span>🧾</span><div><strong>El faltante queda registrado</strong><p>Si una receta supera lo anotado, solo se descuenta lo disponible. El faltante se registra aparte y no aumenta automáticamente la compra.</p></div></div>'+(shortfallRows.length?'<section class="panel panel--spaced"><h3>Faltantes detectados en comidas</h3><div class="simple-list">'+shortfallRows.map(([id,n])=>'<div class="simple-row"><span>'+escapeHTML(FOOD[id][0])+'</span><strong>'+itemQuantity(id,n)+'</strong></div>').join('')+'</div></section>':'')+'<div class="recipe-tools"><label class="search-input">'+ic('search')+'<input id="pantrySearch" type="search" placeholder="Buscar ingredientes…" value="'+escapeHTML(pantrySearch)+'" aria-label="Buscar ingredientes"></label><div class="chips">'+[['used','De mis menús'],['stock','Con stock'],['deficit','Con faltantes'],['all','Todos']].map(a=>'<button class="chip '+(pantryFilter===a[0]?'active':'')+'" data-action="pantry-filter" data-filter="'+a[0]+'">'+a[1]+'</button>').join('')+'</div></div><div id="pantryResults">'+pantryListHTML()+'</div><div class="two-cols two-cols--spaced"><section class="panel"><h3>📋 Registro del consumo</h3><p>Consumo acumulado del ciclo actual.</p><div class="simple-list">'+Object.entries(used).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([id,n])=>'<div class="simple-row"><span>'+escapeHTML(FOOD[id][0])+'</span><strong>'+itemQuantity(id,n)+'</strong></div>').join('')+'</div>'+(doneMeals===0?'<div class="target-note">Completa una comida del menú para comenzar.</div>':'')+'</section><section class="panel"><h3>🛍️ Compras registradas</h3><p>Entradas añadidas a la despensa; los cambios manuales también quedan anotados.</p><div class="simple-list">'+(state.purchases.length?state.purchases.slice(-8).reverse().map(p=>'<div class="simple-row"><span>'+escapeHTML(FOOD[p.id]?.[0]||'Ingrediente')+'<small class="muted-detail">'+escapeHTML(formatMadridDateTime(p.date,{day:'numeric',month:'short',year:'numeric'})||'')+'</small></span><strong>+'+(FOOD[p.id]?itemQuantity(p.id,p.amount):'')+'</strong></div>').join(''):'<p>Aún no hay compras registradas.</p>')+'</div></section></div><div class="footnote">En receta: fruta entera por piezas, pan de molde por rebanadas enteras (máximo dos por comida) y verduras troceadas por gramos. En despensa/compra: g, ml o ud según el alimento. La rebanada de pan se estima en 25 g; los pesos por pieza son aproximados.</div>'}
-function recipeIngredients(r,usage,loggedShortfall){return r.ingredients.map(item=>{const f=FOOD[item.id],q=usage[item.id]||0,stock=Number(state.stock[item.id]||0),neededStock=recipeToStockAmount(item.id,q),missing=loggedShortfall?Number(loggedShortfall[item.id]||0):Math.max(0,neededStock-Math.max(0,stock));return '<div class="ingredient-row"><span>'+escapeHTML(f[0])+'<small class="muted-detail">En despensa: '+itemQuantity(item.id,stock)+(missing>.001?' · '+(loggedShortfall?'Faltaron ':'Faltan ')+itemQuantity(item.id,missing):'')+'</small></span><span>'+recipeQuantity(item.id,q)+'</span></div>'}).join('')}
+function pantryView(){
+ const doneMeals=totalDone(),used=usedTotals(),positive=Object.values(state.stock).filter(n=>Number(n)>0).length;
+ return '<div class="page-intro"><div class="eyebrow">CONTROL REAL DE INGREDIENTES</div><h1>Mi despensa e ingredientes consumidos</h1><p>Registra lo que tienes y lo que compras. Al completar una receta, se guarda su consumo y la despensa descuenta lo disponible hasta llegar a cero.</p></div><div class="shop-top-actions"><button class="btn" data-action="navigate" data-view="compra">Ver compra</button><button class="btn" data-action="navigate" data-view="guia">Guía</button></div><div class="stat-grid compact-stats">'+[['Comidas realizadas',doneMeals+'/105','registros del ciclo'],['Ingredientes consumidos',Object.keys(used).length,'referencias diferentes'],['Con saldo positivo',positive,'productos en despensa']].map(x=>'<div class="stat"><div class="stat-top">'+x[0]+'</div><div class="stat-value">'+x[1]+'</div><div class="stat-note">'+x[2]+'</div></div>').join('')+'</div><div class="recipe-tools"><label class="search-input">'+ic('search')+'<input id="pantrySearch" type="search" placeholder="Buscar ingredientes…" value="'+escapeHTML(pantrySearch)+'" aria-label="Buscar ingredientes"></label><div class="chips">'+[['used','De mis menús'],['stock','Con stock'],['all','Todos']].map(a=>'<button class="chip '+(pantryFilter===a[0]?'active':'')+'" data-action="pantry-filter" data-filter="'+a[0]+'">'+a[1]+'</button>').join('')+'</div></div><div id="pantryResults">'+pantryListHTML()+'</div><div class="two-cols two-cols--spaced"><section class="panel"><h3>📋 Registro del consumo</h3><p>Consumo acumulado del ciclo actual.</p><div class="simple-list">'+Object.entries(used).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([id,n])=>'<div class="simple-row"><span>'+escapeHTML(FOOD[id][0])+'</span><strong>'+itemQuantity(id,n)+'</strong></div>').join('')+'</div>'+(doneMeals===0?'<div class="target-note">Completa una comida del menú para comenzar.</div>':'')+'</section><section class="panel"><h3>🛍️ Compras registradas</h3><p>Entradas añadidas a la despensa; los cambios manuales también quedan anotados.</p><div class="simple-list">'+(state.purchases.length?state.purchases.slice(-8).reverse().map(p=>'<div class="simple-row"><span>'+escapeHTML(FOOD[p.id]?.[0]||'Ingrediente')+'<small class="muted-detail">'+escapeHTML(formatMadridDateTime(p.date,{day:'numeric',month:'short',year:'numeric'})||'')+'</small></span><strong>+'+(FOOD[p.id]?itemQuantity(p.id,p.amount):'')+'</strong></div>').join(''):'<p>Aún no hay compras registradas.</p>')+'</div></section></div><div class="footnote">En receta: fruta entera por piezas, pan de molde por rebanadas enteras (máximo dos por comida) y verduras troceadas por gramos. En despensa/compra: g, ml o ud según el alimento. La rebanada de pan se estima en 25 g; los pesos por pieza son aproximados.</div>';
+}
+function recipeIngredients(r,usage){return r.ingredients.map(item=>{const f=FOOD[item.id],q=usage[item.id]||0,stock=Number(state.stock[item.id]||0);return '<div class="ingredient-row"><span>'+escapeHTML(f[0])+'<small class="muted-detail">En despensa: '+itemQuantity(item.id,stock)+'</small></span><span>'+recipeQuantity(item.id,q)+'</span></div>'}).join('')}
 function weightChart(){const xs=[...state.weights].filter(x=>Number.isFinite(+x.kg)&&+x.kg>0).sort((a,b)=>a.date.localeCompare(b.date)).slice(-16);if(xs.length<2)return '<div class="empty empty-chart"><span>📈</span>Añade al menos dos registros para ver tu evolución.</div>';const W=620,H=240,L=40,R=12,T=18,B=35,values=xs.map(x=>Number(x.kg)),min=Math.min(...values)-.7,max=Math.max(...values)+.7,span=max-min||1;const pos=xs.map((x,i)=>({x:L+i*(W-L-R)/(xs.length-1),y:T+(max-Number(x.kg))/span*(H-T-B)}));let path=pos.map((p,i)=>(i?'L':'M')+p.x.toFixed(2)+' '+p.y.toFixed(2)).join(' ');let area=path+' L '+pos.at(-1).x+' '+(H-B)+' L '+pos[0].x+' '+(H-B)+' Z';let grid=[0,.25,.5,.75,1].map(v=>{const y=T+v*(H-T-B);return '<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y+'" y2="'+y+'" stroke="var(--line)"/><text x="'+(L-9)+'" y="'+(y+4)+'" text-anchor="end" fill="var(--muted)" font-size="11">'+(max-v*span).toFixed(1)+'</text>'}).join('');return '<svg class="weight-graph" viewBox="0 0 620 240" role="img" aria-label="Evolución registrada del peso en kilogramos">'+grid+'<path d="'+area+'" fill="var(--accent-tint)" opacity=".85"/><path d="'+path+'" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>'+pos.map((p,i)=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="var(--white)" stroke="var(--accent)" stroke-width="2.6"/><text x="'+p.x+'" y="'+(H-8)+'" font-size="10" fill="var(--muted)" text-anchor="middle">'+escapeHTML(xs[i].date.slice(5).replace('-','/'))+'</text>').join('')+'</svg>'}
 function trackingView(){
  const arr=[...state.weights].sort((a,b)=>b.date.localeCompare(a.date)),last=arr[0],before=arr[1],delta=last&&before?(last.kg-before.kg).toFixed(1):null;
@@ -960,12 +972,12 @@ function guideView(){
   {title:'Revisa tu perfil y el inicio del plan',body:'Comprueba tus datos personales. Elige también el día en que quieres que empiece el ciclo de tres semanas.',actions:[['perfil','Revisar perfil'],['semana','Elegir fecha y ver menú']]},
   {title:'Consulta el menú del día',body:'En Inicio tienes las comidas de hoy. En Menú puedes recorrer los días del ciclo y cambiar su fecha de inicio.',actions:[['inicio','Ir a Inicio'],['semana','Abrir Menú']]},
   {title:'Registra cada comida cuando la termines',body:'Marca desayuno, media mañana, comida, media tarde o cena después de tomarla. El progreso nutricional avanza con las comidas registradas; la actividad ajusta el objetivo del día, pero no cuenta como alimento.',actions:[['inicio','Ver el día']]},
-  {title:'Prepara la compra y revisa la despensa',body:'Elige el período, marca los envases que compras y pulsa Finalizar compra para añadirlos a la despensa. Al registrar una comida se descuenta su consumo; puedes revisar saldos y faltantes en Despensa.',actions:[['compra','Abrir Compra'],['despensa','Abrir Despensa']]},
+  {title:'Prepara la compra y revisa la despensa',body:'Elige el período, marca los envases que compras y pulsa Finalizar compra para añadirlos a la despensa. Al registrar una comida se descuenta lo que haya disponible; la despensa nunca baja de cero.',actions:[['compra','Abrir Compra'],['despensa','Abrir Despensa']]},
   {title:'Registra actividad después de realizarla',body:'Añade las sesiones una vez hechas. El peso es opcional y puedes consultar su evolución en Actividad y peso.',actions:[['evolucion','Actividad y peso']]},
   {title:'Consulta recetas cuando lo necesites',body:'El recetario reúne los platos del menú y su preparación. También puedes proponer una receta desde su sección.',actions:[['recetas','Abrir Recetas']]}
  ].map((step,index)=>'<li class="guide-step"><div class="guide-step-heading"><span class="guide-step-number">'+String(index+1).padStart(2,'0')+'</span><h3>'+step.title+'</h3></div><p>'+step.body+'</p><div class="guide-step-actions">'+step.actions.map(([target,label])=>navButton(target,label)).join('')+'</div></li>').join('');
  const cycleStart='<section class="guide-card guide-wide"><h3>Fecha de inicio del ciclo</h3><p>Tu ciclo comienza el <strong>'+formatDate(dateFromISO(state.start),{weekday:'long',day:'numeric',month:'long'})+'</strong> y acaba el <strong>'+formatDate(addDays(dateFromISO(state.start),20),{weekday:'long',day:'numeric',month:'long'})+'</strong>. Puedes elegir cualquier día. Si hay comidas registradas, se archivarán antes de empezar el nuevo ciclo; la despensa y los pesos se conservan. Cambiar la fecha no crea recetas nuevas.</p><div class="shop-actions"><label class="field">Primer día del plan<input id="cycleStart" type="date" data-change="cycle-start" value="'+escapeHTML(state.start)+'"></label></div></section>';
- const shoppingGuide='<section class="guide-card guide-wide"><h3>Compra y despensa, paso a paso</h3><p>Primero anota en Despensa lo que ya tienes. En Compra elige el ciclo disponible y cuántos días quieres cubrir. Revisa las cantidades sugeridas y marca los productos que vas a comprar. La lista del próximo ciclo aparece solo si está confirmado y faltan tres días o menos para que empiece. Al pulsar <strong>Finalizar compra</strong>, lo marcado se suma a la despensa. Registrar una comida descuenta sus ingredientes; si el saldo no alcanza, Menuki muestra el faltante. Si desmarcas una comida, revierte ese consumo.</p><div class="shop-actions"><button type="button" class="btn btn-subtle" data-action="navigate" data-view="compra">Ver compra</button><button type="button" class="btn btn-subtle" data-action="navigate" data-view="despensa">Ver despensa</button></div></section>';
+ const shoppingGuide='<section class="guide-card guide-wide"><h3>Compra y despensa, paso a paso</h3><p>Primero anota en Despensa lo que ya tienes. En Compra elige el ciclo disponible y cuántos días quieres cubrir. Revisa las cantidades sugeridas y marca los productos que vas a comprar. La lista del próximo ciclo aparece solo si está confirmado y faltan tres días o menos para que empiece. Al pulsar <strong>Finalizar compra</strong>, lo marcado se suma a la despensa. Registrar una comida guarda el consumo completo de la receta y descuenta de la despensa lo que hubiera disponible. Si desmarcas una comida, revierte la cantidad descontada.</p><div class="shop-actions"><button type="button" class="btn btn-subtle" data-action="navigate" data-view="compra">Ver compra</button><button type="button" class="btn btn-subtle" data-action="navigate" data-view="despensa">Ver despensa</button></div></section>';
  const accountGuide='<section class="guide-card guide-wide"><h3>Tu cuenta y tus datos</h3><p>Entras con tu correo y tu contraseña. La contraseña la protege el servicio que gestiona las cuentas; Menuki no puede consultarla ni mostrarte cuál elegiste. Si la olvidas, desde la pantalla de acceso puedes pedir un enlace para cambiarla. Tus menús, comidas, actividad y despensa quedan asociados a tu cuenta y se sincronizan al guardar cambios cuando hay conexión. Tu correo aparece en Mi Perfil; puedes cerrar sesión allí y, en móvil, también desde el menú superior. Si usas un dispositivo compartido, cierra sesión al terminar.</p></section>';
  const details=[
   cycleStart,
@@ -1071,7 +1083,7 @@ function renderRecipeModal(){
  const usage=hasDay?recipeUsage(ctx.day,ctx.slot,ctx.week):mealUsage(r);
  const key=hasDay?mealKey(ctx.week,ctx.day,ctx.slot):null;
  const finalUsage=hasDay&&state.done[key]?.usage?state.done[key].usage:usage;
- const mac=getMacro(finalUsage),loggedShortfall=hasDay?state.done[key]?.shortfall:null;
+ const mac=getMacro(finalUsage);
  const date=hasDay?dateISOAt(ctx.week,ctx.day):null,sessions=date?activitySessionsForDate(date):[],future=hasDay&&date>isoDate(today());
  const dateLabel=date?formatDate(dateFromISO(date),{day:'numeric',month:'short'}):'';
  const stateText=hasDay?(done(ctx.day,ctx.slot,ctx.week)?'Marcar como pendiente':future?'Disponible el '+dateLabel:'Registrar comida'):'';
@@ -1087,7 +1099,7 @@ function renderRecipeModal(){
  const tip=r.tip?.trim()?'<p><strong>Consejo:</strong> '+escapeHTML(r.tip)+'</p>':'';
  root.innerHTML=
   '<header class="recipe-dialog-header"><div class="recipe-title-block"><div class="eyebrow">'+escapeHTML(recipeType)+' · '+escapeHTML(r.time)+' MIN · 1 PERSONA</div><h2 id="recipeDialogTitle">'+escapeHTML(r.name)+'</h2></div><dl class="recipe-metrics">'+metrics+'</dl><p class="recipe-metric-note">Valores nutricionales estimados por ración.</p></header>'+
-  '<div class="recipe-dialog-content" tabindex="0" role="region" aria-label="Ingredientes y preparación">'+intro+'<div class="recipe-sections"><section aria-labelledby="recipeIngredientsTitle"><h3 id="recipeIngredientsTitle">Ingredientes</h3>'+recipeIngredients(r,finalUsage,loggedShortfall)+'</section><section aria-labelledby="recipeStepsTitle"><h3 id="recipeStepsTitle">Preparación</h3><ol class="steps-list">'+r.steps.map((step,i)=>'<li><span class="step-n">'+(i+1)+'</span><span>'+escapeHTML(step)+'</span></li>').join('')+'</ol></section></div>'+
+  '<div class="recipe-dialog-content" tabindex="0" role="region" aria-label="Ingredientes y preparación">'+intro+'<div class="recipe-sections"><section aria-labelledby="recipeIngredientsTitle"><h3 id="recipeIngredientsTitle">Ingredientes</h3>'+recipeIngredients(r,finalUsage)+'</section><section aria-labelledby="recipeStepsTitle"><h3 id="recipeStepsTitle">Preparación</h3><ol class="steps-list">'+r.steps.map((step,i)=>'<li><span class="step-n">'+(i+1)+'</span><span>'+escapeHTML(step)+'</span></li>').join('')+'</ol></section></div>'+
   '<details class="recipe-more"><summary>'+(tip?'Consejo y cantidades':'Sobre las cantidades')+'</summary><div>'+tip+'<p>'+escapeHTML(targetNote)+'</p></div></details></div>'+
   '<footer class="recipe-dialog-footer">'+(hasDay?'<button type="button" class="btn btn-primary" data-action="toggle-meal" data-week="'+escapeAttribute(ctx.week)+'" data-day="'+escapeAttribute(ctx.day)+'" data-slot="'+escapeAttribute(ctx.slot)+'" data-modal="1" '+(future&&!done(ctx.day,ctx.slot,ctx.week)?'disabled aria-disabled="true"':'')+'>'+ic('check')+' '+escapeHTML(stateText)+'</button>':'<button type="button" class="btn" data-action="close-modal">Cerrar receta</button>')+'</footer>';
  root.querySelector('.recipe-more').open=moreOpen;root.querySelector('.recipe-dialog-content').scrollTop=previousScroll;
@@ -1102,18 +1114,16 @@ function toggleMeal(day,slot,week=visibleWeek){
   reverseSavedMeal(key,saved,reversedAt);state.reversedDone=state.reversedDone||{};state.reversedDone[operationId]={...saved,operationId,mealKey:key,reversedAt};
   delete state.done[key];showToast('Comida desmarcada · movimientos revertidos');
  }else{
-  const rec=mealAt(day,slot,week),usage=recipeUsage(day,slot,week),deducted={},shortfall={},operationId=newOperationId(),completedAt=new Date().toISOString();
+  const rec=mealAt(day,slot,week),usage=recipeUsage(day,slot,week),deducted={},operationId=newOperationId(),completedAt=new Date().toISOString();
   for(const [id,amount] of Object.entries(usage)){
    if(!FOOD[id])continue;
    const stockAmount=roundAmount(recipeToStockAmount(id,amount)),consumption=consumeAvailableStock(state.stock[id]||0,stockAmount,roundAmount);
    deducted[id]=consumption.deducted;
-   if(consumption.shortfall>.001)shortfall[id]=consumption.shortfall;
    if(consumption.deducted>.001)applyMovement({operationId:operationId+':'+id,foodId:id,quantity:-consumption.deducted,kind:'meal',sourceId:key,createdAt:completedAt});
-   else if(consumption.shortfall>.001)state.movements.push({operationId:operationId+':'+id,foodId:id,quantity:0,kind:'meal',sourceId:key,createdAt:completedAt});
+   else state.movements.push({operationId:operationId+':'+id,foodId:id,quantity:0,kind:'meal',sourceId:key,createdAt:completedAt});
   }
-  state.done[key]={rid:rec.id,usage,deducted,shortfall,operationId,completedAt};
-  const missingRows=Object.entries(shortfall);
-  showToast(missingRows.length?'Comida registrada · falta stock de '+missingRows.map(([id,n])=>FOOD[id][0]+' ('+itemQuantity(id,n)+')').join(', '):'Comida registrada · despensa actualizada');
+  state.done[key]={rid:rec.id,usage,deducted,operationId,completedAt};
+  showToast('Comida registrada · despensa actualizada');
  }
  save();
 }
@@ -1171,6 +1181,9 @@ function activateCycleFromSetup(requested){const date=dateFromISO(requested);if(
 function changeCycleStart(requested){if(state.noActiveCycle)return activateCycleFromSetup(requested);const d=dateFromISO(requested);if(!d){showToast('Fecha de inicio no válida');return}const next=isoDate(d);if(next===state.start){closeCycleStartDialog();return}const hadProgress=Object.keys(state.done).length||Object.keys(state.legacyStrengthDays).length;if(hadProgress&&!confirm('Cambiar la fecha archivará las comidas y marcas antiguas del ciclo. Si recuperas una fecha usada, las comidas de ese ciclo se desmarcarán y su consumo se devolverá a la despensa. ¿Continuar?')){cycleStartDraft=formatEuropeanDate(requested);document.getElementById('cycleStartMenu')?.focus();return}const reused=restoreArchivedCycle(next);archiveActiveCycle();if(reused)useArchivedCycle(reused.cycle);else{state.start=next;state.activeCycleId=newCycleInstanceId();state.noActiveCycle=false;state.done={};state.reversedDone={};state.legacyStrengthDays={};state.prep={}}if(state.nextMenu)state.nextMenu.start=isoDate(addDays(d,21));if(state.plannerDraft)state.plannerDraft.start=isoDate(addDays(d,21));closeCycleStartDialog();alignCurrentDay();save();render();showToast(cycleStartToast(next,reused?.reversedMeals||0,!!reused))}
 // Cambios de la interfaz (delegación compatible con páginas HTML locales).
 document.addEventListener('click',function(event){const btn=event.target.closest('[data-action]');if(!btn)return;const action=btn.dataset.action;
+ if(action==='profile-activity-open'){openProfileActivityDialog(btn);return}
+ if(action==='profile-activity-close'){closeProfileActivityDialog();return}
+ if(action==='profile-activity-select'){selectProfileActivity(btn.dataset.level);return}
  if(action==='profile-guide-open'){document.getElementById('profileHelpDialog').showModal();return}
  if(action==='profile-guide-close'){document.getElementById('profileHelpDialog').close();return}
  if(action==='profile-help'){const wasOpen=btn.getAttribute('aria-expanded')==='true';document.querySelectorAll('.profile-help-trigger[aria-expanded="true"]').forEach(other=>{if(other!==btn){other.setAttribute('aria-expanded','false');other.closest('.profile-help')?.classList.add('is-dismissed')}});const help=btn.closest('.profile-help');help?.classList.toggle('is-dismissed',wasOpen);btn.setAttribute('aria-expanded',String(!wasOpen));return}

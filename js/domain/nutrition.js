@@ -3,7 +3,21 @@ import { scaleBreadSlices } from './recipe-portions.js';
 const PROTEIN_PORTIONS = new Set(['skyr', 'greek', 'cheese', 'chicken', 'turkey', 'turkeySlice', 'hake', 'cod', 'salmon', 'trout', 'shrimp', 'tuna', 'sardines', 'mackerel', 'gulas', 'tofuFirm', 'tempeh', 'edamame', 'soyProteinTextured', 'porkTenderloin', 'beefSirloin', 'turkeyMince', 'cottageCheese']);
 const CARB_PORTIONS = new Set(['granola', 'oats', 'bread', 'rice', 'pasta', 'tortilla', 'quinoa', 'couscous', 'noodles', 'potato', 'sweetpotato', 'raisins', 'cornCanned']);
 const FAT_PORTIONS = new Set(['oliveoil', 'walnuts', 'almonds', 'peanuts', 'avocado', 'chiaSeeds', 'pumpkinSeeds', 'tahini']);
-const ACTIVITY_FACTORS = { very_low: 1.20, low: 1.30, medium: 1.40, high: 1.52 };
+export const ACTIVITY_FACTORS = {
+  very_sedentary: 1.10,
+  sedentary: 1.20,
+  light: 1.37,
+  moderate: 1.55,
+  intense: 1.72,
+  very_intense: 1.90,
+};
+
+const LEGACY_ACTIVITY_LEVELS = { very_low: 'sedentary', low: 'light', medium: 'light', high: 'moderate' };
+
+export function normalizeActivityLevel(activity) {
+  const normalized = LEGACY_ACTIVITY_LEVELS[activity] || activity;
+  return Object.hasOwn(ACTIVITY_FACTORS, normalized) ? normalized : 'sedentary';
+}
 
 const limit = (value, min, max) => Math.max(min, Math.min(max, value));
 
@@ -13,7 +27,7 @@ export function createNutritionService({ getFood, getEffectiveWeight, roundBread
     const rmr = profile.sex === 'manual'
       ? profile.manualRmr
       : 10 * weight + 6.25 * profile.height - 5 * profile.age + (profile.sex === 'male' ? 5 : -161);
-    const maintenance = rmr * ACTIVITY_FACTORS[profile.activity];
+    const maintenance = rmr * ACTIVITY_FACTORS[normalizeActivityLevel(profile.activity)];
     return { weight, rmr, maintenance };
   }
 

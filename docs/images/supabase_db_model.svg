@@ -177,7 +177,7 @@
     <text class="name" x="948" y="955">meal_completion_shortfalls</text>
     <text class="key" x="948" y="991">PK · completion_id, ingredient_index</text>
     <text class="key" x="948" y="1014">FK compuesta · completion_id, user_id</text>
-    <text class="hint" x="948" y="1042">Faltante informativo por ingrediente</text>
+    <text class="hint" x="948" y="1042">Legado · tabla retirada</text>
     <text class="hint" x="948" y="1062">No modifica existencias ni compras</text>
   </g>
 
@@ -241,6 +241,6 @@
   <line x1="40" y1="1300" x2="1760" y2="1300" stroke="#d1dae5" stroke-width="1"/>
   <text class="legend" x="40" y="1327">PK = clave primaria · FK = clave foránea · Las tablas personales usan RLS por auth.uid().</text>
   <text class="legend" x="40" y="1353">El borde discontinuo distingue las cuatro tablas compartidas del buzón de las tablas personales.</text>
-  <text class="legend" x="40" y="1378">Migraciones de faltantes y de corrección de movimientos de cantidad cero aplicadas en Supabase según el propietario.</text>
+  <text class="legend" x="40" y="1378">La tabla histórica de faltantes está retirada; su migración de limpieza en Supabase está pendiente.</text>
   <text class="legend" x="40" y="1405">El detalle completo de columnas, tipos, restricciones y claves está en las tablas de este documento.</text>
 </svg>

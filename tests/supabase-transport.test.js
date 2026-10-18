@@ -2,16 +2,16 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createSupabaseTransport } from '../js/persistence/supabase-transport.js';
 
-test('cloud snapshot loads while the optional shortfalls table is not yet in Supabase', async () => {
+test('cloud snapshot does not read the retired shortfalls table', async () => {
+  const requestedTables = [];
   const getClient = () => ({
     from(table) {
+      requestedTables.push(table);
       const query = {
         select() { return this; },
         eq() { return this; },
         range() {
-          return Promise.resolve(table === 'meal_completion_shortfalls'
-            ? { data: null, error: { code: 'PGRST205', message: "Could not find the table 'public.meal_completion_shortfalls' in the schema cache" } }
-            : { data: [], error: null });
+          return Promise.resolve({ data: [], error: null });
         },
         maybeSingle() { return Promise.resolve({ data: null, error: null }); },
       };
@@ -22,13 +22,12 @@ test('cloud snapshot loads while the optional shortfalls table is not yet in Sup
 
   const snapshot = await transport.fetchSnapshot();
 
-  assert.equal(snapshot.shortfallsAvailable, false);
-  assert.deepEqual(snapshot.shortfalls, []);
+  assert.equal(requestedTables.includes('meal_completion_shortfalls'), false);
   assert.deepEqual(snapshot.movements, []);
-  assert.equal(transport.supportsShortfalls(), false);
+  assert.equal(Object.hasOwn(snapshot, 'shortfalls'), false);
 });
 
-test('cloud snapshot still surfaces unrelated shortfalls read errors', async () => {
+test('cloud snapshot still surfaces unrelated table read errors', async () => {
   const getClient = () => ({
     from() {
       return {

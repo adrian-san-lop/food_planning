@@ -43,7 +43,7 @@ Unidades admitidas: `g`, `ml` y `ud`. Las porciones de fruta entera de [requisit
 
 ### Recetas
 
-Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, ingredientes, pasos y notas. No contiene fotografía: la interfaz presenta platos e ingredientes sin imágenes de comida. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra la cantidad en la unidad de receta, con la etiqueta «rebanada(s)» para el pan, e informa el stock y los faltantes en unidad de inventario. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
+Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, ingredientes, pasos y notas. No contiene fotografía: la interfaz presenta platos e ingredientes sin imágenes de comida. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra la cantidad en la unidad de receta, con la etiqueta «rebanada(s)» para el pan, e informa del stock actual en unidad de inventario. No registra déficits de una comida ya realizada. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
 
 Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el contrato, mantener los IDs existentes o documentar una migración explícita; no renombrar IDs a la ligera.
 
@@ -62,6 +62,23 @@ Las cuatro primeras reglas fueron aceptadas explícitamente. La quinta recoge la
 La casilla **Recuperación ósea activa** conserva el ajuste prudente de energía ya existente y cambia la puntuación de los menús que se generen o regeneren: favorece recetas que incorporen alimentos etiquetados como fuentes de calcio, vitamina D y vitamina C. La proteína sigue tratándose con el objetivo de macronutrientes ya existente. La revisión de la propuesta muestra en cuántos de los 21 días hay ingredientes etiquetados de cada tipo; esto indica presencia, no cantidades nutricionales ni cumplimiento de una recomendación diaria.
 
 La estrategia se basa en orientación del NHS para fracturas y huesos sanos, y en las fichas de calcio y vitamina D de NIH ODS. Estas fuentes respaldan una dieta equilibrada con proteína, calcio y vitamina D, pero no permiten afirmar que un menú concreto acelere la consolidación de una fractura. La etiqueta de vitamina C añade variedad de frutas y verduras; no expresa una dosis ni un objetivo específico para la fractura. Obtener vitamina D solo de los alimentos puede ser difícil; la app no prescribe suplementos ni fija micronutrientes sin evaluación individual. El ciclo activo y las comidas ya registradas no se sustituyen al cambiar esta casilla. Véase [ADR-0007](../decisions/0007-bone-recovery-menu-preference.md).
+
+## Gasto en reposo y movimiento habitual
+
+El gasto en reposo se estima con la versión redondeada de [Mifflin–St Jeor](https://pubmed.ncbi.nlm.nih.gov/2305711/): `10 × peso_kg + 6,25 × altura_cm − 5 × edad + 5` para hombre o el mismo cálculo con `−161` para mujer. El perfil también permite introducir manualmente el gasto en reposo. El mantenimiento multiplica ese resultado por un factor de movimiento diario; después se aplica el objetivo elegido. La base del día tiene un mínimo de `1,10 × gasto en reposo`.
+
+| Nivel | Factor | Referencia cotidiana para elegir |
+| --- | ---: | --- |
+| Muy sedentario | 1,10 | Casi todo el día sentado o tumbado, con muy pocos desplazamientos cotidianos. |
+| Sedentario | 1,20 | Trabajo normalmente sentado, con recados y tareas habituales. |
+| Ligera | 1,37 | Ratos frecuentes de pie o caminando durante el día. |
+| Moderada | 1,55 | Gran parte del día en movimiento o trabajo físico moderado. |
+| Intensa | 1,72 | Muchas horas de trabajo físico exigente, caminatas o cargas. |
+| Muy intensa | 1,90 | Trabajo físico muy exigente durante casi toda la jornada. |
+
+Estas descripciones se refieren a la jornada y las tareas habituales; no se cuentan las sesiones registradas en Menuki, que se añaden solo a su fecha según ADR-0005. Son multiplicadores orientativos usados por la aplicación, no categorías clínicas equivalentes a los intervalos PAL del [informe FAO/OMS/UNU](https://www.fao.org/4/y5686e/y5686e07.htm). Los ejemplos de gasto de la tabla de factores original no se usan para calcular el perfil: Menuki conserva Mifflin–St Jeor.
+
+Los perfiles heredados se convierten en el nivel cuyo factor nuevo queda más cerca de su factor previo: `very_low` a `sedentary`, `low` y `medium` a `light`, y `high` a `moderate`. La migración `20261018140000_activity_movement_factors.sql` actualiza los perfiles existentes y amplía la restricción de Supabase; debe ejecutarse antes de sincronizar los nuevos valores. Véase [ADR-0044](../decisions/0044-activity-movement-factors.md).
 
 ## Ajuste nutricional por sesiones realizadas
 
@@ -84,7 +101,7 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 4. Muestrear combinaciones y puntuarlas con la lógica nutricional/raciones actual, variedad, menor repetición reciente, recetas no usadas en el menú actual y cobertura del stock. Si Recuperación ósea está activa, la puntuación también favorece las etiquetas cualitativas descritas arriba. El stock solo aporta preferencia; no elimina candidatos. Las ponderaciones son detalles iniciales de implementación, no umbrales aprobados.
 5. Completar los cinco tipos de comida para 21 días. Se permiten repeticiones si la biblioteca lo requiere.
 6. Revisar la propuesta, cambiar cada receta por otra del mismo tipo, bloquearla o desbloquearla y regenerar el resto. Una receta seleccionada manualmente queda bloqueada inicialmente.
-7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en el estado local v10; el sincronizador lo persiste en `plan_cycles` y `planned_meals`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
+7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en el estado local v11; el sincronizador lo persiste en `plan_cycles` y `planned_meals`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
 
 El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
@@ -115,4 +132,4 @@ Si se incorpora un menú compartido por varias personas, falta decidir cómo com
 
 ## Datos y privacidad
 
-El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v10 conserva una copia local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v11 conserva una copia local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).

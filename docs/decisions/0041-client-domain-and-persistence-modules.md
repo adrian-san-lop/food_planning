@@ -12,11 +12,13 @@ La aplicación ya utilizaba módulos ES, pero `main.js` aún contenía la migrac
 
 - Mantener HTML, CSS y módulos ES nativos, GitHub Pages y Supabase; no introducir un framework, un servidor propio ni un paso de compilación.
 - Separar la normalización del estado local v5-v10 en `js/persistence/state-normalization.js`. `js/persistence/local-state.js` conserva la lectura y escritura de `localStorage`.
+
+- Actualización (2026-10-18): ADR-0043 lleva la normalización local a v11 y elimina los faltantes históricos de los estados normalizados; las reglas anteriores de conversión y persistencia continúan vigentes.
 - Separar el mapeo bidireccional del estado de Menuki y el snapshot relacional en `js/persistence/cloud-state-mapper.js`. `js/persistence/supabase-transport.js` sigue siendo la frontera para lecturas y RPC.
 - Separar objetivos nutricionales, macros y cantidades de receta en `js/domain/nutrition.js`.
 - Separar la aplicación idempotente de movimientos y la actualización del saldo en `js/domain/inventory-ledger.js`.
 - Mantener `main.js` como entrada y composición durante esta etapa. Las vistas, los eventos y la coordinación de Auth y sincronización quedan para extracciones posteriores, cada una con pruebas de regresión antes de moverla.
-- Preservar el formato local v10, las conversiones admitidas desde v5, el contrato del snapshot relacional, `sync_menuki_state`, `reset_menuki_state`, RLS, `sync_revision`, los identificadores idempotentes y el comportamiento visible.
+- Preservar el formato local vigente al aprobar esta decisión (v10), las conversiones admitidas desde v5, el contrato del snapshot relacional, `sync_menuki_state`, `reset_menuki_state`, RLS, `sync_revision`, los identificadores idempotentes y el comportamiento visible.
 - Probar de forma directa las migraciones locales, el mapeo relacional, la nutrición, los movimientos de inventario, la conciliación y el transporte.
 
 ## Consecuencias

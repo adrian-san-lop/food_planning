@@ -34,7 +34,7 @@ These instructions apply to the whole repository.
 - Keep the UI in Spanish. Keep `AGENTS.md` and `context.md` in English; write other project documentation in Spanish unless the owner asks otherwise.
 - `menuki.html` is the app shell and loads `assets/css/app.css` and the `js/main.js` ES-module entry. `data/foods.json` and `data/recipes.json` are the canonical generic catalogs; derive runtime models from them instead of maintaining duplicate catalog literals. The fixed initial menu remains a code template of stable recipe IDs.
 - Supabase Auth manages accounts, and personal data, including next-cycle proposals, syncs to relational Supabase tables. `localStorage` is a browser working copy. The configured project has the authentication and cloud-sync migrations applied; changes reach GitHub Pages after publication.
-- State format v5 is the oldest supported persisted browser state; current state is v10. Keep v5-v10 local-storage migrations for existing installations, do not add v1-v4 migrations, and do not offer personal-state JSON import or restore controls.
+- State format v5 is the oldest supported persisted browser state; current state is v11. Keep v5-v11 local-storage migrations for existing installations, do not add v1-v4 migrations, and do not offer personal-state JSON import or restore controls.
 - Do not add export, import, or restore controls for personal state or periodic backup reminders. The only JSON download exception is the admin-only recipe proposal package documented in docs/schemas/recipe-proposal-export.schema.json.
 
 ## Catalogs and planner
@@ -49,7 +49,7 @@ These instructions apply to the whole repository.
 ## Inventory and privacy
 
 - Use `ud` for eggs and pantry/purchases of the whole fruits/vegetables listed in `docs/product/requirements.md`; fractional pantry quantities are allowed. Measure fruit portions and bread slices as recipe `ud`, allowing half fruit pieces but keeping bread to whole slices and at most two per meal. Measure vegetables used chopped or in portions and other solids in recipe grams. Use `ud` for eggs and `ml` for liquids. Milk is purchased in 1 L cartons; ground coffee is measured in grams and included in breakfasts.
-- Preserve the full recipe usage in the meal snapshot, but deduct no more than the available pantry balance. Pantry stock must never fall below zero; store any shortfall separately from inventory movements, and do not add it automatically to later shopping quantities. Reversals restore only the amount actually deducted and must be idempotent.
+- Preserve the full recipe usage in the meal snapshot, but deduct no more than the available pantry balance. Pantry stock must never fall below zero. Do not calculate, display, or store a shortfall for a completed meal. Reversals restore only the amount actually deducted and must be idempotent.
 - Keep personal-state cloud writes transactional and idempotent through sync_menuki_state; bind them to auth.uid(), retain RLS, and reject stale sync_revision writes. Shared recipe proposals are a deliberate separate boundary: use the scoped, transactional submit_recipe_proposal and admin-only clear_recipe_proposals RPCs. Use reset_menuki_state only for an explicitly confirmed full reset. Never store the full personal state as one JSON column.
 - GitHub Pages content is public. If Supabase is integrated, use an appropriate public client key with RLS on all user tables; never expose service-role keys or secrets.
 - Keep `index.html` at the repository root with a relative destination for GitHub Pages.

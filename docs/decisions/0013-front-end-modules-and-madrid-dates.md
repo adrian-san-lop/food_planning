@@ -13,7 +13,7 @@ La interfaz, las reglas del dominio y el acceso a datos estaban concentrados en 
 1. Mantener GitHub Pages, HTML, CSS y JavaScript nativos. `menuki.html` será el shell de la interfaz y cargará `assets/css/app.css` y `js/main.js` como módulo ES. No introducir todavía framework ni paso de compilación.
 2. Extraer responsabilidades de manera incremental. En esta etapa, los módulos separan fecha civil, validación/carga de catálogos, conversiones de unidades, copia local y transporte de lecturas/RPC de Supabase. Las vistas, la orquestación de dominio restante y parte del flujo de autenticación/sincronización siguen en `js/main.js`.
 3. Representar fechas civiles como `YYYY-MM-DD` y como objetos `Date` portadores a medianoche UTC solo para hacer aritmética de calendario. Resolver el día actual y presentar instantes con `Europe/Madrid`; mantener los timestamps como instantes ISO.
-4. Conservar los catálogos, las migraciones locales compatibles, el comportamiento del planificador, las reglas de inventario y los contratos de sincronización con Supabase. El formato local, entonces v8, evolucionó después a v10; se admiten estados v5-v10. La extracción y cobertura de pruebas actual se registra en [ADR-0041](0041-client-domain-and-persistence-modules.md).
+4. Conservar los catálogos, las migraciones locales compatibles, el comportamiento del planificador, las reglas de inventario y los contratos de sincronización con Supabase. El formato local, entonces v8, evolucionó después a v10; ADR-0043 lo actualiza ahora a v11 y se admiten estados v5-v11. La extracción y cobertura de pruebas actual se registra en [ADR-0041](0041-client-domain-and-persistence-modules.md).
 
 ## Consecuencias y validación pendiente
 

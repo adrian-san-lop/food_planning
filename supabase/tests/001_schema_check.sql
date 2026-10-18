@@ -5,6 +5,7 @@ do $$
 declare
   table_name text;
   constraint_definition text;
+  activity_level_default text;
   required_tables text[] := array[
     'profiles',
     'plan_cycles',
@@ -22,6 +23,27 @@ declare
     'activity_sessions'
   ];
 begin
+  select pg_catalog.pg_get_constraintdef(oid, true) into constraint_definition
+  from pg_catalog.pg_constraint
+  where conrelid = 'public.profiles'::regclass
+    and conname = 'profiles_activity_level_check';
+  if constraint_definition is null
+     or position('very_sedentary' in constraint_definition) = 0
+     or position('sedentary' in constraint_definition) = 0
+     or position('light' in constraint_definition) = 0
+     or position('moderate' in constraint_definition) = 0
+     or position('intense' in constraint_definition) = 0
+     or position('very_intense' in constraint_definition) = 0 then
+    raise exception 'The six supported profile movement levels must be constrained in Supabase';
+  end if;
+
+  select column_default into activity_level_default
+  from information_schema.columns
+  where table_schema = 'public' and table_name = 'profiles' and column_name = 'activity_level';
+  if activity_level_default is distinct from '''sedentary''::text' then
+    raise exception 'New profiles must default to the sedentary movement level';
+  end if;
+
   foreach table_name in array required_tables
   loop
     if to_regclass(format('public.%I', table_name)) is null then
@@ -75,11 +97,26 @@ begin
 
   if has_table_privilege('authenticated', 'public.meal_completion_shortfalls', 'update')
      or has_table_privilege('authenticated', 'public.meal_completion_shortfalls', 'delete') then
-    raise exception 'Meal completion shortfalls must remain append-only for the app role';
+    raise exception 'Meal completion shortfalls must remain read-only for the app role';
   end if;
 
   if has_table_privilege('authenticated', 'public.meal_completion_shortfalls', 'insert') then
-    raise exception 'Meal completion shortfalls must be written only through the transactional sync RPC';
+    raise exception 'The app role must not insert retired meal completion shortfalls';
+  end if;
+
+  if exists (select 1 from public.meal_completion_shortfalls) then
+    raise exception 'Retired meal completion shortfall rows must be purged';
+  end if;
+
+  if not exists (
+    select 1
+    from pg_catalog.pg_trigger t
+    where t.tgrelid = 'public.meal_completion_shortfalls'::regclass
+      and t.tgname = 'discard_retired_meal_shortfall'
+      and not t.tgisinternal
+      and t.tgenabled <> 'D'
+  ) then
+    raise exception 'Retired meal shortfall writes must be suppressed';
   end if;
 
   if has_table_privilege('authenticated', 'public.meal_completion_ingredients', 'update')

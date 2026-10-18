@@ -1,6 +1,6 @@
 /** Maps Menuki's in-memory state to and from the relational Supabase snapshot contract. */
 export function createCloudStateMapper({
-  getUserId, getFood, getRecipes, getCatalogVersion, getShortfallsAvailability,
+  getUserId, getFood, getRecipes, getCatalogVersion,
   archivedCyclesByUser, addDays, dateFromISO, dateDiff, isoDate, today,
   validMenuSnapshot, cloneMenus, isUuid, emptyState, cleanState, rebuildStock,
   defaultProfile, sanitizeProfile, foodStockUnit, foodRecipeUnit,
@@ -77,8 +77,6 @@ async function buildCloudSnapshot(source){
   const previous=completionByOperation.get(operationId)||{operation_id:operationId,planned_meal_id:found.row.id,recipe_id_snapshot:found.row.recipe_id,catalog_version:found.def.version,completed_at:move.createdAt||new Date().toISOString(),reversed_at:null,usage:{}};
   previous.reversed_at=reversedAtFor(operationId)||previous.reversed_at;completionByOperation.set(operationId,previous);
  }
- const currentShortfall=new Map();
- for(const def of definitions){for(const doneEntry of Object.values(def.done||{}))if(doneEntry?.operationId)currentShortfall.set(doneEntry.operationId,doneEntry.shortfall||{});for(const reversedEntry of Object.values(def.reversedDone||{}))if(reversedEntry?.operationId)currentShortfall.set(reversedEntry.operationId,reversedEntry.shortfall||{})}
  const completions=[];
  for(const entry of completionByOperation.values()){
   const def=definitions.find(x=>x.id&&plannedMeals.some(m=>m.id===entry.planned_meal_id&&m.cycle_id===x.id));
@@ -87,8 +85,7 @@ async function buildCloudSnapshot(source){
    const index=Math.max(0,recipe?.ingredients?.findIndex(x=>x.id===foodId)??0);
    ingredients.push({ingredient_index:index,food_id:foodId,ingredient_name_snapshot:getFood()[foodId][0],quantity:Number(quantity),recipe_unit:foodRecipeUnit(foodId)});
   }
-  const shortfalls=Object.entries(currentShortfall.get(entry.operation_id)||{}).filter(([foodId,quantity])=>getFood()[foodId]&&Number(quantity)>0).map(([foodId,quantity])=>({food_id:foodId,quantity:Number(quantity),unit:foodStockUnit(foodId)}));
-  completions.push({id:await cloudUuid('completion',entry.operation_id),planned_meal_id:entry.planned_meal_id,recipe_id_snapshot:entry.recipe_id_snapshot,catalog_version:entry.catalog_version||def?.version||getCatalogVersion(),operation_id:entry.operation_id,completed_at:entry.completed_at,reversed_at:entry.reversed_at,ingredients,shortfalls});
+  completions.push({id:await cloudUuid('completion',entry.operation_id),planned_meal_id:entry.planned_meal_id,recipe_id_snapshot:entry.recipe_id_snapshot,catalog_version:entry.catalog_version||def?.version||getCatalogVersion(),operation_id:entry.operation_id,completed_at:entry.completed_at,reversed_at:entry.reversed_at,ingredients});
  }
  const movements=[];
  for(const move of source.movements||[]){
@@ -106,7 +103,6 @@ async function buildCloudSnapshot(source){
    const suffix=':'+move.foodId;reversesOperation=raw.endsWith(suffix)?raw:'';
    if(!reversesOperation)kind='adjustment';
   }
-  if(kind==='meal'&&Number(move.quantity)===0&&getShortfallsAvailability()===false)continue;
   const opParts=String(move.operationId).split(':'),group=kind==='purchase'&&/^\d+$/.test(opParts.at(-1))?opParts.slice(0,-1).join(':'):null;
 
   movements.push({id:await cloudUuid('movement',move.operationId),food_id:move.foodId,quantity:Number(move.quantity),unit:foodStockUnit(move.foodId),movement_kind:kind,operation_id:String(move.operationId),operation_group_id:group,completion_operation_id:completionOperation,reverses_operation_id:reversesOperation,shortfall_quantity:0,note:move.note||null,created_at:move.createdAt||new Date().toISOString()});
@@ -137,12 +133,11 @@ async function buildCloudSnapshot(source){
  }
  const active=data.cycles.find(x=>x.status==='active');
  for(const row of data.prep){if(!prepOf.has(row.cycle_id))prepOf.set(row.cycle_id,{});prepOf.get(row.cycle_id)[row.week_index+'#'+row.task_key]=!!row.is_completed}
- const plannedById=new Map(data.plannedMeals.map(x=>[x.id,x])),completionById=new Map(data.completions.map(x=>[x.id,x])),ingredientsByCompletion=new Map(),movementsByCompletion=new Map(),shortfallByCompletion=new Map(),movementById=new Map(data.movements.map(x=>[x.id,x]));
+ const plannedById=new Map(data.plannedMeals.map(x=>[x.id,x])),completionById=new Map(data.completions.map(x=>[x.id,x])),ingredientsByCompletion=new Map(),movementsByCompletion=new Map(),movementById=new Map(data.movements.map(x=>[x.id,x]));
  for(const row of data.ingredients){if(!ingredientsByCompletion.has(row.completion_id))ingredientsByCompletion.set(row.completion_id,{});const usage=ingredientsByCompletion.get(row.completion_id);const quantity=storedRecipeToCurrentAmount(row.food_id,row.quantity,row.recipe_unit||foodRecipeUnit(row.food_id));usage[row.food_id]=(usage[row.food_id]||0)+quantity}
- for(const move of data.movements)if(move.source_completion_id){if(!movementsByCompletion.has(move.source_completion_id))movementsByCompletion.set(move.source_completion_id,{});const amounts=movementsByCompletion.get(move.source_completion_id);if(move.movement_kind==='meal'){const legacyShortfall=Math.max(0,Number(move.shortfall_quantity)||0);amounts[move.food_id]=(amounts[move.food_id]||0)+Math.max(0,Math.abs(Number(move.quantity))-legacyShortfall);if(legacyShortfall>.001){if(!shortfallByCompletion.has(move.source_completion_id))shortfallByCompletion.set(move.source_completion_id,{});shortfallByCompletion.get(move.source_completion_id)[move.food_id]=legacyShortfall}}}
- for(const row of data.shortfalls||[]){if(!shortfallByCompletion.has(row.completion_id))shortfallByCompletion.set(row.completion_id,{});shortfallByCompletion.get(row.completion_id)[row.food_id]=Number(row.quantity)}
+ for(const move of data.movements)if(move.source_completion_id){if(!movementsByCompletion.has(move.source_completion_id))movementsByCompletion.set(move.source_completion_id,{});const amounts=movementsByCompletion.get(move.source_completion_id);if(move.movement_kind==='meal'){const legacyShortfall=Math.max(0,Number(move.shortfall_quantity)||0);amounts[move.food_id]=(amounts[move.food_id]||0)+Math.max(0,Math.abs(Number(move.quantity))-legacyShortfall)}}
  const doneByCycle=new Map(),reversedDoneByCycle=new Map();
- for(const completion of data.completions){const planned=plannedById.get(completion.planned_meal_id);if(!planned)continue;const mealKey=planned.meal_date+'#'+planned.slot,usage=ingredientsByCompletion.get(completion.id)||{},deducted=movementsByCompletion.get(completion.id)||{};for(const foodId of Object.keys(usage))if(!Object.hasOwn(deducted,foodId))deducted[foodId]=0;const entry={rid:completion.recipe_id_snapshot,usage,deducted,shortfall:shortfallByCompletion.get(completion.id)||{},operationId:completion.operation_id,completedAt:completion.completed_at};if(completion.reversed_at){if(!reversedDoneByCycle.has(planned.cycle_id))reversedDoneByCycle.set(planned.cycle_id,{});reversedDoneByCycle.get(planned.cycle_id)[completion.operation_id]={...entry,mealKey,reversedAt:completion.reversed_at};continue}if(!doneByCycle.has(planned.cycle_id))doneByCycle.set(planned.cycle_id,{});doneByCycle.get(planned.cycle_id)[mealKey]=entry}
+ for(const completion of data.completions){const planned=plannedById.get(completion.planned_meal_id);if(!planned)continue;const mealKey=planned.meal_date+'#'+planned.slot,usage=ingredientsByCompletion.get(completion.id)||{},deducted=movementsByCompletion.get(completion.id)||{};for(const foodId of Object.keys(usage))if(!Object.hasOwn(deducted,foodId))deducted[foodId]=0;const entry={rid:completion.recipe_id_snapshot,usage,deducted,operationId:completion.operation_id,completedAt:completion.completed_at};if(completion.reversed_at){if(!reversedDoneByCycle.has(planned.cycle_id))reversedDoneByCycle.set(planned.cycle_id,{});reversedDoneByCycle.get(planned.cycle_id)[completion.operation_id]={...entry,mealKey,reversedAt:completion.reversed_at};continue}if(!doneByCycle.has(planned.cycle_id))doneByCycle.set(planned.cycle_id,{});doneByCycle.get(planned.cycle_id)[mealKey]=entry}
  const allMovements=data.movements.slice().sort((a,b)=>String(a.created_at).localeCompare(String(b.created_at))).map(move=>{
   const sourceCompletion=move.source_completion_id?completionById.get(move.source_completion_id):null;
   const reversalTarget=move.reverses_movement_id?movementById.get(move.reverses_movement_id):null;

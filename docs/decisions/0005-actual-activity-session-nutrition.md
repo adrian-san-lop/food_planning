@@ -11,6 +11,7 @@ No siempre se sabe de antemano si se hará ejercicio. Un calendario de entrenami
 ## Decisión
 
 - Registrar una sesión después de realizarla, indicando fecha, categoría de actividad/esfuerzo y duración. Se permiten varias sesiones en una fecha.
+- Los niveles y factores actuales del movimiento habitual se documentan en ADR-0044. Las sesiones registradas aquí siguen sumándose por separado solo en su fecha.
 - Calcular energía neta aproximada con `(MET − 1) × peso_kg × duración_horas`. Restar un MET evita volver a contar el gasto de reposo incluido en el objetivo diario base. Sumar las sesiones de esa fecha; sin sesiones, usar el objetivo base.
 - Aplicar el cambio solo a las comidas pendientes de la fecha registrada. Las comidas completadas conservan las cantidades y el consumo ya guardados. El cálculo trata esas cantidades como fijas y adapta el objetivo restante entre las comidas pendientes.
 - Mantener estables las metas diarias de proteína y grasa ante una sesión. Cubrir principalmente la energía extra con porciones de hidratos, dentro de los límites de adaptación existentes.

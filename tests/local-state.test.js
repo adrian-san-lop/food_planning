@@ -10,25 +10,25 @@ function memoryStorage(seed = {}) {
   };
 }
 
-test('local state saves the current v10 format and persists catalog unit migrations', () => {
+test('local state saves the current v11 format and persists catalog unit migrations', () => {
   const storage = memoryStorage({ state: JSON.stringify({ v: 9, usage: { kiwi: 85 } }) });
   const migrated = loadLocalState({
     key: 'state',
     getStorage: () => storage,
-    emptyState: () => ({ v: 10, usage: {} }),
-    cleanState: (raw) => ({ v: 10, usage: { kiwi: raw.usage.kiwi / 90 } }),
+    emptyState: () => ({ v: 11, usage: {} }),
+    cleanState: (raw) => ({ v: 11, usage: { kiwi: raw.usage.kiwi / 90 } }),
   });
 
-  assert.equal(migrated.v, 10);
+  assert.equal(migrated.v, 11);
   assert.equal(migrated.usage.kiwi, 85 / 90);
   assert.deepEqual(JSON.parse(storage.getItem('state')), migrated);
 
   saveLocalState({ key: 'state', state: migrated, getStorage: () => storage, updateEditedAt: false });
-  assert.equal(JSON.parse(storage.getItem('state')).v, 10);
+  assert.equal(JSON.parse(storage.getItem('state')).v, 11);
   assert.equal(loadLocalState({
     key: 'state',
     getStorage: () => storage,
-    emptyState: () => ({ v: 10 }),
+    emptyState: () => ({ v: 11 }),
     cleanState: (raw) => raw,
   }).usage.kiwi, 85 / 90);
 });
