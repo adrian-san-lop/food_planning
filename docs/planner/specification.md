@@ -133,3 +133,8 @@ Si se incorpora un menú compartido por varias personas, falta decidir cómo com
 ## Datos y privacidad
 
 El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v11 conserva una copia local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+
+
+## Convenciones del catálogo confirmadas el 19/10/2026
+
+Según [ADR-0045](../decisions/0045-generic-catalog-and-measurement-conventions.md), los alimentos representan genéricos, sin exigir marca. Las cantidades corresponden al peso en crudo antes de cocinar; conservas escurridas y alitas con hueso. Los alimentos ya comprados preparados conservan esa forma declarada. El huevo L se mide en unidades y su nutrición usa una estimación estándar de 60 g comestibles por unidad. Café y tiempos actuales permanecen. Las especias opcionales no cuantificadas quedan fuera del cálculo; omitir condimentos cuantificados está pendiente de tratamiento funcional, no se falsifican sus tablas a cero. Estas convenciones no modifican los IDs, cantidades ni pesos por pieza existentes.

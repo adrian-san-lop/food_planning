@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.9.1",
-  "source": "Existing recipes from menuki.html plus curated generic recipes using catalog foods. Version 0.8.0 adds Ensalada templada de gulas as a one-person recipe. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams.",
-  "status": "Catálogo 0.9.1: 112 recetas y 543 referencias de ingredientes, con cantidades base para una persona; las porciones de fruta entera se expresan en piezas y el pan de molde en rebanadas.",
+  "catalogVersion": "0.9.3",
+  "source": "Existing recipes from menuki.html plus curated generic recipes using catalog foods. Version 0.8.0 adds Ensalada templada de gulas as a one-person recipe. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams. Version 0.9.2 applies evidence-backed USDA corrections and explicit recipe ingredient instructions; see docs/audits/catalog-quality/results/summary.md. Version 0.9.3 defines a generic L egg estimate and documents identical-ingredient recipe families under ADR-0045.",
+  "status": "Catálogo 0.9.3: 112 recetas y 543 referencias de ingredientes, con cantidades base para una persona; las porciones de fruta entera se expresan en piezas y el pan de molde en rebanadas.",
   "recipes": [
     {
       "id": "yogur_platano",
@@ -463,7 +463,7 @@
         "Rellena con pavo loncheado."
       ],
       "tip": "Puedes sustituir el pavo loncheado por restos de pechuga de pavo cocinada.",
-      "description": ""
+      "description": "Pan integral con pavo loncheado y tomate fresco."
     },
     {
       "id": "salmon_patata",
@@ -811,7 +811,7 @@
         "Rellénalo con tomate y pavo loncheado."
       ],
       "tip": "Ideal si trabajas desde casa y necesitas algo rápido.",
-      "description": ""
+      "description": "Pan integral con pavo loncheado y tomate fresco."
     },
     {
       "id": "pasta_pavo_champi",
@@ -884,7 +884,7 @@
         "Córtala y tómala con el yogur."
       ],
       "tip": "Varía según lo que encuentres fresco en tu frutería.",
-      "description": ""
+      "description": "Yogur natural alto en proteínas acompañado de fruta de temporada."
     },
     {
       "id": "fajitas_pollo",
@@ -956,7 +956,7 @@
         "Sirve el yogur y acompaña con un plátano en rodajas."
       ],
       "tip": "Sencillo para una mañana ocupada.",
-      "description": ""
+      "description": "Yogur natural alto en proteínas acompañado de plátano."
     },
     {
       "id": "pollo_boniato_ensalada",
@@ -1227,7 +1227,7 @@
       ],
       "steps": [
         "Hierve calabacín, patata y cebolla troceados durante 15–20 minutos.",
-        "Tritura con parte del agua de cocción y ajusta la textura.",
+        "Tritura con parte del agua de cocción y todo el aceite de oliva indicado; ajusta la textura.",
         "Cuaja una tortilla francesa de dos huevos.",
         "Sirve la crema con la tortilla, el queso fresco y pan integral."
       ],
@@ -1383,7 +1383,7 @@
       ],
       "steps": [
         "Cuece el arroz.",
-        "Saltea pavo troceado con pimiento y cebolla.",
+        "Saltea el pavo troceado, el pimiento y la cebolla con todo el aceite de oliva indicado.",
         "Añade tomate triturado y cocina unos 6 minutos.",
         "Sirve encima del arroz con orégano."
       ],
@@ -1529,7 +1529,7 @@
       ],
       "steps": [
         "Cuece los fideos integrales según el paquete.",
-        "Saltea zanahoria, pimiento y calabacín cortados finos.",
+        "Saltea la zanahoria, el pimiento y el calabacín cortados finos con todo el aceite de oliva indicado.",
         "Añade tiras de pollo y cocínalas por completo.",
         "Mezcla con los fideos y condimenta con un chorrito opcional de soja baja en sal."
       ],
@@ -1805,10 +1805,10 @@
         }
       ],
       "steps": [
-        "Corta el boniato en cubos y precocínalo en microondas.",
+        "Reserva el aceite de oliva indicado para repartirlo entre el boniato, el pollo y los espárragos, sin añadir aceite extra. Corta el boniato en cubos y precocínalo en microondas.",
         "Cocínalo después en la freidora de aire hasta que quede dorado.",
         "Cocina el pollo con ajo y limón hasta que esté completamente hecho.",
-        "Saltea los espárragos y sirve todo junto."
+        "Saltea los espárragos con la parte reservada del aceite y sirve todo junto."
       ],
       "tip": "La misma freidora sirve para el boniato y el pollo en tandas.",
       "description": ""
@@ -1858,7 +1858,7 @@
       ],
       "steps": [
         "Cuece arroz en una olla.",
-        "Sofríe cebolla y pimiento; incorpora tomate y guisantes.",
+        "Sofríe la cebolla y el pimiento con todo el aceite de oliva indicado; incorpora el tomate y los guisantes.",
         "Añade las gambas descongeladas y cocina hasta que estén hechas.",
         "Mezcla con el arroz y condimenta con pimentón suave."
       ],
@@ -1910,7 +1910,7 @@
       ],
       "steps": [
         "Hierve calabaza, patata y cebolla picadas unos 15–20 minutos.",
-        "Tritura con parte del agua de cocción.",
+        "Tritura con parte del agua de cocción y todo el aceite de oliva indicado.",
         "Prepara una tortilla con los huevos y el pavo loncheado.",
         "Sirve con pan integral."
       ],
@@ -2103,7 +2103,7 @@
       ],
       "steps": [
         "Hidrata el cuscús con agua caliente.",
-        "Saltea verduras en tiras finas.",
+        "Saltea las verduras en tiras finas con todo el aceite de oliva indicado.",
         "Añade el pollo y cocínalo completamente.",
         "Mezcla con cuscús y termina con comino y limón."
       ],
@@ -2191,7 +2191,7 @@
         }
       ],
       "steps": [
-        "Calienta tomate triturado y espinacas en una sartén.",
+        "Calienta el tomate triturado y las espinacas en una sartén con todo el aceite de oliva indicado.",
         "Añade las alubias escurridas.",
         "Haz dos huecos, casca los huevos, tapa y cocina hasta que cuajen.",
         "Acompaña con pan integral."
@@ -2286,7 +2286,7 @@
         "Cocina judías verdes al vapor.",
         "Sirve con limón y el aceite indicado."
       ],
-      "tip": "La trucha se puede reemplazar por dorada o merluza, ajustando las calorías.",
+      "tip": "Las estimaciones corresponden al alimento trucha / dorada del catálogo. Si utilizas merluza u otro pescado, su composición y su cocción pueden diferir; la sustitución requiere recalcular los valores.",
       "description": ""
     },
     {
@@ -2385,7 +2385,7 @@
         }
       ],
       "steps": [
-        "Corta y saltea pavo, pimiento y cebolla.",
+        "Corta el pavo, el pimiento y la cebolla y saltéalos con todo el aceite de oliva indicado.",
         "Mezcla yogur natural con limón, ajo y pimienta para una salsa rápida.",
         "Calienta la tortilla, añade lechuga y relleno.",
         "Termina con la salsa de yogur."
@@ -2395,7 +2395,7 @@
     },
     {
       "id": "hamburguesa_pavo",
-      "name": "Hamburguesa de pavo con patata y ensalada",
+      "name": "Bocadillo de pavo con patatas",
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 25,
@@ -2432,12 +2432,12 @@
         }
       ],
       "steps": [
-        "Forma hamburguesas con pavo picado o usa filetes de pavo como alternativa.",
+        "Para esta versión, utiliza los filetes de pavo fresco indicados en los ingredientes como relleno del pan.",
         "Precocina las patatas cortadas y termina en freidora de aire.",
-        "Cocina la hamburguesa completamente en sartén.",
+        "Cocina los filetes de pavo completamente en sartén con todo el aceite de oliva indicado en los ingredientes.",
         "Monta con pan, tomate y lechuga y acompaña con patatas."
       ],
-      "tip": "Si compras filetes, simplemente hazlos a la plancha y evita buscar carne picada.",
+      "tip": "Esta versión lleva filetes de pavo fresco. Una versión con pavo picado necesita su propia referencia nutricional; no se considera equivalente automáticamente.",
       "description": ""
     },
     {
@@ -2479,7 +2479,7 @@
         }
       ],
       "steps": [
-        "Saltea champiñones y espinacas en sartén.",
+        "Saltea los champiñones y las espinacas en sartén con todo el aceite de oliva indicado.",
         "Añade las alubias escurridas y calienta.",
         "Cuaja dos huevos revueltos y sirve junto a las alubias.",
         "Acompaña con pan integral."
@@ -3053,8 +3053,8 @@
         "Tuesta el pan.",
         "Añade tomate en rodajas y pavo loncheado."
       ],
-      "tip": "Puedes usar restos de pavo fresco hecho a la plancha.",
-      "description": ""
+      "tip": "La receta y sus estimaciones utilizan el pavo loncheado indicado. Sustituirlo por pavo fresco cocinado cambia la referencia nutricional y requiere recalcularla.",
+      "description": "Pan integral con pavo loncheado y tomate fresco."
     },
     {
       "id": "snack_yogur_platano",
@@ -3078,7 +3078,7 @@
         "Mezcla yogur con plátano en rodajas."
       ],
       "tip": "Sin azúcar adicional.",
-      "description": ""
+      "description": "Yogur natural alto en proteínas acompañado de plátano."
     },
     {
       "id": "snack_naranja_hummus",
@@ -3253,7 +3253,7 @@
         "Rellena con pavo loncheado y tomate."
       ],
       "tip": "Para el apetito de media mañana sin una ración de pan muy grande.",
-      "description": ""
+      "description": "Pan integral con pavo loncheado y tomate fresco."
     },
     {
       "id": "huevo_fruta",
@@ -3352,7 +3352,7 @@
         "Sirve yogur con fruta cortada."
       ],
       "tip": "Varía la fruta según tu frutería.",
-      "description": ""
+      "description": "Yogur natural alto en proteínas acompañado de fruta de temporada."
     },
     {
       "id": "pera_nueces_ligero",
@@ -3719,7 +3719,7 @@
       "steps": [
         "Hidrata la soja texturizada según las instrucciones del envase y escúrrela.",
         "Cuece el arroz por separado.",
-        "Saltea la berenjena en dados; añade la soja y el tomate triturado y cocina hasta que esté tierno.",
+        "Saltea la berenjena en dados con todo el aceite de oliva indicado; añade la soja y el tomate triturado y cocina hasta que esté tierno.",
         "Sirve la mezcla sobre el arroz."
       ],
       "tip": "La cantidad de soja indicada es en seco, antes de hidratarla.",
@@ -3771,7 +3771,7 @@
       "steps": [
         "Lava las lentejas y corta el puerro, el apio y la zanahoria.",
         "Pon las verduras y las lentejas en una cazuela con agua; cuece hasta que estén tiernas.",
-        "Añade el tomate triturado al final y sirve con el pan."
+        "Añade el tomate triturado y todo el aceite de oliva indicado al final de la cocción; mezcla y sirve con el pan."
       ],
       "tip": "Las lentejas rojas suelen cocerse más rápido que las lentejas enteras habituales.",
       "description": ""
@@ -4102,7 +4102,7 @@
       "steps": [
         "Parte la berenjena a lo largo y ásala hasta que la pulpa se ablande.",
         "Cuece el arroz y corta la ternera en trozos pequeños.",
-        "Saltea la ternera, incorpora la pulpa de berenjena y el tomate, y cocina hasta que esté hecha.",
+        "Saltea la ternera con todo el aceite de oliva indicado, incorpora la pulpa de berenjena y el tomate, y cocina hasta que esté hecha.",
         "Rellena la berenjena y sirve con el arroz."
       ],
       "tip": "La cantidad de ternera corresponde al peso en crudo.",
@@ -4185,7 +4185,7 @@
       "steps": [
         "Lava las lentejas y corta la coliflor, el puerro y el apio.",
         "Cuece todo en agua hasta que las lentejas y la coliflor estén tiernas.",
-        "Tritura hasta obtener una crema y acompaña con el pan."
+        "Tritura con todo el aceite de oliva indicado hasta obtener una crema y acompaña con el pan."
       ],
       "tip": "Ajusta la cantidad de agua al espesor que prefieras.",
       "description": ""
@@ -4287,7 +4287,7 @@
       "steps": [
         "Cuece el arroz y enjuaga las alubias y el maíz escurridos.",
         "Cocina el pavo picado en una sartén con el aceite hasta que esté hecho.",
-        "Añade la lombarda en tiras, las alubias y el maíz; saltea unos minutos y sirve con el arroz."
+        "Añade la lombarda en tiras, las alubias, el maíz y la cantidad indicada de salsa de soja; saltea unos minutos y sirve con el arroz."
       ],
       "tip": "La cantidad de alubias y maíz es peso escurrido.",
       "description": ""
