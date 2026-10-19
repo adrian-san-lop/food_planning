@@ -1,6 +1,7 @@
 # Decisión 0021: buzón compartido de propuestas de recetas
 
 - **Fecha:** 13 de octubre de 2026
+- **Actualización:** 19 de octubre de 2026, formulario de propuestas en modo dashboard con «Datos arriba»
 - **Estado:** Aceptada; migración aplicada y admin asignado según el propietario; publicación y validación pendientes
 - **Alcance:** envío de ideas de recetas, revisión administrativa y limpieza posterior al alta manual en los catálogos
 
@@ -20,6 +21,7 @@
 8. El tipo `snack` del formulario se asigna a `media` o `tarde` al preparar la receta, porque esos son los tipos existentes del catálogo.
 9. Cuando todas las propuestas se hayan incorporado y publicado, el administrador puede eliminar todo el buzón con `clear_recipe_proposals`. El botón muestra el total y pide confirmación; el RPC valida el recuento esperado y bloquea altas concurrentes. Si el buzón cambió, la limpieza falla y exige actualizarlo y confirmar de nuevo.
 10. La purga elimina solo las propuestas, ingredientes y pasos. No toca credenciales, roles ni datos personales. PostgreSQL puede reutilizar el espacio eliminado sin reducir inmediatamente el tamaño total informado.
+11. Presentar el formulario comunitario con el diseño «Datos arriba»: tipo y nombre en una tarjeta superior, Ingredientes y Preparación en dos tarjetas paralelas y envío en un pie propio. Las cuatro opciones de tipo son radios nativos con apariencia de botones. En escritorio, portátil y tablet apaisada, la altura disponible se reparte entre cabecera, metadatos, listas y acciones; solo las listas se desplazan cuando crecen. Mantener móvil y ventanas pequeñas en flujo vertical y conservar la navegación lateral compartida. Las ayudas de campos se consultan con ratón, teclado o toque; «¿Qué ocurre después de enviarla?» abre una explicación breve en un diálogo nativo con cierre por botón, fondo o Escape y retorno del foco. Mostrar el recuento de filas y los caracteres al editar, sin repetir textos de límites bajo cada entrada. Añadir y quitar conserva los borradores y la posición de las listas y enfoca el campo correspondiente. La actualización se limita al formulario comunitario: no cambia la revisión administrativa ni la persistencia.
 
 ## Consecuencias
 
@@ -27,6 +29,7 @@
 - La interfaz no accede a GitHub ni mantiene una clave de escritura. Los cambios de catálogo pasan por edición, revisión y publicación del repositorio.
 - La migración `20261013160000_recipe_proposal_inbox.sql` añade `menuki_admins`, `recipe_proposals`, `recipe_proposal_ingredients` y `recipe_proposal_steps`. Los contenidos se aíslan mediante RLS y permisos mínimos.
 - El propietario informa que ejecutó la migración y la asignación inicial del rol. La publicación y la validación de RLS con cuentas normal y admin siguen pendientes.
+- El dashboard del 19 de octubre está implementado localmente en la vista, el shell y sus eventos. Conserva las validaciones y el envío existente mediante `submit_recipe_proposal`, sin añadir tablas, migraciones, dependencias ni estados de borrador remotos. Se ha revisado el código; no se han añadido ni ejecutado pruebas ni se ha comprobado este rediseño en navegador. Publicación y validación autenticada permanecen pendientes.
 
 ## Referencias
 

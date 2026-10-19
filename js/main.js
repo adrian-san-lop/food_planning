@@ -15,7 +15,7 @@ import { createCloudStateMapper } from './persistence/cloud-state-mapper.js?v=20
 import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261018-no-shortfalls';
 import { createRecipeProposalService } from './persistence/recipe-proposals.js?v=20261013-admin-proposal-maintenance';
 import { escapeAttribute, escapeHTML } from './ui/html.js?v=20261013-ux-repair';
-import { createRecipeProposalViews } from './ui/recipe-proposal-views.js?v=20261017-proposal-views';
+import { createRecipeProposalViews } from './ui/recipe-proposal-views.js?v=20261019-proposal-dashboard';
 import { setupLegalDialogs } from './ui/legal-dialog.js?v=20261017-legal-dialog';
 const DAYS=['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'];
 const SHORT=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
@@ -111,7 +111,8 @@ const recipeProposalViews=createRecipeProposalViews({
  limits:PROPOSAL_LIMITS,
  escapeAttribute,
  escapeHTML,
- formatDateTime:formatMadridDateTime
+ formatDateTime:formatMadridDateTime,
+ icon:ic
 });
 const SYNC_META_PREFIX=LOCAL_STATE_KEY+':sync:user:';
 let passwordRecoveryActive=false,catalogsLoaded=false,catalogsPromise=null;
@@ -770,6 +771,9 @@ function updateAuthValidation(){
  }
  async function signOutOfApp(button=document.getElementById('authSignOut')){mobileMoreOpen=false;mobileAccountOpen=false;const accountMenu=document.getElementById('mobileAccountDropdown'),accountToggle=document.getElementById('mobileAccountToggle');if(accountMenu)accountMenu.hidden=true;accountToggle?.setAttribute('aria-expanded','false');if(button?.id==='mobileAuthSignOut')accountToggle?.focus();if(!supabaseClient)return;if(button)button.disabled=true;try{const {error}=await supabaseClient.auth.signOut();if(error)throw error;closeAuthenticatedApp()}catch(error){showToast(authErrorMessage(error))}finally{if(button)button.disabled=false}}
  function startApp(){
+  const proposalHelpDialog=document.getElementById('proposalHelpDialog');
+  proposalHelpDialog.addEventListener('click',event=>{if(event.target===proposalHelpDialog)closeRecipeProposalHelp()});
+  proposalHelpDialog.addEventListener('close',()=>{if(proposalHelpDialog.open)return;const opener=proposalHelpOpener,key=proposalHelpKey;proposalHelpOpener=null;proposalHelpKey=null;if(view==='proponer'&&!document.querySelector('.app').hidden)(opener?.isConnected?opener:document.querySelector('#recipeProposalForm [data-help="'+key+'"]'))?.focus({preventScroll:true})});
   const activityLevelsDialog=document.getElementById('profileActivityDialog');
   activityLevelsDialog.addEventListener('click',event=>{if(event.target===activityLevelsDialog)closeProfileActivityDialog()});
   activityLevelsDialog.addEventListener('close',()=>{if(activityLevelsDialog.open)return;const opener=profileActivityOpener;profileActivityOpener=null;if(view==='perfil'&&!document.querySelector('.app').hidden)(opener?.isConnected?opener:document.querySelector('[data-action="profile-activity-open"]'))?.focus({preventScroll:true})});
@@ -995,7 +999,36 @@ function guideView(){
  ].join('');
  return firstUseBanner()+'<div class="page-intro"><div class="eyebrow">PLANIFICACIÓN Y SEGUIMIENTO</div><h1>Guía de uso y planificación</h1><p>Empieza por los pasos en orden. Después puedes consultar los detalles de tu plan, compra y cuenta.</p></div><section class="guide-start" aria-labelledby="guideStartTitle"><div class="guide-start-heading"><span class="mini-kicker">POR DÓNDE EMPEZAR</span><h2 id="guideStartTitle">Tu recorrido en Menuki</h2><p>Una forma sencilla de poner en marcha el plan y usarlo cada día.</p></div><ol class="guide-step-grid">'+steps+'</ol></section><h2 class="guide-section-title">Detalles que puedes consultar</h2><div class="guide-grid">'+details+'</div>';
 }
-function captureRecipeProposalDraft(){const form=document.getElementById('recipeProposalForm');if(!form)return;const data=new FormData(form);recipeProposalDraft={mealType:String(data.get('mealType')||'desayuno'),name:String(data.get('name')||''),ingredients:data.getAll('ingredient').map(String),steps:data.getAll('step').map(String)}}
+function captureRecipeProposalDraft(){
+ const form=document.getElementById('recipeProposalForm');if(!form)return;
+ const data=new FormData(form);recipeProposalDraft={mealType:String(data.get('mealType')||'desayuno'),name:String(data.get('name')||''),ingredients:data.getAll('ingredient').map(String),steps:data.getAll('step').map(String)};
+ const nameCount=document.getElementById('proposalNameCount');if(nameCount)nameCount.textContent=recipeProposalDraft.name.length+' / '+PROPOSAL_LIMITS.name;
+ for(const input of form.querySelectorAll('textarea[name="step"]')){const count=document.getElementById(input.id+'Count');if(count)count.textContent=input.value.length+' / '+PROPOSAL_LIMITS.step}
+}
+function captureRecipeProposalEditorPosition(){
+ const form=document.getElementById('recipeProposalForm');if(!form)return null;
+ const active=document.activeElement,focused=form.contains(active)&&active.matches('input,textarea')?{id:active.id,radio:active.name==='mealType',start:active.selectionStart,end:active.selectionEnd}:null;
+ return {lists:[...form.querySelectorAll('[data-proposal-list]')].map(list=>({kind:list.dataset.proposalList,top:list.scrollTop})),focused};
+}
+function restoreRecipeProposalEditorPosition(position){
+ const form=document.getElementById('recipeProposalForm');if(!position||!form)return;
+ for(const list of position.lists){const node=form.querySelector('[data-proposal-list="'+list.kind+'"]');if(node)node.scrollTop=list.top}
+ const focused=position.focused;if(!focused)return;
+ const input=focused.radio?form.querySelector('input[name="mealType"]:checked'):document.getElementById(focused.id);
+ if(!input||input.disabled)return;
+ input.focus({preventScroll:true});if(!focused.radio&&Number.isInteger(focused.start))input.setSelectionRange(focused.start,focused.end);
+}
+let proposalHelpOpener=null,proposalHelpKey=null;
+function openRecipeProposalHelp(button){
+ const titles={name:'Nombre de la receta',ingredients:'Ingredientes',steps:'Preparación',review:'Nos encargamos del resto'},key=button.dataset.help;
+ if(view!=='proponer'||!titles[key]||!button.closest('#recipeProposalForm'))return;
+ const dialog=document.getElementById('proposalHelpDialog');
+ const description=key==='review'?'Revisaremos tu idea y completaremos las cantidades y la información nutricional antes de incorporarla al recetario. Enviarla no la publica automáticamente.':button.closest('.proposal-editor-help')?.querySelector('[role="tooltip"]')?.textContent;
+ if(!description)return;
+ document.getElementById('proposalHelpTitle').textContent=titles[key];document.getElementById('proposalHelpText').textContent=description;
+ proposalHelpOpener=button;proposalHelpKey=key;if(!dialog.open)dialog.showModal();
+}
+function closeRecipeProposalHelp(){const dialog=document.getElementById('proposalHelpDialog');if(dialog?.open)dialog.close()}
 function proposalMealTypeLabel(value){return {desayuno:'Desayuno',comida:'Comida',snack:'Snack',cena:'Cena'}[value]||'Receta'}
 function proposalExpectedSnapshot(proposal){return {mealType:proposal.meal_type,name:proposal.recipe_name,ingredients:[...proposal.ingredients],steps:[...proposal.steps]}}
 function captureAdminProposalDraft(form=document.getElementById('recipeProposalEditForm')){if(!form||!proposalEditingDraft)return;const data=new FormData(form);proposalEditingDraft={...proposalEditingDraft,mealType:String(data.get('mealType')||''),name:String(data.get('name')||''),ingredients:[...form.querySelectorAll('[name="ingredient"]')].map(input=>input.value),steps:[...form.querySelectorAll('[name="step"]')].map(input=>input.value)}}
@@ -1059,20 +1092,24 @@ async function clearRecipeProposals(){
  }finally{if(actionToken===proposalActionToken){proposalInboxBusy=false;if(view==='admin')render()}}
 }
 async function submitRecipeProposal(event){event.preventDefault();if(recipeProposalSubmitting||!supabaseClient)return;captureRecipeProposalDraft();const name=recipeProposalDraft.name.trim(),ingredients=recipeProposalDraft.ingredients.map(value=>value.trim()),steps=recipeProposalDraft.steps.map(value=>value.trim());if(!name||name.length>PROPOSAL_LIMITS.name){showToast('Escribe un nombre de receta de hasta '+PROPOSAL_LIMITS.name+' caracteres.');return}if(!ingredients.length||ingredients.length>PROPOSAL_LIMITS.items||ingredients.some(value=>!value||value.length>PROPOSAL_LIMITS.ingredient)){showToast('Completa cada ingrediente (máximo '+PROPOSAL_LIMITS.ingredient+' caracteres).');return}if(!steps.length||steps.length>PROPOSAL_LIMITS.items||steps.some(value=>!value||value.length>PROPOSAL_LIMITS.step)){showToast('Completa cada paso (máximo '+PROPOSAL_LIMITS.step+' caracteres).');return}recipeProposalDraft={...recipeProposalDraft,name,ingredients,steps};recipeProposalSubmitting=true;render();try{await recipeProposalService.submit({clientId:recipeProposalClientId,mealType:recipeProposalDraft.mealType,recipeName:name,ingredients,steps});recipeProposalDraft=newRecipeProposalDraft();recipeProposalClientId=newRecipeProposalClientId();proposalInboxLoaded=false;showToast('Propuesta enviada para revisión. Todavía no forma parte del recetario.')}catch(error){console.error('Menuki recipe proposal could not be submitted',error);showToast('No se pudo enviar la propuesta. El texto sigue en el formulario; revisa la conexión e inténtalo de nuevo.')}finally{recipeProposalSubmitting=false;if(view==='proponer')render()}}
-function addRecipeProposalItem(kind){captureRecipeProposalDraft();const field=kind==='ingredient'?'ingredients':'steps',limit=PROPOSAL_LIMITS.items;if(recipeProposalDraft[field].length>=limit)return;recipeProposalDraft[field].push('');render();document.querySelector('[name="'+(kind==='ingredient'?'ingredient':'step')+'"][data-index="'+(recipeProposalDraft[field].length-1)+'"]')?.focus()}
-function removeRecipeProposalItem(kind,index){captureRecipeProposalDraft();const field=kind==='ingredient'?'ingredients':'steps';if(recipeProposalDraft[field].length<=1)return;recipeProposalDraft[field].splice(index,1);render()}
+function focusRecipeProposalItem(kind,index){document.querySelector('#recipeProposalForm [name="'+kind+'"][data-index="'+index+'"]')?.focus()}
+function addRecipeProposalItem(kind){if(recipeProposalSubmitting)return;captureRecipeProposalDraft();const field=kind==='ingredient'?'ingredients':'steps',limit=PROPOSAL_LIMITS.items;if(recipeProposalDraft[field].length>=limit)return;recipeProposalDraft[field].push('');render();focusRecipeProposalItem(kind,recipeProposalDraft[field].length-1)}
+function removeRecipeProposalItem(kind,index){if(recipeProposalSubmitting)return;captureRecipeProposalDraft();const field=kind==='ingredient'?'ingredients':'steps';if(recipeProposalDraft[field].length<=1||!Number.isInteger(index)||index<0||index>=recipeProposalDraft[field].length)return;recipeProposalDraft[field].splice(index,1);render();focusRecipeProposalItem(kind,Math.min(index,recipeProposalDraft[field].length-1))}
 function firstUseBanner(){if(state.profileConfirmed||view!=='guia')return '';return '<section class="first-use-card" aria-labelledby="firstUseTitle"><div class="eyebrow">PRIMEROS PASOS · PASO 1 DE 5</div><h2 id="firstUseTitle">Empieza revisando tu perfil</h2><p>Menuki muestra valores genéricos de ejemplo. Los objetivos y las raciones se calculan con ellos hasta que confirmes tus datos.</p><ol><li class="current"><strong>Revisa tu perfil</strong><span>Confirma edad, altura, peso, movimiento y objetivo.</span></li><li><strong>Explora el menú</strong><span>Consulta los platos y cambia los que quieras.</span></li><li><strong>Registra tus comidas</strong><span>Márcalas cuando hayas terminado cada una.</span></li><li><strong>Organiza compra y despensa</strong><span>Anota existencias, marca lo comprado y finaliza la compra.</span></li><li><strong>Registra actividad</strong><span>Solo después de realizarla; el peso es opcional.</span></li></ol><div class="first-use-actions"><button class="btn btn-primary" data-action="navigate" data-view="perfil">Mi Perfil</button><button class="btn btn-quiet" data-action="navigate" data-view="semana">Ver el menú</button></div></section>'}
 function applyNoActiveCyclePresentation(root){if(!state.noActiveCycle)return;if(view==='inicio')root.querySelector('.home-banner-date-link')?.remove();if(view==='guia'){const card=[...root.querySelectorAll('.guide-card')].find(node=>node.querySelector('h3')?.textContent==='Fecha de inicio del ciclo');if(card){const paragraph=card.querySelector('p');if(paragraph)paragraph.textContent='Tu cuenta no tiene un ciclo activo. Selecciona el día de inicio en el aviso superior para empezar.';card.querySelector('.shop-actions')?.remove()}}if(view==='despensa'){const stat=root.querySelector('.compact-stats .stat');if(stat){const value=stat.querySelector('.stat-value'),note=stat.querySelector('.stat-note');if(value)value.textContent='—';if(note)note.textContent='Sin ciclo activo'}}}
 function render(){
  activateScheduledCycleIfDue();
  if(shopCycle==='next'&&!canBuyNextCycle(confirmedNextMenu()))shopCycle='current';
+ const proposalPosition=view==='proponer'&&document.getElementById('viewRoot').dataset.renderedView===view?captureRecipeProposalEditorPosition():null;
+ if(view!=='proponer')closeRecipeProposalHelp();
  const root=document.getElementById('viewRoot'),sameView=root.dataset.renderedView===view,openGroups=sameView?new Set([...root.querySelectorAll('details[data-accordion-id][open]')].map(node=>node.dataset.accordionId)):new Set(),blocked=['inicio','semana'].includes(view)&&needsCycleRenewal();
- renderCycleSetupNotice();renderNav();const app=document.querySelector('.app');app.classList.toggle('home-view',view==='inicio'&&!blocked);app.classList.toggle('home-no-cycle',view==='inicio'&&!!state?.noActiveCycle);app.classList.toggle('shopping-view',view==='compra');app.classList.toggle('profile-view',view==='perfil');app.classList.toggle('menu-view',view==='semana'&&!blocked&&!state.noActiveCycle);app.classList.toggle('weekless-view',view==='compra'||view==='despensa');
+ renderCycleSetupNotice();renderNav();const app=document.querySelector('.app');app.classList.toggle('home-view',view==='inicio'&&!blocked);app.classList.toggle('home-no-cycle',view==='inicio'&&!!state?.noActiveCycle);app.classList.toggle('shopping-view',view==='compra');app.classList.toggle('profile-view',view==='perfil');app.classList.toggle('proposal-view',view==='proponer');app.classList.toggle('menu-view',view==='semana'&&!blocked&&!state.noActiveCycle);app.classList.toggle('weekless-view',view==='compra'||view==='despensa');
  const renderer=({inicio:dashboard,perfil:profileView,semana:weekView,recetas:recipesView,compra:shopView,despensa:pantryView,evolucion:trackingView,guia:guideView,proponer:recipeProposalViews.proposalView,admin:recipeProposalViews.adminView}[view]||dashboard);
  root.innerHTML=blocked?cycleRenewalPage():renderer();root.dataset.renderedView=view;
  if(!blocked){applyNoActiveCyclePresentation(root);applyHomeOnboarding(root);applyQuickGuideEntry(root);applyProfileAccount(root)}
  for(const node of root.querySelectorAll('details[data-accordion-id]'))node.open=openGroups.has(node.dataset.accordionId)||node.open;
  if(view==='compra'){applyShoppingSearch();updateShoppingProgress()}
+ if(view==='proponer')restoreRecipeProposalEditorPosition(proposalPosition);
  syncCycleRenewalDialog(blocked);
 }
  function showRecipe(id,day,slot,week=visibleWeek){const r=REC[id];if(!r)return;modalCtx={id,week:week==null?visibleWeek:Number(week),day:day==null?null:Number(day),slot:slot==null?null:Number(slot)};renderRecipeModal();const dlg=document.getElementById('recipeDialog');if(!dlg.open)dlg.showModal()}
@@ -1185,6 +1222,8 @@ document.addEventListener('click',function(event){const btn=event.target.closest
  if(action==='profile-activity-open'){openProfileActivityDialog(btn);return}
  if(action==='profile-activity-close'){closeProfileActivityDialog();return}
  if(action==='profile-activity-select'){selectProfileActivity(btn.dataset.level);return}
+ if(action==='proposal-help-open'){openRecipeProposalHelp(btn);return}
+ if(action==='proposal-help-close'){closeRecipeProposalHelp();return}
  if(action==='profile-guide-open'){document.getElementById('profileHelpDialog').showModal();return}
  if(action==='profile-guide-close'){document.getElementById('profileHelpDialog').close();return}
  if(action==='profile-help'){const wasOpen=btn.getAttribute('aria-expanded')==='true';document.querySelectorAll('.profile-help-trigger[aria-expanded="true"]').forEach(other=>{if(other!==btn){other.setAttribute('aria-expanded','false');other.closest('.profile-help')?.classList.add('is-dismissed')}});const help=btn.closest('.profile-help');help?.classList.toggle('is-dismissed',wasOpen);btn.setAttribute('aria-expanded',String(!wasOpen));return}
