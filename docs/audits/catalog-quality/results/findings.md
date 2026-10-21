@@ -1,3 +1,40 @@
+# Cierre de hallazgos vigente — 19/10/2026
+
+Iteración cerrada tras comprobaciones finales, sin nueva investigación ni nuevos CSV. Estos estados sustituyen los estados operativos de las secciones históricas inferiores. «Corregido» describe el problema concreto; no certifica todos los nutrientes, productos ni preparaciones.
+
+| ID | Estado final | Justificación / límite |
+| --- | --- | --- |
+| F-001 | Pendiente por falta de evidencia | Origen individual de estimaciones heredadas no reconstruido; no prueba que todas sean erróneas. |
+| F-002 | Pendiente por falta de evidencia | Mejora parcial: referencias identificadas incorporadas; seis búsquedas aún no sustentan una equivalencia adoptada. |
+| F-003 | Corregido | Destino de aceite/salsa explícito en las 16 recetas detectadas; prueba documental. |
+| F-004 | Revisado sin cambio | Tiempos conservados según propietario; no cronometrados. |
+| F-005 | Corregido | Ocho fichas de tres preparaciones: descripciones ahora distinguen cantidades; IDs, ingredientes y macros intactos. |
+| F-006 | Revisado sin cambio | Peso genérico de rebanada 25 g conservado; ejemplo comercial no demuestra error ni valida cada rebanada. |
+| F-007 | Revisado sin cambio | Café conservado por decisión expresa, sin pretender verificación de su convención nutricional. |
+| F-008 | Revisado sin cambio | Residual 4/4/9 no demuestra error; condimentos cuantificados se siguen sumando. |
+| F-009 | Revisado sin cambio | Volumen/complejidad culinaria de gulas no demuestran incoherencia; sin prueba de cocina. |
+| F-010 | Pendiente por falta de evidencia | Representación energética/formato del aceite sin error demostrado; se conserva fuente y aporte. |
+| F-011 | Revisado sin cambio | Descripciones vacías restantes válidas por contrato; ocho descripciones de variantes corregidas dentro del alcance. |
+| F-012 | Corregido | Tres alternativas detectadas aclaradas sin equiparar su composición. |
+| F-013 | Pendiente por falta de evidencia | Cobertura no equivale a validación exacta: 73 close, cinco no comparables y 12 pendientes; sin continuar investigación. |
+| F-014 | Revisado sin cambio | Ejemplos de marca no sustituyen automáticamente genéricos. |
+| F-015 | Pendiente por falta de evidencia | Forma de uso confirmada; algunas densidades, mermas y pesos aproximados no están validados externamente. |
+| F-016 | Revisado sin cambio | Referencias cercanas contrastadas conservan diferencias; no se convierten en sustituciones sin equivalencia suficiente. |
+| F-017 | Corregido | Huevo L de 60 g comestibles aproximados, un único registro crudo para kcal/P/C/G y 16 deltas comprobados. |
+| F-018 | Pendiente por falta de evidencia | Alubias blancas escurridas confirmadas como uso, pero falta fuente con denominador explícito comparable. |
+| F-019 | Corregido | Cinco correcciones USDA previas conservadas y comprobadas frente a evidencia guardada. |
+| F-020 | Corregido | Trazabilidad, cálculo de impacto y regresión incorporados; alcance de fuentes contrastadas explícito. |
+
+Condimentos: todos los ingredientes cuantificados se mantienen contabilizados, incluidos aceite, cayena, salsa de soja y vinagre. Se cierra la antigua petición de excluirlos; no requiere modificación del runtime.
+
+Límite del historial: sus cantidades y movimientos permanecen intactos, pero las kcal/macros mostradas se recalculan con tablas actuales. Congelar valores históricos sería un encargo funcional separado; no se modifica aquí.
+
+No se eleva ninguna fuente no contrastada a verificada. Se reutiliza la evidencia primaria ya guardada; no se han consultado ni validado nuevas fuentes durante el cierre.
+
+---
+
+## Historial previo al cierre
+
 # Estado vigente L4 — 19/10/2026
 
 - **F-017 resuelto en representación y estimación:** huevo L confirmado; 60 g comestibles estándar de fuente identificada y referencia cruda USDA. Corrección por unidad documentada en summary.md, sin exigir pesado al usuario.

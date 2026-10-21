@@ -6,7 +6,7 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 
 ## Catálogo y recetas
 
-La elección de representación genérica y las convenciones de medida se han resuelto en [ADR-0045](decisions/0045-generic-catalog-and-measurement-conventions.md). No es necesario solicitar marcas al propietario. Sigue pendiente implementar la exclusión de condimentos cuantificados y, si se decide unificar su presentación, conservar la compatibilidad de los IDs de recetas coincidentes.
+La elección de representación genérica y las convenciones de medida se han resuelto en [ADR-0045](decisions/0045-generic-catalog-and-measurement-conventions.md). No es necesario solicitar marcas al propietario. El cierre confirma contabilizar todos los ingredientes cuantificados; la exclusión ya no es una tarea pendiente. Una posible unificación futura de presentación conservaría la compatibilidad de los IDs de recetas coincidentes.
 - En la implementación inicial, “no usada” significa que la receta no aparece en el menú activo; no significa que se haya añadido recientemente al catálogo.
 - ¿Cuántas recetas no usadas en el menú activo se esperan por ciclo, si hay un mínimo? Hoy solo se favorecen, sin imponer un mínimo.
 - ¿Se pretende evitar cualquier repetición en una semana o basta con evitar repeticiones cercanas? No hay distancias ni límites numéricos acordados.

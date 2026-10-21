@@ -1,3 +1,140 @@
+# Cierre de la iteración nutricional — 19/10/2026
+
+**Comprobaciones finales completadas.** Catálogos 0.9.3; 90 alimentos, 112 recetas y 543 referencias. Sin nueva auditoría, nuevas fuentes, nuevos CSV ni cambios funcionales. Rama de cierre `fix/catalog-iteration-closure`.
+
+## Estado Git y diff revisado
+
+Al empezar el cierre, el checkout estaba limpio en `dev`, HEAD `527e5d9` (`fix/fodd-catalogue`), que ya contenía los cambios anteriores. Se revisa ese commit contra `c630973` y el diff local de cierre. Tras actualizar referencias, dev y origin/dev coincidían; se creó la rama con el script del repositorio. No se ha hecho commit, push, merge, PR ni publicación durante este cierre. La existencia previa del commit no es una operación realizada por este cierre ni prueba del estado del despliegue.
+
+## Huevo L: coherencia de las cuatro magnitudes
+
+Las cuatro cifras salen del mismo registro **USDA SR Legacy FDC 171287 / NDB 01123, huevo entero crudo fresco**, por 100 g comestibles. Se multiplican por 0,6 y se redondean a dos decimales:
+
+| Magnitud | Fuente por 100 g | Cálculo por 60 g | Catálogo por unidad L |
+| --- | ---: | ---: | ---: |
+| kcal | 143 | 85,8 | 85,8 |
+| Proteína (g) | 12,56 | 7,536 | 7,54 |
+| Hidratos (g) | 0,72 | 0,432 | 0,43 |
+| Grasa (g) | 9,51 | 5,706 | 5,71 |
+
+La guía del Instituto del Huevo respalda la aproximación de 60 g comestibles de clase L; no se toma de ella una energía independiente ni se mezclan tablas para los macros. Las cuatro magnitudes se calculan exclusivamente desde USDA. Ambas fuentes ya habían sido contrastadas y documentadas; este cierre comprueba coherencia sobre esa evidencia, no afirma una nueva verificación online. Los 60 g son una referencia aproximada, no una medición de cada unidad.
+
+La prueba final comprueba las 112 recetas y detecta exactamente **16 con huevo**. Para cada nutriente, el delta es `huevos / baseServings × (valor nuevo − anterior)`. Incremento por huevo: +13,8 kcal, +1,24 g proteína, +0,03 g hidratos y +0,71 g grasa. Hasta +27,6 kcal en las recetas de dos huevos. Los dos informes JSON de impacto existentes siguen vigentes sin regenerarlos.
+
+Recetas afectadas por el huevo:
+
+- `huevos_pan_kiwi`.
+- `lentejas_huevo`.
+- `tortilla_atun`.
+- `crema_tortilla`.
+- `alubias_huevo`.
+- `tortilla_patata_atun`.
+- `crema_calabaza_pavo`.
+- `huevos_alubias`.
+- `alubias_revuelto`.
+- `tortitas_atun`.
+- `tostada_huevo_pavo`.
+- `tostada_aguacate_huevo`.
+- `snack_tostada_huevo`.
+- `huevo_fruta`.
+- `tostada_tofu_revuelto`.
+- `desayuno_tostada_aguacate_pavo_huevo`.
+
+## Ocho fichas similares
+
+Se corrige únicamente la descripción para expresar las cantidades reales de cada ración. Se mantienen ingredientes, cantidades, tipos de comida, IDs y los cuatro totales nutricionales frente a L3:
+
+| ID | Descripción final |
+| --- | --- |
+| `bocadillo_pavo` | 2 rebanadas de pan integral con 80 g de pavo loncheado y 80 g de tomate fresco. |
+| `bocadillo_pavo_peq` | 2 rebanadas de pan integral con 80 g de pavo loncheado y 60 g de tomate fresco. |
+| `yogur_fruta` | 170 g de yogur natural alto en proteínas con 1 pieza de fruta de temporada. |
+| `yogur_platano_simple` | 170 g de yogur natural alto en proteínas con 1 plátano. |
+| `snack_pavo_tostada` | 2 rebanadas de pan integral con 85 g de pavo loncheado y 80 g de tomate fresco. |
+| `snack_yogur_platano` | 190 g de yogur natural alto en proteínas con 1 plátano. |
+| `mini_pavo_tomate` | 2 rebanadas de pan integral con 50 g de pavo loncheado y 80 g de tomate fresco. |
+| `yogur_fruta_ligero` | 140 g de yogur natural alto en proteínas con 1 pieza de fruta de temporada. |
+
+No se fusionan ni eliminan recetas. La prueba exige ocho fichas, descripciones distintas dentro de cada preparación y cantidades descritas iguales a las cantidades JSON. Se actualiza el manifiesto existente; no se crean nuevos CSV ni se modifica ninguna tabla nutricional durante este cierre.
+
+## Condimentos, compra, despensa y planificación
+
+Aceite, cayena, salsa de soja y vinagre cuantificados conservan su aporte. Una prueba explícita pasa cada cantidad real por el cargador y servicio nutricional de la aplicación y compara los cuatro nutrientes. Los opcionales sin cantidad definida siguen fuera del cálculo. Se elimina de la documentación vigente la tarea de excluir condimentos cuantificados.
+
+El diff de la iteración no cambia `js/`, HTML, CSS, esquemas ni Supabase. Todos los IDs, unidades de compra/receta, pesos por pieza, paquetes y cantidades de ingredientes coinciden con el baseline original. Por ello no cambia la conversión física ni se introducen migraciones de compra/despensa. Las estimaciones corregidas sí pueden modificar raciones propuestas por el ajuste automático existente; es el efecto esperado de mejorar sus tablas, no una modificación del algoritmo. Las comidas registradas conservan sus cantidades fijadas.
+
+**Límite comprobado del historial:** `recipeUsage`, `dayCalc` y `completedDayCalc` usan las cantidades guardadas y la tabla FOOD vigente. Los IDs, cantidades y movimientos históricos no se reescriben, pero sus kcal/macros mostrados pueden cambiar tras corregir el catálogo. No existe snapshot inmutable de los cuatro totales. Una prueba documenta que una cantidad histórica de dos huevos sigue siendo dos huevos y se muestra con 171,6 kcal, frente a las antiguas 144. Si se exige congelar la nutrición histórica, hace falta otro cambio funcional con sus snapshots; no se ha alterado aquí ni se declara resuelto.
+
+## Verificación de cierre
+
+- `npm test`: **50/50 pruebas superadas**, sin fallos ni omisiones. Incluye inventario, reversos idempotentes, conciliación, snapshots relacionales, cantidades fijas, contratos y los nuevos controles de cierre.
+- Ambos catálogos cumplen sus JSON Schema originales con `jsonschema`.
+- `node scripts/catalog-audit.mjs` y `node scripts/catalog-audit.mjs --since-l3`: informes existentes vigentes; 26 recetas cambian acumuladamente desde 0.9.1 y 16 desde L3.
+- Diff y cambios de objetos comprobados contra el baseline: solo campos documentados, sin modificaciones de runtime ni datos personales. Comprobación de espacios del diff correcta.
+
+## Cambios y pendientes reales
+
+En el cierre no se cambian valores de `foods.json`. Se confirman los seis alimentos corregidos durante la iteración: huevo L, edamame, lenteja roja seca, solomillo de cerdo, pavo picado y maíz escurrido. Acumulado: 17 fuentes integradas, 25 recetas mejoradas documentalmente y 26 con diferencias nutricionales. Las ocho descripciones corregidas aquí no añaden cambios numéricos.
+
+Los estados finales de F-001 a F-020 están en [findings.md](findings.md): corregido, revisado sin cambio o pendiente por falta de evidencia. No se convierten los 73 close en validaciones exactas. Las fuentes sin equivalencia suficiente, rendimientos/densidades no contrastados y procedencias heredadas se conservan como límites de evidencia; no disparan nuevas búsquedas ni requieren marcas al propietario para cerrar esta iteración.
+
+No hay una aprobación por alimento pendiente. Solo haría falta un encargo separado si se pretende congelar los totales nutricionales históricos o fusionar físicamente las fichas de recetas preservando referencias. Ninguna de esas tareas bloquea el cierre documental y de datos actual.
+
+## Archivos modificados en este cierre
+
+- `data/recipes.json`.
+- `tests/catalog-audit.test.js`.
+- `docs/audits/catalog-quality/results/source-data/catalog-changes.json`.
+- `docs/audits/catalog-quality/results/summary.md`.
+- `docs/audits/catalog-quality/results/findings.md`.
+- `docs/audits/catalog-quality/results/decisions.md`.
+- `docs/decisions/0045-generic-catalog-and-measurement-conventions.md`.
+- `docs/planner/specification.md`.
+- `docs/open-questions.md`.
+- `context/context.md`.
+
+La iteración anterior, ya presente en el commit 527e5d9, afectó estos archivos (incluye evidencias y snapshots estáticos):
+
+- `README.md`.
+- `context/context.md`.
+- `data/foods.json`.
+- `data/recipes.json`.
+- `docs/audits/catalog-quality/README.md`.
+- `docs/audits/catalog-quality/results/automation-status.json`.
+- `docs/audits/catalog-quality/results/decisions.md`.
+- `docs/audits/catalog-quality/results/findings.md`.
+- `docs/audits/catalog-quality/results/foods-audit.csv`.
+- `docs/audits/catalog-quality/results/recipe-impact-l4.json`.
+- `docs/audits/catalog-quality/results/recipe-impact.json`.
+- `docs/audits/catalog-quality/results/recipes-audit.csv`.
+- `docs/audits/catalog-quality/results/source-data/baseline-catalogs.json`.
+- `docs/audits/catalog-quality/results/source-data/catalog-changes.json`.
+- `docs/audits/catalog-quality/results/source-data/l2-foods-audit.csv`.
+- `docs/audits/catalog-quality/results/source-data/l2-recipes-audit.csv`.
+- `docs/audits/catalog-quality/results/source-data/l3-state.json`.
+- `docs/audits/catalog-quality/results/source-data/source-plan.json`.
+- `docs/audits/catalog-quality/results/source-data/usda-records.json`.
+- `docs/audits/catalog-quality/results/summary.md`.
+- `docs/decisions/0045-generic-catalog-and-measurement-conventions.md`.
+- `docs/open-questions.md`.
+- `docs/planner/specification.md`.
+- `docs/roadmap.md`.
+- `scripts/catalog-audit.mjs`.
+- `scripts/collect-nutrition-sources.py`.
+- `scripts/update-catalog-audit.py`.
+- `tests/catalog-audit.test.js`.
+- `tests/catalogs.test.js`.
+- `tests/run.js`.
+
+SHA256 vigentes:
+
+- `data/foods.json`: `c09b5ed6baa04643b7388cecfdc665216930342977075abe3692e223ad85d5be`.
+- `data/recipes.json`: `265fa3f264be152b0c200d473f233afb73b5de16c7da6a8576679dce39a6be1a`.
+
+---
+
+## Historial anterior al cierre — estados y hashes históricos
+
 # Actualización vigente L4 — confirmaciones aplicadas, 19/10/2026
 
 Catálogos **0.9.3 local**, misma rama `docs/catalog-quality-audit`. El propietario confirma catálogo genérico, huevo L, pesos en crudo, conservas escurridas y alitas con hueso; café y tiempos actuales se conservan. No se necesitan marcas. Véase [ADR-0045](../../../decisions/0045-generic-catalog-and-measurement-conventions.md) y [decisiones vigentes](decisions.md). Los apartados L3/L2/L1 inferiores son historial y sus estados pendientes ya no sustituyen estas confirmaciones.

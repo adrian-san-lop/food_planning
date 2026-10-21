@@ -1,6 +1,6 @@
 # ADR-0045: catálogo genérico y convenciones sencillas de medida
 
-- Estado: Aceptada por confirmación expresa del propietario; aplicación local parcial descrita abajo.
+- Estado: Aceptada; cierre de la iteración nutricional confirmado el 2026-10-19. Límites de compatibilidad descritos abajo.
 - Fecha: 2026-10-19.
 - Alcance: alimentos genéricos, interpretación de cantidades, recetas y auditoría. No modifica el planificador ni datos personales.
 
@@ -11,8 +11,8 @@
 - El huevo es de tamaño L y se cuenta por unidades. Se adopta una estimación estándar de 60 g comestibles por unidad para calcular su referencia genérica cruda; no es una medición exacta de cada huevo. No se cambian los pesos por pieza existentes ni se exige pesar el huevo.
 - Café: conservar la convención y las cantidades actuales. No abrir un trabajo adicional sobre café seco frente a infusión.
 - Reposos: no añadir tiempos ni campos nuevos; conservar los tiempos actuales, sin afirmar que incluyen todos los reposos.
-- Condimentos/especias: el propietario solicita que no aporten al cálculo. Las especias opcionales ausentes de ingredientes ya están omitidas. El aceite cuantificado se mantiene como ingrediente energético. La exclusión de los condimentos cuantificados requiere un tratamiento de cálculo separado de su composición real; véase el límite técnico.
-- Dos fichas con los mismos ingredientes representan la misma preparación aunque cambien cantidades o espacio de comida. Cuando cambian ingredientes, la descripción debe explicar la diferencia. Se completa la descripción de las ocho fichas coincidentes en tres familias. Se mantienen IDs, cantidades y referencias existentes.
+- Condimentos/especias: en la instrucción final de cierre, el propietario confirma contabilizar todos los ingredientes cuantificados, incluidos aceite, cayena, salsa de soja y vinagre. Los condimentos opcionales sin cantidad definida permanecen fuera. Esta confirmación sustituye la preferencia anterior de exclusión; no queda pendiente implementarla.
+- Dos fichas con los mismos ingredientes representan la misma preparación aunque cambien cantidades o espacio de comida. Cuando cambian ingredientes, la descripción debe explicar la diferencia. Se completa la descripción de las ocho fichas coincidentes en tres familias; en el cierre se explicitan las cantidades de cada ración para distinguir las variantes. Se mantienen IDs, cantidades y referencias existentes.
 
 ## Aplicación local
 
@@ -20,9 +20,11 @@
 - Se documentan las tres familias de recetas con conjuntos de ingredientes idénticos; las ocho fichas conservan cantidades distintas. No se eliminan IDs ni se fusionan referencias de menús/históricos. La presentación de una sola ficha por preparación requeriría trabajo posterior de compatibilidad, fuera del alcance de correcciones de datos.
 - Café, tiempos, unidades y cantidades permanecen intactos. Las reglas de genéricos y medida permiten continuar sin solicitar marcas; no convierten todas las cifras actuales en datos certificados.
 
-## Límite técnico pendiente
+## Límites de compatibilidad revisados
 
-El cargador y el servicio de nutrición suman todos los ingredientes cuantificados. Cayena, salsa de soja y vinagre tienen cantidades en el catálogo. Hacer que se ignoren requeriría modificar ese contrato o la lógica funcional, expresamente excluidos del encargo anterior. Se registra la preferencia aceptada pero no se altera la lógica: tampoco se falsifican sus tablas nutricionales poniéndolas a cero. Esta parte no se presenta como implementada. El aceite continúa contabilizado.
+El cargador y el servicio de nutrición suman todos los ingredientes cuantificados; el cierre comprueba expresamente aceite, cayena, salsa de soja y vinagre. No se cambia esa lógica ni se ponen tablas reales a cero.
+
+Los históricos conservan IDs, cantidades de ingredientes y movimientos, pero sus totales nutricionales se recalculan con el catálogo vigente (`dayCalc` / `completedDayCalc`). Corregir una tabla puede cambiar los totales mostrados de comidas registradas. No se han migrado ni reescrito datos históricos. Congelar macros históricos requeriría snapshots nutricionales y un trabajo funcional separado, no autorizado en esta iteración.
 
 ## Fuentes
 
@@ -32,4 +34,4 @@ El cargador y el servicio de nutrición suman todos los ingredientes cuantificad
 
 ## Decisiones de auditoría
 
-D-01 y D-05 quedan resueltas para este alcance; D-02/D-03 tienen criterio de variantes aceptado y aplicación documental. D-04 queda parcialmente resuelta (sin nuevos tiempos/reposos), D-06 fija crudo/escurrido/hueso/L pero no valida todas las conversiones y rendimientos, y D-07 tiene preferencia aceptada con límite técnico explícito. D-08 continúa pendiente: no se ha aceptado una tolerancia nutricional universal.
+D-01 y D-05 quedan resueltas para este alcance; D-02/D-03 tienen criterio de variantes aceptado y aplicación documental. D-04 queda parcialmente resuelta (sin nuevos tiempos/reposos), D-06 fija crudo/escurrido/hueso/L pero no valida todas las conversiones y rendimientos, y D-07 queda resuelta en el cierre: todos los ingredientes cuantificados se contabilizan. D-08 se revisa sin introducir tolerancias universales; no bloquea el cierre de las correcciones comprobadas.

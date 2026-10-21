@@ -463,7 +463,7 @@
         "Rellena con pavo loncheado."
       ],
       "tip": "Puedes sustituir el pavo loncheado por restos de pechuga de pavo cocinada.",
-      "description": "Pan integral con pavo loncheado y tomate fresco."
+      "description": "2 rebanadas de pan integral con 80 g de pavo loncheado y 80 g de tomate fresco."
     },
     {
       "id": "salmon_patata",
@@ -811,7 +811,7 @@
         "Rellénalo con tomate y pavo loncheado."
       ],
       "tip": "Ideal si trabajas desde casa y necesitas algo rápido.",
-      "description": "Pan integral con pavo loncheado y tomate fresco."
+      "description": "2 rebanadas de pan integral con 80 g de pavo loncheado y 60 g de tomate fresco."
     },
     {
       "id": "pasta_pavo_champi",
@@ -884,7 +884,7 @@
         "Córtala y tómala con el yogur."
       ],
       "tip": "Varía según lo que encuentres fresco en tu frutería.",
-      "description": "Yogur natural alto en proteínas acompañado de fruta de temporada."
+      "description": "170 g de yogur natural alto en proteínas con 1 pieza de fruta de temporada."
     },
     {
       "id": "fajitas_pollo",
@@ -956,7 +956,7 @@
         "Sirve el yogur y acompaña con un plátano en rodajas."
       ],
       "tip": "Sencillo para una mañana ocupada.",
-      "description": "Yogur natural alto en proteínas acompañado de plátano."
+      "description": "170 g de yogur natural alto en proteínas con 1 plátano."
     },
     {
       "id": "pollo_boniato_ensalada",
@@ -3054,7 +3054,7 @@
         "Añade tomate en rodajas y pavo loncheado."
       ],
       "tip": "La receta y sus estimaciones utilizan el pavo loncheado indicado. Sustituirlo por pavo fresco cocinado cambia la referencia nutricional y requiere recalcularla.",
-      "description": "Pan integral con pavo loncheado y tomate fresco."
+      "description": "2 rebanadas de pan integral con 85 g de pavo loncheado y 80 g de tomate fresco."
     },
     {
       "id": "snack_yogur_platano",
@@ -3078,7 +3078,7 @@
         "Mezcla yogur con plátano en rodajas."
       ],
       "tip": "Sin azúcar adicional.",
-      "description": "Yogur natural alto en proteínas acompañado de plátano."
+      "description": "190 g de yogur natural alto en proteínas con 1 plátano."
     },
     {
       "id": "snack_naranja_hummus",
@@ -3253,7 +3253,7 @@
         "Rellena con pavo loncheado y tomate."
       ],
       "tip": "Para el apetito de media mañana sin una ración de pan muy grande.",
-      "description": "Pan integral con pavo loncheado y tomate fresco."
+      "description": "2 rebanadas de pan integral con 50 g de pavo loncheado y 80 g de tomate fresco."
     },
     {
       "id": "huevo_fruta",
@@ -3352,7 +3352,7 @@
         "Sirve yogur con fruta cortada."
       ],
       "tip": "Varía la fruta según tu frutería.",
-      "description": "Yogur natural alto en proteínas acompañado de fruta de temporada."
+      "description": "140 g de yogur natural alto en proteínas con 1 pieza de fruta de temporada."
     },
     {
       "id": "pera_nueces_ligero",

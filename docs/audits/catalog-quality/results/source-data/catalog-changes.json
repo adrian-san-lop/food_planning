@@ -597,7 +597,7 @@
       "after_tip": "La receta y sus estimaciones utilizan el pavo loncheado indicado. Sustituirlo por pavo fresco cocinado cambia la referencia nutricional y requiere recalcularla.",
       "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades.",
       "before_description": "",
-      "after_description": "Pan integral con pavo loncheado y tomate fresco."
+      "after_description": "2 rebanadas de pan integral con 85 g de pavo loncheado y 80 g de tomate fresco."
     },
     {
       "recipe_id": "comida_soja_berenjena_arroz",
@@ -698,7 +698,7 @@
       "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
       "phase": "L4",
       "before_description": "",
-      "after_description": "Pan integral con pavo loncheado y tomate fresco."
+      "after_description": "2 rebanadas de pan integral con 80 g de pavo loncheado y 80 g de tomate fresco."
     },
     {
       "recipe_id": "bocadillo_pavo_peq",
@@ -715,7 +715,7 @@
       "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
       "phase": "L4",
       "before_description": "",
-      "after_description": "Pan integral con pavo loncheado y tomate fresco."
+      "after_description": "2 rebanadas de pan integral con 80 g de pavo loncheado y 60 g de tomate fresco."
     },
     {
       "recipe_id": "mini_pavo_tomate",
@@ -732,7 +732,7 @@
       "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
       "phase": "L4",
       "before_description": "",
-      "after_description": "Pan integral con pavo loncheado y tomate fresco."
+      "after_description": "2 rebanadas de pan integral con 50 g de pavo loncheado y 80 g de tomate fresco."
     },
     {
       "recipe_id": "yogur_fruta",
@@ -749,7 +749,7 @@
       "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
       "phase": "L4",
       "before_description": "",
-      "after_description": "Yogur natural alto en proteínas acompañado de fruta de temporada."
+      "after_description": "170 g de yogur natural alto en proteínas con 1 pieza de fruta de temporada."
     },
     {
       "recipe_id": "yogur_fruta_ligero",
@@ -764,7 +764,7 @@
       "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
       "phase": "L4",
       "before_description": "",
-      "after_description": "Yogur natural alto en proteínas acompañado de fruta de temporada."
+      "after_description": "140 g de yogur natural alto en proteínas con 1 pieza de fruta de temporada."
     },
     {
       "recipe_id": "yogur_platano_simple",
@@ -779,7 +779,7 @@
       "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
       "phase": "L4",
       "before_description": "",
-      "after_description": "Yogur natural alto en proteínas acompañado de plátano."
+      "after_description": "170 g de yogur natural alto en proteínas con 1 plátano."
     },
     {
       "recipe_id": "snack_yogur_platano",
@@ -794,7 +794,7 @@
       "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
       "phase": "L4",
       "before_description": "",
-      "after_description": "Yogur natural alto en proteínas acompañado de plátano."
+      "after_description": "190 g de yogur natural alto en proteínas con 1 plátano."
     }
   ]
 }

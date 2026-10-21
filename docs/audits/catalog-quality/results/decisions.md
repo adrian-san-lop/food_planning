@@ -1,3 +1,15 @@
+# Cierre vigente de decisiones — 19/10/2026
+
+La instrucción final del propietario sustituye la preferencia anterior de D-07: **contabilizar todos los ingredientes cuantificados**, incluidos aceite, cayena, salsa de soja y vinagre. Opcionales sin cantidad definida permanecen fuera. El comportamiento existente satisface esta decisión y se ha probado; no queda una exclusión funcional pendiente.
+
+Se cierra esta iteración sin abrir investigación general. D-01/D-05 mantienen genéricos y café actual; D-02/D-03 conservan las ocho fichas con descripciones de sus raciones; D-04 conserva tiempos. D-06 valida la convención aproximada de huevo L de 60 g comestibles, sin certificar todas las conversiones. D-08 se revisa sin imponer tolerancias universales. La falta de fuentes comparables se conserva como incertidumbre, no como requisito de nuevas búsquedas.
+
+El único límite funcional material identificado es que el historial recalcula nutrición con tablas actuales; congelar esos totales exigiría otro encargo. Cantidades registradas, IDs y movimientos permanecen intactos.
+
+---
+
+## Historial de decisiones previo al cierre
+
 # Confirmaciones vigentes del propietario — L4, 19/10/2026
 
 Fuente de autoridad: respuesta explícita en este chat a los cinco bloques de validación. Registro aceptado en [ADR-0045](../../../decisions/0045-generic-catalog-and-measurement-conventions.md). La aceptación de criterio se distingue de su implementación.

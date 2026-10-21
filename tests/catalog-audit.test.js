@@ -14,6 +14,14 @@ const [baseline, changes, sources, plan, foodDoc, recipeDoc] = await Promise.all
   readJson(new URL('../data/recipes.json', import.meta.url)),
 ]);
 
+async function currentRuntimeCatalogs() {
+  const originalFetch = globalThis.fetch;
+  try {
+    globalThis.fetch = async (url) => ({ ok: true, json: async () => readJson(url) });
+    return await loadCatalogs({ slotTypes: ['desayuno', 'media', 'comida', 'tarde', 'cena'], recoveryTags: ['calcium', 'vitamin_d', 'vitamin_c'] });
+  } finally { globalThis.fetch = originalFetch; }
+}
+
 test('audit corrections preserve all IDs, units, weights, quantities and other contracts', () => {
   assert.deepEqual(foodDoc.foods.map((f) => f.id), baseline.foods.foods.map((f) => f.id));
   assert.deepEqual(recipeDoc.recipes.map((r) => r.id), baseline.recipes.recipes.map((r) => r.id));
@@ -83,12 +91,7 @@ test('retained source-supported values are explicit decimal roundings, not toler
 });
 
 test('all recipe totals independently agree with the actual catalog loader and runtime nutrition', async () => {
-  const originalFetch = globalThis.fetch;
-  let runtime;
-  try {
-    globalThis.fetch = async (url) => ({ ok: true, json: async () => readJson(url) });
-    runtime = await loadCatalogs({ slotTypes: ['desayuno', 'media', 'comida', 'tarde', 'cena'], recoveryTags: ['calcium', 'vitamin_d', 'vitamin_c'] });
-  } finally { globalThis.fetch = originalFetch; }
+  const runtime = await currentRuntimeCatalogs();
   const service = createNutritionService({ getFood: () => runtime.foods });
   for (const recipe of recipeDoc.recipes) {
     const expected = recipeNutrition(recipe, foodDoc.foods);
@@ -127,9 +130,10 @@ test('the L egg convention uses a source-backed edible estimate while preserving
   assert.equal(egg.nutrition.kcal, 85.8);
 });
 
-test('identical ingredient sets share a preparation description and changed ingredient sets differ', () => {
-  const descriptions = new Map();
+test('eight similar recipes retain quantities and nutrition while descriptions distinguish their portions', async () => {
+  const previous = await readJson(new URL('source-data/l3-state.json', audit));
   const groups = new Map();
+  let checked = 0;
   for (const recipe of recipeDoc.recipes) {
     const signature = recipe.ingredients.map((item) => item.foodId).sort().join('|');
     const group = groups.get(signature) || [];
@@ -138,9 +142,72 @@ test('identical ingredient sets share a preparation description and changed ingr
   }
   for (const [signature, group] of groups) {
     if (group.length < 2) continue;
-    assert.ok(group[0].description);
-    for (const recipe of group) assert.equal(recipe.description, group[0].description);
-    assert.ok(!descriptions.has(group[0].description), signature);
-    descriptions.set(group[0].description, signature);
+    assert.equal(new Set(group.map((recipe) => recipe.description)).size, group.length, signature);
+    for (const recipe of group) {
+      const old = previous.recipes.recipes.find((item) => item.id === recipe.id);
+      assert.deepEqual(recipe.ingredients, old.ingredients, recipe.id);
+      assert.equal(recipe.baseServings, old.baseServings, recipe.id);
+      assert.deepEqual(recipeNutrition(recipe, foodDoc.foods), recipeNutrition(old, previous.foods.foods), recipe.id);
+      const describedAmounts = recipe.description.match(/\d+(?:[.,]\d+)?/g).map((value) => Number(value.replace(',', '.')));
+      assert.deepEqual(describedAmounts, recipe.ingredients.map((item) => item.amount), recipe.id);
+      checked++;
+    }
   }
+  assert.equal(checked, 8);
+});
+
+test('one raw USDA record supplies all four L egg values and exactly 16 recipe deltas', async () => {
+  const record = sources.records['171287'];
+  assert.equal(record.description, 'Egg, whole, raw, fresh');
+  assert.equal(record.basis, 'per_100g');
+  assert.deepEqual(nutrientKeys.map((key) => record.nutrients[key].amount), [143, 12.56, 0.72, 9.51]);
+  assert.deepEqual(nutrientKeys.map((key) => record.nutrients[key].nutrient_id), [1008, 1003, 1005, 1004]);
+  assert.deepEqual(nutrientKeys.map((key) => record.nutrients[key].unit), ['kcal', 'g', 'g', 'g']);
+  const previous = await readJson(new URL('source-data/l3-state.json', audit));
+  const oldEgg = previous.foods.foods.find((food) => food.id === 'eggs');
+  const egg = foodDoc.foods.find((food) => food.id === 'eggs');
+  assert.deepEqual(nutrientKeys.map((key) => egg.nutrition[key]), [85.8, 7.54, 0.43, 5.71]);
+  const impact = await calculateImpact('source-data/l3-state.json');
+  let affected = 0;
+  for (const recipe of recipeDoc.recipes) {
+    const amount = recipe.ingredients.find((item) => item.foodId === 'eggs')?.amount || 0;
+    const row = impact.find((item) => item.recipe_id === recipe.id);
+    for (const key of nutrientKeys) {
+      const expected = amount / recipe.baseServings * (egg.nutrition[key] - oldEgg.nutrition[key]);
+      assert.ok(Math.abs(row.delta[key] - expected) < 1e-9, `${recipe.id}/${key}`);
+    }
+    if (amount) affected++;
+  }
+  assert.equal(affected, 16);
+});
+
+test('quantified oil, cayenne, soy sauce and vinegar all contribute through runtime nutrition', async () => {
+  const runtime = await currentRuntimeCatalogs();
+  const service = createNutritionService({ getFood: () => runtime.foods });
+  for (const id of ['oliveoil', 'cayenne', 'soySauce', 'vinegar']) {
+    const food = foodDoc.foods.find((item) => item.id === id);
+    const recipes = recipeDoc.recipes.filter((recipe) => recipe.ingredients.some((item) => item.foodId === id));
+    assert.ok(recipes.length, id);
+    for (const recipe of recipes) {
+      const ingredient = recipe.ingredients.find((item) => item.foodId === id);
+      const factor = ingredient.amount / recipe.baseServings / 100;
+      const contribution = service.getMacro({ [id]: ingredient.amount / recipe.baseServings });
+      assert.ok(contribution.k > 0, `${recipe.id}/${id}`);
+      for (const [index, key] of nutrientKeys.entries()) {
+        assert.equal(contribution[['k', 'p', 'c', 'f'][index]], food.nutrition[key] * factor, `${recipe.id}/${id}/${key}`);
+      }
+    }
+  }
+});
+
+test('saved meal quantities remain intact while their displayed macros use the current food table', async () => {
+  const runtime = await currentRuntimeCatalogs();
+  const service = createNutritionService({ getFood: () => runtime.foods });
+  const saved = { rid: 'huevos_pan_kiwi', usage: { eggs: 2 }, deducted: { eggs: 2 }, operationId: 'closure-fixture' };
+  const before = structuredClone(saved);
+  Object.freeze(saved.usage);
+  const macros = service.getMacro(saved.usage);
+  assert.deepEqual(saved, before);
+  assert.deepEqual(macros, { k: 171.6, p: 15.08, c: 0.86, f: 11.42 });
+  assert.notEqual(macros.k, 144); // Old 72 kcal/unit is not snapshotted by the current format.
 });
