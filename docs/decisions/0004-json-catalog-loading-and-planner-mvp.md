@@ -4,6 +4,8 @@
 - Fecha: 2026-10-10
 - Alcance: aplicación estática, catálogos y planificador
 
+Actualización del 21/10/2026: [ADR-0046](0046-familiar-weekly-menu.md) sustituye las reglas originales de novedad y penalización de repeticiones descritas abajo. Rige una semana base repetida, repertorio familiar y renovación limitada por familias. El texto original se conserva como antecedente; sus mínimos de novedad pendientes ya no son una pregunta abierta.
+
 ## Contexto
 
 Los catálogos JSON contienen alimentos, formatos de compra y recetas relacionadas por IDs estables. En el MVP original, el menú HTML era el ciclo inicial aprobado y el estado personal se conservaba solo en `localStorage`. El aplazamiento de Supabase fue sustituido por ADR-0010: los datos personales ahora se sincronizan en tablas relacionales y el navegador conserva una copia de trabajo.

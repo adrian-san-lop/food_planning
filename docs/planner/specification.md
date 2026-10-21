@@ -1,12 +1,12 @@
 # Especificación del catálogo y del planificador
 
-Estado: carga de catálogos y primera versión del planificador implementadas. Las reglas no aceptadas se identifican como propuestas; los umbrales exactos siguen abiertos.
+Estado: generación orientada a familiaridad implementada localmente (21/10/2026). Reglas aceptadas en ADR-0046; ponderaciones y tolerancias son ajustes heurísticos, no garantías nutricionales.
 
 ## Objetivo del ciclo
 
 Proponer un menú para los siguientes 21 días, con cinco espacios por día: desayuno, media mañana, comida, media tarde y cena. Son 105 comidas planificadas. La generación ocurre al preparar el siguiente ciclo; la instalación del mecanismo se hace una vez y la propuesta se repite en cada renovación. La persona revisa el resultado antes de confirmarlo.
 
-La biblioteca puede incluir recetas ya utilizadas y recetas que no aparecieron en el menú activo. En la implementación, “no usada” se refiere al menú activo, no a la fecha de alta en el catálogo. Se permiten repeticiones; no hay un número mínimo garantizado.
+Se construye una semana base de siete días y cinco comidas, y se repiten sus recetas en las semanas segunda y tercera. La repetición facilita cocinar y comprar. Los cambios manuales y bloqueos pueden crear excepciones individuales. Se conserva un repertorio familiar entre ciclos; la biblioteca completa sigue disponible para sustituciones manuales.
 
 ## Catálogos actuales
 
@@ -15,7 +15,7 @@ Los catálogos son JSON genéricos e independientes de los datos personales:
 - [`foods.json`](../../data/foods.json): 90 alimentos.
 - [`recipes.json`](../../data/recipes.json): 112 recetas y 543 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.9.1`. La versión `0.9.0` actualizó frutas enteras a piezas y pan de molde a rebanadas; `0.9.1` limita el pan a rebanadas enteras, máximo dos por comida. La versión `0.8.0` incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
+Ambos catálogos usan actualmente `catalogVersion` `0.9.3`, sin cambios en esta implementación del generador. La versión `0.9.0` actualizó frutas enteras a piezas y pan de molde a rebanadas; `0.9.1` limita el pan a rebanadas enteras, máximo dos por comida. La versión `0.8.0` incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
 
 Distribución actual de recetas por tipo:
 
@@ -27,7 +27,7 @@ Distribución actual de recetas por tipo:
 | Media tarde (`tarde`) | 20 | 21 |
 | Cena | 29 | 21 |
 
-La biblioteca permite variedad dentro de cada semana, pero no una receta diferente para cada espacio del ciclo completo en todos los tipos. Como se aceptan repeticiones, esto no bloquea el planificador. Las preferencias personales reducirán el conjunto elegible; por eso conviene ampliar la biblioteca según las carencias reales y no perseguir un número arbitrario.
+La biblioteca ofrece alternativas manuales y renovación gradual. Su tamaño no obliga a utilizar el mayor número posible de recetas: el repertorio automático es deliberadamente reducido.
 
 ## Contrato vigente de los ficheros
 
@@ -49,13 +49,14 @@ Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el c
 
 ## Reglas aceptadas para selección
 
-1. Usar el cálculo nutricional y de raciones actual como punto de partida; optimizar hacia objetivos, aceptando pequeñas desviaciones.
-2. Favorecer recetas que aprovechen existencias, pero no excluir una receta solo porque falte stock. La app debe poder mostrar lo que falta en la compra.
-3. Buscar variedad y evitar repeticiones cercanas. Permitir repeticiones cuando el catálogo o las restricciones lo requieran.
-4. Entregar una propuesta editable: revisar, sustituir una comida y bloquear comidas frente a una regeneración.
-5. En ciclos nuevos, procurar introducir recetas que no estuvieron en el menú reciente; la cantidad y el período de referencia están pendientes.
+1. Mantener los servicios actuales de objetivos y raciones para los cuatro objetivos. Las cantidades completadas, sesiones y límites de porción conservan su comportamiento.
+2. Favorecer existencias e ingredientes compartidos en la semana, sin excluir por falta de stock ni escribir movimientos de previsión.
+3. Usar un repertorio orientativo de 2–3 desayunos, 2 medias mañanas, 4 comidas, 2 meriendas y 4 cenas. Son preferencias suaves: bloqueos, disponibilidad y ajuste razonable de raciones tienen prioridad. Repetir desayunos y tentempiés es normal; se espacian preferentemente comidas y cenas dentro de la semana.
+4. Repetir las selecciones de la semana base tres veces. Un cambio manual afecta solo al espacio elegido y lo bloquea; regenerar conserva todos los bloqueos, aunque difieran entre semanas o excedan el repertorio. No se deducen gustos permanentes.
+5. Con un ciclo anterior válido, conservar una parte mayoritaria del repertorio y buscar 2–3 preparaciones nuevas en todo el ciclo. Puede haber menos si no encajan; los cambios manuales no están limitados por ese presupuesto. Sin ciclo previo válido no se aplica una cuota de novedad.
+6. Agrupar familias por el conjunto ordenado de `foodId`, ignorando cantidades y orden original. No se cambian IDs ni tipos: las variantes de ración siguen seleccionables y no cuentan como nuevas preparaciones. Familias y contadores son derivados, sin campos persistidos.
 
-Las cuatro primeras reglas fueron aceptadas explícitamente. La quinta recoge la intención de incluir recetas que no aparecieron en el menú activo; se favorecen, sin imponer un mínimo.
+Estas reglas sustituyen la preferencia general por recetas ausentes del ciclo anterior de ADR-0002 y ADR-0004. Véase [ADR-0046](../decisions/0046-familiar-weekly-menu.md).
 
 ## Recuperación ósea
 
@@ -95,13 +96,19 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 
 ## Flujo implementado de generación
 
-1. Cargar por HTTP(S) los dos JSON, comprobar versiones, IDs, unidades, referencias y tipos, y usar `catalogVersion` en la propuesta.
-2. Generar los 105 espacios desde recetas del mismo tipo que cada espacio. Todas las categorías actuales tienen candidatos.
-3. No se aplican filtros de gustos, alergias ni restricciones personales; ese modelo sigue pendiente.
-4. Muestrear combinaciones y puntuarlas con la lógica nutricional/raciones actual, variedad, menor repetición reciente, recetas no usadas en el menú actual y cobertura del stock. Si Recuperación ósea está activa, la puntuación también favorece las etiquetas cualitativas descritas arriba. El stock solo aporta preferencia; no elimina candidatos. Las ponderaciones son detalles iniciales de implementación, no umbrales aprobados.
-5. Completar los cinco tipos de comida para 21 días. Se permiten repeticiones si la biblioteca lo requiere.
-6. Revisar la propuesta, cambiar cada receta por otra del mismo tipo, bloquearla o desbloquearla y regenerar el resto. Una receta seleccionada manualmente queda bloqueada inicialmente.
-7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en el estado local v11; el sincronizador lo persiste en `plan_cycles` y `planned_meals`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
+1. Cargar y validar los catálogos actuales. `js/domain/menu-generator.js` recibe recetas, ciclo anterior, bloqueos, copia de stock, azar inyectable y funciones de nutrición/conversión/preferencia de recuperación.
+2. Derivar familias por ingredientes. Elegir pequeños repertorios por tipo, favoreciendo familias frecuentes del ciclo anterior, ingredientes compartidos y existencias. Las familias bloqueadas entran aunque superen el tamaño orientativo.
+3. Construir siete días y evaluar combinaciones con `portionsForRecipes` y `nutritionTarget` actuales, sin actividad futura. La preferencia de recuperación ósea sigue siendo cualitativa. Las variantes conservan sus cantidades de catálogo y pasan por el ajuste existente.
+4. Permitir alternativas familiares fuera del repertorio si mejoran materialmente el ajuste nutricional. No se fuerzan límites de porción para cerrar una cifra exacta.
+5. Si hay ciclo anterior válido, evaluar sustituciones de familias para introducir 2–3 nuevas como máximo automático, descontando las novedades ya bloqueadas. Comparar las desviaciones de los días afectados y admitir menos novedades si las alternativas empeoran demasiado el ajuste. No hay una bonificación general por receta ausente.
+6. Copiar las recetas de los siete días a tres semanas y aplicar todos los bloqueos en sus posiciones. Los arrays son independientes para que sustituir una comida no cambie otra semana.
+7. Revisar, sustituir y bloquear individualmente. Guardar conserva el contrato de 3 × 7 × 5, fechas y versión del catálogo del estado v11; se utiliza la persistencia existente. La implementación no regenera el ciclo activo ni las comidas completadas y no requiere migraciones.
+
+### Parámetros de ajuste, no garantías
+
+El tamaño inicial usa 3/2/4/2/4 familias por tipo; el uso efectivo puede ser menor o mayor. La selección prueba 28 combinaciones por día, puntúa nutrición, ingredientes compartidos, stock y recuperación, y penaliza suavemente repeticiones cercanas solo de comida/cena. La salida es heurística: no garantiza óptimo global, coste mínimo ni equivalencia nutricional exacta. La proyección interna del stock es una copia local no negativa.
+
+El error de selección conserva la ponderación relativa de calorías/proteína/hidratos/grasa y utiliza las raciones reales del servicio. Una mejora de más de 0,20 en ese error permite salir del repertorio inicial. Para renovación, una sustitución se acepta si aumenta el error medio como mucho 0,08 y ningún día más de 0,18. Estos valores son puntuaciones adimensionales de implementación, **no tolerancias clínicas ni porcentajes de calorías**. El objetivo aleatorio de novedad es dos o tres familias por ciclo. Los bloqueos manuales pueden excederlo. El azar se inyecta en pruebas; no se guarda una semilla en datos personales.
 
 El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
@@ -109,9 +116,11 @@ El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú 
 
 La cabecera mantiene «Revisa el siguiente ciclo» y, a su derecha, **Cambiar platos** y **Guardar**. Solo la lista central se desplaza; las acciones y la X siguen visibles. Se retira el botón inferior Cerrar. «Cambiar platos» conserva la regeneración de comidas no bloqueadas y explica esa acción con «Renueva únicamente los desbloqueados» al pasar el ratón o recibir foco de teclado.
 
-El resumen muestra fecha de inicio, 21 días, 105 comidas y los indicadores de variedad. Las tarjetas laterales presentan el objetivo y el ajuste de raciones del perfil actual, que utiliza la vista previa de cantidades. La recuperación destacada corresponde a `recoveryFocus`, conservado al generar la propuesta; no se deduce retrospectivamente del perfil. Si ambas preferencias de recuperación difieren, un aviso visible pide usar «Cambiar platos» para aplicar el cambio conservando los bloqueos. No se añade ningún campo persistido.
+El resumen muestra fecha de inicio, 21 días, 105 comidas, preparaciones distintas, variantes de ración adicionales y nuevas familias frente al ciclo actual (o ausencia de ciclo previo válido). También indica si las semanas coinciden o cuántos espacios difieren de la primera. Las tarjetas laterales presentan el objetivo y el ajuste de raciones del perfil actual, que utiliza la vista previa de cantidades. La recuperación destacada corresponde a `recoveryFocus`, conservado al generar la propuesta; no se deduce retrospectivamente del perfil. Si ambas preferencias de recuperación difieren, un aviso visible pide usar «Cambiar platos» para aplicar el cambio conservando los bloqueos. No se añade ningún campo persistido.
 
-«Cómo se prepara este menú» agrupa las explicaciones sobre stock, cálculo base sin sesiones previstas, bloqueo manual, ausencia de filtros personales y la presencia cualitativa de calcio/vitaminas. Esas cifras siguen contando días con ingredientes etiquetados; no expresan cantidades ni objetivos de ingesta. Los cambios de selector, bloqueo y regeneración conservan el desplazamiento y el foco del control. En móvil, las acciones se distribuyen debajo del título y el resumen se apila para mantener accesibles los controles.
+«Cómo se prepara este menú» explica semana repetida, cambios individuales, continuidad, familias, stock, cálculo base sin sesiones previstas, bloqueo manual, ausencia de filtros personales y la presencia cualitativa de calcio/vitaminas. Esas cifras siguen contando días con ingredientes etiquetados; no expresan cantidades ni objetivos de ingesta. Los cambios de selector, bloqueo y regeneración conservan el desplazamiento y el foco del control. En móvil, las acciones se distribuyen debajo del título y el resumen se apila para mantener accesibles los controles.
+
+Cada comida incluye **Ver receta**, que abre la ficha existente encima del diálogo de revisión. Utiliza la receta seleccionada y las raciones del día completo de la propuesta, con el perfil actual y sin actividad prevista; no consulta las cantidades del ciclo activo. Muestra ingredientes, pasos, tiempo y macros estimados. La ficha no ofrece registrar/desmarcar comidas en este contexto. **Volver a la revisión**, la X y Escape cierran solo la ficha; se conserva la posición y se devuelve el foco al botón que la abrió. Consultar no guarda, sustituye ni bloquea la propuesta.
 
 ### Renovación y compra anticipada
 

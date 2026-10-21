@@ -279,7 +279,7 @@ export function createStateNormalizer({
     return state;
   }
 
-  return { cleanState, normalizeDoneEntries, normalizeReversedDoneEntries, rebuildStock };
+  return { cleanState, cleanCyclePlan, normalizeDoneEntries, normalizeReversedDoneEntries, rebuildStock };
 }
 
 export { CURRENT_STATE_VERSION, SUPPORTED_STATE_VERSIONS };

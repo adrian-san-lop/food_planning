@@ -23,6 +23,7 @@ Navegador
         │     ├── ui/legal-dialog.js (diálogo legal compartido)
         │     ├── ui/recipe-proposal-views.js (formularios y vistas del buzón de recetas)
         │     ├── domain/dates.js (fecha civil Europe/Madrid)
+        │     ├── domain/menu-generator.js (semana base, familias, continuidad y bloqueos)
         │     ├── domain/nutrition.js (objetivos, macros y ajuste de raciones)
         │     ├── domain/inventory-ledger.js (movimientos idempotentes y saldo de despensa)
         │     ├── domain/cycle-shopping.js (fin de ciclo, confirmación, ventana de compra y fechas de cobertura)
@@ -51,6 +52,7 @@ Actualización del 15 de octubre de 2026: el planificador interno gestiona la re
 - `js/ui/html.js` centraliza la codificación de texto y atributos y solo permite URL HTTPS de orígenes indicados explícitamente. `js/ui/recipe-proposal-views.js` genera las vistas del buzón desde estado inyectado, sin acoplar el renderizado a la capa remota. Las demás vistas todavía usan plantillas HTML; deben escapar los valores variables del catálogo y del estado personal antes de insertarlos.
 - Los indicadores de comidas completadas usan elementos `<progress>` con etiquetas accesibles en sus botones; el color y la disposición se definen en CSS.
 - `npm test` ejecuta pruebas integradas para fechas, normalización local v5-v11, mapeo de estado relacional, nutrición, inventario, conciliación, validación de catálogos y codificación HTML/URL. Las pruebas de navegador con Auth, sincronización remota y RLS requieren cuentas y publicación y siguen pendientes.
+- `js/domain/menu-generator.js` selecciona una semana base repetida tres veces y deriva los contadores por familias. Recibe nutrición, conversiones, stock y RNG por inyección, sin acceso a DOM, almacenamiento, Supabase ni movimientos. `main.js` conserva la coordinación, revisión y guardado de propuestas. Véase ADR-0046.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
 - En Inicio, el acceso a revisar el perfil se muestra hasta que la persona confirma sus datos. Una guía rápida opcional de tres pasos explica perfil y fecha, menú y registro de comidas, compra/despensa y seguimiento. La guía también se puede abrir desde Guía, que conserva el recorrido completo. El paso de fecha reutiliza el editor existente; si no hay ciclo, remite al selector global. La guía no guarda un indicador de onboarding. La confirmación del perfil sigue sincronizada mediante la columna profile_confirmed.
 - El cliente consulta `user_settings.sync_revision` mientras la página está visible cada 15 segundos y al volver al foco o recuperar la conexión. Solo descarga el estado completo si la revisión cambió.

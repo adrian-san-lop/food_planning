@@ -44,7 +44,7 @@ These instructions apply to the whole repository.
 - Follow accepted planner decisions in `docs/decisions/`. Treat items marked proposed or open as undecided; do not silently turn them into requirements.
 - When bone recovery is enabled, new menu proposals qualitatively favor catalog foods tagged as calcium, vitamin D, or vitamin C sources. Do not present those tags as measured micronutrient totals or a treatment.
 - Record activity only after it happens. Its estimated net energy `(MET - 1) × weight_kg × hours` applies only to that calendar date; never forecast sessions or change future dates. Keep completed meal quantities fixed and distribute the remaining daily target across uncompleted meals. Keep protein and fat targets stable; extra session energy should primarily affect carbohydrate portions. Use base recipe quantities in catalogs; do not restore `amountOnStrengthDay`.
-- Also favor stock without blocking for low stock, seek variety while allowing necessary repeats, and let the user review, swap, and lock proposed meals.
+- Favor stock without blocking for low stock and a familiar base week repeated across the cycle, with gradual renewal by preparation family (ADR-0046). Let the user review, swap individual meals, and preserve every lock when regenerating.
 
 ## Inventory and privacy
 

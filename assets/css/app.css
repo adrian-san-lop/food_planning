@@ -704,6 +704,8 @@ dialog::backdrop{background:rgba(var(--shadow-rgb),.66);backdrop-filter:blur(4px
 .planner-meal:first-of-type{border-top:0}
 .planner-meal select{min-width:0;width:100%;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--white)}
 .planner-meal small{color:var(--muted)}
+.planner-recipe-preview{display:flex;flex-direction:column;align-items:center;gap:4px}
+.planner-recipe-preview .btn{min-height:44px;white-space:nowrap}
 .planner-meal .btn{justify-content:center;padding:7px 9px;font-size:12px}
 .planner-actions{display:flex;flex:none;align-items:center;justify-content:flex-end;gap:9px}
 .planner-actions .btn{min-height:44px;justify-content:center;font-size:15px}
@@ -1157,6 +1159,7 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 .profile-strip{padding:12px}
 .nutrition-meter .meter-heading{flex-wrap:wrap}}
 
+@media(min-width:721px) and (max-width:900px){.planner-overview{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:720px){.planner-review-header{align-items:stretch;flex-direction:column;gap:14px;padding:20px 16px 16px}
 .planner-intro{padding-right:40px}
 .planner-intro h2{font-size:24px}
@@ -1179,6 +1182,7 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 .planner-meal select{grid-column:1}
 .planner-meal .planner-lock{grid-column:2;grid-row:2}
 .planner-meal small{grid-column:1/-1}
+.planner-meal .planner-recipe-preview{grid-column:1/-1;flex-direction:row;justify-content:space-between}
 .planner-card{align-items:flex-start;flex-direction:column}
 .planner-card .btn{width:100%;justify-content:center}}
 

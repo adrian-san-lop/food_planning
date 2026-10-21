@@ -7,9 +7,7 @@ El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y e
 ## Catálogo y recetas
 
 La elección de representación genérica y las convenciones de medida se han resuelto en [ADR-0045](decisions/0045-generic-catalog-and-measurement-conventions.md). No es necesario solicitar marcas al propietario. El cierre confirma contabilizar todos los ingredientes cuantificados; la exclusión ya no es una tarea pendiente. Una posible unificación futura de presentación conservaría la compatibilidad de los IDs de recetas coincidentes.
-- En la implementación inicial, “no usada” significa que la receta no aparece en el menú activo; no significa que se haya añadido recientemente al catálogo.
-- ¿Cuántas recetas no usadas en el menú activo se esperan por ciclo, si hay un mínimo? Hoy solo se favorecen, sin imponer un mínimo.
-- ¿Se pretende evitar cualquier repetición en una semana o basta con evitar repeticiones cercanas? No hay distancias ni límites numéricos acordados.
+La familiaridad, la semana repetida y la renovación de 2–3 familias por ciclo (menos si no encajan) quedan resueltas en [ADR-0046](decisions/0046-familiar-weekly-menu.md). Las variantes de cantidades no son novedades.
 - ¿Qué etiquetas adicionales ayudan a filtrar recetas (estilo, proteína principal, técnicas, tiempo, coste)? Añadir solo las que se usarán.
 
 ## Gustos, restricciones y varias personas
@@ -22,7 +20,7 @@ La elección de representación genérica y las convenciones de medida se han re
 ## Planificador
 
 - Tras varias semanas, ¿conviene mostrar un resumen de la actividad registrada para que la persona revise manualmente su nivel de movimiento habitual? No se ajustará el perfil ni se predecirán sesiones automáticamente.
-- ¿Qué tolerancias nutricionales y de variedad se consideran “pequeñas” o “cercanas”?
+- ¿Cómo calibrar con uso real las puntuaciones de ajuste nutricional, aprovechamiento de ingredientes y separación de comidas/cenas, manteniendo la política de familiaridad de ADR-0046?
 - ¿Cómo debería comportarse un menú bloqueado si cambia el perfil o una receta conserva el ID pero cambia de contenido en una nueva versión del catálogo?
 
 ## Persistencia e integración

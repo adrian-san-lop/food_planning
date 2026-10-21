@@ -31,7 +31,7 @@ La posibilidad de combinar los gustos de varias personas en un menú común sigu
 - Estado de trabajo en localStorage y sincronización automática autenticada con Supabase. Las instalaciones existentes conservan la migración de estados locales v5-v11; no hay restauración personal JSON desde la interfaz ni recordatorio periódico de copia.
 - En móvil, la navegación inferior prioriza Inicio, Menú, Compra y Actividad; Perfil, Despensa, Recetas y Guía están bajo **Más**. El logo permanece en una barra superior fija con fondo diferenciado; el correo y el cierre de sesión están en Perfil. La compra permite buscar productos y mantiene a mano el progreso y la acción para finalizar.
 - Catálogos genéricos de alimentos y recetas cargados desde JSON con validación de referencias y unidades.
-- Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado con fecha y versión del catálogo. En la revisión, «Cambiar platos» y «Guardar» se sitúan a la derecha del título y permanecen visibles al desplazar la lista; se retira el botón inferior Cerrar y se mantiene la X. «Cambiar platos» muestra «Renueva únicamente los desbloqueados» al pasar el ratón o recibir foco de teclado. Fecha, 21 días, 105 comidas y variedad se resumen de forma compacta; a la derecha aparecen el objetivo y las raciones actuales y, cuando se utilizó al generar, la recuperación ósea destacada. Las explicaciones y la cobertura cualitativa se consultan en «Cómo se prepara este menú». El aviso de cambios posteriores en recuperación sigue visible. Editar platos conserva posición de lectura y foco, sin alterar las reglas de generación o confirmación.
+- Generación de una propuesta para el siguiente ciclo de 105 comidas, edición por tipo de comida, bloqueo, regeneración selectiva y guardado con fecha y versión del catálogo. En la revisión, «Cambiar platos» y «Guardar» se sitúan a la derecha del título y permanecen visibles al desplazar la lista; se retira el botón inferior Cerrar y se mantiene la X. «Cambiar platos» muestra «Renueva únicamente los desbloqueados» al pasar el ratón o recibir foco de teclado. Fecha, 21 días, 105 comidas, preparaciones, variantes de ración y familias nuevas se resumen de forma compacta; a la derecha aparecen el objetivo y las raciones actuales y, cuando se utilizó al generar, la recuperación ósea destacada. Las explicaciones y la cobertura cualitativa se consultan en «Cómo se prepara este menú». El aviso de cambios posteriores en recuperación sigue visible. Editar platos conserva posición de lectura y foco, sin alterar las reglas de generación o confirmación.
 - Activación del siguiente menú al llegar su fecha; el ciclo anterior se archiva junto con su menú y registros.
 
 ### Propuestas de recetas — revisión admin individual y exportación JSON
@@ -97,8 +97,8 @@ El aviso de renovación se muestra al abrir la aplicación; no es push. El produ
 ### Catálogos y siguiente ciclo
 
 - Mantener una biblioteca común y versionada de alimentos y recetas en `data/foods.json` y `data/recipes.json`; sus esquemas están en los ficheros `*.schema.json`.
-- Al preparar un ciclo, formar una propuesta de 105 comidas compatibles. Se permiten repeticiones y se favorecen recetas que no aparecían en el menú actual, sin un mínimo numérico.
-- Revisar y cambiar recetas dentro del mismo tipo de comida; los cambios manuales quedan bloqueados hasta que se desbloqueen. Regenerar conserva las comidas bloqueadas.
+- Al preparar un ciclo, generar siete días con cinco comidas y repetir sus recetas tres semanas. Repertorio suave: 2–3 desayunos, 2 medias mañanas, 4 comidas, 2 meriendas y 4 cenas. Conservar preparaciones familiares y buscar 2–3 familias nuevas en todo el ciclo si encajan, sin premiar toda receta ausente. Agrupar familias por conjunto de ingredientes sin cantidades, manteniendo IDs y tipos.
+- Revisar y cambiar recetas dentro del mismo tipo de comida; los cambios manuales quedan bloqueados hasta que se desbloqueen. Cada cambio afecta solo a esa comida. Regenerar conserva todas las comidas bloqueadas, incluso si difieren entre semanas o superan el repertorio. No se infieren gustos permanentes.
 - Guardar la propuesta con su versión de catálogo en Supabase y activarla en la fecha guardada.
 - Con Recuperación ósea activa, dar preferencia cualitativa a recetas con fuentes catalogadas de calcio y vitamina D y con frutas/verduras que aporten vitamina C; presentar presencia por día como referencia, no como objetivo nutricional cuantificado. El ciclo actual no se sustituye al cambiar el perfil.
 
@@ -106,14 +106,14 @@ El ciclo inicial conserva el menú fijo existente. Las preferencias por gustos, 
 
 Los valores MET de actividad son aproximaciones basadas en categorías del [2024 Adult Compendium](https://pacompendium.com/adult-compendium/), no mediciones individuales. No se ha aprobado el aprendizaje automático de una rutina futura a partir del historial; la posibilidad de mostrar un resumen para revisión manual sigue abierta.
 
-## Reglas funcionales aceptadas para el futuro planificador
+## Reglas funcionales aceptadas del planificador
 
 1. Conservar el cálculo nutricional y de raciones existente como referencia y optimizar hacia los objetivos; no descartar una receta por una desviación pequeña.
 2. Favorecer recetas que aprovechen el stock, sin bloquear por existencias insuficientes. La lista de compra mostrará el faltante.
-3. Buscar variedad y evitar repeticiones cercanas; permitir repetir cuando la biblioteca o las restricciones lo requieran.
+3. Favorecer familiaridad, ingredientes compartidos y repetición útil; espaciar preferentemente repeticiones de comida/cena dentro de la semana.
 4. Presentar una propuesta que se pueda revisar, intercambiar y bloquear frente a una regeneración.
 
-Estos principios están aceptados. Las puntuaciones, umbrales y cantidades mínimas de novedad siguen abiertas; véase [preguntas abiertas](../open-questions.md).
+La política de repetición y renovación está aceptada en [ADR-0046](../decisions/0046-familiar-weekly-menu.md). Las puntuaciones y tolerancias son ajustes heurísticos; no se garantiza un mínimo de novedades si no encajan.
 
 ## Preferencias alimentarias y personalización
 
