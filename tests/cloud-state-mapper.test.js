@@ -19,6 +19,7 @@ function createMapper() {
     today: () => dateFromISO('2026-10-17'),
     validMenuSnapshot: () => true,
     cloneMenus: (value) => value.map((week) => week.map((day) => day.slice())),
+    fixedMenus: menus,
     isUuid: () => false,
     emptyState: () => ({
       profile: {}, done: {}, reversedDone: {}, movements: [], stock: {}, purchases: [],
@@ -55,6 +56,23 @@ test('cloud mapper keeps the relational snapshot contract and shopping unit fiel
   assert.equal(snapshot.shopping.items[0].is_checked, true);
   assert.equal(snapshot.shopping.items[1].unit, 'g');
   assert.equal(snapshot.shopping.ends_on, '2026-11-02');
+});
+
+test('cloud mapper includes the injected fixed menu on first sync for a new account', async () => {
+  const mapper = createMapper();
+  const snapshot = await mapper.buildCloudSnapshot({
+    noActiveCycle: false,
+    start: '2026-10-13',
+    activeMenus: null,
+    profile: { sex: 'manual', age: 30, height: 170, weight: 70, activity: 'low', goal: 'maintain', injury: false, autoPortions: true, followWeight: true, manualRmr: 1600 },
+    cart: {},
+    cartExtras: [],
+  });
+
+  assert.equal(snapshot.cycles.length, 1);
+  assert.equal(snapshot.cycles[0].status, 'active');
+  assert.equal(snapshot.planned_meals.length, 105);
+  assert.ok(snapshot.planned_meals.every((meal) => meal.recipe_id === 'recipe'));
 });
 
 test('cloud mapper reconstructs account data without changing the relational row contract', () => {

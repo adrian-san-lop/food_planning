@@ -2,7 +2,7 @@
 export function createCloudStateMapper({
   getUserId, getFood, getRecipes, getCatalogVersion,
   archivedCyclesByUser, addDays, dateFromISO, dateDiff, isoDate, today,
-  validMenuSnapshot, cloneMenus, isUuid, emptyState, cleanState, rebuildStock,
+  validMenuSnapshot, cloneMenus, fixedMenus, isUuid, emptyState, cleanState, rebuildStock,
   defaultProfile, sanitizeProfile, foodStockUnit, foodRecipeUnit,
   storedRecipeToCurrentAmount, commercialPack,
 }) {
@@ -27,7 +27,7 @@ async function buildCloudSnapshot(source){
   if(!dateFromISO(start)||!validMenuSnapshot(menus,true))throw Error('Hay un menú guardado incompleto o incompatible; conserva una copia y revisa su ciclo antes de sincronizar.');
   definitions.push({kind,key,start,menus:cloneMenus(menus),version:version||getCatalogVersion(),...options});
  };
- const activeMenus=source.activeMenus?cloneMenus(source.activeMenus):cloneMenus(FIXED_MENUS);
+ const activeMenus=source.activeMenus?cloneMenus(source.activeMenus):cloneMenus(fixedMenus);
  if(!source.noActiveCycle)addCycle('active','current',source.start,activeMenus,source.activeMenuCatalogVersion||getCatalogVersion(),{cycleId:isUuid(source.activeCycleId)?source.activeCycleId:null,prep:source.prep||{},done:source.done||{},reversedDone:source.reversedDone||{},generatedAt:source.activeMenuGeneratedAt||null,confirmedAt:source.activeMenuConfirmedAt||null,recoveryFocus:!!source.activeMenuRecoveryFocus});
  for(const [i,a] of (source.archives||[]).entries())if(a&&dateFromISO(a.start)&&validMenuSnapshot(a.menus,true))addCycle('archived','archive:'+a.start+':'+(a.archivedAt||i),a.start,a.menus,a.catalogVersion||getCatalogVersion(),{cycleId:isUuid(a.cycleId)?a.cycleId:null,prep:a.prep||{},done:a.done||{},reversedDone:a.reversedDone||{},archivedAt:a.archivedAt||new Date(a.start+'T12:00:00Z').toISOString(),generatedAt:a.generatedAt||null,confirmedAt:a.confirmedAt||null,recoveryFocus:!!a.recoveryFocus});
  if(source.nextMenu)addCycle('scheduled','next:'+source.nextMenu.start+':'+(source.nextMenu.generatedAt||''),source.nextMenu.start,source.nextMenu.menus,source.nextMenu.catalogVersion,{locked:source.nextMenu.locked,generatedAt:source.nextMenu.generatedAt||null,confirmedAt:source.nextMenu.confirmedAt||null,recoveryFocus:!!source.nextMenu.recoveryFocus});
