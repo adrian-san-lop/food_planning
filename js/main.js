@@ -509,14 +509,24 @@ function profileHelp(id,label,description){
  const tooltipId='profileHelp-'+id;
  return '<span class="profile-help"><button type="button" class="profile-help-trigger" data-action="profile-help" aria-label="'+escapeAttribute(label)+'" aria-describedby="'+tooltipId+'" aria-controls="'+tooltipId+'" aria-expanded="false">'+ic('info')+'</button><span id="'+tooltipId+'" class="profile-tooltip" role="tooltip">'+escapeHTML(description)+'</span></span>';
 }
-function profileSummaryMarkup(p=state.profile,weightOverride){
+function profileUsesWeightRecords(p){
+ return p.followWeight&&state.weights.some(entry=>{const date=dateFromISO(entry.date);return date&&date<=today()});
+}
+function profileHasChanges(p){
+ const saved=sanitizeProfile(state.profile);
+ return ['sex','age','height','weight','activity','goal','manualRmr','injury','autoPortions','followWeight'].some(key=>p[key]!==saved[key]);
+}
+function profileWeightSourceMarkup(p){
+ return '<strong>Peso usado: '+qty(effectiveWeight(p))+' kg</strong><span> · '+(profileUsesWeightRecords(p)?'Registros':'Referencia')+'</span>';
+}
+function profileSummaryMarkup(p=state.profile,weightOverride,pending=!state.profileConfirmed||profileHasChanges(p)){
  const base=nutritionTarget(0,p,weightOverride);
  const stat=(title,value,unit)=>'<div class="profile-stat"><span class="profile-stat-label">'+title+'</span><strong class="profile-stat-value">'+value+' <small>'+unit+'</small></strong></div>';
  const macro=(label,value,variant,icon)=>'<div class="profile-macro '+variant+'"><span class="profile-macro-icon">'+ic(icon)+'</span><span class="profile-macro-label">'+label+'</span><strong>'+nformat(value)+' <small>g</small></strong></div>';
  const recovery=p.injury?'<span class="profile-recovery-status">'+ic('bone')+'<span>Recuperación activa</span></span>':'';
- const target='<div class="profile-target-panel"><header class="profile-summary-heading"><h2 id="profileTargetTitle">Objetivo diario</h2><div class="profile-summary-badges"><span id="profileGoalBadge" class="badge-soft">'+escapeHTML(GOAL_NAMES[p.goal]||'')+'</span>'+recovery+'</div></header><div class="profile-energy"><div class="profile-energy-value"><strong>'+nformat(base.calories)+' <small>kcal</small></strong><span class="profile-energy-note">Se aplicará al guardar</span></div><div class="profile-macros">'+macro('Proteínas',base.protein,'protein','egg')+macro('Hidratos',base.carb,'carbs','wheat')+macro('Grasas',base.fat,'fats','oil')+'</div></div></div>';
- const weightNote=p.followWeight&&state.weights.length?'El peso es la media de hasta tres registros recientes.':'Se usa el peso de referencia del perfil.';
- const reference='<section class="profile-reference-panel" aria-labelledby="profileReferenceTitle"><header class="profile-reference-heading"><h3 id="profileReferenceTitle">Datos del cálculo</h3>'+profileHelp('reference','Ayuda sobre los datos del cálculo',weightNote+' Energía es el gasto estimado en reposo. Mantenimiento aplica el factor de movimiento habitual, sin sesiones de ejercicio.')+'</header><div class="profile-stats">'+stat('Peso',qty(base.weight),'kg')+stat('En reposo',nformat(base.rmr),'kcal')+stat('Mantenimiento',nformat(base.maintenance),'kcal')+'</div></section>';
+ const target='<div class="profile-target-panel"><header class="profile-summary-heading"><h2 id="profileTargetTitle">Tu plan</h2><div class="profile-summary-badges"><span id="profileGoalBadge" class="badge-soft">'+escapeHTML(GOAL_NAMES[p.goal]||'')+'</span>'+recovery+'</div></header><div class="profile-energy"><div class="profile-energy-value"><span class="profile-energy-label">Objetivo diario</span><strong>'+nformat(base.calories)+' <small>kcal</small></strong><span class="profile-energy-note">'+(pending?'Vista previa · se aplica al guardar':'Objetivo actual')+'</span></div><div class="profile-macros">'+macro('Proteínas',base.protein,'protein','egg')+macro('Hidratos',base.carb,'carbs','wheat')+macro('Grasas',base.fat,'fats','oil')+'</div></div></div>';
+ const weightNote=profileUsesWeightRecords(p)?'El peso usado es la media de hasta tres registros recientes.':'Se usa el peso de referencia del perfil.';
+ const reference='<section class="profile-reference-panel" aria-labelledby="profileReferenceTitle"><header class="profile-reference-heading"><h3 id="profileReferenceTitle">Datos del cálculo</h3>'+profileHelp('reference','Ayuda sobre los datos del cálculo',weightNote+' Energía es el gasto estimado en reposo. Mantenimiento aplica el factor de movimiento habitual, sin sesiones de ejercicio.')+'</header><div class="profile-stats">'+stat('Peso usado',qty(base.weight),'kg')+stat('En reposo',nformat(base.rmr),'kcal')+stat('Mantenimiento',nformat(base.maintenance),'kcal')+'</div></section>';
  return '<section class="panel profile-preview-layout" aria-labelledby="profileTargetTitle">'+target+reference+'</section>';
 }
 function profileFormData(){
@@ -524,34 +534,63 @@ function profileFormData(){
  const data=new FormData(form);
  return sanitizeProfile({sex:String(data.get('sex')),age:Number(data.get('age')),height:Number(data.get('height')),weight:Number(data.get('weight')),activity:String(data.get('activity')),goal:String(data.get('goal')),manualRmr:Number(data.get('manualRmr')),injury:data.has('injury'),autoPortions:data.has('autoPortions'),followWeight:data.has('followWeight')});
 }
-function updateProfilePreview(){const form=document.getElementById('profileForm');if(!form)return;const p=profileFormData(),preview=document.getElementById('profilePreview');if(preview){
- // En un borrador con nuevo peso no usamos un peso anterior del seguimiento.
- const effective=p.followWeight&&state.weights.length?undefined:p.weight;
- preview.innerHTML=profileSummaryMarkup(p,effective);
- }const description=document.getElementById('profileActivityDescription');if(description)description.textContent=profileActivityDescription(p.activity);const custom=document.getElementById('manualRmrField');if(custom)custom.hidden=form.elements.sex.value!=='manual';document.querySelector('.profile-page')?.classList.toggle('profile-page--manual',p.sex==='manual');}
+function updateProfilePreview(){
+ const form=document.getElementById('profileForm');if(!form)return;
+ const p=profileFormData(),pending=!state.profileConfirmed||profileHasChanges(p)||form.matches(':invalid');
+ const preview=document.getElementById('profilePreview');
+ if(preview){
+  // En un borrador con nuevo peso no usamos un peso anterior del seguimiento.
+  const effective=p.followWeight&&state.weights.length?undefined:p.weight;
+  preview.innerHTML=profileSummaryMarkup(p,effective,pending);
+ }
+ const description=document.getElementById('profileActivityDescription');if(description)description.textContent=profileActivityDescription(p.activity);
+ const custom=document.getElementById('manualRmrField');if(custom)custom.hidden=form.elements.sex.value!=='manual';
+ form.elements.weight.readOnly=profileUsesWeightRecords(p);
+ const source=document.getElementById('profileWeightSource');if(source)source.innerHTML=profileWeightSourceMarkup(p);
+ const status=document.getElementById('profileDirtyStatus');if(status){status.hidden=!pending;status.textContent=state.profileConfirmed?'Cambios sin guardar':'Pendiente de confirmar'}
+ const submit=document.getElementById('profileSaveButton');if(submit)submit.disabled=!pending;
+ document.querySelector('.profile-page')?.classList.toggle('profile-page--manual',p.sex==='manual');
+}
 function profileView(){
- const p=state.profile,last=state.weights.length?[...state.weights].sort((a,b)=>b.date.localeCompare(a.date))[0]:null;
+ const p=state.profile,last=[...state.weights].filter(entry=>{const date=dateFromISO(entry.date);return date&&date<=today()}).sort((a,b)=>b.date.localeCompare(a.date))[0];
  const select=(name,options)=>options.map(([key,label])=>'<option value="'+escapeAttribute(key)+'" '+(p[name]===key?'selected':'')+'>'+escapeHTML(label)+'</option>').join('');
- const num=(id,label,min,max,step)=>'<label class="profile-field">'+escapeHTML(label)+'<input required type="number" name="'+escapeAttribute(id)+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+escapeAttribute(p[id])+'"></label>';
+ const num=(id,label,min,max,step,attributes='')=>'<label class="profile-field">'+escapeHTML(label)+'<input required type="number" name="'+escapeAttribute(id)+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+escapeAttribute(p[id])+'" '+attributes+'></label>';
  const checked=id=>p[id]?'checked':'';
  const goals=[['maintain','🌿','Mantener peso','Energía estable'],['recomp','⚖️','Recomposición','Reducir grasa y conservar músculo'],['fat_loss','🍃','Bajar grasa','Déficit moderado'],['muscle_gain','💪','Ganar músculo','Superávit pequeño']].map(([id,icon,name,sub])=>'<label class="goal-option" title="'+escapeAttribute(sub)+'"><input type="radio" name="goal" value="'+escapeAttribute(id)+'" '+(p.goal===id?'checked':'')+'><span class="goal-option-content"><i aria-hidden="true">'+escapeHTML(icon)+'</i><b>'+escapeHTML(name)+'</b><small>'+escapeHTML(sub)+'</small></span></label>').join('');
  const review=state.profileConfirmed?'':'<aside class="profile-review-notice" role="status"><strong>Estás usando datos de ejemplo.</strong><span>Revisa el perfil y guárdalo para aplicar tus datos.</span></aside>';
- return '<div class="profile-page'+(p.sex==='manual'?' profile-page--manual':'')+'">'
- +'<header class="profile-page-heading"><div class="profile-heading-row"><div class="profile-page-intro"><h1>Mi perfil</h1><p>Tus datos, tu objetivo y el plan que encaja contigo.</p></div><div class="profile-account-host" aria-label="Cuenta"></div></div>'+review+'</header>'
- +'<div class="profile-board"><form id="profileForm" class="profile-form" aria-label="Datos y preferencias del perfil">'
- +'<section class="panel profile-form-section profile-personal" aria-labelledby="profileDataTitle"><header class="profile-section-heading"><h2 id="profileDataTitle">Datos personales</h2>'+profileHelp('formula','Ayuda sobre el cálculo','La estimación en reposo usa Mifflin–St Jeor. Elige metabolismo manual si conoces ese valor o los coeficientes de la ecuación no te representan.')+'</header><div class="profile-section-body">'
- +'<div class="profile-fields profile-fields--personal"><label class="profile-field profile-field--equation">Sexo de la ecuación<select name="sex">'+select('sex',[['male','Hombre (+5)'],['female','Mujer (−161)'],['manual','Introducir mi gasto en reposo']])+'</select></label><div class="profile-number-fields">'+num('age','Edad (años)',18,95,1)+num('height','Altura · cm',125,220,1)+num('weight','Peso · kg',35,250,.1)+'</div></div>'
- +'<div class="profile-fields profile-fields--manual" id="manualRmrField" '+(p.sex!=='manual'?'hidden':'')+'>'+num('manualRmr','Metabolismo en reposo · kcal',800,3500,10)+'</div>'
- +'<div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="followWeight" '+checked('followWeight')+'><span><b>Usar mis registros de peso</b><small>'+(last?'Último: '+qty(last.kg)+' kg · '+formatEuropeanDate(last.date):'Sin registros · se usa el peso de referencia')+'</small></span></label>'+profileHelp('followWeight','Ayuda sobre el peso','Al activar esta opción, se usa la media de hasta tres registros recientes para evitar reaccionar a una fluctuación. Si la desactivas, se usa el peso de referencia.')+'</div></div></section>'
- +'<section class="panel profile-form-section profile-goal" aria-labelledby="profileGoalTitle"><header class="profile-section-heading"><h2 id="profileGoalTitle">Tu objetivo</h2></header><div class="goal-choices">'+goals+'</div></section>'
- +'<section class="panel profile-form-section profile-settings" aria-labelledby="profileActivityTitle"><header class="profile-section-heading"><h2 id="profileActivityTitle">Actividad y ajustes</h2>'+profileHelp('activity','Ayuda sobre la actividad','El nivel representa tu movimiento habitual durante el día, sin contar las sesiones que registras en Menuki. Esas sesiones se suman solo al objetivo y las comidas pendientes de su fecha.')+'</header><div class="profile-section-body">'
- +'<div class="profile-movement"><div class="profile-movement-heading"><label for="profileActivity">Movimiento diario</label><button type="button" class="profile-compare-levels" data-action="profile-activity-open" aria-haspopup="dialog">Comparar niveles</button></div><select id="profileActivity" name="activity" aria-describedby="profileActivityDescription">'+select('activity',PROFILE_ACTIVITY_LEVELS.map(([key,label])=>[key,label]))+'</select><p id="profileActivityDescription" class="profile-activity-description">'+escapeHTML(profileActivityDescription(p.activity))+'</p></div>'
- +'<div class="profile-control-row profile-control-row--warning"><label class="profile-toggle"><input type="checkbox" name="injury" '+checked('injury')+'><span><b>Recuperación ósea</b><small>Apoyo al preparar nuevos menús</small></span></label>'+profileHelp('injury','Ayuda sobre la recuperación','Limita los recortes de energía y modera los superávits. Al preparar nuevas propuestas, favorece alimentos catalogados como fuentes de calcio, vitamina D y vitamina C. No calcula micronutrientes ni modifica el menú activo.')+'</div>'
- +'<div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="autoPortions" '+checked('autoPortions')+'><span><b>Raciones automáticas</b><small>Adapta las comidas pendientes</small></span></label>'+profileHelp('portions','Ayuda sobre las cantidades','Adapta raciones de proteínas, cereales, pan, patata, aceite y frutos secos. No cambia los platos ni los ingredientes principales. Si lo desactivas, solo cambian las metas.')+'</div></div></section></form>'
- +'<aside class="profile-results" aria-label="Vista previa del plan"><div id="profilePreview">'+profileSummaryMarkup(p)+'</div></aside></div>'
- +'<footer class="panel profile-actionbar"><button type="button" class="btn profile-guide-button" data-action="profile-guide-open">'+ic('info')+' Cómo calcula Menuki</button><div class="profile-actions"><span id="profileSaveNote" class="profile-save-note">Al guardar se actualizan las comidas pendientes y la compra.</span><button type="button" class="btn" data-action="restore-profile">Valores iniciales</button><button form="profileForm" type="submit" class="btn btn-primary" aria-describedby="profileSaveNote">'+(state.profileConfirmed?'Guardar cambios':'Confirmar y guardar')+'</button></div></footer></div>';
+ const weightHelp='Se usa la media de hasta tres registros recientes al activar esta opción. El peso de referencia vuelve a ser editable al desactivarla.'+(last?' Último registro: '+qty(last.kg)+' kg · '+formatEuropeanDate(last.date)+'.':' Sin registros disponibles se usa el peso de referencia.');
+ const personal=`<section class="panel profile-form-section profile-personal" aria-labelledby="profileDataTitle">
+  <header class="profile-section-heading"><h2 id="profileDataTitle">Datos personales</h2>${profileHelp('formula','Ayuda sobre el cálculo','La estimación en reposo usa Mifflin–St Jeor. Elige metabolismo manual si conoces ese valor o los coeficientes de la ecuación no te representan.')}</header>
+  <div class="profile-section-body">
+   <div class="profile-fields profile-fields--personal">
+    <label class="profile-field profile-field--equation">Sexo de la ecuación<select name="sex">${select('sex',[['male','Hombre (+5)'],['female','Mujer (−161)'],['manual','Gasto en reposo manual']])}</select></label>
+    ${num('age','Edad · años',18,95,1)}${num('height','Altura · cm',125,220,1)}${num('weight','Peso de referencia · kg',35,250,.1,'aria-describedby="profileWeightSource"'+(profileUsesWeightRecords(p)?' readonly':''))}
+   </div>
+   <div class="profile-fields profile-fields--manual" id="manualRmrField" ${p.sex!=='manual'?'hidden':''}>${num('manualRmr','Metabolismo en reposo · kcal',800,3500,10)}</div>
+   <div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="followWeight" ${checked('followWeight')}><span><b>Usar mis registros de peso</b><small id="profileWeightSource">${profileWeightSourceMarkup(p)}</small></span></label>${profileHelp('followWeight','Ayuda sobre el peso',weightHelp)}</div>
+  </div>
+ </section>`;
+ const settings=`<section class="panel profile-form-section profile-settings" aria-labelledby="profileActivityTitle">
+  <header class="profile-section-heading"><h2 id="profileActivityTitle">Actividad y ajustes</h2>${profileHelp('activity','Ayuda sobre la actividad','El nivel representa tu movimiento habitual durante el día, sin contar las sesiones que registras en Menuki. Esas sesiones se suman solo al objetivo y las comidas pendientes de su fecha.')}</header>
+  <div class="profile-section-body">
+   <div class="profile-movement"><div class="profile-movement-heading"><label for="profileActivity">Movimiento diario</label><button type="button" class="profile-compare-levels" data-action="profile-activity-open" aria-haspopup="dialog">Comparar niveles</button></div><select id="profileActivity" name="activity" aria-describedby="profileActivityDescription">${select('activity',PROFILE_ACTIVITY_LEVELS.map(([key,label])=>[key,label]))}</select><p id="profileActivityDescription" class="profile-activity-description">${escapeHTML(profileActivityDescription(p.activity))}</p></div>
+   <div class="profile-control-row profile-control-row--warning"><label class="profile-toggle"><input type="checkbox" name="injury" ${checked('injury')}><span><b>Recuperación ósea</b></span></label>${profileHelp('injury','Ayuda sobre la recuperación','Limita los recortes de energía y modera los superávits. Al preparar nuevas propuestas, favorece alimentos catalogados como fuentes de calcio, vitamina D y vitamina C. No calcula micronutrientes ni modifica el menú activo.')}</div>
+   <div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="autoPortions" ${checked('autoPortions')}><span><b>Raciones automáticas</b></span></label>${profileHelp('portions','Ayuda sobre las cantidades','Adapta raciones de proteínas, cereales, pan, patata, aceite y frutos secos. No cambia los platos ni los ingredientes principales. Si lo desactivas, solo cambian las metas.')}</div>
+  </div>
+ </section>`;
+ const goal='<section class="panel profile-form-section profile-goal" aria-labelledby="profileGoalTitle"><header class="profile-section-heading"><h2 id="profileGoalTitle">Tu objetivo</h2></header><div class="goal-choices">'+goals+'</div></section>';
+ return `<div class="profile-page${p.sex==='manual'?' profile-page--manual':''}">
+  <header class="profile-page-heading"><div class="profile-heading-row"><div class="profile-page-intro"><h1>Mi perfil</h1><p>Tus datos, tu objetivo y el plan que encaja contigo.</p></div><div class="profile-account-host" aria-label="Cuenta"></div></div>${review}</header>
+  <form id="profileForm" class="profile-board profile-form" aria-label="Datos y preferencias del perfil">
+   ${personal}${settings}${goal}
+   <aside class="profile-results" aria-label="Vista previa del plan"><div id="profilePreview">${profileSummaryMarkup(p)}</div></aside>
+  </form>
+  <footer class="panel profile-actionbar">
+   <button type="button" class="btn profile-guide-button" data-action="profile-guide-open">${ic('info')} Cómo calcula Menuki</button>
+   <div class="profile-actions"><span id="profileSaveNote" class="profile-save-note">Al guardar se actualizan las comidas pendientes y la compra.</span><span id="profileDirtyStatus" class="profile-dirty-status" role="status" aria-live="polite" aria-atomic="true" ${state.profileConfirmed?'hidden':''}>Pendiente de confirmar</span><button type="button" class="btn btn-quiet profile-restore-button" data-action="restore-profile">Valores iniciales</button><button id="profileSaveButton" form="profileForm" type="submit" class="btn btn-primary" aria-describedby="profileSaveNote profileDirtyStatus" ${state.profileConfirmed?'disabled':''}>${state.profileConfirmed?'Guardar cambios':'Confirmar y guardar'}</button></div>
+  </footer>
+ </div>`;
 }
-
 function weeklyMealChart(days){
  const initials=['L','M','X','J','V','S','D'];
  return '<ol class="weekly-meal-chart" aria-label="Comidas registradas de lunes a domingo">'+days.map((day,index)=>{
@@ -1343,6 +1382,7 @@ document.addEventListener('submit',function(event){
   event.preventDefault();const form=event.target;
   if(!form.reportValidity())return;
   const data=new FormData(form),p=profileFormData();
+  if(state.profileConfirmed&&!profileHasChanges(p))return;
   for(const [id,min,max] of [['age',18,95],['height',125,220],['weight',35,250],['manualRmr',800,3500]]){
     if(!Number.isFinite(Number(data.get(id)))||Number(data.get(id))<min||Number(data.get(id))>max){showToast('Revisa los datos: '+id);return}
   }
