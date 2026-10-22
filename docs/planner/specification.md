@@ -2,6 +2,8 @@
 
 Estado: generación orientada a familiaridad implementada localmente (21/10/2026). Reglas aceptadas en ADR-0046; ponderaciones y tolerancias son ajustes heurísticos, no garantías nutricionales.
 
+Evolución aceptada el 22/10/2026, **todavía no implementada**: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) integra la configuración inicial, el primer ciclo generado, las preferencias y la revisión semanal. El [plan de implementación](implementation-plan.md) fija el orden y la aceptación. Las secciones de flujo y presentación implementados de este documento siguen describiendo el código actual, incluida la sustitución individual; el nuevo alcance por defecto de tres semanas se aplicará al desarrollar esa evolución.
+
 ## Objetivo del ciclo
 
 Proponer un menú para los siguientes 21 días, con cinco espacios por día: desayuno, media mañana, comida, media tarde y cena. Son 105 comidas planificadas. La generación ocurre al preparar el siguiente ciclo; la instalación del mecanismo se hace una vez y la propuesta se repite en cada renovación. La persona revisa el resultado antes de confirmarlo.
@@ -131,9 +133,11 @@ Cada comida incluye **Ver receta**, que abre la ficha existente encima del diál
 - Para el próximo ciclo, estimar las existencias al inicio descontando solo las comidas pendientes del ciclo actual anteriores a esa fecha. Las comidas ya realizadas no se descuentan de nuevo. Esta previsión no escribe movimientos; las compras finalizadas sí aumentan el inventario real.
 - Los carritos y extras de cada ciclo quedan separados. Al activarse el siguiente, su selección pendiente pasa a la lista actual. La confirmación de una compra no borra la selección del otro ciclo.
 
-## Gustos y restricciones: propuesta pendiente
+## Preferencias aceptadas y restricciones fuera de alcance
 
-**No es una regla aceptada todavía.** Para personalizar sin modificar el catálogo compartido, guardar por persona sus gustos. Una posible escala es “me gusta”, “indiferente” y “prefiero evitar”. Las alergias/intolerancias podrían representarse por separado como exclusiones estrictas, nunca como una preferencia con una puntuación baja. Si no quedan recetas adecuadas, solicitar una decisión o ampliar el catálogo; no reintroducir en silencio un alimento excluido.
+Según ADR-0047, se aceptan preferencias personales por receta **normal**, **favorita** y **No proponer**, todavía pendientes de implementación. Favorita favorece sin obligar a aparecer; No proponer excluye la selección automática pero permite una elección manual. Registrar una comida no es una valoración. Se aceptan también máximos opcionales separados para comida y cena entre semana. Si no quedan alternativas automáticas, explicar la condición y pedir revisarla, sin relajarla en silencio ni confirmar un ciclo incompleto.
+
+Las preferencias son privadas y no modifican el catálogo compartido ni reemplazan menús confirmados automáticamente. Las exclusiones de ingredientes y las alergias/intolerancias quedan fuera de esta entrega y requieren un diseño independiente; No proponer no es un filtro de alergias.
 
 Al sustituir un plato, la opción inicial más fiable es escoger otra receta del mismo tipo. Sustituir ingredientes dentro de la receta requeriría equivalencias explícitas, comprobadas en unidades y nutrición.
 

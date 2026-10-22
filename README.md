@@ -49,6 +49,10 @@ Al iniciar sesión en otro dispositivo, Menuki carga los datos de tu cuenta desd
 
 El historial de sesiones está al principio de **Actividad y peso**. En móvil, **Actividad y peso** se abre desde el desplegable superior. Cada fila incluye **Eliminar sesión**, y puedes ampliar el historial para ver registros anteriores. El reinicio total sigue siendo una acción deliberada con confirmación y no interviene al cambiar de dispositivo. La aplicación ya no ofrece restauración personal desde archivos JSON; las instalaciones existentes conservan las migraciones de sus datos locales v5-v11.
 
+## Próximo desarrollo aprobado
+
+El propietario ha aceptado integrar la configuración inicial guiada con la evolución del planificador: perfil obligatorio antes del primer plan, preferencias opcionales, favoritas y No proponer, límites de tiempo y revisión de una semana base con cambios para tres semanas o una sola comida. Se priorizan raciones prácticas y una despensa opcional e incompleta. **Está pendiente de implementación**; el comportamiento descrito en Estado actual sigue siendo el disponible. El alcance, el orden de desarrollo y las comprobaciones están en el [plan integrado](docs/planner/implementation-plan.md) y en [ADR-0047](docs/decisions/0047-guided-first-use-and-personalized-planning.md).
+
 ## Flujo de trabajo con Git
 
 El trabajo nuevo parte de una rama `dev` limpia y se realiza en una rama de tarea dentro de este mismo checkout. No se crean worktrees. Si hay cambios pendientes —también archivos sin seguimiento—, consérvalos y decide cómo resolverlos antes de empezar otra tarea; no los guardes, descartes ni muevas automáticamente.

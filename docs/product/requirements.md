@@ -1,6 +1,8 @@
 # Requisitos del producto
 
-Estado de referencia: 16 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
+Estado de referencia: 22 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
+
+Evolución aceptada y pendiente de implementar: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) y el [plan integrado](../planner/implementation-plan.md) incorporan configuración inicial guiada, perfil obligatorio antes del primer plan, preferencias opcionales, generación común desde el primer ciclo y revisión de una semana base. Las secciones de comportamiento implementado siguen describiendo la aplicación actual; el acuerdo nuevo no implica que ya existan sus pantallas, tablas o migraciones.
 
 ## Propósito y usuarios
 

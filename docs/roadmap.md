@@ -1,6 +1,6 @@
 # Hoja de ruta propuesta
 
-Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén implementadas ni que cada detalle técnico esté aprobado. Avanzar de forma incremental y mantener visible el estado real.
+Esta secuencia distingue la próxima entrega aceptada de otras etapas candidatas. Una decisión aprobada no implica que esté implementada. Avanzar de forma incremental y mantener visible el estado real.
 
 ## Estado actual
 
@@ -11,7 +11,19 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 - El esquema remoto tiene catorce tablas personales con RLS; el propietario confirma que las migraciones de inventario no negativo y de movimiento con cantidad cero se aplicaron el 17/10/2026. El 22/10/2026 confirmó que `20261018120000_retire_meal_shortfalls.sql` está aplicada y comprobó en SQL Editor que la tabla histórica quedó vacía, el disparador descarta escrituras antiguas y `authenticated` no tiene permisos directos de inserción, actualización o borrado. La tabla se conserva por compatibilidad. La corrección HTTP 409 está aplicada y resuelta según confirmación del administrador comunicada el 17/10/2026. El propietario informa que las migraciones del buzón y mantenimiento admin y la asignación del rol están aplicadas, y que el borrado individual funciona. La exportación JSON está implementada en el repositorio; queda validar el recorrido completo publicado con una cuenta admin y otra normal. Los snapshots tienen retención indefinida y no se purgan automáticamente; revisar el crecimiento global y por tabla al añadir usuarios y alrededor de 350 MB.
 - Las sesiones reales ajustan las comidas pendientes de su misma fecha; días futuros mantienen el objetivo base y las comidas registradas conservan sus cantidades.
 
-## Etapas candidatas
+## Próxima entrega aprobada: configuración inicial y planificación personal
+
+Aceptada el 22/10/2026 y **pendiente de implementación**, según [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md). El [plan integrado](planner/implementation-plan.md) es la referencia del alcance, la secuencia y los criterios de aceptación.
+
+1. Incorporar el recorrido inicial: Sobre ti → Tu objetivo y tu día a día → Tus preferencias (omitible) → Tu primer menú. Guardar el progreso por cuenta; no crear un plan con datos personales de ejemplo.
+2. Unificar el generador del primer ciclo y de las renovaciones, con preferencias explícitas, tiempos opcionales, raciones prácticas, evaluación semanal y previsión de existencias al inicio del ciclo.
+3. Adaptar Supabase, mapeo y conciliación para borradores incompletos y preferencias privadas, preservando las cuentas existentes y la sincronización transaccional.
+4. Actualizar perfil, fichas y revisión semanal; por defecto editar la semana base para las tres semanas, con opción individual y conservación de bloqueos.
+5. Validar dominio, escritorio/móvil, SQL, RLS y recorrido real entre dispositivos. Comprobar la migración remota antes de activar el cliente dependiente y publicar solo con autorización.
+
+Despensa completa, valoración del catálogo, pesos de seguimiento y ejercicio no son requisitos de inicio. La optimización por envases, precios, caducidades, sobras y cocina por lotes queda para etapas posteriores; alergias, exclusiones de ingredientes y varias personas siguen fuera de esta entrega.
+
+## Etapas candidatas y antecedentes
 
 ### A. Cerrar el diseño de catálogos y planificación — primera versión completada
 
@@ -28,7 +40,7 @@ Esta secuencia sirve para ordenar el trabajo; no implica que las etapas estén i
 ### C. Implementar la propuesta de ciclo — primera versión completada
 
 - Generar 21 días y cinco espacios diarios a partir de recetas compatibles.
-- Aplicar las reglas aceptadas con heurísticas iniciales; añadir preferencias personales solo después de decidir su modelo.
+- Aplicar las reglas aceptadas con heurísticas iniciales. El modelo de preferencias personales quedó aceptado en ADR-0047 y su implementación se incorpora a la próxima entrega del plan integrado.
 - Permitir revisar, cambiar y bloquear platos; preservar bloqueos al regenerar; guardar versión de catálogo y cantidades consumidas.
 
 ### D. Persistencia remota y Auth — implementación realizada; validación pendiente

@@ -56,6 +56,14 @@ Last updated: 2026-10-22. This file is a short handoff index, not the full produ
 - ADR-0008 accepts immutable per-ingredient completion snapshots in recipe units, separate from inventory movements, with indefinite retention and no scheduled purge. Track database size as users are added; review near 350 MB. ADR-0009 accepts email + password, open registration, and no email confirmation. ADR-0010 records relational sync and its one-time import. Two-user RLS isolation and published PC/mobile flow remain unverified.
 - No offline queue. The UI must only report a successful remote save after Supabase confirms it; on failure it keeps the local working copy and shows pending/error status. Ordinary cross-device changes reconcile automatically; confirmed full reset remains a separate operation.
 
+## Accepted next development (not implemented)
+
+On 2026-10-22 the owner accepted the five planner changes and a four-step first-use setup, now consolidated in [ADR-0047](../docs/decisions/0047-guided-first-use-and-personalized-planning.md) and the [integrated implementation plan](../docs/planner/implementation-plan.md). This is a documented agreement only: no new runtime, SQL migration, hosted activation or publication is implied.
+
+New accounts will complete basic profile data and goal/habitual movement, may skip planning preferences, and review a first generated menu for their chosen date. The same generator will serve first and subsequent cycles. Setup drafts and explicit recipe preferences will be private, relational and resumable across devices. Creating an Auth account, initializing sync, confirming a profile and confirming a first plan are distinct states. Do not bootstrap new accounts with example personal data or an automatically confirmed fixed menu in the new flow; preserve existing users' data and cycle-renewal behavior.
+
+Accepted planner changes include favorite/normal/do-not-propose recipe preferences, optional separate weekday lunch/dinner time limits, one-week-at-a-time review and base-week swaps applied to three weeks by default with a single-meal option. Existing locks take priority. Practical portions and approximate kcal/macros take precedence over forcing an exact total; pantry completeness is never a prerequisite. Preserve 21×5 persistence, familiar weekly repetition, gradual renewal, same-date actual exercise and immutable completed quantities. Ingredient exclusions/allergies, multi-person planning, package optimization, leftovers and batch cooking are outside this first delivery. Use the integrated plan for sequencing and acceptance criteria rather than adding these features immediately.
+
 ## Source-of-truth map
 
 - [README.md](../README.md): user-facing overview, current capabilities, and deployment.
@@ -65,6 +73,7 @@ Last updated: 2026-10-22. This file is a short handoff index, not the full produ
 - [Front-end and back-end audit](../docs/front-end-audit.md): findings, recommendations, and progress of the staged client refactor.
 - [Supabase database model](../docs/supabase_db_model.md): applied schema, columns, keys, relations, and RLS status.
 - [Planner specification](../docs/planner/specification.md): catalog contract and accepted planner rules.
+- [Integrated setup and planner implementation plan](../docs/planner/implementation-plan.md): accepted next delivery, architecture changes, release order and acceptance criteria; not implemented.
 - [Roadmap](../docs/roadmap.md): candidate stages and acceptance criteria.
 - [Decision records](../docs/decisions/): rationale and acceptance status.
 - [Actual activity-session nutrition decision](../docs/decisions/0005-actual-activity-session-nutrition.md): same-date, post-session calculation and its limits.

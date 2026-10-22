@@ -6,6 +6,8 @@
 
 Actualización de vigencia (17/10/2026): la secuencia inicial de cinco pasos se conserva abajo como antecedente. ADR-0025 y ADR-0029 definen la guía rápida actual de tres pasos desde Inicio/Guía y el recorrido completo en Guía. La confirmación del perfil y la restricción de comidas futuras siguen vigentes.
 
+Actualización de diseño (22/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) acepta una configuración guiada de cuatro pasos para cuentas nuevas, con perfil obligatorio, preferencias opcionales y primer menú generado. Está pendiente de implementación. Se reutilizará la confirmación del perfil y se conservará la restricción de comidas futuras; la existencia de una cuenta Auth o una sincronización inicial no equivaldrá a completar la configuración.
+
 ## Decisión
 
 1. **Orientar a quien entra por primera vez.** Inicio muestra una secuencia breve de cinco pasos y recomienda empezar por el perfil. Los datos genéricos de ejemplo se identifican como tales. La app no los considera revisados hasta que el usuario guarda explícitamente el formulario.

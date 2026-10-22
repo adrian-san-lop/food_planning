@@ -4,6 +4,8 @@
 - **Estado:** Aceptada e implementada
 - **Alcance:** primera orientación dentro de Inicio y acceso a ayuda breve desde Guía
 
+Actualización de diseño (22/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) acepta una configuración inicial obligatoria para validar el perfil de cuentas nuevas y confirmar el primer menú, con preferencias omitibles y progreso remoto. Está pendiente de implementación. Sustituirá el arranque descrito aquí; la guía informativa seguirá siendo opcional y cerrarla no equivaldrá a completar la configuración.
+
 ## Decisión
 
 1. Inicio ofrece **Revisar perfil** mientras el perfil no se haya confirmado y muestra siempre **Ver guía rápida** en el banner.

@@ -12,12 +12,15 @@ La familiaridad, la semana repetida y la renovación de 2–3 familias por ciclo
 
 ## Gustos, restricciones y varias personas
 
-- ¿Qué escala de gustos se quiere usar y dónde se recogen las valoraciones?
-- ¿Cómo distinguir “no me gusta” de “no consumir nunca” y de alergia/intolerancia? La propuesta de filtrado estricto no está aceptada como especificación médica.
+El modelo inicial queda resuelto en [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md), pendiente de implementación: normal, favorita y No proponer por receta, con acciones en las fichas. No proponer afecta a la selección automática y permite elección manual; no se infieren gustos por registrar comidas. Los límites de tiempo de comida y cena entre semana son opcionales. La configuración inicial y el primer menú generado se incluyen en el [plan integrado](planner/implementation-plan.md).
+
+- ¿Qué modelo futuro permitiría excluir ingredientes y tratar alergias/intolerancias? Es una función separada de los gustos por receta y está fuera de la entrega aceptada.
 - Si se comparte un menú, ¿debe ser aceptable para todos o se permiten comidas distintas? ¿Cómo combinar preferencias y raciones?
-- ¿Qué debe hacer el planificador cuando las restricciones dejan muy pocas recetas: pedir ampliar preferencias, sugerir nuevas recetas o ambas?
+- Si se amplía el producto a restricciones de ingredientes o varias personas, ¿qué alternativas se ofrecen cuando quedan pocas recetas? Para el alcance actual ya se acepta explicar la condición que deja sin candidatos y permitir revisarla, sin relajarla en silencio ni confirmar un ciclo incompleto.
 
 ## Planificador
+
+ADR-0047 acepta la generación común desde el primer ciclo, las raciones prácticas con objetivos aproximados y la despensa opcional e incompleta. También acepta revisar una semana a la vez y aplicar los cambios de la semana base a tres semanas por defecto, con opción individual y conservación de bloqueos. Estas decisiones ya no son preguntas abiertas; su desarrollo está pendiente.
 
 - Tras varias semanas, ¿conviene mostrar un resumen de la actividad registrada para que la persona revise manualmente su nivel de movimiento habitual? No se ajustará el perfil ni se predecirán sesiones automáticamente.
 - ¿Cómo calibrar con uso real las puntuaciones de ajuste nutricional, aprovechamiento de ingredientes y separación de comidas/cenas, manteniendo la política de familiaridad de ADR-0046?

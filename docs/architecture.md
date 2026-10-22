@@ -134,6 +134,12 @@ Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es co
 - En móvil, la barra inferior incluye Inicio, Menú, Compra y Más. Despensa, Recetas, Proponer receta y, para administradores, Revisar propuestas se agrupan bajo **Más**. Perfil, Aprende a usar Menuki, Actividad y peso y Cerrar sesión están en el menú superior de cuenta. La vista **Actividad y peso** muestra el historial al principio, con acciones de borrado etiquetadas y carga progresiva de sesiones.
 - El uso sin coste depende de los límites vigentes de GitHub Pages y del proveedor de base de datos; verificar límites oficiales antes de integrar o prometer capacidad.
 
+## Evolución aceptada, pendiente de implementar
+
+[ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md) y el [plan integrado](planner/implementation-plan.md) incorporan la configuración inicial de cuatro pasos al desarrollo de preferencias y generación personal. El objetivo es admitir una cuenta Auth con borrador incompleto, validar el perfil antes del primer plan, guardar preferencias relacionales y usar el generador común desde el primer ciclo. Requiere revisar en conjunto el arranque, los supuestos de perfil completo, el mapeo y la sincronización transaccional; no basta con añadir un tutorial visual.
+
+Los nuevos módulos de dominio y vistas deben mantener separado el estado de configuración de la UI y de Supabase, y reducir la coordinación nueva en `main.js`. La entrega incluye revisión por una semana y previsión de despensa al inicio del ciclo. La arquitectura y las tablas descritas arriba siguen siendo las implementadas; este acuerdo no supone una nueva migración aplicada ni publicación.
+
 ## Referencias de implementación
 
 - [Requisitos del producto](product/requirements.md)

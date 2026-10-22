@@ -4,6 +4,8 @@
 - Fecha: 2026-10-21
 - Alcance: selección de propuestas futuras y su resumen; sustituye la política de variedad/novedad de ADR-0002 y ADR-0004
 
+Actualización de diseño (22/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) acepta extender el generador al primer ciclo con perfil confirmado, preferencias explícitas y una revisión de semana base cuyo cambio se aplica por defecto a tres semanas, con opción individual y conservación de bloqueos. Esa evolución está pendiente de implementación; este registro conserva la descripción del generador ya implementado. La familiaridad, la repetición semanal y la renovación gradual siguen vigentes.
+
 ## Contexto
 
 Menuki debe reducir el trabajo de decidir, cocinar y comprar. El generador anterior premiaba cada receta ausente del ciclo activo y penalizaba varias veces la repetición, tendiendo a recorrer demasiado catálogo. Una biblioteca amplia es útil para escoger alternativas, pero no obliga a renovar todo el menú.
