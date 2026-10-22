@@ -4,6 +4,7 @@ import { createStateNormalizer } from '../js/persistence/state-normalization.js'
 import { createInventoryUnitService } from '../js/domain/inventory-units.js';
 import { normalizeLegacyDeduction } from '../js/domain/inventory-balance.js';
 import { dateFromISO, isoDate } from '../js/domain/dates.js';
+import { sanitizeProfile } from '../js/domain/profile.js';
 
 const foods = {
   apple: { unit: 'ud', recipeUnit: 'ud', approximateEdibleWeight_g_per_unit: 180 },
@@ -27,7 +28,7 @@ function createNormalizer() {
     isoDate,
     today: () => dateFromISO('2026-10-17'),
     activityById: { walk: { met: 3 } },
-    sanitizeProfile: (profile) => ({ ...profile }),
+    sanitizeProfile,
     validMenuSnapshot: () => false,
     isUuid: () => false,
     cloneMenus: (menus) => menus.map((week) => week.map((day) => day.slice())),
@@ -45,6 +46,22 @@ test('local state normalizer accepts exactly v5-v11 and returns the current v11 
     assert.equal(cleanState(baseState(version)).v, 11);
   }
   for (const version of [4, 12]) assert.equal(cleanState(baseState(version)), null);
+});
+
+test('v5-v11 states keep real profile values and confirmation through the extracted compatibility service', () => {
+  const { cleanState } = createNormalizer();
+  for (const version of [5, 6, 7, 8, 9, 10, 11]) {
+    const raw = { ...baseState(version), noActiveCycle: true, profileConfirmed: true,
+      profile: { sex: 'female', age: 42, height: 168, weight: 65, activity: 'high', goal: 'recomp',
+        manualRmr: 1500, autoPortions: false, followWeight: true, injury: true } };
+    const before = structuredClone(raw);
+    const normalized = cleanState(raw);
+    assert.deepEqual(normalized.profile, { ...raw.profile, activity: 'moderate' });
+    assert.equal(normalized.profileConfirmed, true);
+    assert.equal(normalized.noActiveCycle, true);
+    assert.equal(normalized.v, 11);
+    assert.deepEqual(raw, before);
+  }
 });
 
 test('v5 local state converts gram-based produce usage and stock into recipe and pantry units', () => {

@@ -1,6 +1,6 @@
 # ADR-0047 — Configuración inicial guiada y planificación personal
 
-- Estado: Aceptada; pendiente de implementación.
+- Estado: Aceptada; implementación por paquetes en curso.
 - Fecha: 2026-10-22
 - Alcance: primera visita, perfil, preferencias, generación y revisión de menús, persistencia personal.
 - Desarrollo y aceptación: [plan integrado](../planner/implementation-plan.md).
@@ -9,7 +9,7 @@
 
 Menuki debe permitir empezar con pocos datos y reducir decisiones cotidianas. La guía actual es opcional y la primera sincronización puede guardar un perfil de ejemplo y un ciclo fijo antes de que la persona revise sus datos. El generador posterior favorece familiaridad, pero todavía no recoge preferencias personales ni límites de tiempo.
 
-El propietario acepta las cinco decisiones de evolución del planificador y el recorrido inicial de cuatro pasos. Esta decisión registra el acuerdo; no acredita código, migraciones, publicación ni validación remota nuevos.
+El propietario acepta las cinco decisiones de evolución del planificador y el recorrido inicial de cuatro pasos. Esta decisión registra el acuerdo; el estado de implementación se detalla al final y no acredita por sí misma migraciones, publicación ni validación remota.
 
 ## Decisión
 
@@ -31,6 +31,8 @@ El propietario acepta las cinco decisiones de evolución del planificador y el r
 - Se mantienen las fórmulas de objetivos actuales, la actividad real limitada a su fecha, los IDs del catálogo y las reglas de unidades. La previsión de stock para generar un ciclo futuro no escribe movimientos.
 - Quedan fuera de esta entrega alergias, exclusiones de ingredientes, varias personas, precios, caducidades, sobras y cocina por lotes. Las preferencias de receta no se presentarán como un filtro de alergias.
 
-## Pendiente
+## Avance de implementación y pendientes
 
-Implementar y verificar el [plan integrado](../planner/implementation-plan.md). El diseño técnico de borradores, compatibilidad de clientes y límites de ración debe concretarse antes de ejecutar SQL. No quedan decisiones de producto bloqueantes para iniciar ese trabajo dentro del alcance aceptado.
+El 22/10/2026 se implementó y probó localmente el [paquete 1](../planner/package-1-foundations.md): perfil extraído con compatibilidad, borradores y progreso de configuración, y preferencias con cambios parciales explícitos. Los nuevos modelos todavía no activan el recorrido ni preferencias en la aplicación. El estado sigue en v11, sin SQL ni publicación.
+
+Quedan los paquetes 2-7 del [plan integrado](../planner/implementation-plan.md). El diseño de persistencia relacional y compatibilidad de clientes debe concretarse antes de ejecutar SQL; las raciones prácticas son el siguiente trabajo. No quedan decisiones de producto bloqueantes para continuar dentro del alcance aceptado.

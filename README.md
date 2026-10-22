@@ -51,7 +51,7 @@ El historial de sesiones está al principio de **Actividad y peso**. En móvil, 
 
 ## Próximo desarrollo aprobado
 
-El propietario ha aceptado integrar la configuración inicial guiada con la evolución del planificador: perfil obligatorio antes del primer plan, preferencias opcionales, favoritas y No proponer, límites de tiempo y revisión de una semana base con cambios para tres semanas o una sola comida. Se priorizan raciones prácticas y una despensa opcional e incompleta. **Está pendiente de implementación**; el comportamiento descrito en Estado actual sigue siendo el disponible. El alcance, el orden de desarrollo y las comprobaciones están en el [plan integrado](docs/planner/implementation-plan.md) y en [ADR-0047](docs/decisions/0047-guided-first-use-and-personalized-planning.md).
+El propietario ha aceptado integrar la configuración inicial guiada con la evolución del planificador: perfil obligatorio antes del primer plan, preferencias opcionales, favoritas y No proponer, límites de tiempo y revisión de una semana base con cambios para tres semanas o una sola comida. Se priorizan raciones prácticas y una despensa opcional e incompleta. El [paquete 1](docs/planner/package-1-foundations.md) prepara y prueba localmente los modelos de perfil, configuración y preferencias, conservando el comportamiento actual. **Las nuevas pantallas, generación y persistencia siguen pendientes**. El alcance y la secuencia de siete paquetes están en el [plan integrado](docs/planner/implementation-plan.md) y en [ADR-0047](docs/decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Flujo de trabajo con Git
 

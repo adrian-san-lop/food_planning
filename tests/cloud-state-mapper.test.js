@@ -37,6 +37,10 @@ function createMapper() {
   });
 }
 
+test('current cloud reads still reject an initialized account missing its profile instead of inventing one', () => {
+  assert.throws(() => createMapper().stateFromCloud({ profile: null }), /no contiene su perfil/);
+});
+
 test('cloud mapper keeps the relational snapshot contract and shopping unit fields', async () => {
   const mapper = createMapper();
   const snapshot = await mapper.buildCloudSnapshot({

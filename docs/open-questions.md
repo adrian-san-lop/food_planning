@@ -12,7 +12,7 @@ La familiaridad, la semana repetida y la renovación de 2–3 familias por ciclo
 
 ## Gustos, restricciones y varias personas
 
-El modelo inicial queda resuelto en [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md), pendiente de implementación: normal, favorita y No proponer por receta, con acciones en las fichas. No proponer afecta a la selección automática y permite elección manual; no se infieren gustos por registrar comidas. Los límites de tiempo de comida y cena entre semana son opcionales. La configuración inicial y el primer menú generado se incluyen en el [plan integrado](planner/implementation-plan.md).
+El modelo inicial queda resuelto en [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md): normal, favorita y No proponer por receta, con acciones en las fichas. El [paquete 1](planner/package-1-foundations.md) prepara los contratos de dominio; su aplicación al generador, persistencia e interfaz siguen pendientes. No proponer afecta a la selección automática y permite elección manual; no se infieren gustos por registrar comidas. Los límites de tiempo de comida y cena entre semana son opcionales. La configuración inicial y el primer menú generado se incluyen en el [plan integrado](planner/implementation-plan.md).
 
 - ¿Qué modelo futuro permitiría excluir ingredientes y tratar alergias/intolerancias? Es una función separada de los gustos por receta y está fuera de la entrega aceptada.
 - Si se comparte un menú, ¿debe ser aceptable para todos o se permiten comidas distintas? ¿Cómo combinar preferencias y raciones?

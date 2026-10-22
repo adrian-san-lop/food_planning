@@ -56,9 +56,9 @@ Last updated: 2026-10-22. This file is a short handoff index, not the full produ
 - ADR-0008 accepts immutable per-ingredient completion snapshots in recipe units, separate from inventory movements, with indefinite retention and no scheduled purge. Track database size as users are added; review near 350 MB. ADR-0009 accepts email + password, open registration, and no email confirmation. ADR-0010 records relational sync and its one-time import. Two-user RLS isolation and published PC/mobile flow remain unverified.
 - No offline queue. The UI must only report a successful remote save after Supabase confirms it; on failure it keeps the local working copy and shows pending/error status. Ordinary cross-device changes reconcile automatically; confirmed full reset remains a separate operation.
 
-## Accepted next development (not implemented)
+## Accepted development: package 1 implemented locally
 
-On 2026-10-22 the owner accepted the five planner changes and a four-step first-use setup, now consolidated in [ADR-0047](../docs/decisions/0047-guided-first-use-and-personalized-planning.md) and the [integrated implementation plan](../docs/planner/implementation-plan.md). This is a documented agreement only: no new runtime, SQL migration, hosted activation or publication is implied.
+On 2026-10-22 the owner accepted the five planner changes and a four-step first-use setup, consolidated in [ADR-0047](../docs/decisions/0047-guided-first-use-and-personalized-planning.md) and the seven-package [implementation plan](../docs/planner/implementation-plan.md). [Package 1](../docs/planner/package-1-foundations.md) is implemented and tested locally on `chore/planner-foundations`: `domain/profile.js` replaces the inline compatibility normalizer; pure `domain/onboarding.js` and `domain/planning-preferences.js` define nullable drafts, explicit confirmation, legacy transitions and omission-safe preference updates. The new models are not wired into startup, generation or persistence. State remains v11 with v5-v11 support; initialized cloud accounts still require a complete profile. No SQL, hosted activation or publication is included. All 94 tests pass; 361 comparisons against the previous profile normalizer match. Practical portions are the next package.
 
 New accounts will complete basic profile data and goal/habitual movement, may skip planning preferences, and review a first generated menu for their chosen date. The same generator will serve first and subsequent cycles. Setup drafts and explicit recipe preferences will be private, relational and resumable across devices. Creating an Auth account, initializing sync, confirming a profile and confirming a first plan are distinct states. Do not bootstrap new accounts with example personal data or an automatically confirmed fixed menu in the new flow; preserve existing users' data and cycle-renewal behavior.
 
@@ -73,7 +73,7 @@ Accepted planner changes include favorite/normal/do-not-propose recipe preferenc
 - [Front-end and back-end audit](../docs/front-end-audit.md): findings, recommendations, and progress of the staged client refactor.
 - [Supabase database model](../docs/supabase_db_model.md): applied schema, columns, keys, relations, and RLS status.
 - [Planner specification](../docs/planner/specification.md): catalog contract and accepted planner rules.
-- [Integrated setup and planner implementation plan](../docs/planner/implementation-plan.md): accepted next delivery, architecture changes, release order and acceptance criteria; not implemented.
+- [Integrated setup and planner implementation plan](../docs/planner/implementation-plan.md): seven-package delivery, release order and acceptance criteria; package 1 is implemented locally, new user flows remain pending.
 - [Roadmap](../docs/roadmap.md): candidate stages and acceptance criteria.
 - [Decision records](../docs/decisions/): rationale and acceptance status.
 - [Actual activity-session nutrition decision](../docs/decisions/0005-actual-activity-session-nutrition.md): same-date, post-session calculation and its limits.

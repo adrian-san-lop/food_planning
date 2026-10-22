@@ -1,7 +1,7 @@
 # Plan integrado: primera visita y generación personal de menús
 
 - Fecha: 22/10/2026.
-- Estado: **Aceptado; desarrollo pendiente.** Este documento integra las cinco decisiones del planificador y la configuración inicial guiada aceptadas por el propietario. No describe funcionalidad nueva ya disponible.
+- Estado: **Aceptado; desarrollo por paquetes en curso.** El [paquete 1](package-1-foundations.md) está implementado y probado localmente. Los nuevos flujos de usuario y la persistencia siguen pendientes; este plan distingue el resultado previsto de lo ya disponible.
 - Decisión: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 - Comportamiento actualmente implementado: [especificación](specification.md), [ADR-0046](../decisions/0046-familiar-weekly-menu.md) y [arquitectura](../architecture.md).
 
@@ -96,12 +96,15 @@ Conservar las migraciones locales v5-v11. Si cambia el contrato persistido, aña
 
 ## 6. Orden de ejecución de la primera entrega
 
-1. **Documentación del acuerdo:** este plan y ADR-0047. No implementar todavía por el mero hecho de registrarlos.
-2. **Contratos y casos de prueba:** definir estados incompletos, confirmaciones, preferencias, alcance de cambios, límites de ración y compatibilidad con cuentas existentes.
-3. **Dominio:** generación común, reglas de preferencias/tiempo, raciones, evaluación semanal y previsión de despensa, con pruebas reproducibles sin datos personales.
-4. **Persistencia:** preparar migraciones aditivas y actualizar RPC, mapeo, conciliación e inicialización. Revisar el SQL y sus diagnósticos antes de aplicarlo.
-5. **Front:** recorrido de cuatro pasos, preferencias, fichas y revisión semanal; comprobar por HTTP escritorio y móvil con estados sintéticos y sin escrituras remotas durante esa revisión.
-6. **Integración real y publicación:** aplicar y comprobar las migraciones en Supabase antes de activar el cliente que las necesita; probar cuentas y dispositivos; publicar cuando el propietario lo autorice. No considerar aplicada una migración porque su archivo esté en Git.
+El acuerdo queda registrado en este plan y ADR-0047. El desarrollo se divide en siete paquetes revisables:
+
+1. **Estados y compatibilidad — implementado localmente:** separar perfil válido confirmado de borrador incompleto; definir preferencias, progreso y transición de cuentas existentes. Extraer la normalización del perfil conservando el comportamiento vigente. Los modelos nuevos no activan todavía otro arranque ni cambian el contrato persistido v11. Véase [resultado y comprobaciones](package-1-foundations.md).
+2. **Raciones prácticas — siguiente paquete:** concretar límites y redondeos por alimento/ingrediente, validar metadatos genéricos y probar las cantidades realmente utilizadas por nutrición, compra y despensa. Mantener las fórmulas y las cantidades ya consumidas.
+3. **Generador común:** servir primer ciclo y renovación con perfil confirmado, preferencias, tiempos, evaluación semanal y previsión de despensa. Conservar familiaridad y bloqueos, con pruebas reproducibles sin datos personales.
+4. **Persistencia Supabase y compatibilidad:** preparar migraciones aditivas; actualizar RPC, mapeo, normalización, conciliación e inicialización para borradores y preferencias. Validar la confirmación del perfil también en el servidor. Revisar el SQL y sus diagnósticos antes de aplicarlo.
+5. **Preferencias y revisión semanal:** extraer la revisión de `main.js`, añadir preferencias en perfil y fichas, y aplicar cambios a tres semanas o una comida conservando bloqueos. Comprobar por HTTP escritorio y móvil con estados sintéticos.
+6. **Configuración inicial guiada:** conectar los cuatro pasos, el guardado y reanudación y el primer menú revisable, utilizando los modelos, motor y persistencia anteriores. Conservar el acceso y los datos de las cuentas existentes.
+7. **Integración real y publicación:** aplicar y comprobar las migraciones en Supabase antes de activar el cliente que las necesita; probar cuentas, RLS y dispositivos; publicar cuando el propietario lo autorice. No considerar aplicada una migración porque su archivo esté en Git.
 
 La activación debe contemplar clientes anteriores y capacidades del esquema. Un componente pendiente no debe provocar una caída de toda la cuenta como ocurrió con dependencias de tablas nuevas; limitar el mensaje y el bloqueo al flujo que necesite esa capacidad.
 

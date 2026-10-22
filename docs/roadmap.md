@@ -13,7 +13,7 @@ Esta secuencia distingue la próxima entrega aceptada de otras etapas candidatas
 
 ## Próxima entrega aprobada: configuración inicial y planificación personal
 
-Aceptada el 22/10/2026 y **pendiente de implementación**, según [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md). El [plan integrado](planner/implementation-plan.md) es la referencia del alcance, la secuencia y los criterios de aceptación.
+Aceptada el 22/10/2026 y **en desarrollo por paquetes**, según [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md). El [paquete 1](planner/package-1-foundations.md) está implementado y probado localmente: modelos de perfil, configuración y preferencias, con extracción compatible del perfil. Las nuevas funciones de usuario y su persistencia todavía no se activan. El [plan integrado](planner/implementation-plan.md) detalla la secuencia de siete paquetes y sus criterios; el siguiente es raciones prácticas. Queda por completar:
 
 1. Incorporar el recorrido inicial: Sobre ti → Tu objetivo y tu día a día → Tus preferencias (omitible) → Tu primer menú. Guardar el progreso por cuenta; no crear un plan con datos personales de ejemplo.
 2. Unificar el generador del primer ciclo y de las renovaciones, con preferencias explícitas, tiempos opcionales, raciones prácticas, evaluación semanal y previsión de existencias al inicio del ciclo.
@@ -40,7 +40,7 @@ Despensa completa, valoración del catálogo, pesos de seguimiento y ejercicio n
 ### C. Implementar la propuesta de ciclo — primera versión completada
 
 - Generar 21 días y cinco espacios diarios a partir de recetas compatibles.
-- Aplicar las reglas aceptadas con heurísticas iniciales. El modelo de preferencias personales quedó aceptado en ADR-0047 y su implementación se incorpora a la próxima entrega del plan integrado.
+- Aplicar las reglas aceptadas con heurísticas iniciales. El modelo de preferencias personales de ADR-0047 está preparado en dominio; su aplicación al generador y su persistencia siguen pendientes en el plan integrado.
 - Permitir revisar, cambiar y bloquear platos; preservar bloqueos al regenerar; guardar versión de catálogo y cantidades consumidas.
 
 ### D. Persistencia remota y Auth — implementación realizada; validación pendiente

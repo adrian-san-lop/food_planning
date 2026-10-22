@@ -4,7 +4,8 @@ import { weeklyMealSummary, dashboardCycleSummary } from './domain/dashboard.js?
 import { cycleHasEnded, confirmedCycleIsAvailable, canBuyNextCycle, shoppingDates, nextCycleCartScope } from './domain/cycle-shopping.js?v=20261015-cycle-shopping';
 import { loadCatalogs as fetchCatalogs } from './data/catalogs.js?v=20261017-whole-bread-slices';
 import { createInventoryUnitService } from './domain/inventory-units.js?v=20261017-whole-bread-slices';
-import { ACTIVITY_FACTORS, createNutritionService, normalizeActivityLevel } from './domain/nutrition.js?v=20261018-activity-levels';
+import { ACTIVITY_FACTORS, createNutritionService } from './domain/nutrition.js?v=20261018-activity-levels';
+import { DEFAULT_PROFILE, defaultProfile, sanitizeProfile } from './domain/profile.js?v=20261022-planner-foundations';
 import { consumeAvailableStock, normalizeLegacyDeduction, projectAvailableStock } from './domain/inventory-balance.js?v=20261018-no-meal-shortfalls';
 import { createInventoryLedger } from './domain/inventory-ledger.js?v=20261017-inventory-ledger';
 import { scaleBreadSlices } from './domain/recipe-portions.js?v=20261017-whole-bread-slices';
@@ -126,21 +127,6 @@ let persistent=true;
 function initialStart(){return FIRST_CYCLE_START}
 function emptyState(){return {v:11,start:initialStart(),noActiveCycle:false,activeCycleId:null,profile:defaultProfile(),profileConfirmed:false,cart:{},cartExtras:[],done:{},reversedDone:{},legacyStrengthDays:{},activitySessions:[],deletedActivitySessionIds:[],stock:{},movements:[],purchases:[],weights:[],deletedWeightDates:[],resetCloudPending:false,prep:{},archives:[],activeMenus:null,activeMenuCatalogVersion:null,activeMenuGeneratedAt:null,activeMenuConfirmedAt:null,activeMenuRecoveryFocus:false,nextMenu:null,plannerDraft:null,lastBackupAt:null}}
 function mealUsage(recipe){const ans={};for(const item of recipe.ingredients)ans[item.id]=(ans[item.id]||0)+item.rest;return ans}
-// Valores de ejemplo no personales; se pueden editar desde «Mi perfil».
-const DEFAULT_PROFILE={sex:'manual',age:30,height:170,weight:70,activity:'sedentary',goal:'maintain',injury:false,autoPortions:true,followWeight:false,manualRmr:1600};
-function defaultProfile(){return {...DEFAULT_PROFILE}}
-function sanitizeProfile(raw){
- const p={...defaultProfile(),...(raw&&typeof raw==='object'?raw:{})};
- delete p.trainingBonus;
- if(!['male','female','manual'].includes(p.sex))p.sex='male';
- p.activity=normalizeActivityLevel(p.activity);
- if(!['maintain','recomp','fat_loss','muscle_gain'].includes(p.goal))p.goal='maintain';
- for(const [id,min,max] of [['age',18,95],['height',125,220],['weight',35,250],['manualRmr',800,3500]]){
-  let v=Number(p[id]);p[id]=Number.isFinite(v)?Math.max(min,Math.min(max,v)):DEFAULT_PROFILE[id];
- }
- p.injury=p.injury===true;p.autoPortions=p.autoPortions!==false;p.followWeight=p.followWeight!==false;
- return p;
-}
 function effectiveWeight(profile=state.profile){
  if(profile.followWeight&&state.weights.length){const recent=[...state.weights].filter(x=>dateFromISO(x.date)&&dateFromISO(x.date)<=today()).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);if(recent.length)return Math.round(recent.reduce((n,x)=>n+Number(x.kg),0)/recent.length*10)/10}
  return profile.weight;

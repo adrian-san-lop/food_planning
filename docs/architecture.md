@@ -25,6 +25,9 @@ Navegador
         │     ├── domain/dates.js (fecha civil Europe/Madrid)
         │     ├── domain/menu-generator.js (semana base, familias, continuidad y bloqueos)
         │     ├── domain/nutrition.js (objetivos, macros y ajuste de raciones)
+        │     ├── domain/profile.js (normalización compatible y validación de borrador de perfil)
+        │     ├── domain/onboarding.js (modelo de configuración inicial; pendiente de conectar)
+        │     ├── domain/planning-preferences.js (preferencias y cambios parciales; pendiente de conectar)
         │     ├── domain/inventory-ledger.js (movimientos idempotentes y saldo de despensa)
         │     ├── domain/cycle-shopping.js (fin de ciclo, confirmación, ventana de compra y fechas de cobertura)
         │     ├── domain/inventory-units.js (conversiones de unidades)
@@ -51,7 +54,7 @@ Actualización del 15 de octubre de 2026: el planificador interno gestiona la re
 - `js/data/catalogs.js` carga los catálogos JSON de la misma publicación, valida su estructura y correspondencia entre unidades e ingredientes, y los adapta al modelo interno de la app.
 - `js/ui/html.js` centraliza la codificación de texto y atributos y solo permite URL HTTPS de orígenes indicados explícitamente. `js/ui/recipe-proposal-views.js` genera las vistas del buzón desde estado inyectado, sin acoplar el renderizado a la capa remota. Las demás vistas todavía usan plantillas HTML; deben escapar los valores variables del catálogo y del estado personal antes de insertarlos.
 - Los indicadores de comidas completadas usan elementos `<progress>` con etiquetas accesibles en sus botones; el color y la disposición se definen en CSS.
-- `npm test` ejecuta pruebas integradas para fechas, normalización local v5-v11, mapeo de estado relacional, nutrición, inventario, conciliación, validación de catálogos y codificación HTML/URL. Las pruebas de navegador con Auth, sincronización remota y RLS requieren cuentas y publicación y siguen pendientes.
+- `npm test` ejecuta pruebas integradas para fechas, perfil, modelos de configuración y preferencias, normalización local v5-v11, mapeo de estado relacional, nutrición, inventario, conciliación, validación de catálogos y codificación HTML/URL. Las pruebas de navegador con Auth, sincronización remota y RLS requieren cuentas y publicación y siguen pendientes.
 - `js/domain/menu-generator.js` selecciona una semana base repetida tres veces y deriva los contadores por familias. Recibe nutrición, conversiones, stock y RNG por inyección, sin acceso a DOM, almacenamiento, Supabase ni movimientos. `main.js` conserva la coordinación, revisión y guardado de propuestas. Véase ADR-0046.
 - El menú fijo de 105 espacios sigue siendo el primer ciclo. La propuesta siguiente puede revisarse, guardarse y activarse en su fecha.
 - En Inicio, el acceso a revisar el perfil se muestra hasta que la persona confirma sus datos. Una guía rápida opcional de tres pasos explica perfil y fecha, menú y registro de comidas, compra/despensa y seguimiento. La guía también se puede abrir desde Guía, que conserva el recorrido completo. El paso de fecha reutiliza el editor existente; si no hay ciclo, remite al selector global. La guía no guarda un indicador de onboarding. La confirmación del perfil sigue sincronizada mediante la columna profile_confirmed.
@@ -134,11 +137,13 @@ Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es co
 - En móvil, la barra inferior incluye Inicio, Menú, Compra y Más. Despensa, Recetas, Proponer receta y, para administradores, Revisar propuestas se agrupan bajo **Más**. Perfil, Aprende a usar Menuki, Actividad y peso y Cerrar sesión están en el menú superior de cuenta. La vista **Actividad y peso** muestra el historial al principio, con acciones de borrado etiquetadas y carga progresiva de sesiones.
 - El uso sin coste depende de los límites vigentes de GitHub Pages y del proveedor de base de datos; verificar límites oficiales antes de integrar o prometer capacidad.
 
-## Evolución aceptada, pendiente de implementar
+## Evolución aceptada, primer paquete implementado localmente
 
 [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md) y el [plan integrado](planner/implementation-plan.md) incorporan la configuración inicial de cuatro pasos al desarrollo de preferencias y generación personal. El objetivo es admitir una cuenta Auth con borrador incompleto, validar el perfil antes del primer plan, guardar preferencias relacionales y usar el generador común desde el primer ciclo. Requiere revisar en conjunto el arranque, los supuestos de perfil completo, el mapeo y la sincronización transaccional; no basta con añadir un tutorial visual.
 
-Los nuevos módulos de dominio y vistas deben mantener separado el estado de configuración de la UI y de Supabase, y reducir la coordinación nueva en `main.js`. La entrega incluye revisión por una semana y previsión de despensa al inicio del ciclo. La arquitectura y las tablas descritas arriba siguen siendo las implementadas; este acuerdo no supone una nueva migración aplicada ni publicación.
+El [paquete 1](planner/package-1-foundations.md) extrae la normalización actual a `domain/profile.js` sin cambiar sus resultados y prepara modelos puros de borrador, progreso y preferencias. Los modelos nuevos no están conectados a la UI ni a Supabase; el estado persistido sigue en v11 y no se añade SQL. Los adaptadores posteriores deberán usar hechos de la cuenta autenticada y el backend validará la confirmación del perfil; el modelo local de progreso no sustituye ese control.
+
+Las vistas posteriores reducirán la coordinación en `main.js`. Siguen pendientes las raciones, el generador común, la persistencia y las pantallas de preferencias, revisión semanal y configuración guiada, además de su validación remota. No se acredita una nueva migración aplicada ni publicación.
 
 ## Referencias de implementación
 

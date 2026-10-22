@@ -2,7 +2,7 @@
 
 Estado: generación orientada a familiaridad implementada localmente (21/10/2026). Reglas aceptadas en ADR-0046; ponderaciones y tolerancias son ajustes heurísticos, no garantías nutricionales.
 
-Evolución aceptada el 22/10/2026, **todavía no implementada**: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) integra la configuración inicial, el primer ciclo generado, las preferencias y la revisión semanal. El [plan de implementación](implementation-plan.md) fija el orden y la aceptación. Las secciones de flujo y presentación implementados de este documento siguen describiendo el código actual, incluida la sustitución individual; el nuevo alcance por defecto de tres semanas se aplicará al desarrollar esa evolución.
+Evolución aceptada el 22/10/2026, **en desarrollo por paquetes**: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) integra la configuración inicial, el primer ciclo generado, las preferencias y la revisión semanal. El [paquete 1](package-1-foundations.md) prepara sus modelos de dominio y conserva el comportamiento actual. El [plan de implementación](implementation-plan.md) fija el orden y la aceptación restantes. Las secciones de flujo y presentación implementados de este documento siguen describiendo el código actual, incluida la sustitución individual; el nuevo alcance por defecto de tres semanas se aplicará al desarrollar esa evolución.
 
 ## Objetivo del ciclo
 
@@ -135,7 +135,7 @@ Cada comida incluye **Ver receta**, que abre la ficha existente encima del diál
 
 ## Preferencias aceptadas y restricciones fuera de alcance
 
-Según ADR-0047, se aceptan preferencias personales por receta **normal**, **favorita** y **No proponer**, todavía pendientes de implementación. Favorita favorece sin obligar a aparecer; No proponer excluye la selección automática pero permite una elección manual. Registrar una comida no es una valoración. Se aceptan también máximos opcionales separados para comida y cena entre semana. Si no quedan alternativas automáticas, explicar la condición y pedir revisarla, sin relajarla en silencio ni confirmar un ciclo incompleto.
+Según ADR-0047, se aceptan preferencias personales por receta **normal**, **favorita** y **No proponer**. Su modelo está preparado en el paquete 1; su aplicación al generador, persistencia e interfaz siguen pendientes. Favorita favorece sin obligar a aparecer; No proponer excluye la selección automática pero permite una elección manual. Registrar una comida no es una valoración. Se aceptan también máximos opcionales separados para comida y cena entre semana. Si no quedan alternativas automáticas, explicar la condición y pedir revisarla, sin relajarla en silencio ni confirmar un ciclo incompleto.
 
 Las preferencias son privadas y no modifican el catálogo compartido ni reemplazan menús confirmados automáticamente. Las exclusiones de ingredientes y las alergias/intolerancias quedan fuera de esta entrega y requieren un diseño independiente; No proponer no es un filtro de alergias.
 
