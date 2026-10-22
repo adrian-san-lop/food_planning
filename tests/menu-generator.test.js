@@ -133,7 +133,7 @@ try {
 } finally {
   globalThis.fetch = originalFetch;
 }
-const nutrition = createNutritionService({getFood: () => catalog.foods, getEffectiveWeight: profile => profile.weight});
+const nutrition = createNutritionService({getFood: () => catalog.foods, getFoodMeta: () => catalog.foodMeta, getEffectiveWeight: profile => profile.weight});
 const units = createInventoryUnitService({getFoodMeta: () => catalog.foodMeta, getFood: () => catalog.foods, roundAmount: n => Math.round(n * 100) / 100});
 const profile = {sex: 'male', age: 30, height: 180, weight: 80, activity: 'sedentary', injury: false, autoPortions: true};
 function realOptions(goal, autoPortions = true) {

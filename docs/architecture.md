@@ -25,6 +25,7 @@ Navegador
         │     ├── domain/dates.js (fecha civil Europe/Madrid)
         │     ├── domain/menu-generator.js (semana base, familias, continuidad y bloqueos)
         │     ├── domain/nutrition.js (objetivos, macros y ajuste de raciones)
+        │     ├── domain/recipe-portions.js (validación, límites y redondeos de ración)
         │     ├── domain/profile.js (normalización compatible y validación de borrador de perfil)
         │     ├── domain/onboarding.js (modelo de configuración inicial; pendiente de conectar)
         │     ├── domain/planning-preferences.js (preferencias y cambios parciales; pendiente de conectar)
@@ -137,13 +138,15 @@ Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es co
 - En móvil, la barra inferior incluye Inicio, Menú, Compra y Más. Despensa, Recetas, Proponer receta y, para administradores, Revisar propuestas se agrupan bajo **Más**. Perfil, Aprende a usar Menuki, Actividad y peso y Cerrar sesión están en el menú superior de cuenta. La vista **Actividad y peso** muestra el historial al principio, con acciones de borrado etiquetadas y carga progresiva de sesiones.
 - El uso sin coste depende de los límites vigentes de GitHub Pages y del proveedor de base de datos; verificar límites oficiales antes de integrar o prometer capacidad.
 
-## Evolución aceptada, primer paquete implementado localmente
+## Evolución aceptada, paquetes 1 y 2 implementados localmente
 
 [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md) y el [plan integrado](planner/implementation-plan.md) incorporan la configuración inicial de cuatro pasos al desarrollo de preferencias y generación personal. El objetivo es admitir una cuenta Auth con borrador incompleto, validar el perfil antes del primer plan, guardar preferencias relacionales y usar el generador común desde el primer ciclo. Requiere revisar en conjunto el arranque, los supuestos de perfil completo, el mapeo y la sincronización transaccional; no basta con añadir un tutorial visual.
 
 El [paquete 1](planner/package-1-foundations.md) extrae la normalización actual a `domain/profile.js` sin cambiar sus resultados y prepara modelos puros de borrador, progreso y preferencias. Los modelos nuevos no están conectados a la UI ni a Supabase; el estado persistido sigue en v11 y no se añade SQL. Los adaptadores posteriores deberán usar hechos de la cuenta autenticada y el backend validará la confirmación del perfil; el modelo local de progreso no sustituye ese control.
 
-Las vistas posteriores reducirán la coordinación en `main.js`. Siguen pendientes las raciones, el generador común, la persistencia y las pantallas de preferencias, revisión semanal y configuración guiada, además de su validación remota. No se acredita una nueva migración aplicada ni publicación.
+El [paquete 2](planner/package-2-practical-portions.md) aplica políticas opcionales `portion` del catálogo 0.10.0: grupo, límites absolutos y paso por alimento y comida. Sustituye las listas de IDs de nutrición por esos datos y conserva fórmulas, bases y snapshots completados. Catálogos y JSON Schema validan el contrato; la evaluación común expone la diferencia real respecto al objetivo. No cambia el contrato relacional ni requiere SQL.
+
+Las vistas posteriores reducirán la coordinación en `main.js`. Siguen pendientes el generador común, la persistencia y las pantallas de preferencias, revisión semanal y configuración guiada, además de su validación remota. Las pruebas locales incluyen 105 casos y una comprobación sintética de módulos y raciones por HTTP; no acreditan nuevas migraciones aplicadas, Auth, RLS ni publicación.
 
 ## Referencias de implementación
 

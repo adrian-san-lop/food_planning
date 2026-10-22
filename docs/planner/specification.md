@@ -1,8 +1,8 @@
 # Especificación del catálogo y del planificador
 
-Estado: generación orientada a familiaridad implementada localmente (21/10/2026). Reglas aceptadas en ADR-0046; ponderaciones y tolerancias son ajustes heurísticos, no garantías nutricionales.
+Estado: generación orientada a familiaridad implementada localmente (21/10/2026) y [raciones prácticas del paquete 2](package-2-practical-portions.md) implementadas y probadas localmente (22/10/2026). Reglas aceptadas en ADR-0046 y ADR-0047; ponderaciones y límites son ajustes del producto, no garantías nutricionales.
 
-Evolución aceptada el 22/10/2026, **en desarrollo por paquetes**: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) integra la configuración inicial, el primer ciclo generado, las preferencias y la revisión semanal. El [paquete 1](package-1-foundations.md) prepara sus modelos de dominio y conserva el comportamiento actual. El [plan de implementación](implementation-plan.md) fija el orden y la aceptación restantes. Las secciones de flujo y presentación implementados de este documento siguen describiendo el código actual, incluida la sustitución individual; el nuevo alcance por defecto de tres semanas se aplicará al desarrollar esa evolución.
+Evolución aceptada el 22/10/2026, **en desarrollo por paquetes**: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) integra la configuración inicial, el primer ciclo generado, las preferencias y la revisión semanal. El [paquete 1](package-1-foundations.md) prepara sus modelos de dominio; el paquete 2 aplica las raciones prácticas. El [plan de implementación](implementation-plan.md) fija el orden y la aceptación restantes. Las secciones de flujo y presentación implementados de este documento siguen describiendo el código actual, incluida la sustitución individual; el nuevo alcance por defecto de tres semanas se aplicará al desarrollar esa evolución.
 
 ## Objetivo del ciclo
 
@@ -17,7 +17,7 @@ Los catálogos son JSON genéricos e independientes de los datos personales:
 - [`foods.json`](../../data/foods.json): 90 alimentos.
 - [`recipes.json`](../../data/recipes.json): 112 recetas y 543 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.9.3`, sin cambios en esta implementación del generador. La versión `0.9.0` actualizó frutas enteras a piezas y pan de molde a rebanadas; `0.9.1` limita el pan a rebanadas enteras, máximo dos por comida. La versión `0.8.0` incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
+Ambos catálogos usan actualmente `catalogVersion` `0.10.0`: añade políticas opcionales de ración sin cambiar cantidades base ni nutrición. La versión `0.9.3` fijó el huevo L y las descripciones de familias; `0.9.0` actualizó frutas enteras a piezas y pan de molde a rebanadas; `0.9.1` limita el pan a rebanadas enteras, máximo dos por comida. La versión `0.8.0` incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
 
 Distribución actual de recetas por tipo:
 
@@ -38,6 +38,8 @@ La biblioteca ofrece alternativas manuales y renovación gradual. Su tamaño no 
 Cada alimento usa un `id` estable, nombre, unidad de inventario (`unit`), unidad de receta (`recipeUnit`), datos nutricionales con base explícita, formato orientativo de compra y, si la receta y el inventario usan unidades distintas, peso comestible aproximado por pieza o rebanada. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
 
 Algunos alimentos llevan `recoveryTags` (`calcium`, `vitamin_d`, `vitamin_c`) para marcar fuentes alimentarias relevantes cuando está activa la recuperación ósea. Son etiquetas cualitativas de selección: el catálogo no contiene cantidades de esos micronutrientes y la app no calcula objetivos ni ingestas de calcio o vitaminas.
+
+La política `portion` define grupo de ajuste, mínimo, máximo y paso en unidades de receta por persona y comida. Es opcional salvo en recetas por piezas (`ud`), que deben declarar sus reglas. El validador comprueba su coherencia y las cantidades base por ración; los alimentos sin política mantienen su cantidad. Los 52 registros, límites concretos y criterios están en el [paquete 2](package-2-practical-portions.md). Las cantidades base en gramos no se reescriben por no coincidir con el paso; el redondeo solo se aplica al ajuste automático.
 
 El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades de receta en `ud`; los alimentos que se cocinan por peso usan `per_100g`. Para frutas con receta e inventario en `ud`, no hace falta conversión de saldo; la base por 100 g y el peso comestible aproximado estiman nutrientes por pieza. El pan de molde usa rebanadas enteras en receta, con máximo dos por comida, y convierte a gramos de inventario usando aproximadamente 25 g por rebanada.
 
@@ -95,6 +97,12 @@ El usuario registra la sesión después de realizarla, con fecha, actividad/esfu
 - Si se cambia el perfil o el peso utilizado, pueden recalcularse las comidas futuras pendientes; las completadas conservan sus cantidades guardadas.
 
 Los MET de las actividades incluidas son estimaciones de categorías del [2024 Adult Compendium of Physical Activities](https://pacompendium.com/adult-compendium/), incluida su [herramienta de consulta](https://pacompendium.com/compendium-calculator/). El compendio se dirige a adultos de 19–59 años y no calcula el gasto individual exacto; para edades fuera de ese rango y para sesiones concretas, los valores son orientativos. El resultado no es una medición clínica.
+
+## Raciones prácticas implementadas
+
+`portionsForRecipes` toma los grupos del catálogo y aplica los márgenes relativos existentes junto con mínimos, máximos y pasos por alimento. Suma ingredientes repetidos antes de ajustar para limitar el total por comida. Los ingredientes fijos y sin política conservan sus cantidades; no se pierde ningún ingrediente cuantificado. Desactivar el ajuste conserva las bases exactas y las comidas completadas siempre conservan su snapshot.
+
+`evaluateRecipePortions` reúne cantidades, totales, objetivo y diferencias firmadas (total menos objetivo) sin volver a escalar para cerrar el desfase. El planificador usa esta evaluación. La elección entre semanas candidatas y la presentación de diferencias/alternativas pertenecen a los paquetes 3 y 5; no se introduce aquí una nueva tolerancia aceptable de kcal.
 
 ## Flujo implementado de generación
 

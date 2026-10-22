@@ -1,8 +1,4 @@
-import { scaleBreadSlices } from './recipe-portions.js';
-
-const PROTEIN_PORTIONS = new Set(['skyr', 'greek', 'cheese', 'chicken', 'turkey', 'turkeySlice', 'hake', 'cod', 'salmon', 'trout', 'shrimp', 'tuna', 'sardines', 'mackerel', 'gulas', 'tofuFirm', 'tempeh', 'edamame', 'soyProteinTextured', 'porkTenderloin', 'beefSirloin', 'turkeyMince', 'cottageCheese']);
-const CARB_PORTIONS = new Set(['granola', 'oats', 'bread', 'rice', 'pasta', 'tortilla', 'quinoa', 'couscous', 'noodles', 'potato', 'sweetpotato', 'raisins', 'cornCanned']);
-const FAT_PORTIONS = new Set(['oliveoil', 'walnuts', 'almonds', 'peanuts', 'avocado', 'chiaSeeds', 'pumpkinSeeds', 'tahini']);
+import { scalePortion } from './recipe-portions.js?v=20261022-practical-portions';
 export const ACTIVITY_FACTORS = {
   very_sedentary: 1.10,
   sedentary: 1.20,
@@ -21,7 +17,7 @@ export function normalizeActivityLevel(activity) {
 
 const limit = (value, min, max) => Math.max(min, Math.min(max, value));
 
-export function createNutritionService({ getFood, getEffectiveWeight, roundBreadSlices = scaleBreadSlices }) {
+export function createNutritionService({ getFood, getEffectiveWeight, getFoodMeta = () => ({}) }) {
   function nutritionProfile(profile, overrideWeight) {
     const weight = overrideWeight ?? getEffectiveWeight(profile);
     const rmr = profile.sex === 'manual'
@@ -62,16 +58,18 @@ export function createNutritionService({ getFood, getEffectiveWeight, roundBread
   }
 
   function scaleIngredient(amount, id, factor) {
-    if (id === 'bread') return roundBreadSlices(amount, factor);
-    const raw = amount * factor;
-    const roundTo = getFood()[id]?.[1] === 'ud' ? 0.25 : id === 'oliveoil' ? 1 : (id === 'potato' || id === 'sweetpotato' ? 10 : 5);
-    return Math.max(roundTo, Math.round(raw / roundTo) * roundTo);
+    const rule = getFoodMeta()[id]?.portion;
+    // Unclassified foods retain their recipe quantity; never guess a new policy.
+    return rule ? scalePortion(amount, factor, rule) : amount;
   }
 
   function portionsForRecipes(recipes, activityKcal = 0, profile, previewWeight, fixedUsages = []) {
     const portions = recipes.map((recipe, index) => fixedUsages[index]
       ? Object.entries(fixedUsages[index]).map(([id, amount]) => ({ id, amount: Number(amount) || 0, fixed: true }))
-      : recipe.ingredients.map((ingredient) => ({ id: ingredient.id, amount: ingredient.rest, fixed: false })));
+      : Object.entries(recipe.ingredients.reduce((usage, ingredient) => {
+        usage[ingredient.id] = (usage[ingredient.id] || 0) + ingredient.rest;
+        return usage;
+      }, {})).map(([id, amount]) => ({ id, amount, fixed: false })));
     if (!profile.autoPortions) return portions.map((items) => Object.fromEntries(items.map((item) => [item.id, item.amount])));
 
     const target = nutritionTarget(activityKcal, profile, previewWeight);
@@ -86,18 +84,19 @@ export function createNutritionService({ getFood, getEffectiveWeight, roundBread
     const all = portions.flat();
     const fixed = all.filter((item) => item.fixed);
     const adjustable = all.filter((item) => !item.fixed);
-    const fixedProtein = macro([...fixed, ...adjustable.filter((item) => !PROTEIN_PORTIONS.has(item.id))]).p;
-    const variableProtein = macro(adjustable.filter((item) => PROTEIN_PORTIONS.has(item.id))).p;
+    const group = item => getFoodMeta()[item.id]?.portion?.group || 'fixed';
+    const fixedProtein = macro([...fixed, ...adjustable.filter((item) => group(item) !== 'protein')]).p;
+    const variableProtein = macro(adjustable.filter((item) => group(item) === 'protein')).p;
     const proteinMultiplier = limit(variableProtein > 0 ? (target.protein - fixedProtein) / variableProtein : 1, 0.60, 1.65);
-    for (const item of adjustable) if (PROTEIN_PORTIONS.has(item.id)) item.amount = scaleIngredient(item.amount, item.id, proteinMultiplier);
-    const fixedFat = macro([...fixed, ...adjustable.filter((item) => !FAT_PORTIONS.has(item.id))]).f;
-    const variableFat = macro(adjustable.filter((item) => FAT_PORTIONS.has(item.id))).f;
+    for (const item of adjustable) if (group(item) === 'protein') item.amount = scaleIngredient(item.amount, item.id, proteinMultiplier);
+    const fixedFat = macro([...fixed, ...adjustable.filter((item) => group(item) !== 'fat')]).f;
+    const variableFat = macro(adjustable.filter((item) => group(item) === 'fat')).f;
     const fatMultiplier = limit(variableFat > 0 ? (target.fat - fixedFat) / variableFat : 1, 0.65, 1.55);
-    for (const item of adjustable) if (FAT_PORTIONS.has(item.id)) item.amount = scaleIngredient(item.amount, item.id, fatMultiplier);
+    for (const item of adjustable) if (group(item) === 'fat') item.amount = scaleIngredient(item.amount, item.id, fatMultiplier);
     const after = macro(all);
-    const carbKcal = macro(adjustable.filter((item) => CARB_PORTIONS.has(item.id))).k;
+    const carbKcal = macro(adjustable.filter((item) => group(item) === 'carb')).k;
     const carbMultiplier = limit(carbKcal > 0 ? 1 + (target.calories - after.k) / carbKcal : 1, 0.52, 1.90);
-    for (const item of adjustable) if (CARB_PORTIONS.has(item.id)) item.amount = scaleIngredient(item.amount, item.id, carbMultiplier);
+    for (const item of adjustable) if (group(item) === 'carb') item.amount = scaleIngredient(item.amount, item.id, carbMultiplier);
     return portions.map((items) => {
       const result = {};
       for (const item of items) result[item.id] = (result[item.id] || 0) + item.amount;
@@ -105,5 +104,20 @@ export function createNutritionService({ getFood, getEffectiveWeight, roundBread
     });
   }
 
-  return { nutritionProfile, nutritionTarget, getMacro, scaleIngredient, portionsForRecipes };
+  function evaluateRecipePortions(recipes, activityKcal = 0, profile, previewWeight, fixedUsages = []) {
+    const portions = portionsForRecipes(recipes, activityKcal, profile, previewWeight, fixedUsages);
+    const total = portions.reduce((sum, usage) => {
+      const macro = getMacro(usage);
+      for (const key of Object.keys(sum)) sum[key] += macro[key];
+      return sum;
+    }, { k: 0, p: 0, c: 0, f: 0 });
+    const target = nutritionTarget(activityKcal, profile, previewWeight);
+    const difference = {
+      calories: total.k - target.calories, protein: total.p - target.protein,
+      carb: total.c - target.carb, fat: total.f - target.fat,
+    };
+    return { portions, total, target, difference };
+  }
+
+  return { nutritionProfile, nutritionTarget, getMacro, scaleIngredient, portionsForRecipes, evaluateRecipePortions };
 }

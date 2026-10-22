@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.9.3",
-  "source": "Existing foods plus curated generic additions with USDA FoodData Central, AESAN/BEDCA, and manufacturer nutrition references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance. Version 0.8.0 adds ingredients for Ensalada templada de gulas and updates the generic gulas estimate from the manufacturer's natural product label. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams. Version 0.9.2 applies evidence-backed USDA corrections and explicit recipe ingredient instructions; see docs/audits/catalog-quality/results/summary.md. Version 0.9.3 defines a generic L egg estimate and documents identical-ingredient recipe families under ADR-0045.",
-  "status": "Catálogo 0.9.3; 90 alimentos. Recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
+  "catalogVersion": "0.10.0",
+  "source": "Existing foods plus curated generic additions with USDA FoodData Central, AESAN/BEDCA, and manufacturer nutrition references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance. Version 0.8.0 adds ingredients for Ensalada templada de gulas and updates the generic gulas estimate from the manufacturer's natural product label. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams. Version 0.9.2 applies evidence-backed USDA corrections and explicit recipe ingredient instructions; see docs/audits/catalog-quality/results/summary.md. Version 0.9.3 defines a generic L egg estimate and documents identical-ingredient recipe families under ADR-0045. Version 0.10.0 adds practical food portion limits and rounding policies without changing nutrition, units or base recipe quantities.",
+  "status": "Catálogo 0.10.0; 90 alimentos. Recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
   "foods": [
     {
       "id": "skyr",
@@ -26,7 +26,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 50,
+        "max": 300,
+        "step": 25
+      }
     },
     {
       "id": "greek",
@@ -50,7 +56,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 100,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "milk",
@@ -98,7 +110,13 @@
         "unit": "g",
         "label": "250 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 40,
+        "max": 150,
+        "step": 10
+      }
     },
     {
       "id": "granola",
@@ -119,7 +137,13 @@
         "unit": "g",
         "label": "350 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 15,
+        "max": 60,
+        "step": 5
+      }
     },
     {
       "id": "oats",
@@ -140,7 +164,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 10,
+        "max": 80,
+        "step": 5
+      }
     },
     {
       "id": "bread",
@@ -164,7 +194,13 @@
       "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
       "approximateEdibleWeight_g_per_unit": 25,
       "recipeUnitLabel": "rebanada",
-      "recipeUnitLabelPlural": "rebanadas"
+      "recipeUnitLabelPlural": "rebanadas",
+      "portion": {
+        "group": "carb",
+        "min": 1,
+        "max": 2,
+        "step": 1
+      }
     },
     {
       "id": "rice",
@@ -185,7 +221,13 @@
         "unit": "g",
         "label": "1000 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 30,
+        "max": 120,
+        "step": 10
+      }
     },
     {
       "id": "pasta",
@@ -206,7 +248,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 30,
+        "max": 120,
+        "step": 10
+      }
     },
     {
       "id": "tortilla",
@@ -227,7 +275,13 @@
         "unit": "g",
         "label": "300 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 35,
+        "max": 70,
+        "step": 35
+      }
     },
     {
       "id": "eggs",
@@ -251,7 +305,13 @@
         "unit": "ud",
         "label": "media docena"
       },
-      "nutritionSource": "Referencia genérica de huevo entero crudo: USDA FoodData Central SR Legacy, FDC 171287, NDB 01123. Por unidad L se estiman 60 g comestibles, según Instituto de Estudios del Huevo, Manejo del huevo y los ovoproductos en la cocina, p. 16 impresa (PDF p. 16). Valores por 100 g multiplicados por 0,6 y redondeados a dos decimales. Es una ración estándar aproximada, no un peso medido de cada huevo. Tamaño L confirmado por el propietario el 2026-10-19; unidades de compra y receta intactas. Fuentes consultadas el 2026-10-19: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip ; https://www.institutohuevo.com/wp-content/uploads/2021/10/Manejo-del-huevo-y-los-ovoproductos-en-la-cocina.pdf"
+      "nutritionSource": "Referencia genérica de huevo entero crudo: USDA FoodData Central SR Legacy, FDC 171287, NDB 01123. Por unidad L se estiman 60 g comestibles, según Instituto de Estudios del Huevo, Manejo del huevo y los ovoproductos en la cocina, p. 16 impresa (PDF p. 16). Valores por 100 g multiplicados por 0,6 y redondeados a dos decimales. Es una ración estándar aproximada, no un peso medido de cada huevo. Tamaño L confirmado por el propietario el 2026-10-19; unidades de compra y receta intactas. Fuentes consultadas el 2026-10-19: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip ; https://www.institutohuevo.com/wp-content/uploads/2021/10/Manejo-del-huevo-y-los-ovoproductos-en-la-cocina.pdf",
+      "portion": {
+        "group": "fixed",
+        "min": 1,
+        "max": 3,
+        "step": 1
+      }
     },
     {
       "id": "chicken",
@@ -272,7 +332,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 75,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "turkey",
@@ -293,7 +359,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 75,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "turkeySlice",
@@ -314,7 +386,13 @@
         "unit": "g",
         "label": "150 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 30,
+        "max": 120,
+        "step": 10
+      }
     },
     {
       "id": "hake",
@@ -335,7 +413,13 @@
         "unit": "g",
         "label": "400 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 100,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "salmon",
@@ -359,7 +443,13 @@
         "unit": "g",
         "label": "350 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 100,
+        "max": 225,
+        "step": 25
+      }
     },
     {
       "id": "shrimp",
@@ -380,7 +470,13 @@
         "unit": "g",
         "label": "400 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 100,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "tuna",
@@ -404,7 +500,13 @@
         "unit": "g",
         "label": "pack (160 g escurridos)"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 50,
+        "max": 180,
+        "step": 10
+      }
     },
     {
       "id": "sardines",
@@ -429,7 +531,13 @@
         "unit": "g",
         "label": "lata (90 g escurridos)"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 50,
+        "max": 150,
+        "step": 10
+      }
     },
     {
       "id": "lentils",
@@ -795,7 +903,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 80,
+        "max": 350,
+        "step": 10
+      }
     },
     {
       "id": "sweetpotato",
@@ -820,7 +934,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 80,
+        "max": 350,
+        "step": 10
+      }
     },
     {
       "id": "banana",
@@ -842,7 +962,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fixed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.5
+      }
     },
     {
       "id": "apple",
@@ -864,7 +990,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fixed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.5
+      }
     },
     {
       "id": "kiwi",
@@ -889,7 +1021,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fixed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.5
+      }
     },
     {
       "id": "mandarin",
@@ -914,7 +1052,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fixed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.5
+      }
     },
     {
       "id": "orange",
@@ -939,7 +1083,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fixed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.5
+      }
     },
     {
       "id": "pear",
@@ -961,7 +1111,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fixed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.5
+      }
     },
     {
       "id": "berries",
@@ -1007,7 +1163,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fixed",
+        "min": 0.5,
+        "max": 2,
+        "step": 0.5
+      }
     },
     {
       "id": "walnuts",
@@ -1028,7 +1190,13 @@
         "unit": "g",
         "label": "200 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fat",
+        "min": 5,
+        "max": 30,
+        "step": 5
+      }
     },
     {
       "id": "almonds",
@@ -1052,7 +1220,13 @@
         "unit": "g",
         "label": "200 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fat",
+        "min": 5,
+        "max": 30,
+        "step": 5
+      }
     },
     {
       "id": "oliveoil",
@@ -1073,7 +1247,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fat",
+        "min": 2,
+        "max": 15,
+        "step": 1
+      }
     },
     {
       "id": "coffee",
@@ -1115,7 +1295,13 @@
         "unit": "g",
         "label": "400 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 100,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "beans",
@@ -1160,7 +1346,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 30,
+        "max": 100,
+        "step": 10
+      }
     },
     {
       "id": "couscous",
@@ -1181,7 +1373,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 30,
+        "max": 100,
+        "step": 10
+      }
     },
     {
       "id": "noodles",
@@ -1202,7 +1400,13 @@
         "unit": "g",
         "label": "500 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 30,
+        "max": 120,
+        "step": 10
+      }
     },
     {
       "id": "gulas",
@@ -1223,7 +1427,13 @@
         "unit": "g",
         "label": "200 g / envase"
       },
-      "nutritionSource": "Estimación genérica basada en la etiqueta oficial de La Gula del Norte Natural por 100 g (163 kcal, 9,5 g proteína, 7,8 g hidratos y 10 g grasa); otras marcas o variedades pueden diferir. https://laguladelnorte.es/producto/natural/"
+      "nutritionSource": "Estimación genérica basada en la etiqueta oficial de La Gula del Norte Natural por 100 g (163 kcal, 9,5 g proteína, 7,8 g hidratos y 10 g grasa); otras marcas o variedades pueden diferir. https://laguladelnorte.es/producto/natural/",
+      "portion": {
+        "group": "protein",
+        "min": 75,
+        "max": 200,
+        "step": 25
+      }
     },
     {
       "id": "mackerel",
@@ -1247,7 +1457,13 @@
         "unit": "g",
         "label": "140 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 60,
+        "max": 180,
+        "step": 10
+      }
     },
     {
       "id": "trout",
@@ -1268,7 +1484,13 @@
         "unit": "g",
         "label": "400 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "protein",
+        "min": 100,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "pumpkin",
@@ -1311,7 +1533,13 @@
         "unit": "ud",
         "label": "unidad"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fat",
+        "min": 20,
+        "max": 100,
+        "step": 10
+      }
     },
     {
       "id": "peas",
@@ -1395,7 +1623,13 @@
         "unit": "g",
         "label": "200 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "carb",
+        "min": 5,
+        "max": 25,
+        "step": 5
+      }
     },
     {
       "id": "peanuts",
@@ -1416,7 +1650,13 @@
         "unit": "g",
         "label": "350 g / envase"
       },
-      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales."
+      "nutritionSource": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "portion": {
+        "group": "fat",
+        "min": 5,
+        "max": 30,
+        "step": 5
+      }
     },
     {
       "id": "tofuFirm",
@@ -1437,7 +1677,13 @@
         "unit": "g",
         "label": "envase de unos 250 g"
       },
-      "nutritionSource": "USDA FoodData Central, tofu firme genérico, referencia aproximada por 100 g; no corresponde a una marca concreta. https://fdc.nal.usda.gov/food-search/?query=tofu+firm+raw"
+      "nutritionSource": "USDA FoodData Central, tofu firme genérico, referencia aproximada por 100 g; no corresponde a una marca concreta. https://fdc.nal.usda.gov/food-search/?query=tofu+firm+raw",
+      "portion": {
+        "group": "protein",
+        "min": 75,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "tempeh",
@@ -1458,7 +1704,13 @@
         "unit": "g",
         "label": "envase de unos 200 g"
       },
-      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 174272, NDB 16114; Tempeh; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=20.29 g; carbohydrates_g=7.64 g; kcal=192.0 kcal; fat_g=10.8 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip"
+      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 174272, NDB 16114; Tempeh; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=20.29 g; carbohydrates_g=7.64 g; kcal=192.0 kcal; fat_g=10.8 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "portion": {
+        "group": "protein",
+        "min": 50,
+        "max": 175,
+        "step": 25
+      }
     },
     {
       "id": "edamame",
@@ -1482,7 +1734,13 @@
         "unit": "g",
         "label": "bolsa de 500 g"
       },
-      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 168411, NDB 11212; Edamame, frozen, prepared; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=5.2 g; carbohydrates_g=8.91 g; kcal=121.0 kcal; protein_g=11.91 g. Corrección documentada L3: Preparado congelado sin vaina; proteína 12,1 no coincide con 11,91 ni su redondeo a un decimal. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip"
+      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 168411, NDB 11212; Edamame, frozen, prepared; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=5.2 g; carbohydrates_g=8.91 g; kcal=121.0 kcal; protein_g=11.91 g. Corrección documentada L3: Preparado congelado sin vaina; proteína 12,1 no coincide con 11,91 ni su redondeo a un decimal. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "portion": {
+        "group": "protein",
+        "min": 50,
+        "max": 200,
+        "step": 25
+      }
     },
     {
       "id": "blackBeans",
@@ -1518,7 +1776,7 @@
       "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
-        "kcal": 358.0,
+        "kcal": 358,
         "protein_g": 23.91,
         "carbohydrates_g": 63.1,
         "fat_g": 2.17
@@ -1554,7 +1812,13 @@
         "unit": "g",
         "label": "paquete de unos 200 g"
       },
-      "nutritionSource": "USDA FoodData Central, proteína vegetal de soja texturizada seca, valores aproximados por 100 g; revisar la etiqueta del producto comprado. https://fdc.nal.usda.gov/food-search/?query=textured+vegetable+protein+dry"
+      "nutritionSource": "USDA FoodData Central, proteína vegetal de soja texturizada seca, valores aproximados por 100 g; revisar la etiqueta del producto comprado. https://fdc.nal.usda.gov/food-search/?query=textured+vegetable+protein+dry",
+      "portion": {
+        "group": "protein",
+        "min": 25,
+        "max": 75,
+        "step": 5
+      }
     },
     {
       "id": "porkTenderloin",
@@ -1575,7 +1839,13 @@
         "unit": "g",
         "label": "bandeja de unos 500 g"
       },
-      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 168312, NDB 10218; Pork, fresh, loin, tenderloin, separable lean and fat, raw; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=20.65 g; fat_g=3.53 g; carbohydrates_g=0.0 g; kcal=120.0 kcal. Corrección documentada L3: Misma preparación y energía/grasa de 168312; proteína previa 22,2 no reproducible frente a 20,65. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip"
+      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 168312, NDB 10218; Pork, fresh, loin, tenderloin, separable lean and fat, raw; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=20.65 g; fat_g=3.53 g; carbohydrates_g=0.0 g; kcal=120.0 kcal. Corrección documentada L3: Misma preparación y energía/grasa de 168312; proteína previa 22,2 no reproducible frente a 20,65. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "portion": {
+        "group": "protein",
+        "min": 75,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "beefSirloin",
@@ -1596,7 +1866,13 @@
         "unit": "g",
         "label": "bandeja de unos 400 g"
       },
-      "nutritionSource": "USDA FoodData Central, filete de ternera top sirloin crudo, referencia genérica aproximada por 100 g; los cortes locales varían. https://fdc.nal.usda.gov/food-search/?query=beef+top+sirloin+raw"
+      "nutritionSource": "USDA FoodData Central, filete de ternera top sirloin crudo, referencia genérica aproximada por 100 g; los cortes locales varían. https://fdc.nal.usda.gov/food-search/?query=beef+top+sirloin+raw",
+      "portion": {
+        "group": "protein",
+        "min": 75,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "turkeyMince",
@@ -1617,7 +1893,13 @@
         "unit": "g",
         "label": "bandeja de unos 400 g"
       },
-      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 172850, NDB 5665; Turkey, ground, 93% lean, 7% fat, raw; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=18.73 g; fat_g=8.34 g; carbohydrates_g=0.0 g; kcal=150.0 kcal. Corrección documentada L3: Fuente declarada 93% magro; proteína/grasa previas reproducen otro registro (171505), no el 172850 declarado. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip"
+      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 172850, NDB 5665; Turkey, ground, 93% lean, 7% fat, raw; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=18.73 g; fat_g=8.34 g; carbohydrates_g=0.0 g; kcal=150.0 kcal. Corrección documentada L3: Fuente declarada 93% magro; proteína/grasa previas reproducen otro registro (171505), no el 172850 declarado. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "portion": {
+        "group": "protein",
+        "min": 75,
+        "max": 250,
+        "step": 25
+      }
     },
     {
       "id": "eggplant",
@@ -1737,7 +2019,7 @@
       "recipeUnit": "g",
       "nutrition": {
         "basis": "per_100g",
-        "kcal": 67.0,
+        "kcal": 67,
         "protein_g": 2.29,
         "carbohydrates_g": 14.34,
         "fat_g": 1.22
@@ -1749,7 +2031,13 @@
         "unit": "g",
         "label": "aprox. 285 g escurridos por lata"
       },
-      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 169214, NDB 11172; Corn, sweet, yellow, canned, whole kernel, drained solids; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=1.22 g; carbohydrates_g=14.34 g; kcal=67.0 kcal; protein_g=2.29 g. Corrección documentada L3: Forma explícita conserva escurrida; 86 kcal/19 g no corresponden al registro de sólidos escurridos. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip"
+      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 169214, NDB 11172; Corn, sweet, yellow, canned, whole kernel, drained solids; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=1.22 g; carbohydrates_g=14.34 g; kcal=67.0 kcal; protein_g=2.29 g. Corrección documentada L3: Forma explícita conserva escurrida; 86 kcal/19 g no corresponden al registro de sólidos escurridos. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "portion": {
+        "group": "carb",
+        "min": 20,
+        "max": 100,
+        "step": 10
+      }
     },
     {
       "id": "chiaSeeds",
@@ -1773,7 +2061,13 @@
         "unit": "g",
         "label": "paquete de unos 200 g"
       },
-      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 170554, NDB 12006; Seeds, chia seeds, dried; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=16.54 g; fat_g=30.74 g; carbohydrates_g=42.12 g; kcal=486.0 kcal. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip"
+      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 170554, NDB 12006; Seeds, chia seeds, dried; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=16.54 g; fat_g=30.74 g; carbohydrates_g=42.12 g; kcal=486.0 kcal. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "portion": {
+        "group": "fat",
+        "min": 5,
+        "max": 15,
+        "step": 5
+      }
     },
     {
       "id": "pumpkinSeeds",
@@ -1797,7 +2091,13 @@
         "unit": "g",
         "label": "paquete de unos 200 g"
       },
-      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 170556, NDB 12014; Seeds, pumpkin and squash seed kernels, dried; por 100 g comestibles. Registro consultado el 2026-10-19: carbohydrates_g=10.71 g; kcal=559.0 kcal; protein_g=30.23 g; fat_g=49.05 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip"
+      "nutritionSource": "USDA FoodData Central, SR Legacy, FDC 170556, NDB 12014; Seeds, pumpkin and squash seed kernels, dried; por 100 g comestibles. Registro consultado el 2026-10-19: carbohydrates_g=10.71 g; kcal=559.0 kcal; protein_g=30.23 g; fat_g=49.05 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "portion": {
+        "group": "fat",
+        "min": 5,
+        "max": 20,
+        "step": 5
+      }
     },
     {
       "id": "tahini",
@@ -1821,7 +2121,13 @@
         "unit": "g",
         "label": "tarro de unos 300 g"
       },
-      "nutritionSource": "USDA FoodData Central, tahini o pasta de sésamo, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=tahini+sesame+butter"
+      "nutritionSource": "USDA FoodData Central, tahini o pasta de sésamo, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=tahini+sesame+butter",
+      "portion": {
+        "group": "fat",
+        "min": 5,
+        "max": 25,
+        "step": 5
+      }
     },
     {
       "id": "cottageCheese",
@@ -1845,7 +2151,13 @@
         "unit": "g",
         "label": "tarrina de unos 200 g"
       },
-      "nutritionSource": "USDA FoodData Central, Foundation, FDC 328841; Cheese, cottage, lowfat, 2% milkfat; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=2.3 g; carbohydrates_g=4.31 g; kcal=84.0 kcal; protein_g=11.0 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_json_2026-04-30.zip"
+      "nutritionSource": "USDA FoodData Central, Foundation, FDC 328841; Cheese, cottage, lowfat, 2% milkfat; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=2.3 g; carbohydrates_g=4.31 g; kcal=84.0 kcal; protein_g=11.0 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_json_2026-04-30.zip",
+      "portion": {
+        "group": "protein",
+        "min": 50,
+        "max": 200,
+        "step": 25
+      }
     },
     {
       "id": "soySauce",

@@ -1,7 +1,7 @@
 # Paquete 1: estados, preferencias y compatibilidad
 
 - Fecha: 22/10/2026.
-- Estado: **Implementado y probado localmente**, en `chore/planner-foundations`; sin publicación ni cambios en Supabase.
+- Estado: **Implementado y probado localmente** en `chore/planner-foundations`; incorporado por el propietario a `dev` antes del paquete 2 (base `a3dd893`). Este registro no acredita una nueva validación de la web publicada. No requirió cambios en Supabase.
 - Alcance: primer paquete del [plan integrado](implementation-plan.md), según [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Resultado y límites
@@ -78,4 +78,4 @@ El generador aplicará favoritas, No proponer y tiempos en el paquete 3. No prop
 - Lectura remota: se conserva el error ante un perfil ausente en una cuenta inicializada, sin inventar uno para ocultar datos inconsistentes.
 - Sintaxis del módulo de entrada comprobada. No se acredita aquí validación de navegador, Auth, RLS, escrituras remotas ni publicación.
 
-El siguiente paquete desarrolla raciones prácticas y sus límites. La generación común, la persistencia nueva y las pantallas consumirán estos contratos en los paquetes posteriores.
+Continuación: el [paquete 2](package-2-practical-portions.md) desarrolla raciones prácticas y sus límites. La generación común, la persistencia nueva y las pantallas consumirán estos contratos en los paquetes posteriores.

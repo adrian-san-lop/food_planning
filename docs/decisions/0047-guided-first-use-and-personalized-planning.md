@@ -35,4 +35,6 @@ El propietario acepta las cinco decisiones de evolución del planificador y el r
 
 El 22/10/2026 se implementó y probó localmente el [paquete 1](../planner/package-1-foundations.md): perfil extraído con compatibilidad, borradores y progreso de configuración, y preferencias con cambios parciales explícitos. Los nuevos modelos todavía no activan el recorrido ni preferencias en la aplicación. El estado sigue en v11, sin SQL ni publicación.
 
-Quedan los paquetes 2-7 del [plan integrado](../planner/implementation-plan.md). El diseño de persistencia relacional y compatibilidad de clientes debe concretarse antes de ejecutar SQL; las raciones prácticas son el siguiente trabajo. No quedan decisiones de producto bloqueantes para continuar dentro del alcance aceptado.
+El [paquete 2](../planner/package-2-practical-portions.md) incorpora límites y redondeos por alimento al catálogo 0.10.0 y a las raciones pendientes, conservando fórmulas, cantidades base y comidas registradas. Incluye evaluación con diferencias respecto al objetivo, pruebas locales y comprobación sintética por HTTP; no añade SQL ni publicación.
+
+Quedan los paquetes 3-7 del [plan integrado](../planner/implementation-plan.md). El diseño de persistencia relacional y compatibilidad de clientes debe concretarse antes de ejecutar SQL; el generador común es el siguiente trabajo. No quedan decisiones de producto bloqueantes para continuar dentro del alcance aceptado.

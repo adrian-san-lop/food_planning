@@ -2,13 +2,12 @@ import { generateMenuCycle, summarizeMenu } from './domain/menu-generator.js?v=2
 import { addDays, civilDayOfMonth, dateDiff, dateFromISO, formatDate, formatEuropeanDate, formatMadridDateTime, isoDate, isoFromEuropeanDate, monday, today } from './domain/dates.js?v=20261015-european-date';
 import { weeklyMealSummary, dashboardCycleSummary } from './domain/dashboard.js?v=20261015-dashboard-plan';
 import { cycleHasEnded, confirmedCycleIsAvailable, canBuyNextCycle, shoppingDates, nextCycleCartScope } from './domain/cycle-shopping.js?v=20261015-cycle-shopping';
-import { loadCatalogs as fetchCatalogs } from './data/catalogs.js?v=20261017-whole-bread-slices';
+import { loadCatalogs as fetchCatalogs } from './data/catalogs.js?v=20261022-practical-portions';
 import { createInventoryUnitService } from './domain/inventory-units.js?v=20261017-whole-bread-slices';
-import { ACTIVITY_FACTORS, createNutritionService } from './domain/nutrition.js?v=20261018-activity-levels';
+import { ACTIVITY_FACTORS, createNutritionService } from './domain/nutrition.js?v=20261022-practical-portions';
 import { DEFAULT_PROFILE, defaultProfile, sanitizeProfile } from './domain/profile.js?v=20261022-planner-foundations';
 import { consumeAvailableStock, normalizeLegacyDeduction, projectAvailableStock } from './domain/inventory-balance.js?v=20261018-no-meal-shortfalls';
 import { createInventoryLedger } from './domain/inventory-ledger.js?v=20261017-inventory-ledger';
-import { scaleBreadSlices } from './domain/recipe-portions.js?v=20261017-whole-bread-slices';
 import { createRecipeProposalExport, serializeRecipeProposalExport } from './domain/recipe-proposal-export.js?v=20261013-admin-proposal-maintenance';
 import { createReconciliationBase, reconcileStates } from './domain/state-reconciliation.js?v=20261015-cycle-shopping';
 import { loadLocalState, saveLocalState } from './persistence/local-state.js?v=20261018-no-meal-shortfalls';
@@ -149,7 +148,7 @@ const ACTIVITY_OPTIONS=[
  {id:'other-moderate',label:'Otra actividad · referencia moderada (3,5 MET)',met:3.5}
 ];
 const ACTIVITY_BY_ID=Object.fromEntries(ACTIVITY_OPTIONS.map(x=>[x.id,x]));
-const nutritionService=createNutritionService({getFood:()=>FOOD,getEffectiveWeight:profile=>effectiveWeight(profile),roundBreadSlices:scaleBreadSlices});
+const nutritionService=createNutritionService({getFood:()=>FOOD,getFoodMeta:()=>FOOD_META,getEffectiveWeight:profile=>effectiveWeight(profile)});
 function nutritionProfile(profile=state.profile,overrideWeight){return nutritionService.nutritionProfile(profile,overrideWeight)}
 function nutritionTarget(activityKcal=0,profile=state.profile,overrideWeight){return nutritionService.nutritionTarget(activityKcal,profile,overrideWeight)}
 const getMacro=usage=>nutritionService.getMacro(usage);
@@ -561,7 +560,7 @@ function profileView(){
   <div class="profile-section-body">
    <div class="profile-movement"><div class="profile-movement-heading"><label for="profileActivity">Movimiento diario</label><button type="button" class="profile-compare-levels" data-action="profile-activity-open" aria-haspopup="dialog">Comparar niveles</button></div><select id="profileActivity" name="activity" aria-describedby="profileActivityDescription">${select('activity',PROFILE_ACTIVITY_LEVELS.map(([key,label])=>[key,label]))}</select><p id="profileActivityDescription" class="profile-activity-description">${escapeHTML(profileActivityDescription(p.activity))}</p></div>
    <div class="profile-control-row profile-control-row--warning"><label class="profile-toggle"><input type="checkbox" name="injury" ${checked('injury')}><span><b>Recuperación ósea</b></span></label>${profileHelp('injury','Ayuda sobre la recuperación','Limita los recortes de energía y modera los superávits. Al preparar nuevas propuestas, favorece alimentos catalogados como fuentes de calcio, vitamina D y vitamina C. No calcula micronutrientes ni modifica el menú activo.')}</div>
-   <div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="autoPortions" ${checked('autoPortions')}><span><b>Raciones automáticas</b></span></label>${profileHelp('portions','Ayuda sobre las cantidades','Adapta raciones de proteínas, cereales, pan, patata, aceite y frutos secos. No cambia los platos ni los ingredientes principales. Si lo desactivas, solo cambian las metas.')}</div>
+   <div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="autoPortions" ${checked('autoPortions')}><span><b>Raciones automáticas</b></span></label>${profileHelp('portions','Ayuda sobre las cantidades','Adapta proteínas, cereales, pan, patata, aceite y frutos secos con cantidades prácticas y límites por alimento. Las kcal son aproximadas. Si lo desactivas, usa las cantidades base de las recetas.')}</div>
   </div>
  </section>`;
  const goal='<section class="panel profile-form-section profile-goal" aria-labelledby="profileGoalTitle"><header class="profile-section-heading"><h2 id="profileGoalTitle">Tu objetivo</h2></header><div class="goal-choices">'+goals+'</div></section>';
@@ -618,7 +617,7 @@ function dashboard(){
  return '<div class="dashboard-page dashboard-page--overview">'+heading+stats+lower+dashboardPlanSummary()+'</div>';
 }
 function nextCycleStart(){const current=dateFromISO(state.start),scheduled=addDays(current,21),now=today();return isoDate(scheduled<now?now:scheduled)}
-function plannerNutrition(recipes){const portions=portionsForRecipes(recipes,0),total={k:0,p:0,c:0,f:0};for(const usage of portions){const m=getMacro(usage);for(const key of Object.keys(total))total[key]+=m[key]}return {portions,total}}
+function plannerNutrition(recipes){return nutritionService.evaluateRecipePortions(recipes,0,state.profile)}
 function buildCycleProposal(previous){
  const {menus,locked}=generateMenuCycle({
   recipes:RECIPES,previousMenus:state.noActiveCycle?null:MENUS,draft:previous,stock:state.stock,
@@ -851,7 +850,7 @@ function closeCycleStartDialog(){document.getElementById('cycleStartDialog').clo
 function openMenuHelp(kind){
  const activity=kind==='activity';
  document.getElementById('menuHelpTitle').textContent=activity?'Cómo se aplica la actividad':'Cómo se calculan las cantidades';
- document.getElementById('menuHelpContent').innerHTML=activity?'<p><strong>Registra la sesión después de hacerla.</strong> Puedes añadir varias en una misma fecha.</p><p>La energía estimada ajusta principalmente los hidratos de las comidas pendientes de ese día. Las comidas registradas conservan sus cantidades; no se prevén sesiones futuras.</p>':'<ul><li><strong>Arroz, pasta y avena:</strong> peso en seco.</li><li><strong>Legumbres:</strong> peso escurrido.</li><li><strong>Carne y pescado:</strong> peso antes de cocinar.</li></ul><p>El aceite indicado forma parte de las calorías. Las cantidades se adaptan a tu perfil y a las sesiones registradas. Los valores son orientativos.</p>';
+ document.getElementById('menuHelpContent').innerHTML=activity?'<p><strong>Registra la sesión después de hacerla.</strong> Puedes añadir varias en una misma fecha.</p><p>La energía estimada ajusta principalmente los hidratos de las comidas pendientes de ese día. Las comidas registradas conservan sus cantidades; no se prevén sesiones futuras.</p>':'<ul><li><strong>Arroz, pasta y avena:</strong> peso en seco.</li><li><strong>Legumbres:</strong> peso escurrido.</li><li><strong>Carne y pescado:</strong> peso antes de cocinar.</li><li><strong>Pan de molde:</strong> rebanadas enteras, como máximo dos por comida.</li></ul><p>El aceite indicado forma parte de las calorías. Las cantidades se adaptan a tu perfil y a las sesiones registradas, con límites y redondeos por alimento. Se priorizan raciones prácticas sin forzar una cifra exacta de kcal. Las comidas registradas conservan sus cantidades.</p>';
  document.getElementById('menuHelpDialog').showModal();
 }
 function cycleStartEndLabel(iso){return 'Termina el '+formatDate(addDays(dateFromISO(iso),20),{day:'numeric',month:'long',year:'numeric'})+'.'}

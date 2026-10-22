@@ -28,6 +28,7 @@
         "recipeUnitLabel": { "type": "string", "minLength": 1, "description": "Optional singular display label when the recipe unit is ud, for example rebanada." },
         "recipeUnitLabelPlural": { "type": "string", "minLength": 1, "description": "Optional plural display label for recipeUnitLabel." },
         "nutrition": { "$ref": "#/$defs/nutrition" },
+        "portion": { "$ref": "#/$defs/portion", "description": "Optional practical portion policy in recipe units per person and meal. Unclassified ingredients keep their base amount." },
         "recoveryTags": {
           "type": "array",
           "description": "Qualitative markers for food sources relevant to bone recovery; not measured nutrient amounts or medical targets.",
@@ -47,6 +48,13 @@
       ],
       "allOf": [
         {
+          "if": { "properties": { "recipeUnit": { "const": "ud" } }, "required": ["recipeUnit"] },
+          "then": {
+            "required": ["portion"],
+            "properties": { "portion": { "properties": { "step": { "enum": [0.5, 1] } } } }
+          }
+        },
+        {
           "if": { "properties": { "recipeUnit": { "const": "g" } }, "required": ["recipeUnit"] },
           "then": { "properties": { "nutrition": { "properties": { "basis": { "const": "per_100g" } }, "required": ["basis"] } } }
         },
@@ -64,6 +72,18 @@
           }
         }
       ]
+    },
+    "portion": {
+      "type": "object",
+      "required": ["group", "min", "max", "step"],
+      "additionalProperties": false,
+      "properties": {
+        "group": { "enum": ["fixed", "protein", "carb", "fat"] },
+        "min": { "type": "number", "exclusiveMinimum": 0 },
+        "max": { "type": "number", "exclusiveMinimum": 0 },
+        "step": { "type": "number", "exclusiveMinimum": 0 }
+      },
+      "description": "The runtime additionally checks min <= max, step alignment, piece/slice rules, and recipe base quantities per serving. These are product limits, not medical recommendations."
     },
     "nutrition": {
       "type": "object",

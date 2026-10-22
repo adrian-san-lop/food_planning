@@ -1,7 +1,7 @@
 # Plan integrado: primera visita y generación personal de menús
 
 - Fecha: 22/10/2026.
-- Estado: **Aceptado; desarrollo por paquetes en curso.** El [paquete 1](package-1-foundations.md) está implementado y probado localmente. Los nuevos flujos de usuario y la persistencia siguen pendientes; este plan distingue el resultado previsto de lo ya disponible.
+- Estado: **Aceptado; desarrollo por paquetes en curso.** Los paquetes [1](package-1-foundations.md) y [2](package-2-practical-portions.md) están implementados y probados localmente; el primero ya se ha incorporado a `dev`. Los nuevos flujos de usuario y la persistencia siguen pendientes; este plan distingue el resultado previsto de lo ya disponible.
 - Decisión: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 - Comportamiento actualmente implementado: [especificación](specification.md), [ADR-0046](../decisions/0046-familiar-weekly-menu.md) y [arquitectura](../architecture.md).
 
@@ -99,8 +99,8 @@ Conservar las migraciones locales v5-v11. Si cambia el contrato persistido, aña
 El acuerdo queda registrado en este plan y ADR-0047. El desarrollo se divide en siete paquetes revisables:
 
 1. **Estados y compatibilidad — implementado localmente:** separar perfil válido confirmado de borrador incompleto; definir preferencias, progreso y transición de cuentas existentes. Extraer la normalización del perfil conservando el comportamiento vigente. Los modelos nuevos no activan todavía otro arranque ni cambian el contrato persistido v11. Véase [resultado y comprobaciones](package-1-foundations.md).
-2. **Raciones prácticas — siguiente paquete:** concretar límites y redondeos por alimento/ingrediente, validar metadatos genéricos y probar las cantidades realmente utilizadas por nutrición, compra y despensa. Mantener las fórmulas y las cantidades ya consumidas.
-3. **Generador común:** servir primer ciclo y renovación con perfil confirmado, preferencias, tiempos, evaluación semanal y previsión de despensa. Conservar familiaridad y bloqueos, con pruebas reproducibles sin datos personales.
+2. **Raciones prácticas — implementado localmente:** límites y pasos por alimento en catálogo 0.10.0, validación y evaluación común de cantidades/totales/diferencias. Nutrición, compra y despensa usan las mismas cantidades. Se conservan fórmulas, bases y consumos ya registrados. Véase [resultado y comprobaciones](package-2-practical-portions.md).
+3. **Generador común — siguiente paquete:** servir primer ciclo y renovación con perfil confirmado, preferencias, tiempos, evaluación semanal y previsión de despensa. Conservar familiaridad y bloqueos, con pruebas reproducibles sin datos personales.
 4. **Persistencia Supabase y compatibilidad:** preparar migraciones aditivas; actualizar RPC, mapeo, normalización, conciliación e inicialización para borradores y preferencias. Validar la confirmación del perfil también en el servidor. Revisar el SQL y sus diagnósticos antes de aplicarlo.
 5. **Preferencias y revisión semanal:** extraer la revisión de `main.js`, añadir preferencias en perfil y fichas, y aplicar cambios a tres semanas o una comida conservando bloqueos. Comprobar por HTTP escritorio y móvil con estados sintéticos.
 6. **Configuración inicial guiada:** conectar los cuatro pasos, el guardado y reanudación y el primer menú revisable, utilizando los modelos, motor y persistencia anteriores. Conservar el acceso y los datos de las cuentas existentes.

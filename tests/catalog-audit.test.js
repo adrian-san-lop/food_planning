@@ -33,7 +33,9 @@ test('audit corrections preserve all IDs, units, weights, quantities and other c
       expected.nutritionSource = change.after_source;
       if (change.after_name) expected.name = change.after_name;
     }
-    assert.deepEqual(food, expected, food.id);
+    // Portion policies are additive product metadata introduced after this audit.
+    const { portion, ...auditedFood } = food;
+    assert.deepEqual(auditedFood, expected, food.id);
   }
   for (const [index, recipe] of recipeDoc.recipes.entries()) {
     const change = changes.recipes.find((item) => item.recipe_id === recipe.id);

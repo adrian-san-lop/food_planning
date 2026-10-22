@@ -1,3 +1,5 @@
+import { validPortionRule, portionOnGrid } from '../domain/recipe-portions.js?v=20261022-practical-portions';
+
 export function validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recoveryTags }) {
   const allowedRecoveryTags = recoveryTags instanceof Set ? recoveryTags : new Set(recoveryTags || []);
   if (
@@ -27,6 +29,12 @@ export function validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recove
 
     foodIds.add(food.id);
     foodRows[food.id] = food;
+    if ((food.recipeUnit === 'ud' && food.portion === undefined) || food.portion !== undefined && (
+      !validPortionRule(food.portion)
+      || food.recipeUnit === 'ud' && ![0.5, 1].includes(food.portion.step)
+      || food.id === 'bread' && (food.portion.step !== 1 || food.portion.max > 2)
+      || food.id === 'eggs' && food.portion.step !== 1
+    )) throw new Error(`Revisa los límites y el redondeo de ración de ${food.name}.`);
     const nutrition = food.nutrition;
     if (
       !['per_100g', 'per_100ml', 'per_unit'].includes(nutrition.basis)
@@ -98,10 +106,21 @@ export function validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recove
 
     recipeIds.add(recipe.id);
     types.add(recipe.mealType);
+    if (typeof recipe.baseServings !== 'number' || !Number.isFinite(recipe.baseServings) || recipe.baseServings <= 0) {
+      throw new Error(`Revisa las raciones base de «${recipe.name}».`);
+    }
+    const perServing = {};
     for (const ingredient of recipe.ingredients) {
       const food = foodRows[ingredient.foodId];
       if (!food || ingredient.unit !== food.recipeUnit || !Number.isFinite(Number(ingredient.amount)) || Number(ingredient.amount) <= 0) {
         throw new Error(`La receta «${recipe.name}» contiene un ingrediente incompatible con el catálogo.`);
+      }
+      perServing[food.id] = (perServing[food.id] || 0) + Number(ingredient.amount) / recipe.baseServings;
+    }
+    for (const [id, amount] of Object.entries(perServing)) {
+      const food = foodRows[id], rule = food.portion;
+      if (rule && (amount < rule.min || amount > rule.max || food.recipeUnit === 'ud' && !portionOnGrid(amount, rule))) {
+        throw new Error(`La ración de ${food.name} en «${recipe.name}» no respeta sus límites o unidades prácticas.`);
       }
     }
     if (recipe.mealType === 'desayuno') {

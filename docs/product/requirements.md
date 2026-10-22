@@ -2,7 +2,7 @@
 
 Estado de referencia: 22 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
 
-Evolución aceptada y en desarrollo por paquetes: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) y el [plan integrado](../planner/implementation-plan.md) incorporan configuración inicial guiada, perfil obligatorio antes del primer plan, preferencias opcionales, generación común desde el primer ciclo y revisión de una semana base. El [paquete 1](../planner/package-1-foundations.md) prepara y prueba los modelos de dominio sin activar los nuevos flujos. Las secciones de comportamiento implementado siguen describiendo la aplicación actual; las nuevas pantallas, tablas y migraciones siguen pendientes.
+Evolución aceptada y en desarrollo por paquetes: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) y el [plan integrado](../planner/implementation-plan.md) incorporan configuración inicial guiada, perfil obligatorio antes del primer plan, preferencias opcionales, generación común desde el primer ciclo y revisión de una semana base. El [paquete 1](../planner/package-1-foundations.md) prepara los modelos de dominio; el [paquete 2](../planner/package-2-practical-portions.md) aplica límites y redondeos de raciones por alimento, conservando las fórmulas, bases y consumos registrados. Los nuevos flujos de configuración y preferencias siguen pendientes. Las secciones de comportamiento implementado siguen describiendo la aplicación actual; las nuevas pantallas, tablas y migraciones siguen pendientes.
 
 ## Propósito y usuarios
 

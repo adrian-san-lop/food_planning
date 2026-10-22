@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.9.3",
-  "source": "Existing recipes from menuki.html plus curated generic recipes using catalog foods. Version 0.8.0 adds Ensalada templada de gulas as a one-person recipe. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams. Version 0.9.2 applies evidence-backed USDA corrections and explicit recipe ingredient instructions; see docs/audits/catalog-quality/results/summary.md. Version 0.9.3 defines a generic L egg estimate and documents identical-ingredient recipe families under ADR-0045.",
-  "status": "Catálogo 0.9.3: 112 recetas y 543 referencias de ingredientes, con cantidades base para una persona; las porciones de fruta entera se expresan en piezas y el pan de molde en rebanadas.",
+  "catalogVersion": "0.10.0",
+  "source": "Existing recipes from menuki.html plus curated generic recipes using catalog foods. Version 0.8.0 adds Ensalada templada de gulas as a one-person recipe. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams. Version 0.9.2 applies evidence-backed USDA corrections and explicit recipe ingredient instructions; see docs/audits/catalog-quality/results/summary.md. Version 0.9.3 defines a generic L egg estimate and documents identical-ingredient recipe families under ADR-0045. Version 0.10.0 adds practical food portion limits and rounding policies without changing nutrition, units or base recipe quantities.",
+  "status": "Catálogo 0.10.0: 112 recetas y 543 referencias de ingredientes, con cantidades base para una persona; las porciones de fruta entera se expresan en piezas y el pan de molde en rebanadas.",
   "recipes": [
     {
       "id": "yogur_platano",
