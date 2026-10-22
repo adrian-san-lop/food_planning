@@ -1,6 +1,6 @@
 # ADR-0040: mantener la despensa no negativa y separar los faltantes (histórica)
 
-- Estado: Supersedida parcialmente por [ADR-0043](0043-record-full-meal-consumption-without-shortfall-history.md) el 18/10/2026. La regla de saldo no negativo y la reversión de lo descontado siguen vigentes; el almacenamiento y la presentación de faltantes quedan retirados. La migración de limpieza de Supabase está pendiente.
+- Estado: Supersedida parcialmente por [ADR-0043](0043-record-full-meal-consumption-without-shortfall-history.md) el 18/10/2026. La regla de saldo no negativo y la reversión de lo descontado siguen vigentes; el almacenamiento y la presentación de faltantes quedan retirados. El propietario confirmó el 22/10/2026 la aplicación y comprobación en Supabase de la migración que purga los registros y suprime escrituras antiguas.
 - Fecha: 2026-10-17
 - Alcance: registro de comidas, despensa, compras, reversos y sincronización relacional.
 - Sustituye la regla de permitir saldos negativos descrita en la guía de inventario.

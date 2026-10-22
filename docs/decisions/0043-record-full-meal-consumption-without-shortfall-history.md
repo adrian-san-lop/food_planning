@@ -1,6 +1,6 @@
 # ADR-0043: registrar el consumo completo sin guardar faltantes históricos
 
-- Estado: Aceptada; implementada localmente. La migración de limpieza de Supabase está preparada y pendiente de ejecución por el propietario.
+- Estado: Aceptada e implementada localmente. La migración de limpieza está aplicada en Supabase según la comprobación del propietario del 22/10/2026.
 - Fecha: 2026-10-18
 - Alcance: registro de comidas, despensa, compras, reversos y sincronización.
 - Sustituye la parte de ADR-0040 que guardaba los faltantes por separado.
