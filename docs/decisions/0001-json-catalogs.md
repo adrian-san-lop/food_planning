@@ -23,4 +23,4 @@ Mantener los catálogos genéricos en `data/foods.json` y `data/recipes.json`, v
 
 ## Pendiente
 
-Revisar los valores nutricionales genéricos frente a etiquetas concretas y decidir el proceso para revisar cambios del catálogo. Los esquemas se formalizaron en la versión 0.2.0.
+Revisar los valores nutricionales genéricos frente a etiquetas concretas. Los esquemas se formalizaron en la versión 0.2.0; el proceso vigente de revisión de propuestas y cambios de catálogo está definido en ADR-0021, ADR-0022 y ADR-0023.

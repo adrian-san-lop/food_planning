@@ -2,34 +2,34 @@
 
 Esta lista contiene puntos que aún no se deben tratar como requisitos aceptados. Al decidir uno, actualizar el documento correspondiente y añadir o actualizar un registro en `docs/decisions/`.
 
-El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas. El propietario informa que las migraciones novena y décima (`20261013160000_recipe_proposal_inbox.sql` y `20261013170000_recipe_proposal_admin_maintenance.sql`) y la asignación admin ya se ejecutaron en Supabase; la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) sigue pendiente. El propietario confirmó que el borrado individual funciona. La limpieza global falla porque Supabase rechaza un `DELETE` sin cláusula `WHERE`; la corrección está en `20261013180000_recipe_proposal_purge_where_clause.sql` y aún debe aplicarse. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
+El esquema JSON, la carga de catálogos, la propuesta del planificador, Auth y el sincronizador relacional están implementados. Las siete migraciones iniciales están aplicadas. El propietario informa que las migraciones novena y décima (`20261013160000_recipe_proposal_inbox.sql` y `20261013170000_recipe_proposal_admin_maintenance.sql`) y la asignación admin ya se ejecutaron en Supabase; la corrección HTTP 409 de la octava (`20261013120000_menuki_sync_conflict_http_409.sql`) está aplicada y resuelta según confirmación del administrador comunicada el 17/10/2026. El propietario confirmó que el borrado individual funciona. El último fallo comunicado de limpieza global se debía al rechazo de un `DELETE` sin cláusula `WHERE`; la corrección está en `20261013180000_recipe_proposal_purge_where_clause.sql` y aún debe aplicarse. Las tablas de sesiones y snapshots están aplicadas; su retención es indefinida y se vigilará el tamaño.
 
 ## Catálogo y recetas
 
-- ¿Qué fuente nutricional se usará como referencia prioritaria para revisar todo el catálogo: etiquetas de productos concretos, tablas públicas u otra fuente? La ampliación 0.2.0 incorpora referencias genéricas de USDA FoodData Central, sin convertir esa selección inicial en una decisión global.
-- En la implementación inicial, “no usada” significa que la receta no aparece en el menú activo; no significa que se haya añadido recientemente al catálogo.
-- ¿Cuántas recetas no usadas en el menú activo se esperan por ciclo, si hay un mínimo? Hoy solo se favorecen, sin imponer un mínimo.
-- ¿Se pretende evitar cualquier repetición en una semana o basta con evitar repeticiones cercanas? No hay distancias ni límites numéricos acordados.
+La elección de representación genérica y las convenciones de medida se han resuelto en [ADR-0045](decisions/0045-generic-catalog-and-measurement-conventions.md). No es necesario solicitar marcas al propietario. El cierre confirma contabilizar todos los ingredientes cuantificados; la exclusión ya no es una tarea pendiente. Una posible unificación futura de presentación conservaría la compatibilidad de los IDs de recetas coincidentes.
+La familiaridad, la semana repetida y la renovación de 2–3 familias por ciclo (menos si no encajan) quedan resueltas en [ADR-0046](decisions/0046-familiar-weekly-menu.md). Las variantes de cantidades no son novedades.
 - ¿Qué etiquetas adicionales ayudan a filtrar recetas (estilo, proteína principal, técnicas, tiempo, coste)? Añadir solo las que se usarán.
 
 ## Gustos, restricciones y varias personas
 
-- ¿Qué escala de gustos se quiere usar y dónde se recogen las valoraciones?
-- ¿Cómo distinguir “no me gusta” de “no consumir nunca” y de alergia/intolerancia? La propuesta de filtrado estricto no está aceptada como especificación médica.
+El modelo inicial queda resuelto en [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md): normal, favorita y No proponer por receta, con acciones en las fichas. El [paquete 1](planner/package-1-foundations.md) prepara los contratos de dominio; su aplicación al generador, persistencia e interfaz siguen pendientes. No proponer afecta a la selección automática y permite elección manual; no se infieren gustos por registrar comidas. Los límites de tiempo de comida y cena entre semana son opcionales. La configuración inicial y el primer menú generado se incluyen en el [plan integrado](planner/implementation-plan.md).
+
+- ¿Qué modelo futuro permitiría excluir ingredientes y tratar alergias/intolerancias? Es una función separada de los gustos por receta y está fuera de la entrega aceptada.
 - Si se comparte un menú, ¿debe ser aceptable para todos o se permiten comidas distintas? ¿Cómo combinar preferencias y raciones?
-- ¿Qué debe hacer el planificador cuando las restricciones dejan muy pocas recetas: pedir ampliar preferencias, sugerir nuevas recetas o ambas?
+- Si se amplía el producto a restricciones de ingredientes o varias personas, ¿qué alternativas se ofrecen cuando quedan pocas recetas? Para el alcance actual ya se acepta explicar la condición que deja sin candidatos y permitir revisarla, sin relajarla en silencio ni confirmar un ciclo incompleto.
 
 ## Planificador
 
+ADR-0047 acepta la generación común desde el primer ciclo, las raciones prácticas con objetivos aproximados y la despensa opcional e incompleta. También acepta revisar una semana a la vez y aplicar los cambios de la semana base a tres semanas por defecto, con opción individual y conservación de bloqueos. Estas decisiones ya no son preguntas abiertas; su desarrollo está pendiente.
+
 - Tras varias semanas, ¿conviene mostrar un resumen de la actividad registrada para que la persona revise manualmente su nivel de movimiento habitual? No se ajustará el perfil ni se predecirán sesiones automáticamente.
-- ¿Qué tolerancias nutricionales y de variedad se consideran “pequeñas” o “cercanas”?
+- ¿Cómo calibrar con uso real las puntuaciones de ajuste nutricional, aprovechamiento de ingredientes y separación de comidas/cenas, manteniendo la política de familiaridad de ADR-0046?
 - ¿Cómo debería comportarse un menú bloqueado si cambia el perfil o una receta conserva el ID pero cambia de contenido en una nueva versión del catálogo?
 
 ## Persistencia e integración
 
 - Publicar la app actualizada y comprobar la primera importación local v8 a Supabase, la conciliación de cambios independientes, el desempate de cambios simultáneos y la propagación del borrado de sesiones entre PC y móvil.
 - Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
-- Aplicar la octava migración pendiente desde SQL Editor. La novena y la asignación admin ya se ejecutaron según el propietario.
 - Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` en SQL Editor para corregir la limpieza global; después comprobar que elimina las propuestas y sus filas hijas. La edición y el borrado individual ya funcionan según el propietario. Sigue pendiente validar el aislamiento con una cuenta normal y la limpieza global en la web publicada.
 - Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y el reinicio total confirmado.
 - Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de cambios grandes de uso. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.

@@ -5,6 +5,8 @@
 - **Alcance:** navegación y resumen de Inicio en pantallas móviles
 - **Relación:** actualiza la ubicación de accesos móviles definida por ADR-0012 y ADR-0026.
 
+Actualización de vigencia (17/10/2026): la navegación de los puntos 1–2 sigue vigente. ADR-0036 sustituye los KPI de los puntos 3 y 5 y su consecuencia sobre la racha: escritorio y móvil comparten cuatro KPI semanales; la racha ya no se presenta como KPI móvil. El texto original de esos indicadores se conserva como antecedente.
+
 ## Contexto
 
 En móvil, varios accesos poco frecuentes compartían la barra inferior con las tareas diarias. Inicio también mostraba cuatro KPI generales y un resumen nutricional que no destacaba visualmente cómo avanzaba el consumo del día.

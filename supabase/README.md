@@ -8,7 +8,13 @@ Las credenciales pertenecen a Supabase Auth (`auth.users`). `public.profiles` gu
 
 ## Migraciones
 
-Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para las acciones confirmadas de reiniciar/restaurar. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state`. La octava, `20261013120000_menuki_sync_conflict_http_409.sql`, prepara respuestas HTTP 409 ante conflictos de revisión y sigue pendiente. El propietario informa que la novena, `20261013160000_recipe_proposal_inbox.sql`, ya se ejecutó y que la cuenta admin ya se asignó; crea cuatro tablas de propuestas/administradores y tres RPCs acotados. La novena no altera las filas personales ni el RPC `sync_menuki_state`. En un proyecto nuevo, revisa el estado real antes de ejecutar migraciones; en el proyecto existente no vuelvas a ejecutar scripts que ya se hayan aplicado.
+Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para el reinicio total confirmado. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state`. La corrección HTTP 409 de la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, está aplicada y el problema asociado está resuelto en Supabase, según confirmación del administrador comunicada el 17/10/2026. No se ha realizado una nueva verificación independiente en vivo. El propietario informa que la novena, `20261013160000_recipe_proposal_inbox.sql`, ya se ejecutó y que la cuenta admin ya se asignó; crea cuatro tablas de propuestas/administradores y tres RPCs acotados. La novena no altera las filas personales ni el RPC `sync_menuki_state`. En un proyecto nuevo, revisa el estado real antes de ejecutar migraciones; en el proyecto existente no vuelvas a ejecutar scripts que ya se hayan aplicado.
+
+La migración `20261018140000_activity_movement_factors.sql` amplía `profiles.activity_level` a los seis niveles actuales, transforma los cuatro IDs anteriores al factor nuevo más cercano y cambia el predeterminado a `sedentary`. Está preparada localmente y debe ejecutarse en **SQL Editor antes de publicar o usar el cliente actualizado**; hasta que se ejecute, Supabase rechazará los nuevos IDs.
+
+La migración histórica `20261017100000_nonnegative_inventory_shortfalls.sql` creó `meal_completion_shortfalls`, copió los faltantes de `inventory_movements.shortfall_quantity`, añadió ajustes únicos para saldos históricos negativos y amplió `sync_menuki_state`. ADR-0043 retiró ese registro: el cliente actual conserva el uso completo de la receta, descuenta solo lo que había disponible y no consulta ni guarda faltantes. El propietario confirmó que `20261018120000_retire_meal_shortfalls.sql` se aplicó y comprobó en SQL Editor el 22/10/2026: no quedan filas, el trigger `BEFORE INSERT OR UPDATE` está activo y descarta escrituras del RPC antiguo, y `authenticated` no tiene permisos directos de inserción, actualización ni borrado. La tabla se conserva vacía para compatibilidad. Los valores heredados de `inventory_movements.shortfall_quantity` se conservan porque permiten calcular las reversiones correctas de movimientos antiguos; los movimientos nuevos llevan cero. Un consumo sin stock conserva un movimiento de cantidad cero como marcador idempotente. La migración anterior dejó activa la regla antigua `inventory_movements_check1`; la corrección `20261017110000_fix_zero_quantity_meal_constraint.sql` la elimina y conserva la regla de reversos `inventory_movements_check2`. El propietario confirma que las migraciones anteriores se aplicaron en Supabase el 17/10/2026 y que el error quedó corregido. La consulta de diagnóstico de restricciones permanece disponible en `diagnostics/inventory_movement_checks.sql` si reaparece un error de integridad.
+
+El cliente ya no depende de esa tabla; carga la cuenta sin consultarla y no muestra avisos sobre su existencia.
 
 La migración crea `sync_menuki_state(jsonb, bigint)`: el cliente transmite el snapshot, la función obtiene el propietario mediante `auth.uid()`, guarda los registros en las tablas normalizadas y comprueba `sync_revision` para rechazar copias desactualizadas. La primera sincronización importa una sola vez el estado local si la cuenta no tiene ya registros; no sobrescribe silenciosamente filas remotas. La app no mantiene una cola offline.
 
@@ -36,18 +42,19 @@ on conflict (user_id) do nothing;
 
 No añadas la asignación de rol al HTML. Las cuentas normales no pueden leer ni cambiar `menuki_admins`; Supabase vuelve a comprobar el permiso en las políticas y funciones, aunque alguien altere la interfaz del navegador.
 
-El reinicio y la restauración de una copia JSON son operaciones explícitas distintas: tras confirmarlas en la app, `reset_menuki_state` reemplaza los registros personales y guarda el nuevo snapshot dentro de la misma transacción. El reinicio no se ejecuta en sincronizaciones ordinarias.
+El reinicio total es una operación explícita: tras confirmarlo en la app, `reset_menuki_state` reemplaza los registros personales y guarda el nuevo snapshot dentro de la misma transacción. No se ejecuta en sincronizaciones ordinarias. La restauración personal desde JSON fue retirada por ADR-0029; se conservan las migraciones locales v5-v11 y la importación inicial a una cuenta sin inicializar.
 
 Para revisar el esquema inicial, ejecuta `tests/001_schema_check.sql`. Es una comprobación estructural; no demuestra el aislamiento con dos sesiones autenticadas ni el recorrido completo de sincronización.
 
-SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Según el propietario, la novena migración ya se aplicó; la octava sigue pendiente. Antes de ejecutar SQL, compara el estado alojado y aplica solo la octava. No vuelvas a ejecutar migraciones ya aplicadas solo para registrarlas.
+SQL Editor no mantiene el historial de los archivos del repositorio en la tabla de versiones de Supabase. Las siete primeras migraciones y las del buzón y mantenimiento admin constan como aplicadas según el propietario; el administrador confirma también la corrección HTTP 409 el 17/10/2026. La corrección de purga global sigue pendiente de confirmación. Antes de ejecutar SQL, compara el estado alojado y aplica únicamente cambios pendientes comprobados. No vuelvas a ejecutar migraciones ya aplicadas solo para registrarlas.
 
 ## Tablas utilizadas
 
 - `profiles`: parámetros del perfil nutricional y estado de revisión, una fila por cuenta.
 - `plan_cycles` y `planned_meals`: menús, ciclos, fechas y recetas.
 - `meal_completions` y `meal_completion_ingredients`: comidas completadas/revertidas y cantidades consumidas como snapshots.
-- `inventory_movements`: libro de entradas y salidas; el saldo se deriva de sus movimientos.
+- `inventory_movements`: libro de entradas y salidas; el saldo se deriva de sus movimientos y no baja de cero.
+- `meal_completion_shortfalls`: tabla heredada, fuera del uso actual. El propietario confirmó que `20261018120000_retire_meal_shortfalls.sql` se aplicó; quedó vacía y el trigger descarta escrituras antiguas. Se conserva por compatibilidad.
 - `weight_logs`, `activity_sessions` y `training_logs`: pesos, sesiones reales y marcas heredadas.
 - `prep_tasks`: preparación semanal.
 - `shopping_sessions` y `shopping_session_items`: lista, cantidades de envases y elementos marcados.
@@ -59,7 +66,7 @@ Los IDs de alimentos y recetas se resuelven contra los catálogos JSON; no se du
 
 ## Pendiente de validar
 
-- Aplicar la octava migración desde SQL Editor. La novena y la décima se consideran aplicadas según confirmación del propietario; el HTML actualizado ya muestra las acciones admin.
+- La corrección HTTP 409 ya está aplicada y resuelta según el administrador (17/10/2026). No volver a ejecutarla por figurar en un listado antiguo. Mantener pendientes las pruebas completas de conciliación entre dispositivos; la novena y la décima también constan como aplicadas según el propietario.
 - Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` desde SQL Editor para corregir la purga global; no volver a ejecutar migraciones ya aplicadas. Esta corrección no modifica tablas.
 - Validar con una cuenta normal y otra admin: envío, aislamiento de lectura, JSON admin conforme al esquema v1, permisos del botón de borrado, confirmación del recuento y borrado en cascada de ingredientes y pasos.
 - Ejecutar la prueba de aislamiento con dos cuentas de Auth: lectura, inserción y referencias entre propietarios distintos.

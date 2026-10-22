@@ -1,0 +1,2578 @@
+[
+  {
+    "recipe_id": "yogur_platano",
+    "name": "Yogur con granola y plátano",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 460,
+      "protein_g": 33.4,
+      "carbohydrates_g": 60.04,
+      "fat_g": 8.379999999999999
+    },
+    "after": {
+      "kcal": 460,
+      "protein_g": 33.4,
+      "carbohydrates_g": 60.04,
+      "fat_g": 8.379999999999999
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tostada_queso",
+    "name": "Tostada de queso fresco y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 278.1,
+      "protein_g": 15.420000000000002,
+      "carbohydrates_g": 39.2,
+      "fat_g": 7.270000000000001
+    },
+    "after": {
+      "kcal": 278.1,
+      "protein_g": 15.420000000000002,
+      "carbohydrates_g": 39.2,
+      "fat_g": 7.270000000000001
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "arroz_pollo",
+    "name": "Arroz con pollo y verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 568.4,
+      "protein_g": 44.120000000000005,
+      "carbohydrates_g": 64.9,
+      "fat_g": 14.46
+    },
+    "after": {
+      "kcal": 568.4,
+      "protein_g": 44.120000000000005,
+      "carbohydrates_g": 64.9,
+      "fat_g": 14.46
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_nueces",
+    "name": "Yogur alto en proteínas con nueces",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 206.3,
+      "protein_g": 19.25,
+      "carbohydrates_g": 8.9,
+      "fat_g": 10.43
+    },
+    "after": {
+      "kcal": 206.3,
+      "protein_g": 19.25,
+      "carbohydrates_g": 8.9,
+      "fat_g": 10.43
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "merluza_patatas",
+    "name": "Merluza con patata y judías verdes",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 466.6,
+      "protein_g": 39.1,
+      "carbohydrates_g": 47.25,
+      "fat_g": 12.3
+    },
+    "after": {
+      "kcal": 466.6,
+      "protein_g": 39.1,
+      "carbohydrates_g": 47.25,
+      "fat_g": 12.3
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "huevos_pan_kiwi",
+    "name": "Huevos revueltos, tostadas y kiwi",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 401.9,
+      "protein_g": 23.17,
+      "carbohydrates_g": 45.94,
+      "fat_g": 14.569999999999999
+    },
+    "after": {
+      "kcal": 429.5,
+      "protein_g": 25.65,
+      "carbohydrates_g": 46,
+      "fat_g": 15.989999999999998
+    },
+    "delta": {
+      "kcal": 27.600000000000023,
+      "protein_g": 2.479999999999997,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.42
+    }
+  },
+  {
+    "recipe_id": "yogur_manzana",
+    "name": "Yogur con manzana",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 197.2,
+      "protein_g": 17.51,
+      "carbohydrates_g": 30.6,
+      "fat_g": 1.02
+    },
+    "after": {
+      "kcal": 197.2,
+      "protein_g": 17.51,
+      "carbohydrates_g": 30.6,
+      "fat_g": 1.02
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "lentejas_huevo",
+    "name": "Lentejas templadas con huevo",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 635.3000000000001,
+      "protein_g": 39.080000000000005,
+      "carbohydrates_g": 69.55,
+      "fat_g": 22.32
+    },
+    "after": {
+      "kcal": 649.1000000000001,
+      "protein_g": 40.32,
+      "carbohydrates_g": 69.58,
+      "fat_g": 23.03
+    },
+    "delta": {
+      "kcal": 13.800000000000068,
+      "protein_g": 1.2399999999999949,
+      "carbohydrates_g": 0.030000000000001137,
+      "fat_g": 0.7100000000000009
+    }
+  },
+  {
+    "recipe_id": "hummus_zanahoria",
+    "name": "Hummus con zanahoria y pan",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 300,
+      "protein_g": 8.4,
+      "carbohydrates_g": 38.5,
+      "fat_g": 12.7
+    },
+    "after": {
+      "kcal": 300,
+      "protein_g": 8.4,
+      "carbohydrates_g": 38.5,
+      "fat_g": 12.7
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "pasta_pavo",
+    "name": "Pasta integral con pavo y calabacín",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 513.1500000000001,
+      "protein_g": 50.690000000000005,
+      "carbohydrates_g": 56.92,
+      "fat_g": 9.510000000000002
+    },
+    "after": {
+      "kcal": 513.1500000000001,
+      "protein_g": 50.690000000000005,
+      "carbohydrates_g": 56.92,
+      "fat_g": 9.510000000000002
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_avena_rojos",
+    "name": "Bol de yogur, avena y frutos rojos",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 418,
+      "protein_g": 35.28,
+      "carbohydrates_g": 50.24,
+      "fat_g": 6.12
+    },
+    "after": {
+      "kcal": 418,
+      "protein_g": 35.28,
+      "carbohydrates_g": 50.24,
+      "fat_g": 6.12
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "bocadillo_pavo",
+    "name": "Minibocadillo integral de pavo",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 221.8,
+      "protein_g": 19.7,
+      "carbohydrates_g": 27.3,
+      "fat_g": 3.7600000000000002
+    },
+    "after": {
+      "kcal": 221.8,
+      "protein_g": 19.7,
+      "carbohydrates_g": 27.3,
+      "fat_g": 3.7600000000000002
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "salmon_patata",
+    "name": "Salmón con brócoli y patata",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 632.5,
+      "protein_g": 45,
+      "carbohydrates_g": 50.5,
+      "fat_g": 28.099999999999998
+    },
+    "after": {
+      "kcal": 632.5,
+      "protein_g": 45,
+      "carbohydrates_g": 50.5,
+      "fat_g": 28.099999999999998
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_naranja",
+    "name": "Yogur natural con naranja",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 193.4,
+      "protein_g": 18.62,
+      "carbohydrates_g": 28.400000000000002,
+      "fat_g": 0.8600000000000001
+    },
+    "after": {
+      "kcal": 193.4,
+      "protein_g": 18.62,
+      "carbohydrates_g": 28.400000000000002,
+      "fat_g": 0.8600000000000001
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tortilla_atun",
+    "name": "Tortilla de atún con verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 485.4,
+      "protein_g": 41.84,
+      "carbohydrates_g": 28.759999999999998,
+      "fat_g": 23.240000000000002
+    },
+    "after": {
+      "kcal": 513,
+      "protein_g": 44.32,
+      "carbohydrates_g": 28.82,
+      "fat_g": 24.66
+    },
+    "delta": {
+      "kcal": 27.600000000000023,
+      "protein_g": 2.479999999999997,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4199999999999982
+    }
+  },
+  {
+    "recipe_id": "yogur_kiwi",
+    "name": "Yogur, granola y kiwi",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 406.9,
+      "protein_g": 33.07,
+      "carbohydrates_g": 47.14,
+      "fat_g": 8.469999999999999
+    },
+    "after": {
+      "kcal": 406.9,
+      "protein_g": 33.07,
+      "carbohydrates_g": 47.14,
+      "fat_g": 8.469999999999999
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_pera",
+    "name": "Yogur con pera",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 205.7,
+      "protein_g": 17.68,
+      "carbohydrates_g": 32.3,
+      "fat_g": 0.8500000000000001
+    },
+    "after": {
+      "kcal": 205.7,
+      "protein_g": 17.68,
+      "carbohydrates_g": 32.3,
+      "fat_g": 0.8500000000000001
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "ensalada_garbanzos",
+    "name": "Ensalada mediterránea de garbanzos y atún",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 631.6,
+      "protein_g": 42.21000000000001,
+      "carbohydrates_g": 77.92,
+      "fat_g": 17.57
+    },
+    "after": {
+      "kcal": 631.6,
+      "protein_g": 42.21000000000001,
+      "carbohydrates_g": 77.92,
+      "fat_g": 17.57
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "pollo_boniato",
+    "name": "Pollo con boniato, pimiento y cebolla",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 515.2,
+      "protein_g": 42.20000000000001,
+      "carbohydrates_g": 57.2,
+      "fat_g": 13.8
+    },
+    "after": {
+      "kcal": 515.2,
+      "protein_g": 42.20000000000001,
+      "carbohydrates_g": 57.2,
+      "fat_g": 13.8
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_rojos_nueces",
+    "name": "Yogur con granola, frutos rojos y nueces",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 492,
+      "protein_g": 35.08,
+      "carbohydrates_g": 51.54,
+      "fat_g": 15.12
+    },
+    "after": {
+      "kcal": 492,
+      "protein_g": 35.08,
+      "carbohydrates_g": 51.54,
+      "fat_g": 15.12
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "bocadillo_pavo_peq",
+    "name": "Bocadillo ligero de pavo",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 218.20000000000002,
+      "protein_g": 19.5,
+      "carbohydrates_g": 26.6,
+      "fat_g": 3.72
+    },
+    "after": {
+      "kcal": 218.20000000000002,
+      "protein_g": 19.5,
+      "carbohydrates_g": 26.6,
+      "fat_g": 3.72
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "pasta_pavo_champi",
+    "name": "Pasta con pavo, champiñones y pimiento",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 588.55,
+      "protein_g": 53.25000000000001,
+      "carbohydrates_g": 62.5,
+      "fat_g": 14.65
+    },
+    "after": {
+      "kcal": 588.55,
+      "protein_g": 53.25000000000001,
+      "carbohydrates_g": 62.5,
+      "fat_g": 14.65
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_fruta",
+    "name": "Yogur con fruta de temporada",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 191.3,
+      "protein_g": 17.75,
+      "carbohydrates_g": 27.8,
+      "fat_g": 0.9800000000000001
+    },
+    "after": {
+      "kcal": 191.3,
+      "protein_g": 17.75,
+      "carbohydrates_g": 27.8,
+      "fat_g": 0.9800000000000001
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "fajitas_pollo",
+    "name": "Fajitas integrales de pollo",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 570.5,
+      "protein_g": 40,
+      "carbohydrates_g": 55.6,
+      "fat_g": 20.599999999999998
+    },
+    "after": {
+      "kcal": 570.5,
+      "protein_g": 40,
+      "carbohydrates_g": 55.6,
+      "fat_g": 20.599999999999998
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_platano_simple",
+    "name": "Yogur natural y plátano",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 216.8,
+      "protein_g": 18.32,
+      "carbohydrates_g": 33.199999999999996,
+      "fat_g": 1.04
+    },
+    "after": {
+      "kcal": 216.8,
+      "protein_g": 18.32,
+      "carbohydrates_g": 33.199999999999996,
+      "fat_g": 1.04
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "pollo_boniato_ensalada",
+    "name": "Pollo especiado con boniato y ensalada",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 502.20000000000005,
+      "protein_g": 44.620000000000005,
+      "carbohydrates_g": 50.5,
+      "fat_g": 14.02
+    },
+    "after": {
+      "kcal": 502.20000000000005,
+      "protein_g": 44.620000000000005,
+      "carbohydrates_g": 50.5,
+      "fat_g": 14.02
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "griego_nueces",
+    "name": "Yogur griego natural y nueces",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 301.5,
+      "protein_g": 14.25,
+      "carbohydrates_g": 10.1,
+      "fat_g": 21.75
+    },
+    "after": {
+      "kcal": 301.5,
+      "protein_g": 14.25,
+      "carbohydrates_g": 10.1,
+      "fat_g": 21.75
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "sardinas_tostas",
+    "name": "Tostas integrales de sardinas y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 488.5,
+      "protein_g": 38.6,
+      "carbohydrates_g": 29,
+      "fat_g": 24
+    },
+    "after": {
+      "kcal": 488.5,
+      "protein_g": 38.6,
+      "carbohydrates_g": 29,
+      "fat_g": 24
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_avena_manzana",
+    "name": "Bol de yogur, avena y manzana",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 456.4,
+      "protein_g": 34.79,
+      "carbohydrates_g": 63.040000000000006,
+      "fat_g": 6.0600000000000005
+    },
+    "after": {
+      "kcal": 456.4,
+      "protein_g": 34.79,
+      "carbohydrates_g": 63.040000000000006,
+      "fat_g": 6.0600000000000005
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "naranja_almendras",
+    "name": "Naranja y almendras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 229.60000000000002,
+      "protein_g": 6.87,
+      "carbohydrates_g": 27.1,
+      "fat_g": 12.68
+    },
+    "after": {
+      "kcal": 229.60000000000002,
+      "protein_g": 6.87,
+      "carbohydrates_g": 27.1,
+      "fat_g": 12.68
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "arroz_gambas",
+    "name": "Arroz salteado con gambas y verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 536.4,
+      "protein_g": 39.72,
+      "carbohydrates_g": 66.69999999999999,
+      "fat_g": 13.06
+    },
+    "after": {
+      "kcal": 536.4,
+      "protein_g": 39.72,
+      "carbohydrates_g": 66.69999999999999,
+      "fat_g": 13.06
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "crema_tortilla",
+    "name": "Crema de calabacín con tortilla y tostada",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 664.5,
+      "protein_g": 35.75,
+      "carbohydrates_g": 65.6,
+      "fat_g": 28.95
+    },
+    "after": {
+      "kcal": 692.1,
+      "protein_g": 38.230000000000004,
+      "carbohydrates_g": 65.66,
+      "fat_g": 30.369999999999997
+    },
+    "delta": {
+      "kcal": 27.600000000000023,
+      "protein_g": 2.480000000000004,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4199999999999982
+    }
+  },
+  {
+    "recipe_id": "bacalao_pisto",
+    "name": "Bacalao con pisto y patatas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 543,
+      "protein_g": 43.93,
+      "carbohydrates_g": 63.129999999999995,
+      "fat_g": 12.959999999999999
+    },
+    "after": {
+      "kcal": 543,
+      "protein_g": 43.93,
+      "carbohydrates_g": 63.129999999999995,
+      "fat_g": 12.959999999999999
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "alubias_huevo",
+    "name": "Ensalada templada de alubias con huevo y atún",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 664.6,
+      "protein_g": 48.345000000000006,
+      "carbohydrates_g": 70.37,
+      "fat_g": 19.255
+    },
+    "after": {
+      "kcal": 678.4000000000001,
+      "protein_g": 49.585,
+      "carbohydrates_g": 70.4,
+      "fat_g": 19.965
+    },
+    "delta": {
+      "kcal": 13.800000000000068,
+      "protein_g": 1.2399999999999949,
+      "carbohydrates_g": 0.030000000000001137,
+      "fat_g": 0.7100000000000009
+    }
+  },
+  {
+    "recipe_id": "pavo_arroz_tomate",
+    "name": "Pavo salteado con arroz y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 641.2,
+      "protein_g": 52.32,
+      "carbohydrates_g": 75.6,
+      "fat_g": 14.24
+    },
+    "after": {
+      "kcal": 641.2,
+      "protein_g": 52.32,
+      "carbohydrates_g": 75.6,
+      "fat_g": 14.24
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "gulas_gambas",
+    "name": "Gulas con gambas y espinacas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 573.3,
+      "protein_g": 48.43,
+      "carbohydrates_g": 43.42,
+      "fat_g": 24.08
+    },
+    "after": {
+      "kcal": 573.3,
+      "protein_g": 48.43,
+      "carbohydrates_g": 43.42,
+      "fat_g": 24.08
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "garbanzos_bacalao",
+    "name": "Garbanzos con espinacas y bacalao",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 657,
+      "protein_g": 51.63999999999999,
+      "carbohydrates_g": 74.22,
+      "fat_g": 18.04
+    },
+    "after": {
+      "kcal": 657,
+      "protein_g": 51.63999999999999,
+      "carbohydrates_g": 74.22,
+      "fat_g": 18.04
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "wok_pollo_fideos",
+    "name": "Wok de pollo y fideos integrales",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 578.2,
+      "protein_g": 48.660000000000004,
+      "carbohydrates_g": 62.1,
+      "fat_g": 15.349999999999998
+    },
+    "after": {
+      "kcal": 578.2,
+      "protein_g": 48.660000000000004,
+      "carbohydrates_g": 62.1,
+      "fat_g": 15.349999999999998
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "quinoa_salmon",
+    "name": "Bol de quinoa con salmón y verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 644.8,
+      "protein_g": 44.040000000000006,
+      "carbohydrates_g": 48.16,
+      "fat_g": 29.979999999999997
+    },
+    "after": {
+      "kcal": 644.8,
+      "protein_g": 44.040000000000006,
+      "carbohydrates_g": 48.16,
+      "fat_g": 29.979999999999997
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tortilla_patata_atun",
+    "name": "Tortilla rápida de patata y atún",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 635.2,
+      "protein_g": 43,
+      "carbohydrates_g": 63.5,
+      "fat_g": 23.18
+    },
+    "after": {
+      "kcal": 662.8,
+      "protein_g": 45.48,
+      "carbohydrates_g": 63.56,
+      "fat_g": 24.6
+    },
+    "delta": {
+      "kcal": 27.59999999999991,
+      "protein_g": 2.479999999999997,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4200000000000017
+    }
+  },
+  {
+    "recipe_id": "alubias_pavo",
+    "name": "Alubias guisadas rápidas con pavo",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 656.3,
+      "protein_g": 58.63999999999999,
+      "carbohydrates_g": 69,
+      "fat_g": 14.475
+    },
+    "after": {
+      "kcal": 656.3,
+      "protein_g": 58.63999999999999,
+      "carbohydrates_g": 69,
+      "fat_g": 14.475
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "cuscus_merluza",
+    "name": "Merluza con cuscús y calabacín",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 521.5999999999999,
+      "protein_g": 42.42,
+      "carbohydrates_g": 54.76,
+      "fat_g": 13.58
+    },
+    "after": {
+      "kcal": 521.5999999999999,
+      "protein_g": 42.42,
+      "carbohydrates_g": 54.76,
+      "fat_g": 13.58
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "pasta_atun_ensalada",
+    "name": "Pasta integral con atún y verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 549.45,
+      "protein_g": 47.050000000000004,
+      "carbohydrates_g": 61.099999999999994,
+      "fat_g": 13.43
+    },
+    "after": {
+      "kcal": 549.45,
+      "protein_g": 47.050000000000004,
+      "carbohydrates_g": 61.099999999999994,
+      "fat_g": 13.43
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "pollo_esparragos",
+    "name": "Pollo al limón con boniato y espárragos",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 516.8000000000001,
+      "protein_g": 49.24,
+      "carbohydrates_g": 51.2,
+      "fat_g": 14.18
+    },
+    "after": {
+      "kcal": 516.8000000000001,
+      "protein_g": 49.24,
+      "carbohydrates_g": 51.2,
+      "fat_g": 14.18
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "arroz_gambas_guisantes",
+    "name": "Arroz marinero rápido con gambas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 667,
+      "protein_g": 49.16,
+      "carbohydrates_g": 88,
+      "fat_g": 13.76
+    },
+    "after": {
+      "kcal": 667,
+      "protein_g": 49.16,
+      "carbohydrates_g": 88,
+      "fat_g": 13.76
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "crema_calabaza_pavo",
+    "name": "Crema de calabaza y tortilla de pavo",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 667.0999999999999,
+      "protein_g": 39.66,
+      "carbohydrates_g": 71.14999999999999,
+      "fat_g": 24.19
+    },
+    "after": {
+      "kcal": 694.7,
+      "protein_g": 42.14,
+      "carbohydrates_g": 71.21,
+      "fat_g": 25.61
+    },
+    "delta": {
+      "kcal": 27.600000000000136,
+      "protein_g": 2.480000000000004,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4199999999999982
+    }
+  },
+  {
+    "recipe_id": "pavo_curry_arroz",
+    "name": "Pavo al curry suave con arroz",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 593,
+      "protein_g": 52.28000000000001,
+      "carbohydrates_g": 63.83,
+      "fat_g": 13.79
+    },
+    "after": {
+      "kcal": 593,
+      "protein_g": 52.28000000000001,
+      "carbohydrates_g": 63.83,
+      "fat_g": 13.79
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "caballa_patatas",
+    "name": "Caballa en conserva con patata y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 598.3,
+      "protein_g": 41.14999999999999,
+      "carbohydrates_g": 56.300000000000004,
+      "fat_g": 23.259999999999998
+    },
+    "after": {
+      "kcal": 598.3,
+      "protein_g": 41.14999999999999,
+      "carbohydrates_g": 56.300000000000004,
+      "fat_g": 23.259999999999998
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "lentejas_caballa",
+    "name": "Ensalada de lentejas, caballa y aguacate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 703.7,
+      "protein_g": 49.37000000000001,
+      "carbohydrates_g": 67.83000000000001,
+      "fat_g": 27.845000000000002
+    },
+    "after": {
+      "kcal": 703.7,
+      "protein_g": 49.37000000000001,
+      "carbohydrates_g": 67.83000000000001,
+      "fat_g": 27.845000000000002
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "cuscus_pollo",
+    "name": "Cuscús con pollo y verduras al wok",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 610.45,
+      "protein_g": 52.6,
+      "carbohydrates_g": 64.99000000000001,
+      "fat_g": 15.455
+    },
+    "after": {
+      "kcal": 610.45,
+      "protein_g": 52.6,
+      "carbohydrates_g": 64.99000000000001,
+      "fat_g": 15.455
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "pasta_salmon_espinacas",
+    "name": "Pasta integral con salmón y espinacas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 667.3000000000001,
+      "protein_g": 46.07000000000001,
+      "carbohydrates_g": 56.48,
+      "fat_g": 27.959999999999997
+    },
+    "after": {
+      "kcal": 667.3000000000001,
+      "protein_g": 46.07000000000001,
+      "carbohydrates_g": 56.48,
+      "fat_g": 27.959999999999997
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "huevos_alubias",
+    "name": "Huevos al plato con alubias y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 602,
+      "protein_g": 35.8,
+      "carbohydrates_g": 69.5,
+      "fat_g": 18.9
+    },
+    "after": {
+      "kcal": 629.6,
+      "protein_g": 38.28,
+      "carbohydrates_g": 69.56,
+      "fat_g": 20.32
+    },
+    "delta": {
+      "kcal": 27.600000000000023,
+      "protein_g": 2.480000000000004,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4200000000000017
+    }
+  },
+  {
+    "recipe_id": "pollo_garbanzos",
+    "name": "Bol mediterráneo de pollo y garbanzos",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 623.9,
+      "protein_g": 52.5,
+      "carbohydrates_g": 63.449999999999996,
+      "fat_g": 18.56
+    },
+    "after": {
+      "kcal": 623.9,
+      "protein_g": 52.5,
+      "carbohydrates_g": 63.449999999999996,
+      "fat_g": 18.56
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "trucha_patatas",
+    "name": "Trucha con patata y judías verdes",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 601.35,
+      "protein_g": 47.410000000000004,
+      "carbohydrates_g": 50.75999999999999,
+      "fat_g": 23.39
+    },
+    "after": {
+      "kcal": 601.35,
+      "protein_g": 47.410000000000004,
+      "carbohydrates_g": 50.75999999999999,
+      "fat_g": 23.39
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "fideos_gambas",
+    "name": "Fideuá rápida de gambas y guisantes",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 672.3,
+      "protein_g": 51.559999999999995,
+      "carbohydrates_g": 86.4,
+      "fat_g": 14.489999999999998
+    },
+    "after": {
+      "kcal": 672.3,
+      "protein_g": 51.559999999999995,
+      "carbohydrates_g": 86.4,
+      "fat_g": 14.489999999999998
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "wrap_pavo",
+    "name": "Wrap integral de pavo y verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 595.5,
+      "protein_g": 55.49,
+      "carbohydrates_g": 53.2,
+      "fat_g": 17.509999999999998
+    },
+    "after": {
+      "kcal": 595.5,
+      "protein_g": 55.49,
+      "carbohydrates_g": 53.2,
+      "fat_g": 17.509999999999998
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "hamburguesa_pavo",
+    "name": "Bocadillo de pavo con patatas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 627.9,
+      "protein_g": 54.6,
+      "carbohydrates_g": 69.14999999999999,
+      "fat_g": 15.16
+    },
+    "after": {
+      "kcal": 627.9,
+      "protein_g": 54.6,
+      "carbohydrates_g": 69.14999999999999,
+      "fat_g": 15.16
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "alubias_revuelto",
+    "name": "Alubias con verduras y revuelto de huevo",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 623.2,
+      "protein_g": 37.199999999999996,
+      "carbohydrates_g": 63.489999999999995,
+      "fat_g": 23.61
+    },
+    "after": {
+      "kcal": 650.8,
+      "protein_g": 39.68,
+      "carbohydrates_g": 63.55,
+      "fat_g": 25.03
+    },
+    "delta": {
+      "kcal": 27.59999999999991,
+      "protein_g": 2.480000000000004,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4200000000000017
+    }
+  },
+  {
+    "recipe_id": "tortitas_atun",
+    "name": "Crema de calabaza con tortitas de atún",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 677.6,
+      "protein_g": 52.300000000000004,
+      "carbohydrates_g": 61.949999999999996,
+      "fat_g": 23.33
+    },
+    "after": {
+      "kcal": 705.2,
+      "protein_g": 54.78,
+      "carbohydrates_g": 62.01,
+      "fat_g": 24.75
+    },
+    "delta": {
+      "kcal": 27.600000000000023,
+      "protein_g": 2.479999999999997,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4200000000000017
+    }
+  },
+  {
+    "recipe_id": "yogur_cacao_kiwi",
+    "name": "Yogur, avena, kiwi y cacao",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 467.79999999999995,
+      "protein_g": 37.519999999999996,
+      "carbohydrates_g": 56.89,
+      "fat_g": 7.5600000000000005
+    },
+    "after": {
+      "kcal": 467.79999999999995,
+      "protein_g": 37.519999999999996,
+      "carbohydrates_g": 56.89,
+      "fat_g": 7.5600000000000005
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_pera_nueces",
+    "name": "Yogur con pera, granola y nueces",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 526.9,
+      "protein_g": 34.56,
+      "carbohydrates_g": 60.82,
+      "fat_g": 15.99
+    },
+    "after": {
+      "kcal": 526.9,
+      "protein_g": 34.56,
+      "carbohydrates_g": 60.82,
+      "fat_g": 15.99
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_cacao_platano",
+    "name": "Yogur con plátano, avena y cacao",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 502.4,
+      "protein_g": 37.199999999999996,
+      "carbohydrates_g": 66.84,
+      "fat_g": 7.12
+    },
+    "after": {
+      "kcal": 502.4,
+      "protein_g": 37.199999999999996,
+      "carbohydrates_g": 66.84,
+      "fat_g": 7.12
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tostada_huevo_pavo",
+    "name": "Tostada de huevo y pavo",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 403.65,
+      "protein_g": 32.08,
+      "carbohydrates_g": 33.815,
+      "fat_g": 15.219999999999999
+    },
+    "after": {
+      "kcal": 431.25,
+      "protein_g": 34.559999999999995,
+      "carbohydrates_g": 33.875,
+      "fat_g": 16.64
+    },
+    "delta": {
+      "kcal": 27.600000000000023,
+      "protein_g": 2.479999999999997,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4200000000000017
+    }
+  },
+  {
+    "recipe_id": "yogur_frutos_almendra",
+    "name": "Yogur con frutos rojos y almendras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 514,
+      "protein_g": 36.73,
+      "carbohydrates_g": 53.44,
+      "fat_g": 16.119999999999997
+    },
+    "after": {
+      "kcal": 514,
+      "protein_g": 36.73,
+      "carbohydrates_g": 53.44,
+      "fat_g": 16.119999999999997
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_manzana_canela",
+    "name": "Yogur con manzana, avena y canela",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 539.9,
+      "protein_g": 36.94,
+      "carbohydrates_g": 67.38999999999999,
+      "fat_g": 12.91
+    },
+    "after": {
+      "kcal": 539.9,
+      "protein_g": 36.94,
+      "carbohydrates_g": 67.38999999999999,
+      "fat_g": 12.91
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tostada_aguacate_huevo",
+    "name": "Tostadas de huevo, aguacate y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 481.9,
+      "protein_g": 24.17,
+      "carbohydrates_g": 50.44,
+      "fat_g": 22.07
+    },
+    "after": {
+      "kcal": 509.5,
+      "protein_g": 26.65,
+      "carbohydrates_g": 50.5,
+      "fat_g": 23.490000000000002
+    },
+    "delta": {
+      "kcal": 27.600000000000023,
+      "protein_g": 2.479999999999997,
+      "carbohydrates_g": 0.060000000000002274,
+      "fat_g": 1.4200000000000017
+    }
+  },
+  {
+    "recipe_id": "yogur_miel_no",
+    "name": "Yogur con granola y mandarina",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 514.1,
+      "protein_g": 35.97,
+      "carbohydrates_g": 67.09,
+      "fat_g": 10.459999999999999
+    },
+    "after": {
+      "kcal": 514.1,
+      "protein_g": 35.97,
+      "carbohydrates_g": 67.09,
+      "fat_g": 10.459999999999999
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_tostada_huevo",
+    "name": "Tostada integral con huevo y fruta",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 296.2,
+      "protein_g": 11.91,
+      "carbohydrates_g": 48.8,
+      "fat_g": 7.46
+    },
+    "after": {
+      "kcal": 310,
+      "protein_g": 13.149999999999999,
+      "carbohydrates_g": 48.83,
+      "fat_g": 8.17
+    },
+    "delta": {
+      "kcal": 13.800000000000011,
+      "protein_g": 1.2399999999999984,
+      "carbohydrates_g": 0.030000000000001137,
+      "fat_g": 0.71
+    }
+  },
+  {
+    "recipe_id": "snack_skyr_rojos",
+    "name": "Yogur con frutos rojos",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 178,
+      "protein_g": 21,
+      "carbohydrates_g": 19,
+      "fat_g": 1.2000000000000002
+    },
+    "after": {
+      "kcal": 178,
+      "protein_g": 21,
+      "carbohydrates_g": 19,
+      "fat_g": 1.2000000000000002
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_platano_almendras",
+    "name": "Plátano y almendras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 253,
+      "protein_g": 6.57,
+      "carbohydrates_g": 31.9,
+      "fat_g": 12.86
+    },
+    "after": {
+      "kcal": 253,
+      "protein_g": 6.57,
+      "carbohydrates_g": 31.9,
+      "fat_g": 12.86
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_skyr_nueces",
+    "name": "Yogur y nueces con pera",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 335.7,
+      "protein_g": 20.68,
+      "carbohydrates_g": 35.1,
+      "fat_g": 13.85
+    },
+    "after": {
+      "kcal": 335.7,
+      "protein_g": 20.68,
+      "carbohydrates_g": 35.1,
+      "fat_g": 13.85
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_pavo_tostada",
+    "name": "Pan integral con pavo y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 226.95000000000002,
+      "protein_g": 20.599999999999998,
+      "carbohydrates_g": 27.425,
+      "fat_g": 3.8600000000000003
+    },
+    "after": {
+      "kcal": 226.95000000000002,
+      "protein_g": 20.599999999999998,
+      "carbohydrates_g": 27.425,
+      "fat_g": 3.8600000000000003
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_yogur_platano",
+    "name": "Yogur natural con plátano",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 229.6,
+      "protein_g": 20.32,
+      "carbohydrates_g": 34,
+      "fat_g": 1.12
+    },
+    "after": {
+      "kcal": 229.6,
+      "protein_g": 20.32,
+      "carbohydrates_g": 34,
+      "fat_g": 1.12
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_naranja_hummus",
+    "name": "Hummus, zanahoria y naranja",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 273.1,
+      "protein_g": 5.82,
+      "carbohydrates_g": 38.300000000000004,
+      "fat_g": 11.93
+    },
+    "after": {
+      "kcal": 273.1,
+      "protein_g": 5.82,
+      "carbohydrates_g": 38.300000000000004,
+      "fat_g": 11.93
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_yogur_manzana",
+    "name": "Yogur, manzana y almendras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 284.2,
+      "protein_g": 20.66,
+      "carbohydrates_g": 33.9,
+      "fat_g": 8.52
+    },
+    "after": {
+      "kcal": 284.2,
+      "protein_g": 20.66,
+      "carbohydrates_g": 33.9,
+      "fat_g": 8.52
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_kiwi_skyr",
+    "name": "Yogur con kiwi y nueces",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 261.2,
+      "protein_g": 20.24,
+      "carbohydrates_g": 22.400000000000002,
+      "fat_g": 10.88
+    },
+    "after": {
+      "kcal": 261.2,
+      "protein_g": 20.24,
+      "carbohydrates_g": 22.400000000000002,
+      "fat_g": 10.88
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "snack_hummus_pan",
+    "name": "Pan integral con hummus y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 318.5,
+      "protein_g": 9.4,
+      "carbohydrates_g": 35.1,
+      "fat_g": 15.85
+    },
+    "after": {
+      "kcal": 318.5,
+      "protein_g": 9.4,
+      "carbohydrates_g": 35.1,
+      "fat_g": 15.85
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "mandarina_almendras",
+    "name": "Mandarina con almendras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 177.4,
+      "protein_g": 4.8,
+      "carbohydrates_g": 25.12,
+      "fat_g": 8.54
+    },
+    "after": {
+      "kcal": 177.4,
+      "protein_g": 4.8,
+      "carbohydrates_g": 25.12,
+      "fat_g": 8.54
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "mini_pavo_tomate",
+    "name": "Minibocadillo de pavo y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 190.9,
+      "protein_g": 14.3,
+      "carbohydrates_g": 26.55,
+      "fat_g": 3.16
+    },
+    "after": {
+      "kcal": 190.9,
+      "protein_g": 14.3,
+      "carbohydrates_g": 26.55,
+      "fat_g": 3.16
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "huevo_fruta",
+    "name": "Huevo cocido y fruta de temporada",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 154.5,
+      "protein_g": 7.05,
+      "carbohydrates_g": 21.4,
+      "fat_g": 5.3
+    },
+    "after": {
+      "kcal": 168.3,
+      "protein_g": 8.29,
+      "carbohydrates_g": 21.43,
+      "fat_g": 6.01
+    },
+    "delta": {
+      "kcal": 13.800000000000011,
+      "protein_g": 1.2399999999999993,
+      "carbohydrates_g": 0.030000000000001137,
+      "fat_g": 0.71
+    }
+  },
+  {
+    "recipe_id": "hummus_ligero",
+    "name": "Hummus con bastones de zanahoria",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 134.5,
+      "protein_g": 2.9999999999999996,
+      "carbohydrates_g": 13.899999999999999,
+      "fat_g": 7.55
+    },
+    "after": {
+      "kcal": 134.5,
+      "protein_g": 2.9999999999999996,
+      "carbohydrates_g": 13.899999999999999,
+      "fat_g": 7.55
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_kiwi_ligero",
+    "name": "Yogur y kiwi",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 144.5,
+      "protein_g": 14.99,
+      "carbohydrates_g": 19.1,
+      "fat_g": 1.01
+    },
+    "after": {
+      "kcal": 144.5,
+      "protein_g": 14.99,
+      "carbohydrates_g": 19.1,
+      "fat_g": 1.01
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "yogur_fruta_ligero",
+    "name": "Yogur y fruta de temporada",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 172.1,
+      "protein_g": 14.75,
+      "carbohydrates_g": 26.6,
+      "fat_g": 0.86
+    },
+    "after": {
+      "kcal": 172.1,
+      "protein_g": 14.75,
+      "carbohydrates_g": 26.6,
+      "fat_g": 0.86
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "pera_nueces_ligero",
+    "name": "Pera con nueces",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 174.89999999999998,
+      "protein_g": 2.48,
+      "carbohydrates_g": 27.18,
+      "fat_g": 7.97
+    },
+    "after": {
+      "kcal": 174.89999999999998,
+      "protein_g": 2.48,
+      "carbohydrates_g": 27.18,
+      "fat_g": 7.97
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tostada_tofu_revuelto",
+    "name": "Tostada de tofu revuelto con espinacas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 418.70000000000005,
+      "protein_g": 33.79,
+      "carbohydrates_g": 34.355,
+      "fat_g": 17.869999999999997
+    },
+    "after": {
+      "kcal": 432.5,
+      "protein_g": 35.03,
+      "carbohydrates_g": 34.385,
+      "fat_g": 18.58
+    },
+    "delta": {
+      "kcal": 13.799999999999955,
+      "protein_g": 1.240000000000002,
+      "carbohydrates_g": 0.030000000000001137,
+      "fat_g": 0.7100000000000009
+    }
+  },
+  {
+    "recipe_id": "avena_nocturna_chia",
+    "name": "Avena reposada con chía y frutos rojos",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 404.38,
+      "protein_g": 28.950000000000003,
+      "carbohydrates_g": 46.958000000000006,
+      "fat_g": 9.266000000000002
+    },
+    "after": {
+      "kcal": 404.38,
+      "protein_g": 28.950000000000003,
+      "carbohydrates_g": 46.958000000000006,
+      "fat_g": 9.266000000000002
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "skyr_chia_manzana",
+    "name": "Skyr con manzana, chía y pasas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 301.08,
+      "protein_g": 25.955,
+      "carbohydrates_g": 36.808,
+      "fat_g": 5.396
+    },
+    "after": {
+      "kcal": 301.08,
+      "protein_g": 25.955,
+      "carbohydrates_g": 36.808,
+      "fat_g": 5.396
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tostada_tempeh_tomate",
+    "name": "Tostada templada de tempeh y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 314.6,
+      "protein_g": 21.560000000000002,
+      "carbohydrates_g": 35.4,
+      "fat_g": 10.559999999999999
+    },
+    "after": {
+      "kcal": 314.6,
+      "protein_g": 21.560000000000002,
+      "carbohydrates_g": 35.4,
+      "fat_g": 10.559999999999999
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "media_tostada_tahini_manzana",
+    "name": "Tostada fina de tahini con manzana",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 240.59999999999997,
+      "protein_g": 6.795,
+      "carbohydrates_g": 36.92,
+      "fat_g": 8.53
+    },
+    "after": {
+      "kcal": 240.59999999999997,
+      "protein_g": 6.795,
+      "carbohydrates_g": 36.92,
+      "fat_g": 8.53
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "media_edamame_soja",
+    "name": "Edamame templado con salsa de soja",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 147.85,
+      "protein_g": 14.92,
+      "carbohydrates_g": 10.924999999999999,
+      "fat_g": 6.2700000000000005
+    },
+    "after": {
+      "kcal": 147.85,
+      "protein_g": 14.692,
+      "carbohydrates_g": 10.924999999999999,
+      "fat_g": 6.2700000000000005
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": -0.22799999999999976,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "media_skyr_chia_rojos",
+    "name": "Skyr con frutos rojos y chía",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 160.3,
+      "protein_g": 16.625,
+      "carbohydrates_g": 16.905,
+      "fat_g": 2.455
+    },
+    "after": {
+      "kcal": 160.3,
+      "protein_g": 16.625,
+      "carbohydrates_g": 16.905,
+      "fat_g": 2.455
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "media_cottage_zanahoria",
+    "name": "Queso cottage con zanahoria y pan",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 166.5,
+      "protein_g": 13.7,
+      "carbohydrates_g": 20.05,
+      "fat_g": 3.4
+    },
+    "after": {
+      "kcal": 166.5,
+      "protein_g": 13.7,
+      "carbohydrates_g": 20.05,
+      "fat_g": 3.4
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "comida_soja_berenjena_arroz",
+    "name": "Arroz con soja texturizada y berenjena",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 458.15000000000003,
+      "protein_g": 30.025000000000002,
+      "carbohydrates_g": 72.415,
+      "fat_g": 6.67
+    },
+    "after": {
+      "kcal": 458.15000000000003,
+      "protein_g": 30.025000000000002,
+      "carbohydrates_g": 72.415,
+      "fat_g": 6.67
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "comida_guiso_lenteja_roja",
+    "name": "Guiso rápido de lenteja roja y verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 399.79999999999995,
+      "protein_g": 19.7,
+      "carbohydrates_g": 66.41,
+      "fat_g": 7.21
+    },
+    "after": {
+      "kcal": 403.3999999999999,
+      "protein_g": 19.286,
+      "carbohydrates_g": 66.41,
+      "fat_g": 7.852
+    },
+    "delta": {
+      "kcal": 3.599999999999966,
+      "protein_g": -0.4139999999999979,
+      "carbohydrates_g": 0,
+      "fat_g": 0.6420000000000003
+    }
+  },
+  {
+    "recipe_id": "comida_solomillo_coliflor_arroz",
+    "name": "Solomillo de cerdo con coliflor y arroz",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 475.65,
+      "protein_g": 41.349999999999994,
+      "carbohydrates_g": 53.145,
+      "fat_g": 11.43
+    },
+    "after": {
+      "kcal": 475.65,
+      "protein_g": 39.025,
+      "carbohydrates_g": 53.145,
+      "fat_g": 11.43
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": -2.3249999999999957,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "comida_bowl_tofu_edamame",
+    "name": "Bol de tofu, edamame y lombarda",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 521.6000000000001,
+      "protein_g": 35,
+      "carbohydrates_g": 58.90000000000001,
+      "fat_g": 18.85
+    },
+    "after": {
+      "kcal": 521.6000000000001,
+      "protein_g": 34.867,
+      "carbohydrates_g": 58.90000000000001,
+      "fat_g": 18.85
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": -0.13300000000000267,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "comida_quinoa_alubias_maiz",
+    "name": "Quinoa con alubias negras y maíz",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 462.59999999999997,
+      "protein_g": 19.15,
+      "carbohydrates_g": 69.74499999999999,
+      "fat_g": 13.97
+    },
+    "after": {
+      "kcal": 453.09999999999997,
+      "protein_g": 18.695,
+      "carbohydrates_g": 67.41499999999999,
+      "fat_g": 13.98
+    },
+    "delta": {
+      "kcal": -9.5,
+      "protein_g": -0.4549999999999983,
+      "carbohydrates_g": -2.3299999999999983,
+      "fat_g": 0.009999999999999787
+    }
+  },
+  {
+    "recipe_id": "tarde_cottage_rojos_pipas",
+    "name": "Queso cottage con frutos rojos y pipas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 210.72,
+      "protein_g": 19.716,
+      "carbohydrates_g": 16.106,
+      "fat_g": 7.6899999999999995
+    },
+    "after": {
+      "kcal": 210.72,
+      "protein_g": 19.716,
+      "carbohydrates_g": 16.106,
+      "fat_g": 7.6899999999999995
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tarde_apio_tahini",
+    "name": "Apio crujiente con salsa rápida de tahini",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 89.78999999999999,
+      "protein_g": 3.12,
+      "carbohydrates_g": 6.2669999999999995,
+      "fat_g": 6.617999999999999
+    },
+    "after": {
+      "kcal": 89.78999999999999,
+      "protein_g": 3.12,
+      "carbohydrates_g": 6.2669999999999995,
+      "fat_g": 6.617999999999999
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tarde_tostada_tahini_pasass",
+    "name": "Tostada de tahini y pasas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 220.5,
+      "protein_g": 6.5600000000000005,
+      "carbohydrates_g": 34.08,
+      "fat_g": 7.36
+    },
+    "after": {
+      "kcal": 220.5,
+      "protein_g": 6.5600000000000005,
+      "carbohydrates_g": 34.08,
+      "fat_g": 7.36
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tarde_tempeh_edamame",
+    "name": "Bocados de tempeh y edamame",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 177.82,
+      "protein_g": 18.55,
+      "carbohydrates_g": 9.206,
+      "fat_g": 9.104
+    },
+    "after": {
+      "kcal": 177.82,
+      "protein_g": 18.455,
+      "carbohydrates_g": 9.206,
+      "fat_g": 9.104
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": -0.09500000000000242,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "tarde_skyr_chia_pasass",
+    "name": "Skyr con chía y pasas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 164.88,
+      "protein_g": 16.62,
+      "carbohydrates_g": 17.268,
+      "fat_g": 3.106
+    },
+    "after": {
+      "kcal": 164.88,
+      "protein_g": 16.62,
+      "carbohydrates_g": 17.268,
+      "fat_g": 3.106
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "cena_berenjena_rellena_ternera",
+    "name": "Berenjena rellena de ternera y tomate",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 443.6,
+      "protein_g": 33.4,
+      "carbohydrates_g": 49,
+      "fat_g": 12.34
+    },
+    "after": {
+      "kcal": 443.6,
+      "protein_g": 33.4,
+      "carbohydrates_g": 49,
+      "fat_g": 12.34
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "cena_solomillo_lombarda_boniato",
+    "name": "Solomillo con lombarda y boniato",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 367,
+      "protein_g": 35.18,
+      "carbohydrates_g": 36.1,
+      "fat_g": 10.325
+    },
+    "after": {
+      "kcal": 367,
+      "protein_g": 33.01,
+      "carbohydrates_g": 36.1,
+      "fat_g": 10.325
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": -2.1700000000000017,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "cena_crema_coliflor_lenteja",
+    "name": "Crema de coliflor y lenteja roja",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 333,
+      "protein_g": 16.85,
+      "carbohydrates_g": 54.49,
+      "fat_g": 7.25
+    },
+    "after": {
+      "kcal": 335.4,
+      "protein_g": 16.574,
+      "carbohydrates_g": 54.49,
+      "fat_g": 7.678
+    },
+    "delta": {
+      "kcal": 2.3999999999999773,
+      "protein_g": -0.2759999999999998,
+      "carbohydrates_g": 0,
+      "fat_g": 0.42799999999999994
+    }
+  },
+  {
+    "recipe_id": "cena_wok_tempeh_edamame",
+    "name": "Wok de tempeh, edamame y verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 497.64,
+      "protein_g": 34.615,
+      "carbohydrates_g": 53.092000000000006,
+      "fat_g": 18.875500000000002
+    },
+    "after": {
+      "kcal": 497.64,
+      "protein_g": 34.52,
+      "carbohydrates_g": 53.092000000000006,
+      "fat_g": 18.875500000000002
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": -0.09499999999999886,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "cena_pavo_alubias_lombarda",
+    "name": "Salteado de pavo, alubias negras y lombarda",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 494.12,
+      "protein_g": 33.96,
+      "carbohydrates_g": 58.196000000000005,
+      "fat_g": 14.544
+    },
+    "after": {
+      "kcal": 486.52000000000004,
+      "protein_g": 32.432,
+      "carbohydrates_g": 56.33200000000001,
+      "fat_g": 15.319999999999999
+    },
+    "delta": {
+      "kcal": -7.599999999999966,
+      "protein_g": -1.5279999999999987,
+      "carbohydrates_g": -1.8639999999999972,
+      "fat_g": 0.775999999999998
+    }
+  },
+  {
+    "recipe_id": "cena_pavo_plancha_verduras",
+    "name": "Pechuga de pavo a la plancha con verduras",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 305.87000000000006,
+      "protein_g": 43.650800000000004,
+      "carbohydrates_g": 16.9318,
+      "fat_g": 8.175
+    },
+    "after": {
+      "kcal": 305.87000000000006,
+      "protein_g": 43.650800000000004,
+      "carbohydrates_g": 16.9318,
+      "fat_g": 8.175
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "media_manzana_cafe_leche",
+    "name": "Manzana y café con leche",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 148.39999999999998,
+      "protein_g": 4.59,
+      "carbohydrates_g": 29.44,
+      "fat_g": 2.26
+    },
+    "after": {
+      "kcal": 148.39999999999998,
+      "protein_g": 4.59,
+      "carbohydrates_g": 29.44,
+      "fat_g": 2.26
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "desayuno_tostada_aguacate_pavo_huevo",
+    "name": "Tostada integral de aguacate, pavo y huevo con café con leche",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 438.65,
+      "protein_g": 25.78,
+      "carbohydrates_g": 34.415,
+      "fat_g": 22.520000000000003
+    },
+    "after": {
+      "kcal": 452.45,
+      "protein_g": 27.020000000000003,
+      "carbohydrates_g": 34.445,
+      "fat_g": 23.229999999999997
+    },
+    "delta": {
+      "kcal": 13.800000000000011,
+      "protein_g": 1.240000000000002,
+      "carbohydrates_g": 0.030000000000001137,
+      "fat_g": 0.7099999999999937
+    }
+  },
+  {
+    "recipe_id": "cena_alitas_especiadas_boniato",
+    "name": "Alitas de pollo especiadas con boniato al horno",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 448.4000000000001,
+      "protein_g": 27.819999999999997,
+      "carbohydrates_g": 44,
+      "fat_g": 17.32
+    },
+    "after": {
+      "kcal": 448.4000000000001,
+      "protein_g": 27.819999999999997,
+      "carbohydrates_g": 44,
+      "fat_g": 17.32
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  },
+  {
+    "recipe_id": "ensalada_templada_gulas",
+    "name": "Ensalada templada de gulas",
+    "basis": "per_base_serving",
+    "before": {
+      "kcal": 705.01,
+      "protein_g": 33.12485,
+      "carbohydrates_g": 49.72045,
+      "fat_g": 43.38135
+    },
+    "after": {
+      "kcal": 705.01,
+      "protein_g": 33.12485,
+      "carbohydrates_g": 49.72045,
+      "fat_g": 43.38135
+    },
+    "delta": {
+      "kcal": 0,
+      "protein_g": 0,
+      "carbohydrates_g": 0,
+      "fat_g": 0
+    }
+  }
+]

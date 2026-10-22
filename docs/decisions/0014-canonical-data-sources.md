@@ -20,5 +20,5 @@ Los alimentos, recetas, formatos de compra y pesos comestibles aparecían tanto 
 - Se retiran de `main.js` los literales estáticos duplicados de `FOOD`, `RECIPES`, compra y `UNIT_GRAMS`. Los modelos e índices en memoria, incluido `CATALOG`, se derivan de los JSON; los pesos por pieza proceden de `foods.json`.
 - La adaptación de JSON al modelo de ejecución de la app sigue siendo válida porque se genera al cargar los catálogos y no constituye otro origen editable.
 - La app ya requería catálogos válidos para abrir la sesión autenticada; no se crea un fallback a datos incrustados.
-- Los cambios mantienen las versiones de catálogo, esquemas JSON, estado personal v8 e importaciones v5-v8. No requieren cambios en el esquema de Supabase.
+- Los cambios mantienen las versiones de catálogo, esquemas JSON, estado personal v8 y migraciones automáticas de estados locales v5-v8. No requieren cambios en el esquema de Supabase.
 - Validar la carga autenticada, el menú fijo, la compra y las conversiones de unidades en navegador antes de publicar la rama.

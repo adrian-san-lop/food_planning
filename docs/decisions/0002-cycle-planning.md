@@ -4,9 +4,11 @@
 - Fecha: 2026-10-10
 - Alcance: planificador
 
+Actualización del 21/10/2026: [ADR-0046](0046-familiar-weekly-menu.md) sustituye las reglas originales de novedad y penalización de repeticiones descritas abajo. Rige una semana base repetida, repertorio familiar y renovación limitada por familias. El texto original se conserva como antecedente; sus mínimos de novedad pendientes ya no son una pregunta abierta.
+
 ## Contexto
 
-El HTML actual contiene 84 recetas y un menú fijo de 105 espacios cada tres semanas. No hace falta crear un volumen enorme de recetas ni inventar una receta nueva en cada renovación; la app puede volver a escoger de una biblioteca mantenida.
+Al registrar esta decisión, el HTML contenía 84 recetas y un menú fijo de 105 espacios. Actualmente la biblioteca se carga desde los catálogos JSON; sus cifras vigentes se mantienen en la especificación del planificador. No hace falta crear un volumen enorme de recetas ni inventar una receta nueva en cada renovación; la app puede volver a escoger de una biblioteca mantenida.
 
 ## Decisión
 
@@ -21,7 +23,7 @@ Se aceptan estos principios:
 
 La instalación del mecanismo de generación es única; el usuario prepara y revisa la propuesta en cada renovación del ciclo desde el planificador de Menuki. La propuesta confirmada se sincroniza con Supabase y se activa al llegar su fecha. No se ofrece copiar un encargo para generar el menú fuera de la app.
 
-Actualización aceptada el 15 de octubre de 2026: si termina el ciclo sin otro menú confirmado disponible, Inicio y Menú quedan bloqueados y un diálogo permite generar el siguiente o continuar el borrador. Las demás secciones siguen disponibles. Compra permite elegir el próximo ciclo solo si está guardado y confirmado y faltan tres días o menos para su inicio; sus listas no se mezclan con las del actual. Véase el flujo actualizado en [la especificación](../planner/specification.md#renovación-y-compra-anticipada).
+Actualización aceptada el 15 de octubre de 2026: si termina el ciclo sin otro menú confirmado disponible, Inicio y Menú quedan bloqueados y un diálogo permite generar el siguiente o continuar el borrador. Las demás secciones siguen disponibles. Compra permite elegir el próximo ciclo solo si está guardado y confirmado y faltan de uno a tres días para su inicio; sus listas no se mezclan con las del actual. Véase el flujo actualizado en [la especificación](../planner/specification.md#renovación-y-compra-anticipada).
 
 ## Consecuencias
 

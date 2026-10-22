@@ -11,6 +11,7 @@ No siempre se sabe de antemano si se hará ejercicio. Un calendario de entrenami
 ## Decisión
 
 - Registrar una sesión después de realizarla, indicando fecha, categoría de actividad/esfuerzo y duración. Se permiten varias sesiones en una fecha.
+- Los niveles y factores actuales del movimiento habitual se documentan en ADR-0044. Las sesiones registradas aquí siguen sumándose por separado solo en su fecha.
 - Calcular energía neta aproximada con `(MET − 1) × peso_kg × duración_horas`. Restar un MET evita volver a contar el gasto de reposo incluido en el objetivo diario base. Sumar las sesiones de esa fecha; sin sesiones, usar el objetivo base.
 - Aplicar el cambio solo a las comidas pendientes de la fecha registrada. Las comidas completadas conservan las cantidades y el consumo ya guardados. El cálculo trata esas cantidades como fijas y adapta el objetivo restante entre las comidas pendientes.
 - Mantener estables las metas diarias de proteína y grasa ante una sesión. Cubrir principalmente la energía extra con porciones de hidratos, dentro de los límites de adaptación existentes.
@@ -40,7 +41,7 @@ Son referencias poblacionales aproximadas, no mediciones individuales ni valores
 
 - Al guardar o quitar una sesión, se recalculan el objetivo estimado, las cantidades de comidas pendientes de esa fecha y la compra derivada. Las comidas ya registradas no cambian.
 - Los días sin una sesión registrada conservan el objetivo base; la generación de un menú para el siguiente ciclo no supone días de actividad.
-- El formato de estado local pasa a v7. Se admiten importaciones v5, v6 y v7; no se añaden migraciones desde v1–v4. Las marcas históricas de fuerza se conservan como legado y se ignoran.
+- Esta etapa introdujo el estado local v7. ADR-0006 lo elevó a v8; actualmente se migran automáticamente los estados locales v5-v8 de instalaciones existentes, sin importación personal desde archivo (ADR-0029); no se añaden migraciones desde v1–v4. Las marcas históricas de fuerza se conservan como legado y se ignoran.
 - El catálogo de recetas pasa a 0.3.0 para reflejar la retirada de alternativas específicas de días de fuerza.
 
 ## Pendiente

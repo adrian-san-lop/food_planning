@@ -9,12 +9,12 @@
 ## Decisiones
 
 1. Mantener las secciones de la aplicación como páginas independientes dentro de la navegación existente.
-2. Limitar Inicio al resumen del día, en este orden: banner, KPI, objetivo nutricional de hoy y menú de hoy. Inicio no muestra selector de días, navegación semanal, compra próxima ni otros paneles del ciclo.
+2. Limitar Inicio al resumen del día. La distribución inicial banner/KPI/nutrición/menú fue sustituida por ADR-0035 y ADR-0036: el dashboard vigente incluye cuatro KPI, Menú de hoy, nutrición, resumen del día y plan actual. Inicio no muestra selector de días, navegación semanal, compra próxima ni otros paneles del ciclo.
 3. Colocar en Menú la navegación por las tres semanas y el calendario de siete días que antes aparecía en Inicio. Al elegir un día, Menú muestra el detalle de esa fecha. Entrar desde Inicio abre la fecha de hoy cuando pertenece al ciclo activo.
 4. Mostrar la navegación por semanas y días únicamente en Menú. La navegación nunca cambia la fecha ni el contenido del resumen de Inicio.
-5. Mantener la orientación inicial de cinco pasos en Guía para conservar Inicio como resumen diario.
+5. La orientación inicial pasó a Guía. ADR-0025 y ADR-0029 fijan el recorrido completo en Guía y la guía rápida opcional de tres pasos accesible desde Inicio y Guía.
 6. En Compra, mostrar el establecimiento principal como **Supermercado**. El identificador interno de tienda y los datos de catálogo no cambian.
-7. En PC, dejar el logotipo de la barra lateral como única marca de cabecera y ocultar el logotipo repetido del área principal. Dar más presencia al banner de Inicio en escritorio; conservar su escala compacta en móvil.
+7. En PC, dejar el logotipo de la barra lateral como única marca de cabecera y ocultar el logotipo repetido del área principal. El banner de Inicio de esta etapa fue sustituido por la cabecera compacta del dashboard (ADR-0035 y ADR-0036).
 8. Cuando el ciclo todavía no ha empezado, mostrar su fecha de inicio en un aviso destacado. Actualización del 15 de octubre de 2026: si termina sin otro menú confirmado disponible, bloquear Inicio y Menú y mostrar un diálogo para generar el siguiente o continuar el borrador; mantener accesibles las demás páginas. La renovación usa el planificador interno. Separar visualmente el objetivo nutricional de hoy del bloque del menú.
 9. En Menú, mostrar las fechas y la posición del ciclo junto al título, sin la tarjeta permanente de inicio. «Cambiar fecha» abre un diálogo compacto según ADR-0037. Debajo del botón se sitúa «Cómo se calculan las cantidades», que abre una ayuda y no descuadra las tarjetas inferiores.
 10. Desde Inicio o Guía, el acceso a cambiar fecha lleva a Menú y abre ese mismo diálogo. En Inicio y Menú, identificar cada tipo de comida con un icono propio además de su nombre.
@@ -30,7 +30,7 @@
 - Las comidas que se registren desde Inicio o Menú conservan la semana y fecha correctas, aunque se haya navegado por el ciclo.
 - La primera visita sigue indicando que se debe revisar el perfil, ahora desde Guía y el formulario de Perfil.
 - Compra usa una etiqueta genérica para el establecimiento principal sin modificar la persistencia ni las referencias del catálogo.
-- En escritorio, el banner ocupa más espacio y el logo no se repite junto al contenido. El aviso de fecha explica cuándo empieza o terminó el ciclo; el objetivo y el menú tienen una separación visible.
+- En escritorio, la cabecera compacta sustituye al banner y el logo no se repite junto al contenido. El aviso de fecha explica cuándo empieza o terminó el ciclo; el objetivo y el menú tienen una separación visible.
 - Las fechas del ciclo quedan a la vista al entrar en Menú, y el acceso de Inicio lleva directamente al diálogo para editarlas. Los iconos ayudan a reconocer desayuno, media mañana, comida, media tarde y cena en las tarjetas y el detalle del menú.
 - No cambia el formato de estado ni se añaden totales persistidos: nutrición y progreso se derivan de las fechas seleccionadas y sus registros. Inicio conserva su fecha y presentación.
 
