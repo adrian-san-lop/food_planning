@@ -9,7 +9,7 @@ import { dateFromISO, isoDate } from '../js/domain/dates.js';
 // opened editor. DOM/persistence boundaries stay isolated from any account.
 const main = await readFile(new URL('../js/main.js', import.meta.url), 'utf8');
 const wiring = main.match(/^const \{[^\n]+\}=createStateNormalizer\([^\n]+\);/m)?.[0];
-const opening = main.slice(main.indexOf('function openPlannerDialog(){'), main.indexOf('function regeneratePlannerProposal(){'));
+const opening = main.slice(main.indexOf('function openPlannerDialog(options={}){'), main.indexOf('function regeneratePlannerProposal(){'));
 assert.ok(wiring && opening, 'Planner entry point must be present');
 const slots = ['desayuno', 'media', 'comida', 'tarde', 'cena'];
 const cloneMenus = menus => menus.map(week => week.map(day => day.slice()));

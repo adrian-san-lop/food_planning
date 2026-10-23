@@ -21,7 +21,7 @@ El perfil ofrecía cuatro categorías poco concretas y factores `1,20`, `1,30`, 
 
 - La vista previa del perfil, los objetivos diarios y el ajuste de raciones usan el factor seleccionado.
 - Los perfiles locales antiguos se normalizan con el mismo mapeo; la migración SQL actualiza los perfiles ya guardados en Supabase.
-- Hay que ejecutar `supabase/migrations/20261018140000_activity_movement_factors.sql` en el proyecto Supabase antes de guardar un perfil desde la versión nueva. La migración es transaccional y no cambia perfiles que ya contengan un ID nuevo.
+- En un proyecto nuevo se aplica `supabase/migrations/20261018140000_activity_movement_factors.sql` antes de guardar los nuevos niveles. El [paquete 7](../planner/package-7-integration.md) comprobó el 23/10/2026 que el proyecto configurado guarda y recupera los seis IDs mediante RPC; ya no es un requisito pendiente en él. Esta prueba funcional no inspecciona el historial de SQL Editor ni la transformación de perfiles anteriores.
 - Los ejemplos numéricos de la tabla proporcionada no se usan en Menuki; los valores de reposo se siguen calculando con Mifflin–St Jeor.
 
 ## Fuentes

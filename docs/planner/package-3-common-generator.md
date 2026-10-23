@@ -8,7 +8,7 @@
 
 La renovación del menú ya utiliza la entrada común `createMenuPlanner`: exige un perfil válido confirmado, compara tres propuestas completas y considera las existencias previstas al comenzar el ciclo. Conserva la fecha elegida al regenerar, los bloqueos y el formato de 105 posiciones.
 
-La misma entrada permite generar un primer ciclo sin historial. Está probada en dominio y por HTTP, pero el arranque de cuentas nuevas sigue utilizando el menú fijo actual. Activar el nuevo recorrido requiere la persistencia del paquete 4 y las pantallas del paquete 6; no se introduce una dependencia de tablas nuevas en el arranque.
+La misma entrada permite generar un primer ciclo sin historial. Al cerrar el paquete 3 estaba probada en dominio y por HTTP, sin activar el primer arranque. El [paquete 6](package-6-guided-first-setup.md) conecta posteriormente configuración y primer menú generado con la persistencia del 4 y sus capacidades; las cuentas nuevas no reciben plantilla fija.
 
 Las preferencias y tiempos se aplican en el motor cuando se suministran. Al cerrar el paquete 3 no se podían editar ni guardar por cuenta; el [paquete 4](package-4-persistence.md) añade persistencia y el [5](package-5-preferences-and-weekly-review.md) incorpora controles y revisión semanal, probados localmente. La revisión del 5 permite cambios a tres semanas o una comida conservando bloqueos; sustituye la presentación anterior de las tres semanas completas con cambios exclusivamente individuales.
 

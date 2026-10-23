@@ -4,7 +4,7 @@
 - Fecha: 2026-10-21
 - Alcance: selección de propuestas futuras y su resumen; sustituye la política de variedad/novedad de ADR-0002 y ADR-0004
 
-Actualización (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) extiende este diseño. El paquete 3 incorpora motor común, preferencias, tiempos, candidatos y previsión de despensa; el 4 añade persistencia y el [5](../planner/package-5-preferences-and-weekly-review.md) implementa localmente controles y revisión semanal con cambios por defecto a tres semanas. La nueva configuración inicial queda para el 6. Este registro conserva el fundamento del selector: familiaridad, repetición y renovación gradual. Restricciones y bloqueos prevalecen sobre el presupuesto suave de novedad.
+Actualización (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) extiende este diseño. El paquete 3 incorpora motor común, preferencias, tiempos, candidatos y previsión de despensa; el 4 añade persistencia y el [5](../planner/package-5-preferences-and-weekly-review.md) implementa localmente controles y revisión semanal con cambios por defecto a tres semanas. El paquete 6 conecta localmente la configuración inicial y el primer menú a este motor común. Este registro conserva el fundamento del selector: familiaridad, repetición y renovación gradual. Restricciones y bloqueos prevalecen sobre el presupuesto suave de novedad.
 
 ## Contexto
 

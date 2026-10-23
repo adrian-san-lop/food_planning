@@ -24,4 +24,4 @@
 
 ## Estado y validación
 
-El administrador confirma que el problema de conflictos HTTP 409 está resuelto en Supabase. Se registra esta confirmación sin atribuirle una verificación independiente de logs o del proyecto remoto. La prueba completa de conciliación desde el cliente publicado y entre dispositivos continúa pendiente de validación documentada.
+El administrador confirmó la resolución el 17/10/2026. El [paquete 7](../planner/package-7-integration.md) añade una comprobación independiente: una revisión obsoleta devuelve HTTP 409 / PT409 mediante PostgREST y conserva el estado aceptado. Las regresiones locales comprueban además que la conciliación actualiza la pantalla visible. No se han inspeccionado logs administrativos; el recorrido publicado y los dispositivos físicos siguen pendientes.

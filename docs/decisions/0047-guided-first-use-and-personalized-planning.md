@@ -1,6 +1,6 @@
 # ADR-0047 — Configuración inicial guiada y planificación personal
 
-- Estado: Aceptada; implementación por paquetes en curso.
+- Estado: Aceptada; implementación e integración real comprobadas. Revisión y publicación autorizada pendientes.
 - Fecha: 2026-10-22
 - Alcance: primera visita, perfil, preferencias, generación y revisión de menús, persistencia personal.
 - Desarrollo y aceptación: [plan integrado](../planner/implementation-plan.md).
@@ -24,7 +24,7 @@ El propietario acepta las cinco decisiones de evolución del planificador y el r
 ## Consecuencias
 
 - Se conserva la base de ADR-0046: 21 días, cinco comidas, semana familiar repetida, repertorio reducido y renovación gradual de 2–3 preparaciones cuando encajen. La edición del paquete 5 sustituye la regla de cambio exclusivamente individual por alcance de tres semanas o una comida, respetando los otros bloqueos.
-- La configuración obligatoria sustituirá el arranque de cuentas nuevas descrito en ADR-0011 y ADR-0025. La guía informativa seguirá disponible a demanda. Cerrar la guía no equivale a completar la configuración.
+- La configuración obligatoria del paquete 6 sustituye localmente el arranque de cuentas nuevas descrito en ADR-0011 y ADR-0025. La guía informativa seguirá disponible a demanda. Cerrar la guía no equivale a completar la configuración.
 - Crear cuenta, confirmar perfil y confirmar primer plan son estados distintos. La existencia de una sesión Auth, datos locales o `state_initialized_at` no demuestra que el perfil esté completo.
 - Los borradores incompletos y las preferencias son datos personales privados con RLS. Se amplía la sincronización transaccional e idempotente mediante `sync_menuki_state`; no se guarda el estado completo como una columna JSON.
 - Los usuarios existentes conservan sus menús, snapshots e historial. Un ciclo terminado activa la renovación, no repite la configuración inicial. Los perfiles antiguos pendientes de revisión requieren una transición explícita sin borrar ciclos.
@@ -41,4 +41,4 @@ El 23/10/2026 se implementó y probó localmente el [paquete 3](../planner/packa
 
 El 23/10/2026 el [paquete 4](../planner/package-4-persistence.md) prepara estado v12, borradores y preferencias relacionales, conciliación, capacidades y RPC con validación del servidor. Se prueba en PostgreSQL local. El propietario confirma su migración en Supabase con Success y siete diagnósticos en true; no es una inspección remota independiente. La renovación recibe preferencias guardadas; los controles se añaden en el 5. Los paquetes 1–4 están incorporados a dev antes de iniciar el 5.
 
-El [paquete 5](../planner/package-5-preferences-and-weekly-review.md) implementa y prueba localmente preferencias en perfil/fichas, revisión semanal, alternativas consultables y alcance de tres semanas o una comida respetando bloqueos. Incluye 162 pruebas Node y recorridos HTTP sintéticos, sin SQL nuevo ni publicación. Las propuestas incompletas se revisan temporalmente sin sustituir el último borrador completo. Quedan el recorrido guiado (6) y la integración funcional alojada/publicación (7). No quedan decisiones de producto bloqueantes dentro del alcance aceptado.
+El [paquete 5](../planner/package-5-preferences-and-weekly-review.md) implementa y prueba localmente preferencias en perfil/fichas, revisión semanal, alternativas consultables y alcance de tres semanas o una comida respetando bloqueos. Incluye 162 pruebas Node y recorridos HTTP sintéticos, sin SQL nuevo ni publicación. Las propuestas incompletas se revisan temporalmente sin sustituir el último borrador completo. El [paquete 6](../planner/package-6-guided-first-setup.md) está implementado y probado localmente desde dev con el 5 incorporado: cuatro pasos, perfil vacío, reanudación, preferencias omitibles y primer ciclo generado con confirmación explícita e idempotente. Incluye 175 pruebas Node y recorridos HTTP sintéticos; reutiliza el SQL del 4 sin migración adicional. El [paquete 7](../planner/package-7-integration.md) comprueba la integración real con 14 casos alojados y dos sesiones de navegador, y corrige conciliación visible y respuestas de la cuenta anterior. El propietario reaplicó la retirada de faltantes con Success; se verificó funcionalmente que no se crean filas. Quedan revisión, publicación autorizada y dispositivos físicos. No quedan decisiones de producto bloqueantes dentro del alcance aceptado.

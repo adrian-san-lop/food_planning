@@ -7,6 +7,8 @@ import { createNutritionService } from '../js/domain/nutrition.js';
 import { loadCatalogs } from '../js/data/catalogs.js';
 import { createInventoryUnitService } from '../js/domain/inventory-units.js';
 import { dateFromISO, isoDate, addDays } from '../js/domain/dates.js';
+import { confirmFirstPlan } from '../js/domain/onboarding.js';
+import { initialPlanningState } from '../js/persistence/planning-state.js';
 
 const source = await readFile(new URL('../js/main.js', import.meta.url), 'utf8');
 const wiring = source.match(/^const menuPlanner=createMenuPlanner[^\n]+/m)?.[0];
@@ -71,6 +73,23 @@ test('the actual renewal adapter supplies persisted exclusions without replacing
   const proposal=context.buildCycleProposal(null);
   assert.equal(proposal.menus.flat(2).includes(excluded),false);
   assert.equal(JSON.stringify(state),before);
+});
+
+test('the actual first-menu adapter uses the chosen date and routes confirmation into one active generated cycle',()=>{
+  const {context,state}=harness();Object.assign(state,initialPlanningState('guided'),{noActiveCycle:true,activeMenus:null,activeMenuConfirmedAt:null});
+  state.setupDraft.profile=structuredClone(state.profile);
+  const plan=context.buildCycleProposal(null,'2026-11-06');
+  assert.equal(plan.start,'2026-11-06');assert.equal(plan.menus.flat(2).length,105);
+  context.plannerProposal=plan;context.plannerIntent='first';let confirmations=0;
+  const planner=vm.runInContext('menuPlanner',context);
+  context.onboardingController={complete(value){
+    const next=confirmFirstPlan(state,value,{todayISO:'2026-10-23',confirmedAt:'2026-10-23T11:00:00Z',
+      cycleId:'11111111-1111-4111-8111-111111111111',inspect:proposal=>planner.inspect(context.plannerRequest(proposal.start),proposal)});
+    if(!next)return false;Object.assign(state,next);confirmations++;return true;
+  }};
+  context.savePlannerProposal();context.savePlannerProposal();
+  assert.equal(confirmations,1);assert.equal(state.noActiveCycle,false);assert.equal(state.start,'2026-11-06');
+  assert.equal(state.nextMenu,null);assert.equal(JSON.stringify(state.activeMenus),JSON.stringify(plan.menus));assert.deepEqual(state.movements,[]);
 });
 
 test('incomplete proposals are reviewable but never overwrite the last complete synced draft',()=>{

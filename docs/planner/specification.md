@@ -2,7 +2,7 @@
 
 Estado: familiaridad y raciones prácticas implementadas; [generador común del paquete 3](package-3-common-generator.md) implementado y probado localmente (23/10/2026). Reglas aceptadas en ADR-0046 y ADR-0047; ponderaciones y límites son ajustes del producto, no garantías nutricionales.
 
-Evolución aceptada el 22/10/2026, **en desarrollo por paquetes**: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) integra configuración inicial, primer ciclo generado, preferencias y revisión semanal. Los paquetes 1–4 están incorporados a `dev`; la persistencia del 4 está aplicada en Supabase con siete comprobaciones correctas según el propietario. El [paquete 5](package-5-preferences-and-weekly-review.md) implementa y prueba localmente controles de preferencias y revisión semanal con alcance de tres semanas o una comida, sin SQL nuevo. El primer arranque continúa con el menú fijo hasta el paquete 6. La validación funcional alojada y publicación siguen pendientes; véase el [plan de implementación](implementation-plan.md).
+Evolución aceptada el 22/10/2026 según [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md). Paquetes 1–5 en `dev`, [6](package-6-guided-first-setup.md) implementado y [7](package-7-integration.md) con integración Auth/PostgREST comprobada usando dos cuentas y dos orígenes de navegador independientes. El primer menú usa el motor común y perfil confirmado, sin datos de ejemplo; se conservan cuentas existentes y estado v12. No hay SQL nuevo para esta entrega. Quedan publicación autorizada y dispositivos físicos; véase el [plan integrado](implementation-plan.md).
 
 ## Objetivo del ciclo
 
@@ -83,7 +83,7 @@ El gasto en reposo se estima con la versión redondeada de [Mifflin–St Jeor](h
 
 Estas descripciones se refieren a la jornada y las tareas habituales; no se cuentan las sesiones registradas en Menuki, que se añaden solo a su fecha según ADR-0005. Son multiplicadores orientativos usados por la aplicación, no categorías clínicas equivalentes a los intervalos PAL del [informe FAO/OMS/UNU](https://www.fao.org/4/y5686e/y5686e07.htm). Los ejemplos de gasto de la tabla de factores original no se usan para calcular el perfil: Menuki conserva Mifflin–St Jeor.
 
-Los perfiles heredados se convierten en el nivel cuyo factor nuevo queda más cerca de su factor previo: `very_low` a `sedentary`, `low` y `medium` a `light`, y `high` a `moderate`. La migración `20261018140000_activity_movement_factors.sql` actualiza los perfiles existentes y amplía la restricción de Supabase; debe ejecutarse antes de sincronizar los nuevos valores. Véase [ADR-0044](../decisions/0044-activity-movement-factors.md).
+Los perfiles heredados se convierten en el nivel cuyo factor nuevo queda más cerca de su factor previo: `very_low` a `sedentary`, `low` y `medium` a `light`, y `high` a `moderate`. La migración `20261018140000_activity_movement_factors.sql` actualiza los perfiles existentes y amplía la restricción de Supabase; en un proyecto nuevo se aplica antes de sincronizar esos valores. El paquete 7 comprueba que el proyecto configurado guarda y recupera los seis IDs actuales, por lo que ya no es una acción pendiente en él. Véase [ADR-0044](../decisions/0044-activity-movement-factors.md).
 
 ## Ajuste nutricional por sesiones realizadas
 
@@ -106,7 +106,7 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 
 ## Flujo implementado de generación
 
-1. Cargar y validar catálogos. `createMenuPlanner` recibe perfil confirmado, inicio explícito, preferencias opcionales, historial/bloqueos, saldo y fecha de referencia. La entrada común sirve también sin historial. El adaptador actual la usa para renovar y conserva los errores dentro del planificador.
+1. Cargar y validar catálogos. `createMenuPlanner` recibe perfil confirmado, inicio explícito, preferencias opcionales, historial/bloqueos, saldo y fecha de referencia. La entrada común sirve también sin historial. Los adaptadores la usan para el primer ciclo guiado y la renovación, conservando los errores dentro de cada flujo.
 2. Proyectar la despensa al inicio descontando solo comidas pendientes anteriores desde la fecha de referencia. Las completadas permanecen fijas; solo se incorpora actividad real de la fecha de referencia, sin prever sesiones futuras ni escribir movimientos.
 3. Aplicar No proponer y máximos opcionales de comida/cena de lunes a viernes según las fechas reales. Conservar elecciones manuales y señalar sus excepciones. Si faltan alternativas, devolver posiciones incompletas y causas sin permitir confirmarlas. Las preferencias se editan en las fichas y el perfil y se guardan por la sincronización habitual.
 4. Para cada candidato, derivar familias y repertorios pequeños, favoreciendo continuidad, ingredientes compartidos, saldo previsto, favoritas y recuperación cualitativa. Evaluar siete días con raciones reales y permitir alternativas familiares si mejoran el ajuste. No forzar cantidades para cerrar kcal.
@@ -120,7 +120,7 @@ El tamaño inicial usa 3/2/4/2/4 familias por tipo; el uso efectivo puede ser me
 
 El error de selección conserva la ponderación relativa de calorías/proteína/hidratos/grasa y utiliza las raciones reales del servicio. Una mejora de más de 0,20 en ese error permite salir del repertorio inicial. Para renovación voluntaria, una sustitución se acepta si aumenta el error medio como mucho 0,08 y ningún día más de 0,18. Estos valores son puntuaciones adimensionales de implementación, **no tolerancias clínicas ni porcentajes de calorías**. El objetivo aleatorio de novedad es dos o tres familias; condiciones y bloqueos prevalecen. El azar se inyecta en pruebas; no se guarda una semilla en datos personales.
 
-El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
+Los menús existentes se conservan. Las cuentas nuevas confirman el perfil y revisan un primer menú generado; Empezar mi plan activa una única instancia para la fecha elegida. La plantilla fija solo se utiliza para compatibilidad. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
 ### Presentación de la revisión
 

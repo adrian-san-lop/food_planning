@@ -3,10 +3,12 @@ import assert from 'node:assert/strict';
 import { createCloudStateMapper } from '../js/persistence/cloud-state-mapper.js';
 import { addDays, dateFromISO, dateDiff, isoDate, today } from '../js/domain/dates.js';
 import { initialPlanningState, planningRows } from '../js/persistence/planning-state.js';
+import { confirmFirstPlan, confirmSetupProfile } from '../js/domain/onboarding.js';
+import { createProfileDraft } from '../js/domain/profile.js';
 
 const menus = Array.from({ length: 3 }, () => Array.from({ length: 7 }, () => Array(5).fill('recipe')));
 
-function createMapper() {
+function createMapper(overrides = {}) {
   return createCloudStateMapper({
     getUserId: () => 'test-user',
     getFood: () => ({ apple: ['Manzana', 'ud'], rice: ['Arroz', 'g'] }),
@@ -35,8 +37,23 @@ function createMapper() {
     foodRecipeUnit: (id) => id === 'apple' ? 'ud' : 'g',
     storedRecipeToCurrentAmount: (_id, amount) => Number(amount),
     commercialPack: () => ({ size: 1 }),
+    ...overrides,
   });
 }
+
+test('a confirmed first cycle serializes one active instance and stable meal IDs across synchronization retries',async()=>{
+  const state={...initialPlanningState('guided'),profile:null,profileConfirmed:false,noActiveCycle:true,start:'2026-10-23'};
+  state.setupDraft.profile=createProfileDraft({sex:'female',age:35,height:165,weight:65,activity:'sedentary',goal:'maintain'});
+  const plan={start:state.start,menus,catalogVersion:'catalog-test',generatedAt:'2026-10-23T10:00:00Z',recoveryFocus:false};
+  const first=confirmFirstPlan(confirmSetupProfile(state),plan,{todayISO:state.start,confirmedAt:'2026-10-23T11:00:00Z',
+    cycleId:'11111111-1111-4111-8111-111111111111',inspect:()=>({complete:true})});
+  const mapper=createMapper({isUuid:value=>value==='11111111-1111-4111-8111-111111111111'});
+  const one=await mapper.buildCloudSnapshot(first),retry=await mapper.buildCloudSnapshot(JSON.parse(JSON.stringify(first)));
+  assert.equal(one.cycles.length,1);assert.equal(one.cycles[0].status,'active');assert.equal(one.cycles[0].id,first.activeCycleId);
+  assert.equal(one.planned_meals.length,105);assert.deepEqual(one.cycles,retry.cycles);assert.deepEqual(one.planned_meals,retry.planned_meals);
+  assert.equal(one.profile.sex,'female');assert.equal(one.profile.profile_confirmed,true);
+  assert.equal(one.setup_mode,'guided');assert.deepEqual(one.movements,[]);
+});
 
 test('current cloud reads still reject an initialized account missing its profile instead of inventing one', () => {
   assert.throws(() => createMapper().stateFromCloud({ profile: null }), /no contiene su perfil/);

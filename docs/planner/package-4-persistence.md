@@ -1,14 +1,14 @@
 # Paquete 4: persistencia de preferencias y configuración
 
 - Fecha: 23/10/2026.
-- Estado: **Incorporado a dev; migración aplicada en Supabase según confirmación del propietario el 23/10/2026.** Se desarrolló en `chore/common-menu-generator`, conservando el paquete 3. El propietario comunica `Success` al ejecutar el SQL y `ready = true` en las siete comprobaciones; posteriormente incorporó ambos paquetes a `origin/dev`, comprobado antes de iniciar el 5 (`a3b6af28c0ea`). Pendiente la validación funcional con sesiones reales; esto no acredita publicación del paquete 5.
+- Estado: **Incorporado a dev; migración aplicada en Supabase según confirmación del propietario el 23/10/2026.** Se desarrolló en `chore/common-menu-generator`, conservando el paquete 3. El propietario comunica `Success` al ejecutar el SQL y `ready = true` en las siete comprobaciones; posteriormente incorporó ambos paquetes a `origin/dev`, comprobado antes de iniciar el 5 (`a3b6af28c0ea`). El paquete 7 añade validación funcional con sesiones reales; la publicación continúa pendiente.
 - Alcance: [plan integrado](implementation-plan.md), paquete 4; [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Qué está disponible y qué sigue pendiente
 
 Se preparan la lectura y escritura relacionales de preferencias y borradores, la migración local v12, la conciliación y las validaciones del servidor. La renovación recibe las preferencias guardadas cuando se carga un esquema compatible. Cambiar preferencias no sustituye automáticamente ningún menú ni borrador: se aplican al regenerar explícitamente.
 
-Al cerrar el paquete 4 no se añadían botones ni campos de tiempo. El [paquete 5](package-5-preferences-and-weekly-review.md) los implementa y prueba localmente, junto con la revisión semanal, sin SQL nuevo. El recorrido de cuatro pasos y su activación para cuentas nuevas corresponden al 6. Hasta entonces el arranque conserva el perfil de compatibilidad y la plantilla fija.
+Al cerrar el paquete 4 no se añadían botones ni campos de tiempo. El [paquete 5](package-5-preferences-and-weekly-review.md) los implementa y prueba localmente, junto con la revisión semanal, sin SQL nuevo. El [paquete 6](package-6-guided-first-setup.md) implementa localmente los cuatro pasos y su activación para cuentas nuevas; conserva datos y menús de cuentas existentes.
 
 El propietario confirmó el 23/10/2026 que aplicó la migración en SQL Editor y que las siete comprobaciones estructurales dieron `ready = true`. La ejecución y el diagnóstico del esquema quedan registrados como completados según esa confirmación, sin inspección remota independiente del agente. El cliente conserva además la compatibilidad con proyectos que todavía usen el esquema anterior.
 
@@ -30,7 +30,7 @@ El estado vigente pasa de v11 a **v12**. Se conservan todas las migraciones v5-v
 
 Migrar un estado antiguo no inventa preferencias ni cambia perfil, confirmación, menú, consumos o movimientos. Los valores nuevos se validan; un estado v12 inválido se conserva y produce un error explícito, sin reemplazarlo silenciosamente por una cuenta vacía. No hay migraciones v1-v4 ni restauración JSON.
 
-`js/persistence/planning-state.js` concentra valores iniciales, validación, mapeo de las filas nuevas e inicialización. `initializeAccountState` conserva cuentas locales existentes y prepara una cuenta guiada nueva sin perfil ni ciclo cuando se active ese modo. La llamada actual mantiene `guidedSetup: false` hasta el paquete 6. Un perfil incompleto solo pertenece al borrador; no se convierte en un perfil confirmado mediante valores de ejemplo.
+`js/persistence/planning-state.js` concentra valores iniciales, validación, mapeo de las filas nuevas e inicialización. `initializeAccountState` conserva cuentas locales existentes y prepara una cuenta guiada nueva sin perfil ni ciclo. El paquete 6 activa `guidedSetup: true` para cuentas nuevas sin datos reales previos, con comprobación de capacidad del esquema. Un perfil incompleto solo pertenece al borrador; no se convierte en un perfil confirmado mediante valores de ejemplo.
 
 ## Tablas y SQL
 
@@ -92,10 +92,10 @@ El propietario comunica: «Ha salido todo correcto, success y true todo». La co
 | `transactional_sync_definition` | `ready = true`. |
 | `rpc_grants` | `ready = true`. |
 
-La aplicación de la migración y la comprobación estructural del esquema quedan cerradas **según la confirmación del propietario**, no por la existencia del archivo en Git ni por las pruebas locales. El agente no ha consultado de forma independiente el proyecto alojado ni ha vuelto a ejecutar SQL. Las consultas de diagnóstico permanecen disponibles como comprobación de solo lectura.
+La aplicación de la migración y la comprobación estructural del esquema quedan cerradas **según la confirmación del propietario**, no por la existencia del archivo en Git ni por las pruebas locales. En ese cierre no se consultó independientemente el proyecto alojado. El paquete 7 añade comprobaciones funcionales Auth/PostgREST con dos cuentas; no ejecuta SQL administrativo ni acredita por sí solo la definición completa instalada. Las consultas de diagnóstico permanecen disponibles como comprobación de solo lectura.
 
 ## Pendientes de integración y desarrollo
 
 - Probar con dos sesiones reales preferencias, progreso, conflictos y primer plan. Las pruebas locales y las consultas estructurales no acreditan esos recorridos autenticados ni su comportamiento entre dispositivos.
-- El paquete 5 está implementado y probado localmente. Implementar **paquete 6**: recorrido guiado y activación; **paquete 7**: validación funcional alojada y publicación autorizada. La migración del 4 ya no es una acción pendiente y el 5 no requiere SQL adicional.
+- Los paquetes 5 y 6 están implementados; el 5 ya está en dev. El [paquete 7](package-7-integration.md) comprueba la integración alojada con dos cuentas reales. La migración del 4 no es una acción pendiente; no hay SQL nuevo para esta entrega. Quedan revisión, publicación autorizada y recorrido publicado/PC/móvil.
 - Publicar el cliente cuando el propietario lo autorice. La ejecución de SQL no publica los cambios locales de la web ni añade por sí misma botones de favoritas.

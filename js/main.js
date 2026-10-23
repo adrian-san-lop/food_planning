@@ -2,6 +2,7 @@ import { changeProposalRecipe } from './domain/menu-review.js?v=20261023-weekly-
 import { createPlannerReviewView } from './ui/planner-review.js?v=20261023-weekly-review';
 import { recipePreferenceControls } from './ui/planning-preferences.js?v=20261023-weekly-review';
 import { createPlanningPreferencesController } from './ui/planning-preferences-controller.js?v=20261023-weekly-review';
+import { createOnboardingController } from './ui/onboarding-controller.js?v=20261023-guided-setup';
 import { summarizeMenu } from './domain/menu-generator.js?v=20261023-common-generator';
 import { createMenuPlanner } from './domain/menu-planner.js?v=20261023-weekly-review';
 import { addDays, civilDayOfMonth, dateDiff, dateFromISO, formatDate, formatEuropeanDate, formatMadridDateTime, isoDate, isoFromEuropeanDate, monday, today } from './domain/dates.js?v=20261015-european-date';
@@ -18,7 +19,7 @@ import { createReconciliationBase, reconcileStates } from './domain/state-reconc
 import { loadLocalState, saveLocalState } from './persistence/local-state.js?v=20261023-planning-persistence';
 import { createStateNormalizer } from './persistence/state-normalization.js?v=20261023-planning-persistence';
 import { createCloudStateMapper } from './persistence/cloud-state-mapper.js?v=20261023-planning-persistence';
-import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261023-planning-persistence';
+import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261023-live-integration';
 import { createRecipeProposalService } from './persistence/recipe-proposals.js?v=20261013-admin-proposal-maintenance';
 import { initialPlanningState, hasPlanningChanges, initializeAccountState } from './persistence/planning-state.js?v=20261023-planning-persistence';
 import { escapeAttribute, escapeHTML } from './ui/html.js?v=20261013-ux-repair';
@@ -230,63 +231,81 @@ async function fetchCloudSnapshot(){
  return supabaseTransport.fetchSnapshot();
 }
 async function initializeCloudState(user){
+ const isCurrent=()=>currentUserId===user.id&&authSessionUserId===user.id;
  cloudReady=false;cloudSyncLastError=null;cloudStatus('Conectando los datos de tu cuenta…','working');
  const localExists=!!localStorage.getItem(KEY),localState=load();
  state=localState;
- planningPersistenceAvailable=await supabaseTransport.planningAvailable({refresh:true});
+ const planningAvailable=await supabaseTransport.planningAvailable({refresh:true});
+ if(!isCurrent())return;planningPersistenceAvailable=planningAvailable;
  const settings=await supabaseTransport.readOne('user_settings',user.id);
+ if(!isCurrent())return;
  if(!settings?.state_initialized_at){
-  // Guided activation waits for package 6; keep existing signup usable meanwhile.
-  state=initializeAccountState({localState,hasLocalCopy:localExists,guidedSetup:false,todayISO:isoDate(today())});cloudRevision=Number(settings?.sync_revision)||0;cloudReady=true;
-  const ok=await syncCloudNow(true);if(!ok)throw Error(cloudErrorForUser(cloudSyncLastError));
+  state=initializeAccountState({localState,hasLocalCopy:localExists&&hasMeaningfulLocalState(localState),guidedSetup:true,todayISO:isoDate(today())});cloudRevision=Number(settings?.sync_revision)||0;
+  if(state.setupMode==='guided'&&!planningPersistenceAvailable){cloudReady=false;cloudStatus('No se puede guardar la configuración de tu cuenta ahora.','error');return}
+  cloudReady=true;
+  const ok=await syncCloudNow(true);if(!isCurrent())return;if(!ok&&state.setupMode!=='guided')throw Error(cloudErrorForUser(cloudSyncLastError));
   return;
  }
- const remote=await fetchCloudSnapshot(),remoteRevision=Number(remote.settings?.sync_revision)||0,meta=readCloudMeta();
+ const remote=await fetchCloudSnapshot();if(!isCurrent())return;
+ const remoteRevision=Number(remote.settings?.sync_revision)||0,meta=readCloudMeta();
  if(localState.resetCloudPending){
   state=localState;cloudRevision=remoteRevision;cloudReady=true;cloudStatus('Aplicando el reinicio confirmado…','working');
   if(!await syncCloudNow(true))throw Error(cloudErrorForUser(cloudSyncLastError));
   return;
  }
  const localChanged=localExists&&meta?.fingerprint&&(await stateFingerprint(localState))!==meta.fingerprint;
+ if(!isCurrent())return;
  const localHasUntrackedData=localExists&&!meta?.fingerprint&&hasMeaningfulLocalState(localState);
  if(localChanged||localHasUntrackedData){
   await reconcileCloudState(remote,localState,meta);
   const mergedFingerprint=await stateFingerprint(state),remoteFingerprint=await stateFingerprint(stateFromCloud(remote));
+  if(!isCurrent())return;
   if(mergedFingerprint!==remoteFingerprint){cloudStatus('Cambios combinados · sincronizando','pending');scheduleCloudSync()}
   else cloudSyncedStatus();
   return;
  }
  await adoptCloudState(remote);
+ if(!isCurrent())return;
  cloudSyncedStatus();
 }
 function hasMeaningfulLocalState(value){return !!(hasPlanningChanges(value)||value.profileConfirmed||Object.keys(value.done||{}).length||value.movements?.length||value.weights?.length||value.activitySessions?.length||value.archives?.length||value.nextMenu||value.plannerDraft||Object.keys(value.cart||{}).length||value.cartExtras?.length||value.activeMenus||JSON.stringify(value.profile)!==JSON.stringify(defaultProfile()))}
 function cloudMetaSnapshot(remote){return {movements:(remote.movements||[]).map(x=>({operation_id:x.operation_id})),completions:(remote.completions||[]).map(x=>({operation_id:x.operation_id})),activity_sessions:(remote.activities||[]).map(x=>({client_id:x.client_id||x.id})),weights:(remote.weights||[]).map(x=>({measured_on:x.measured_on,weight_kg:x.weight_kg}))}}
 async function adoptCloudState(remote){
+ const account=currentUserId;
  const remoteState=stateFromCloud(remote),revision=Number(remote.settings?.sync_revision)||0;
  state=remoteState;MENUS=state.activeMenus?cloneMenus(state.activeMenus):cloneMenus(FIXED_MENUS);cloudRevision=revision;cloudReady=true;saveLocalOnly();
- writeCloudMeta(revision,await stateFingerprint(remoteState),cloudMetaSnapshot(remote),remoteState,true);
+ const fingerprint=await stateFingerprint(remoteState);if(currentUserId!==account)throw Object.assign(new Error('La sesión ha cambiado.'),{code:'ACCOUNT_CHANGED'});
+ writeCloudMeta(revision,fingerprint,cloudMetaSnapshot(remote),remoteState,true);
 }
 async function reconcileCloudState(remote,localState=state,meta=readCloudMeta()){
+ const account=currentUserId;
  const remoteState=stateFromCloud(remote),revision=Number(remote.settings?.sync_revision)||0;
  const merged=reconcileStates(meta?.baseState||emptyState(),localState,remoteState,{baseActivityIds:meta?.activityIds||[],baseWeightValues:meta?.weightValues||{},remoteActivityIds:(remote.activities||[]).map(x=>x.client_id||x.id)});
  const cleaned=cleanState(merged);if(!cleaned)throw Error('No se pudieron combinar los cambios locales con la cuenta. La copia local se conserva.');
  state=cleaned;rebuildStock(state);MENUS=state.activeMenus?cloneMenus(state.activeMenus):cloneMenus(FIXED_MENUS);cloudRevision=revision;cloudReady=true;saveLocalOnly();
- writeCloudMeta(revision,await stateFingerprint(remoteState),cloudMetaSnapshot(remote),remoteState,true);
+ const fingerprint=await stateFingerprint(remoteState);if(currentUserId!==account)throw Object.assign(new Error('La sesión ha cambiado.'),{code:'ACCOUNT_CHANGED'});
+ writeCloudMeta(revision,fingerprint,cloudMetaSnapshot(remote),remoteState,true);
  return {remoteState,mergedState:state};
 }
 async function syncCloudNow(immediate=false){
  if(!cloudReady||!currentUserId||!supabaseClient)return false;
  if(cloudSyncInFlight){cloudSyncPending=true;return false}
  clearTimeout(cloudSyncTimer);cloudSyncInFlight=true;cloudStatus('Sincronizando con Supabase…','working');
+ const account=currentUserId,isCurrent=()=>currentUserId===account&&authSessionUserId===account;
+ let reconciled=false;
  try{
   for(let attempt=0;attempt<5;attempt++){
-   const submitted=JSON.parse(JSON.stringify(state)),meta=readCloudMeta(),fullSnapshot=await buildCloudSnapshot(submitted),snapshot=submitted.resetCloudPending?fullSnapshot:reduceCloudSnapshot(JSON.parse(JSON.stringify(fullSnapshot)),meta),rpcName=submitted.resetCloudPending?'reset_menuki_state':'sync_menuki_state';
+   if(!isCurrent())return false;
+   const submitted=JSON.parse(JSON.stringify(state)),meta=readCloudMeta(),fullSnapshot=await buildCloudSnapshot(submitted);
+   if(!isCurrent())return false;
+   const snapshot=submitted.resetCloudPending?fullSnapshot:reduceCloudSnapshot(JSON.parse(JSON.stringify(fullSnapshot)),meta),rpcName=submitted.resetCloudPending?'reset_menuki_state':'sync_menuki_state';
    const {data,error}=await supabaseTransport.submitSnapshot(rpcName,snapshot,cloudRevision);
+   if(!isCurrent())return false;
    if(error){
     if(error.message?.includes('SYNC_CONFLICT')||error.code==='PT409'||error.code==='40001'){
-     const remote=await fetchCloudSnapshot();cloudRevision=Number(remote.settings?.sync_revision)||0;
-     if(submitted.resetCloudPending){writeCloudMeta(cloudRevision,await stateFingerprint(stateFromCloud(remote)),cloudMetaSnapshot(remote),stateFromCloud(remote),true)}
-     else await reconcileCloudState(remote,state,meta);
+     const remote=await fetchCloudSnapshot();if(!isCurrent())return false;cloudRevision=Number(remote.settings?.sync_revision)||0;
+     if(submitted.resetCloudPending){const remoteState=stateFromCloud(remote),fingerprint=await stateFingerprint(remoteState);if(!isCurrent())return false;writeCloudMeta(cloudRevision,fingerprint,cloudMetaSnapshot(remote),remoteState,true)}
+     else{await reconcileCloudState(remote,state,meta);reconciled=true}
      continue;
     }
     throw error;
@@ -296,7 +315,7 @@ async function syncCloudNow(immediate=false){
    const localChangedDuringSync=JSON.stringify(state)!==JSON.stringify(submitted),submittedActiveCycleId=fullSnapshot.cycles.find(cycle=>cycle.status==='active')?.id||null;
    let canonicalSnapshot=null,canonicalState=null;
    if(snapshot.movements.some(move=>move.movement_kind==='meal')){
-    canonicalSnapshot=await fetchCloudSnapshot();canonicalState=stateFromCloud(canonicalSnapshot);cloudRevision=Number(canonicalSnapshot.settings?.sync_revision)||cloudRevision;
+    canonicalSnapshot=await fetchCloudSnapshot();if(!isCurrent())return false;canonicalState=stateFromCloud(canonicalSnapshot);cloudRevision=Number(canonicalSnapshot.settings?.sync_revision)||cloudRevision;
     if(localChangedDuringSync){const merged=reconcileStates(submitted,state,canonicalState,{baseActivityIds:meta?.activityIds||[],baseWeightValues:meta?.weightValues||{},remoteActivityIds:(canonicalSnapshot.activities||[]).map(x=>x.client_id||x.id)});const cleaned=cleanState(merged);if(!cleaned)throw Error('No se pudieron combinar los cambios locales con el inventario confirmado por Supabase. La copia local se conserva.');state=cleaned}
     else state=canonicalState;
     MENUS=state.activeMenus?cloneMenus(state.activeMenus):cloneMenus(FIXED_MENUS);
@@ -307,17 +326,19 @@ async function syncCloudNow(immediate=false){
    for(const id of submitted.deletedActivitySessionIds||[])state.deletedActivitySessionIds=(state.deletedActivitySessionIds||[]).filter(x=>x!==id);
    for(const date of submitted.deletedWeightDates||[])state.deletedWeightDates=(state.deletedWeightDates||[]).filter(x=>x!==date);
    const acknowledged=JSON.parse(JSON.stringify(canonicalState||submitted));if(stateWasUnchanged&&submittedActiveCycleId)acknowledged.activeCycleId=submittedActiveCycleId;acknowledged.resetCloudPending=false;acknowledged.deletedActivitySessionIds=[];acknowledged.deletedWeightDates=[];
-   saveLocalOnly();writeCloudMeta(cloudRevision,await stateFingerprint(acknowledged),cloudMetaSnapshot(canonicalSnapshot||fullSnapshot),acknowledged,true);cloudSyncLastError=null;cloudSyncRetryTask='sync';cloudSyncedStatus();
+   const acknowledgedFingerprint=await stateFingerprint(acknowledged);if(!isCurrent())return false;
+   saveLocalOnly();writeCloudMeta(cloudRevision,acknowledgedFingerprint,cloudMetaSnapshot(canonicalSnapshot||fullSnapshot),acknowledged,true);cloudSyncLastError=null;cloudSyncRetryTask='sync';cloudSyncedStatus();
+   if(reconciled||canonicalState)renderCloudUpdates();
    if(localChangedDuringSync||cloudSyncPending){cloudSyncPending=false;scheduleCloudSync()}
    return true;
   }
   throw Error('Supabase recibió cambios continuos desde otro dispositivo. Menuki volverá a sincronizar al reintentarlo.');
- }catch(error){cloudSyncLastError=error;cloudSyncRetryTask='sync';cloudStatus(cloudErrorForUser(error),'error');console.error('Menuki cloud sync failed',error);return false}
- finally{cloudSyncInFlight=false;const button=document.getElementById('cloudSyncButton');if(button)button.disabled=false}
+ }catch(error){if(!isCurrent())return false;cloudSyncLastError=error;cloudSyncRetryTask='sync';cloudStatus(cloudErrorForUser(error),'error');console.error('Menuki cloud sync failed',error);return false}
+ finally{cloudSyncInFlight=false;const button=document.getElementById('cloudSyncButton');if(button)button.disabled=false;if(!isCurrent()&&cloudReady&&currentUserId&&cloudSyncPending)scheduleCloudSync()}
 }
 function newOperationId(){return globalThis.crypto?.randomUUID?globalThis.crypto.randomUUID():'op-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
 let visibleWeek=0,selectedDay=0,view='inicio',shopStore='merc',shopRange='7',shopCycle='current',shoppingSearch='',recipeFilter='todos',recipeSearch='',pantryFilter='used',pantrySearch='',modalCtx=null,plannerProposal=null,toastTimer,mobileMoreOpen=false,mobileAccountOpen=false,cycleStartOpener=null,cycleStartDraft=null,cycleSetupDateDraft='',quickGuideStep=0,renewalPromptView=null;
-let plannerWeek=0,plannerEditScope='cycle',plannerPreferencesNotice=false,plannerPreferencesSignature='',plannerPersistedDraftSignature='',plannerChangeMessage='';
+let plannerWeek=0,plannerEditScope='cycle',plannerPreferencesNotice=false,plannerPreferencesSignature='',plannerPersistedDraftSignature='',plannerChangeMessage='',plannerIntent='renewal';
 const plannerReviewView=createPlannerReviewView({getRecipes:()=>RECIPES,portionsForRecipes,getMacro,getTarget:()=>nutritionTarget(0),formatDate});
 const planningPreferencesController=createPlanningPreferencesController({document,getState:()=>state,getRecipes:()=>RECIPES,isAvailable:()=>planningPersistenceAvailable,save,notify:showToast,onChange:()=>{
  plannerPreferencesNotice=true;
@@ -490,6 +511,15 @@ const PROFILE_ACTIVITY_LEVELS=[
  ['intense','Intensa · ×1,72','Tu jornada incluye muchas horas de trabajo físico exigente, caminatas o cargas.','Trabajo físico exigente.'],
  ['very_intense','Muy intensa · ×1,90','Tu trabajo es muy exigente físicamente durante casi toda la jornada.','Trabajo muy exigente y continuado.'],
 ];
+const onboardingController=createOnboardingController({document,getState:()=>state,setState:next=>{state=next},
+ authenticated:()=>!!currentUserId,available:()=>planningPersistenceAvailable,save,todayISO:()=>isoDate(today()),
+ nowISO:()=>new Date().toISOString(),newCycleId:newCycleInstanceId,
+ inspect:plan=>menuPlanner.inspect(plannerRequest(plan.start),plan),activityLevels:PROFILE_ACTIVITY_LEVELS,goals:GOAL_NAMES,
+ onReview:start=>openPlannerDialog({first:true,start}),onStarted:()=>{
+  MENUS=cloneMenus(state.activeMenus);plannerProposal=null;plannerIntent='renewal';view='inicio';
+  document.getElementById('plannerDialog').close();alignCurrentDay();render();
+  showToast('Tu menú está preparado. Puedes completar la despensa cuando quieras.');
+ }});
 let profileActivityOpener=null;
 function profileActivityDescription(level){return PROFILE_ACTIVITY_LEVELS.find(([id])=>id===level)?.[3]||''}
 function openProfileActivityDialog(opener){
@@ -635,8 +665,8 @@ function dashboard(){
 }
 function nextCycleStart(){if(state.noActiveCycle)return isoDate(today());const current=dateFromISO(state.start),scheduled=addDays(current,21),now=today();return isoDate(scheduled<now?now:scheduled)}
 function plannerRequest(start){const asOf=isoDate(today());return {start,asOf,profile:state.profile,profileConfirmed:state.profileConfirmed,preferences:state.planningPreferences,previousMenus:state.noActiveCycle?null:MENUS,stock:state.stock,currentCycle:state.noActiveCycle?null:{start:state.start,menus:MENUS,done:state.done},activityKcalToday:activityEnergyForDate(asOf)}}
-function buildCycleProposal(previous){
- const start=dateFromISO(previous?.start)&&dateFromISO(previous.start)>=today()?previous.start:nextCycleStart();
+function buildCycleProposal(previous,requestedStart){
+ const start=requestedStart||(dateFromISO(previous?.start)&&dateFromISO(previous.start)>=today()?previous.start:nextCycleStart());
  const result=menuPlanner.generate({...plannerRequest(start),draft:previous});
  return {start,menus:result.menus,locked:result.locked,catalogVersion,recoveryFocus:!!state.profile.injury,generatedAt:new Date().toISOString(),confirmedAt:null};
 }
@@ -657,16 +687,17 @@ function renderPlannerReview(options={}){
   const inspection=menuPlanner.inspect(plannerRequest(plannerProposal.start),plannerProposal);
   plannerReviewView.render(document.getElementById('plannerContent'),{proposal:plannerProposal,week:plannerWeek,scope:plannerEditScope,
    preferences:state.planningPreferences,inspection,summary:plannerCounts(plannerProposal.menus),profile:state.profile,recoveryCoverage:plannerProposal.recoveryFocus&&validMenuSnapshot(plannerProposal.menus)?plannerRecoveryCoverage(plannerProposal.menus):null,
-   hasSavedDraft:!!state.plannerDraft,preferencesChanged:plannerPreferencesNotice||Boolean(state.profile.injury)!==Boolean(plannerProposal.recoveryFocus),changeMessage:plannerChangeMessage},options);
+   firstPlan:plannerIntent==='first',hasSavedDraft:!!state.plannerDraft,preferencesChanged:plannerPreferencesNotice||Boolean(state.profile.injury)!==Boolean(plannerProposal.recoveryFocus),changeMessage:plannerChangeMessage},options);
   return true;
  }catch(error){showToast(error.message);return false}
 }
-function openPlannerDialog(){
+function openPlannerDialog(options={}){
  document.getElementById('cycleRenewalDialog').close();
+ plannerIntent=options.first?'first':'renewal';
  plannerWeek=0;plannerEditScope='cycle';plannerChangeMessage='';plannerPreferencesNotice=plannerPreferencesNotice||Boolean(plannerPreferencesSignature&&plannerPreferencesSignature!==JSON.stringify(state.planningPreferences));plannerPreferencesSignature=JSON.stringify(state.planningPreferences);
  plannerPersistedDraftSignature=JSON.stringify(state.plannerDraft);
  plannerProposal=cleanCyclePlan(state.plannerDraft||confirmedNextMenu());
- if(!plannerProposal){try{plannerProposal=buildCycleProposal(null);plannerPreferencesNotice=false;persistPlannerDraft()}catch(error){showToast(error.message||'No se pudo preparar el menú');return}}
+ if(!plannerProposal||(options.first&&plannerProposal.start!==options.start)){try{plannerProposal=buildCycleProposal(plannerProposal,options.start);plannerPreferencesNotice=false;persistPlannerDraft()}catch(error){showToast(error.message||'No se pudo preparar el menú');return}}
  else if(cycleHasEnded(state.start)&&dateFromISO(plannerProposal.start)<today()){plannerProposal.start=isoDate(today());plannerProposal.confirmedAt=null;persistPlannerDraft()}
  if(renderPlannerReview()===false)return;const dialog=document.getElementById('plannerDialog');if(!dialog.open)dialog.showModal();
 }
@@ -703,6 +734,9 @@ function savePlannerProposal(){
    showToast('Revisa las comidas pendientes antes de confirmar el menú');return;
   }
  }catch(error){showToast(error.message);return}
+ if(plannerIntent==='first'){
+  try{onboardingController.complete(plannerProposal)}catch(error){showToast(error.message)}return;
+ }
  state.nextMenu={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice())),confirmedAt:new Date().toISOString()};
  state.plannerDraft=null;plannerPreferencesNotice=false;save();
  const advanced=activateScheduledCycleIfDue();
@@ -785,8 +819,8 @@ function updateAuthValidation(){
   if(!user?.id||passwordRecoveryActive)return;
   authLegalDialogs?.close({restore:false});
   const id=user.id;authSessionUserId=id;currentUserEmail=user.email||'Sesión iniciada';
-  if(currentUserId!==id){planningPersistenceAvailable=false;plannerPreferencesNotice=false;plannerPreferencesSignature='';plannerPersistedDraftSignature='';plannerChangeMessage='';currentUserId=id;appReadyUserId=null;state=undefined;persistent=true;cloudReady=false;cloudRevision=0;lastCloudRefreshAt=0;menukiAdmin=false;proposalInbox=[];proposalInboxLoaded=false;proposalInboxLoading=false;proposalInboxBusy=false;proposalInboxError='';proposalEditingId=null;proposalEditingDraft=null;proposalActionToken++;proposalLoadToken++;proposalExportToken++;proposalExporting=false;recipeProposalDraft=newRecipeProposalDraft();recipeProposalClientId=newRecipeProposalClientId();view='inicio';selectUserLocalState(id)}
-  if(appReadyUserId===id){document.getElementById('authShell').hidden=true;document.querySelector('.app').hidden=false;document.querySelector('.app').inert=false;document.getElementById('mobileNav').hidden=false;return}
+  if(currentUserId!==id){document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());onboardingController.reset();planningPersistenceAvailable=false;plannerPreferencesNotice=false;plannerPreferencesSignature='';plannerPersistedDraftSignature='';plannerChangeMessage='';plannerIntent='renewal';plannerProposal=null;currentUserId=id;appReadyUserId=null;state=undefined;persistent=true;cloudReady=false;cloudRevision=0;lastCloudRefreshAt=0;menukiAdmin=false;proposalInbox=[];proposalInboxLoaded=false;proposalInboxLoading=false;proposalInboxBusy=false;proposalInboxError='';proposalEditingId=null;proposalEditingDraft=null;proposalActionToken++;proposalLoadToken++;proposalExportToken++;proposalExporting=false;recipeProposalDraft=newRecipeProposalDraft();recipeProposalClientId=newRecipeProposalClientId();view='inicio';selectUserLocalState(id)}
+  if(appReadyUserId===id){document.getElementById('authShell').hidden=true;render();return}
   if(openingUserId===id)return;openingUserId=id;
   showLoadingOverlay('Cargando Menuki…','Estamos cargando los catálogos y los datos asociados a tu cuenta.');
   try{
@@ -800,7 +834,7 @@ function updateAuthValidation(){
   finally{if(openingUserId===id)openingUserId=null}
  }
  function closeAuthenticatedApp(){
-  supabaseTransport.resetCapabilities();planningPersistenceAvailable=false;plannerPreferencesNotice=false;plannerPreferencesSignature='';plannerPersistedDraftSignature='';plannerChangeMessage='';
+  supabaseTransport.resetCapabilities();onboardingController.reset();planningPersistenceAvailable=false;plannerPreferencesNotice=false;plannerPreferencesSignature='';plannerPersistedDraftSignature='';plannerChangeMessage='';plannerIntent='renewal';plannerProposal=null;
   clearTimeout(cloudSyncTimer);authSessionUserId=null;if(currentUserId)cloudArchivedCyclesByUser.delete(currentUserId);
   currentUserId=null;currentUserEmail='';appReadyUserId=null;passwordRecoveryActive=false;cloudReady=false;cloudRevision=0;cloudSyncPending=false;state=undefined;KEY=LOCAL_STATE_KEY;
   menukiAdmin=false;proposalInbox=[];proposalInboxLoaded=false;proposalInboxError='';proposalInboxLoading=false;proposalInboxBusy=false;proposalEditingId=null;proposalEditingDraft=null;proposalActionToken++;proposalLoadToken++;proposalExportToken++;proposalExporting=false;
@@ -808,6 +842,7 @@ function updateAuthValidation(){
   document.getElementById('authAccount').hidden=true;document.getElementById('viewRoot').innerHTML='';document.getElementById('mobileNav').innerHTML='';document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());
   if(authEmbedMode){renderAuthScreen('login');return}
   const app=document.querySelector('.app');app.hidden=true;app.inert=true;
+  document.getElementById('setupShell').hidden=true;
   document.getElementById('mobileNav').hidden=true;document.getElementById('authShell').hidden=true;document.getElementById('catalogStatus').hidden=true;
   window.location.replace('./index.html');
  }
@@ -1164,6 +1199,12 @@ function removeRecipeProposalItem(kind,index){if(recipeProposalSubmitting)return
 function firstUseBanner(){if(state.profileConfirmed||view!=='guia')return '';return '<section class="first-use-card" aria-labelledby="firstUseTitle"><div class="eyebrow">PRIMEROS PASOS · PASO 1 DE 5</div><h2 id="firstUseTitle">Empieza revisando tu perfil</h2><p>Menuki muestra valores genéricos de ejemplo. Los objetivos y las raciones se calculan con ellos hasta que confirmes tus datos.</p><ol><li class="current"><strong>Revisa tu perfil</strong><span>Confirma edad, altura, peso, movimiento y objetivo.</span></li><li><strong>Explora el menú</strong><span>Consulta los platos y cambia los que quieras.</span></li><li><strong>Registra tus comidas</strong><span>Márcalas cuando hayas terminado cada una.</span></li><li><strong>Organiza compra y despensa</strong><span>Anota existencias, marca lo comprado y finaliza la compra.</span></li><li><strong>Registra actividad</strong><span>Solo después de realizarla; el peso es opcional.</span></li></ol><div class="first-use-actions"><button class="btn btn-primary" data-action="navigate" data-view="perfil">Mi Perfil</button><button class="btn btn-quiet" data-action="navigate" data-view="semana">Ver el menú</button></div></section>'}
 function applyNoActiveCyclePresentation(root){if(!state.noActiveCycle)return;if(view==='inicio')root.querySelector('.home-banner-date-link')?.remove();if(view==='guia'){const card=[...root.querySelectorAll('.guide-card')].find(node=>node.querySelector('h3')?.textContent==='Fecha de inicio del ciclo');if(card){const paragraph=card.querySelector('p');if(paragraph)paragraph.textContent='Tu cuenta no tiene un ciclo activo. Selecciona el día de inicio en el aviso superior para empezar.';card.querySelector('.shop-actions')?.remove()}}if(view==='despensa'){const stat=root.querySelector('.compact-stats .stat');if(stat){const value=stat.querySelector('.stat-value'),note=stat.querySelector('.stat-note');if(value)value.textContent='—';if(note)note.textContent='Sin ciclo activo'}}}
 function render(){
+ const guided=onboardingController.required(),setupShell=document.getElementById('setupShell'),appShell=document.querySelector('.app');
+ if(!guided&&plannerIntent==='first'){plannerIntent='renewal';plannerProposal=null;document.getElementById('recipeDialog').close();document.getElementById('plannerDialog').close()}
+ setupShell.hidden=!guided;appShell.hidden=guided;appShell.inert=guided;document.getElementById('mobileNav').hidden=guided;
+ const account=document.getElementById('authAccount'),host=guided?document.getElementById('setupAccountHost'):document.querySelector('.top-actions');
+ if(account.parentElement!==host)host.prepend(account);account.hidden=!currentUserId;
+ if(guided){document.getElementById('cycleRenewalDialog').close();onboardingController.render();return}
  activateScheduledCycleIfDue();
  if(shopCycle==='next'&&!canBuyNextCycle(confirmedNextMenu()))shopCycle='current';
  const proposalPosition=view==='proponer'&&document.getElementById('viewRoot').dataset.renderedView===view?captureRecipeProposalEditorPosition():null;
@@ -1267,7 +1308,7 @@ function confirmRecordDeletion(){
  if(pending.kind==='weight')deleteWeight(pending.id);else deleteActivitySession(pending.id);
  focusAfterRecordDeletion(pending.kind);
 }
-function navigate(where){const allowed=['inicio','perfil','semana','recetas','compra','despensa','evolucion','guia','proponer',...(menukiAdmin?['admin']:[])];if(!allowed.includes(where))return;const guideDialog=document.getElementById('quickGuideDialog');if(guideDialog?.open)guideDialog.close();mobileMoreOpen=false;mobileAccountOpen=false;if(where!=='semana')closeCycleStartDialog();if(where==='semana'&&view==='inicio'){const position=todayMenuPosition();if(position){visibleWeek=position.week;selectedDay=position.day}}view=where;if(where==='admin')loadRecipeProposals();render();window.scrollTo({top:0,behavior:'smooth'})}
+function navigate(where){if(onboardingController.required())return;const allowed=['inicio','perfil','semana','recetas','compra','despensa','evolucion','guia','proponer',...(menukiAdmin?['admin']:[])];if(!allowed.includes(where))return;const guideDialog=document.getElementById('quickGuideDialog');if(guideDialog?.open)guideDialog.close();mobileMoreOpen=false;mobileAccountOpen=false;if(where!=='semana')closeCycleStartDialog();if(where==='semana'&&view==='inicio'){const position=todayMenuPosition();if(position){visibleWeek=position.week;selectedDay=position.day}}view=where;if(where==='admin')loadRecipeProposals();render();window.scrollTo({top:0,behavior:'smooth'})}
 document.addEventListener('click',event=>{let changed=false;const openProfileHelp=document.querySelector('.profile-help-trigger[aria-expanded="true"]');if(openProfileHelp&&!event.target.closest('.profile-help')){openProfileHelp.setAttribute('aria-expanded','false');openProfileHelp.closest('.profile-help')?.classList.add('is-dismissed')}if(mobileMoreOpen&&!event.target.closest('#mobileNav')){mobileMoreOpen=false;changed=true}if(mobileAccountOpen&&!event.target.closest('#mobileAccount')){mobileAccountOpen=false;const toggle=document.getElementById('mobileAccountToggle'),menu=document.getElementById('mobileAccountDropdown');toggle?.setAttribute('aria-expanded','false');toggle?.classList.toggle('active',['perfil','guia','evolucion'].includes(view));if(menu)menu.hidden=true}if(changed)renderNav()});
 document.addEventListener('pointerout',event=>{const help=event.target.closest?.('.profile-help'),next=event.relatedTarget;if(help&&(!(next instanceof Node)||!help.contains(next)))help.classList.remove('is-dismissed')});
 document.addEventListener('keydown',event=>{if(event.key!=='Escape')return;const openProfileHelp=document.querySelector('.profile-help-trigger[aria-expanded="true"]');if(openProfileHelp){openProfileHelp.setAttribute('aria-expanded','false');openProfileHelp.closest('.profile-help')?.classList.add('is-dismissed');openProfileHelp.focus()}if(mobileAccountOpen){mobileAccountOpen=false;const menu=document.getElementById('mobileAccountDropdown');if(menu)menu.hidden=true;document.getElementById('mobileAccountToggle')?.setAttribute('aria-expanded','false');document.getElementById('mobileAccountToggle')?.focus()}if(mobileMoreOpen){mobileMoreOpen=false;renderNav();document.getElementById('mobileMoreToggle')?.focus()}});
@@ -1292,6 +1333,8 @@ document.addEventListener('click',function(event){const btn=event.target.closest
  if(action==='profile-activity-select'){selectProfileActivity(btn.dataset.level);return}
  if(action==='proposal-help-open'){openRecipeProposalHelp(btn);return}
  if(action==='proposal-help-close'){closeRecipeProposalHelp();return}
+ if(action==='setup-back'){onboardingController.back();return}
+ if(action==='setup-skip'){onboardingController.skip();return}
  if(action==='planning-preferences-open'){planningPreferencesController.open(btn);return}
  if(action==='planning-preferences-close'){planningPreferencesController.close();return}
  if(action==='recipe-preference'){planningPreferencesController.setRecipe(btn.dataset.recipe,btn.dataset.preference);return}
@@ -1378,9 +1421,9 @@ document.addEventListener('click',function(event){const btn=event.target.closest
   }
   updateProfilePreview();showToast('Valores iniciales cargados en el formulario');return;
  }
- if(action==='reset-progress'){if(confirm('Esto reiniciará el perfil y el menú y eliminará comidas realizadas, stock, compras, sesiones y pesos sincronizados en Supabase y en este navegador. Esta acción no se puede deshacer desde Menuki. ¿Continuar?')){state=emptyState();state.resetCloudPending=true;MENUS=FIXED_MENUS;plannerProposal=null;alignCurrentDay();save();render();showToast('Reinicio guardado; sincronizando con Supabase')}return}
+ if(action==='reset-progress'){if(confirm('Esto reiniciará el perfil y el menú y eliminará comidas realizadas, stock, compras, sesiones y pesos sincronizados en Supabase y en este navegador. Esta acción no se puede deshacer desde Menuki. ¿Continuar?')){const restartGuided=state.setupMode==='guided';state=initializeAccountState({localState:emptyState(),hasLocalCopy:false,guidedSetup:restartGuided,todayISO:isoDate(today())});onboardingController.reset();state.resetCloudPending=true;MENUS=FIXED_MENUS;plannerProposal=null;alignCurrentDay();save();render();showToast('Reinicio guardado; sincronizando con Supabase')}return}
 });
-document.addEventListener('change',function(event){const el=event.target,action=el.dataset.change;if(el.closest('#recipeProposalEditForm')){captureAdminProposalDraft();return}if(el.closest('#recipeProposalForm')){captureRecipeProposalDraft();return}if(el.closest('#profileForm')){updateProfilePreview();return}
+document.addEventListener('change',function(event){if(event.target.closest('#setupForm')){onboardingController.capture(event.target.closest('form'));return}const el=event.target,action=el.dataset.change;if(el.closest('#recipeProposalEditForm')){captureAdminProposalDraft();return}if(el.closest('#recipeProposalForm')){captureRecipeProposalDraft();return}if(el.closest('#profileForm')){updateProfilePreview();return}
  if(el.id==='cycleStartMenu'){updateCycleStartDateInput(true);return}
  if(el.id==='cycleStartPicker'){if(!dateFromISO(el.value))return;document.getElementById('cycleStartMenu').value=formatEuropeanDate(el.value);updateCycleStartDateInput();document.querySelector('[data-action="open-cycle-calendar"]')?.focus();return}
  if(action==='cycle-setup-date'){cycleSetupDateDraft=el.value;return}
@@ -1397,6 +1440,7 @@ document.addEventListener('change',function(event){const el=event.target,action=
 
 });
 document.addEventListener('input',function(event){
+ if(event.target.closest('#setupForm')){onboardingController.capture(event.target.closest('form'));return}
  if(event.target.id==='cycleStartMenu'){
   const input=event.target;
   if(!event.inputType?.startsWith('delete')&&/^[\d/]*$/.test(input.value)){
@@ -1408,6 +1452,7 @@ document.addEventListener('input',function(event){
  }
  if(event.target.closest('#recipeProposalEditForm')){captureAdminProposalDraft();return}if(event.target.closest('#recipeProposalForm')){captureRecipeProposalDraft();return}if(event.target.closest('#profileForm'))updateProfilePreview();if(event.target.id==='shoppingSearch'){shoppingSearch=event.target.value;applyShoppingSearch();return}if(event.target.id==='recipeSearch'){recipeSearch=event.target.value;const node=document.getElementById('recipeResults');if(node)node.innerHTML=recipesList()}if(event.target.id==='pantrySearch'){pantrySearch=event.target.value;const node=document.getElementById('pantryResults');if(node)node.innerHTML=pantryListHTML()}});
 document.addEventListener('submit',function(event){
+ if(event.target.id==='setupForm'){event.preventDefault();onboardingController.submit(event.target);return}
  if(event.target.id==='planningPreferencesForm'){event.preventDefault();planningPreferencesController.submit(event.target);return}
  if(event.target.id==='cycleStartForm'){event.preventDefault();const iso=updateCycleStartDateInput(true);if(!iso){document.getElementById('cycleStartMenu')?.reportValidity();return}changeCycleStart(iso);return}
  if(event.target.id==='recipeProposalEditForm'){return saveRecipeProposalEdit(event)}
@@ -1426,6 +1471,7 @@ document.addEventListener('submit',function(event){
  }
  if(event.target.id==='activityForm'){event.preventDefault();saveActivitySession(event.target);return}
   if(event.target.id!=='weightForm')return;event.preventDefault();const date=document.getElementById('weightDate').value,kg=Number(document.getElementById('weightKg').value);if(!dateFromISO(date)||!Number.isFinite(kg)||kg<30||kg>250){showToast('Revisa fecha y peso');return}state.weights=state.weights.filter(w=>w.date!==date);state.weights.push({date,kg});state.weights.sort((a,b)=>a.date.localeCompare(b.date));state.deletedWeightDates=(state.deletedWeightDates||[]).filter(x=>x!==date);if(state.profile.followWeight)state.cart={};save();render();showToast('Peso guardado · '+(state.profile.followWeight?'objetivos y compra recalculados':'sin cambiar tu peso de referencia'))});
+document.getElementById('plannerDialog').addEventListener('close',()=>{if(onboardingController.required()){onboardingController.render({force:true});document.querySelector('#setupForm [type="submit"]')?.focus({preventScroll:true})}});
 document.getElementById('recipeDialog').addEventListener('close',()=>{const ctx=modalCtx,opener=ctx?.source==='planner'?ctx.opener:null;modalCtx=null;if(ctx?.source==='planner'&&document.getElementById('plannerDialog').open)(opener?.isConnected?opener:(opener?.dataset.reviewFocus?document.querySelector('[data-review-focus="'+opener.dataset.reviewFocus+'"]'):null)||document.querySelector('[data-review-focus="change-'+ctx.week+'-'+ctx.day+'-'+ctx.slot+'"]'))?.focus({preventScroll:true})});
 document.getElementById('cycleStartDialog').addEventListener('close',()=>{
  if(document.getElementById('cycleStartDialog').open)return;
@@ -1441,29 +1487,36 @@ document.getElementById('recordDeleteDialog').addEventListener('close',()=>{
 });
 let lastSeenDate=isoDate(today());
 function updateOnDayChange(){if(!state)return;const date=isoDate(today());if(date===lastSeenDate)return;lastSeenDate=date;const advanced=activateScheduledCycleIfDue();alignCurrentDay();render();if(advanced)showToast('Ha comenzado el menú de tu siguiente ciclo')}
+function renderCloudUpdates(){render();if(document.getElementById('plannerDialog').open)renderPlannerReview();if(document.getElementById('recipeDialog').open)renderRecipeModal()}
 async function refreshCloudState(force=false){
  if(!cloudReady||!currentUserId||!supabaseClient||document.hidden||cloudSyncInFlight||cloudRefreshInFlight)return false;
+ const account=currentUserId,isCurrent=()=>currentUserId===account&&authSessionUserId===account;
  const now=Date.now();if(!force&&now-lastCloudRefreshAt<12000)return false;lastCloudRefreshAt=now;cloudRefreshInFlight=true;
  try{
   const settings=await supabaseTransport.readOne('user_settings'),revision=Number(settings?.sync_revision)||0;
+  if(!isCurrent())return false;
   if(revision===cloudRevision){
    const meta=readCloudMeta(),localDirty=state.resetCloudPending||(meta?.fingerprint?(await stateFingerprint(state))!==meta.fingerprint:hasMeaningfulLocalState(state));
+   if(!isCurrent())return false;
    if(localDirty)scheduleCloudSync();
    else if(document.getElementById('cloudSyncStatus')?.dataset.level==='error'){cloudSyncLastError=null;cloudSyncedStatus()}
    return true;
   }
   const remote=await fetchCloudSnapshot(),remoteRevision=Number(remote.settings?.sync_revision)||revision;
+  if(!isCurrent())return false;
   if(state.resetCloudPending){cloudRevision=remoteRevision;cloudStatus('Aplicando el reinicio confirmado…','working');scheduleCloudSync();return true}
   const meta=readCloudMeta(),localFingerprint=await stateFingerprint(state),localChanged=meta?.fingerprint?localFingerprint!==meta.fingerprint:hasMeaningfulLocalState(state);
+  if(!isCurrent())return false;
   if(localChanged){
    await reconcileCloudState(remote,state,meta);
-   if((await stateFingerprint(state))!== (await stateFingerprint(stateFromCloud(remote)))){cloudStatus('Cambios combinados · sincronizando','pending');scheduleCloudSync()}
+   const mergedFingerprint=await stateFingerprint(state),remoteFingerprint=await stateFingerprint(stateFromCloud(remote));if(!isCurrent())return false;
+   if(mergedFingerprint!==remoteFingerprint){cloudStatus('Cambios combinados · sincronizando','pending');scheduleCloudSync()}
    else cloudSyncedStatus();
-  }else{await adoptCloudState(remote);cloudSyncedStatus()}
-  const advanced=activateScheduledCycleIfDue();alignCurrentDay();render();if(document.getElementById('plannerDialog').open)renderPlannerReview();if(document.getElementById('recipeDialog').open)renderRecipeModal();if(advanced)showToast('Ha comenzado el menú de tu siguiente ciclo');
+  }else{await adoptCloudState(remote);if(!isCurrent())return false;cloudSyncedStatus()}
+  const advanced=activateScheduledCycleIfDue();alignCurrentDay();renderCloudUpdates();if(advanced)showToast('Ha comenzado el menú de tu siguiente ciclo');
   cloudSyncLastError=null;cloudSyncRetryTask='sync';
   return true;
- }catch(error){cloudSyncLastError=error;cloudSyncRetryTask='refresh';cloudStatus('No se pudo actualizar desde Supabase · se conserva la copia local','error');console.error('Menuki cloud refresh failed',error);return false}
+ }catch(error){if(!isCurrent())return false;cloudSyncLastError=error;cloudSyncRetryTask='refresh';cloudStatus('No se pudo actualizar desde Supabase · se conserva la copia local','error');console.error('Menuki cloud refresh failed',error);return false}
  finally{cloudRefreshInFlight=false}
 }
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){updateOnDayChange();refreshCloudState(true)}});

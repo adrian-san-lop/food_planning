@@ -1,7 +1,7 @@
 # Paquete 5: preferencias visibles y revisión semanal
 
 - Fecha: 23/10/2026.
-- Estado: **Implementado y probado localmente** en `chore/planner-preferences-review`, desde `dev` limpio y actualizado con `origin/dev` (`a3b6af28c0ea`). Los paquetes 3 y 4 ya estaban incorporados por el propietario. Sin commit, push ni publicación de este paquete.
+- Estado: **Incorporado a dev** en `6c1d9ec62dc1`, comprobado antes del paquete 6. Se desarrolló y probó localmente en `chore/planner-preferences-review` desde dev limpio (`a3b6af28c0ea`). Los resultados de pruebas siguientes corresponden al cierre del 5; el 6 conecta posteriormente la configuración inicial.
 - Alcance: [plan integrado](implementation-plan.md), paquete 5; [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Cómo ver los cambios en la aplicación
@@ -60,6 +60,6 @@ La copia de trabajo sigue siendo `localStorage`; Supabase confirma el guardado r
 - Prueba por HTTP con el shell, módulos y catálogos reales, en el navegador integrado de Codex y con cuenta sintética. Se sustituyó el arranque de Auth únicamente en un servidor temporal local: sin login real, llamadas remotas ni cambios en la cuenta del propietario.
 - Recorridos comprobados: tiempos separados; Favorita → No proponer; exclusión al regenerar; consulta y elección de alternativa; cambio de dos semanas respetando el bloqueo de una tercera; Solo esta comida y excepción manual; límites de un minuto con huecos y confirmación desactivada; ficha legible en un día incompleto; confirmación local y estado Confirmado.
 - Revisión visual en marcos de **1366 × 768**, **1024 × 768**, **390 × 844** y **360 × 640**. Se conservan los desplazamientos interiores para contenidos largos y las acciones de cierre/confirmación. No son pruebas en dispositivos físicos ni una validación en Firefox/Edge.
-- La validación funcional con Supabase Auth, guardado remoto y dos dispositivos reales sigue pendiente del paquete 7; la confirmación del SQL del paquete 4 no se atribuye a esta prueba local. El recorrido inicial de cuatro pasos sigue pendiente del paquete 6.
+- La validación alojada posterior está en el [paquete 7](package-7-integration.md): 14 comprobaciones con dos cuentas y recorrido en dos sesiones de navegador independientes. La prueba local de este paquete no se presenta como esa evidencia remota. Quedan publicación y dispositivos físicos.
 
-Siguiente paquete: **6 — configuración inicial guiada**.
+Continuación: [paquete 6](package-6-guided-first-setup.md) implementado y [7](package-7-integration.md) con integración real comprobada; publicación autorizada pendiente.

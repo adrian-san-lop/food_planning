@@ -12,7 +12,7 @@ La familiaridad, la semana repetida y la renovación de 2–3 familias por ciclo
 
 ## Gustos, restricciones y varias personas
 
-El modelo inicial queda resuelto en [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md): normal, favorita y No proponer por receta. Los paquetes 1–4 cubren contratos, motor y persistencia; el SQL del 4 y sus siete diagnósticos son correctos según el propietario el 23/10/2026. El [paquete 5](planner/package-5-preferences-and-weekly-review.md) añade y prueba localmente los controles en fichas y perfil. No proponer afecta a la selección automática y permite elección manual; no se infieren gustos por registrar comidas. Los límites de tiempo de comida y cena entre semana son opcionales. La configuración inicial y el primer menú generado siguen en el [plan integrado](planner/implementation-plan.md), paquete 6.
+El modelo inicial queda resuelto en [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md): normal, favorita y No proponer por receta. Los paquetes 1–4 cubren contratos, motor y persistencia; el SQL del 4 y sus siete diagnósticos son correctos según el propietario el 23/10/2026. El [paquete 5](planner/package-5-preferences-and-weekly-review.md) añade y prueba localmente los controles en fichas y perfil. No proponer afecta a la selección automática y permite elección manual; no se infieren gustos por registrar comidas. Los límites de tiempo de comida y cena entre semana son opcionales. El [paquete 6](planner/package-6-guided-first-setup.md) conecta localmente configuración inicial y primer menú generado; no son decisiones pendientes.
 
 - ¿Qué modelo futuro permitiría excluir ingredientes y tratar alergias/intolerancias? Es una función separada de los gustos por receta y está fuera de la entrega aceptada.
 - Si se comparte un menú, ¿debe ser aceptable para todos o se permiten comidas distintas? ¿Cómo combinar preferencias y raciones?
@@ -20,7 +20,7 @@ El modelo inicial queda resuelto en [ADR-0047](decisions/0047-guided-first-use-a
 
 ## Planificador
 
-ADR-0047 acepta la generación común desde el primer ciclo, raciones prácticas y despensa opcional e incompleta. También acepta revisar una semana a la vez y cambiar tres semanas por defecto, con opción individual y conservación de bloqueos. Estas decisiones ya no son preguntas abiertas. Los paquetes 1–4 cubren modelos, raciones, motor común y persistencia; el propietario confirma la migración del 4 y sus siete diagnósticos el 23/10/2026. El paquete 5 implementa localmente controles y revisión semanal. Siguen pendientes el primer acceso guiado (6), la validación funcional con sesiones reales y publicación (7).
+ADR-0047 acepta la generación común desde el primer ciclo, raciones prácticas y despensa opcional e incompleta. También acepta revisar una semana a la vez y cambiar tres semanas por defecto, con opción individual y conservación de bloqueos. Estas decisiones ya no son preguntas abiertas. Los paquetes 1–4 cubren modelos, raciones, motor común y persistencia; el propietario confirma la migración del 4 y sus siete diagnósticos el 23/10/2026. El paquete 5 implementa localmente controles y revisión semanal. El paquete 6 implementa localmente el primer acceso guiado y primer menú generado. El [paquete 7](planner/package-7-integration.md) comprueba la integración real con dos cuentas y dos sesiones de navegador independientes. Quedan revisión, publicación autorizada y dispositivos físicos.
 
 - Tras varias semanas, ¿conviene mostrar un resumen de la actividad registrada para que la persona revise manualmente su nivel de movimiento habitual? No se ajustará el perfil ni se predecirán sesiones automáticamente.
 - ¿Cómo calibrar con uso real las puntuaciones de ajuste nutricional, aprovechamiento de ingredientes y separación de comidas/cenas, manteniendo la política de familiaridad de ADR-0046?
@@ -29,7 +29,7 @@ ADR-0047 acepta la generación común desde el primer ciclo, raciones prácticas
 ## Persistencia e integración
 
 - Publicar la app actualizada y comprobar la primera importación local v8 a Supabase, la conciliación de cambios independientes, el desempate de cambios simultáneos y la propagación del borrado de sesiones entre PC y móvil.
-- Ejecutar una prueba de aislamiento RLS con dos cuentas autenticadas; comprobar lecturas, altas y referencias entre filas de propietarios distintos.
+- Aislamiento personal con dos cuentas reales comprobado en el paquete 7: lecturas entre propietarios, rechazo de escritura directa y RPC ligado a la sesión. Quedan recorrido publicado y comprobación separada del buzón con admin/cuenta normal.
 - Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` en SQL Editor para corregir la limpieza global; después comprobar que elimina las propuestas y sus filas hijas. La edición y el borrado individual ya funcionan según el propietario. Sigue pendiente validar el aislamiento con una cuenta normal y la limpieza global en la web publicada.
 - Verificar en GitHub Pages la sincronización automática entre PC y móvil, errores de red, reversos, borrado de sesiones y el reinicio total confirmado.
 - Revisar mensualmente el tamaño total y por tabla tras activar la sincronización y después de cambios grandes de uso. Al acercarse a 350 MB del límite Free, analizar tendencias; no hay purga automática de snapshots.

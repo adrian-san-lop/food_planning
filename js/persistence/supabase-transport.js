@@ -17,6 +17,9 @@ const TABLES = [
 export function createSupabaseTransport({ getClient, getUserId }) {
   let capabilityUser = null;
   let capabilities = null;
+  function requireAccount(user) {
+    if (getUserId() !== user) throw Object.assign(new Error('La sesión ha cambiado; se descartó la respuesta anterior.'), { code: 'ACCOUNT_CHANGED' });
+  }
 
   function resetCapabilities() { capabilityUser = null; capabilities = null; }
 
@@ -24,6 +27,7 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     const user = getUserId();
     if (!refresh && capabilityUser === user && capabilities !== null) return capabilities;
     const { data, error } = await getClient().rpc('menuki_state_capabilities');
+    requireAccount(user);
     // Only an absent capability RPC denotes the old schema. Permissions/network
     // errors and failures in existing/new tables must remain visible.
     if (error && !['PGRST202', '42883'].includes(error.code)) throw error;
@@ -32,13 +36,14 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     return capabilities;
   }
   async function readRows(table) {
-    const rows = [];
+    const rows = [], user = getUserId();
     for (let from = 0; ; from += 1000) {
       const { data, error } = await getClient()
         .from(table)
         .select('*')
-        .eq('user_id', getUserId())
+        .eq('user_id', user)
         .range(from, from + 999);
+      requireAccount(user);
       if (error) throw error;
       rows.push(...(data || []));
       if (!data || data.length < 1000) break;
@@ -47,16 +52,19 @@ export function createSupabaseTransport({ getClient, getUserId }) {
   }
 
   async function readOne(table, userId = getUserId()) {
+    const user = getUserId();
     const { data, error } = await getClient()
       .from(table)
       .select('*')
       .eq('user_id', userId)
       .maybeSingle();
+    requireAccount(user);
     if (error) throw error;
     return data;
   }
 
   async function fetchSnapshot(attempt = 0) {
+    const user = getUserId();
     const planningSupported = await planningAvailable();
     const settings = await readOne('user_settings');
     const [profile, ...rows] = await Promise.all([
@@ -71,6 +79,7 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     // Individual PostgREST reads are separate transactions. Never acknowledge a
     // mixture of old menu/profile data and preferences from a newer revision.
     const after = await readOne('user_settings');
+    requireAccount(user);
     if (Number(settings?.sync_revision || 0) !== Number(after?.sync_revision || 0)
         || settings?.state_initialized_at !== after?.state_initialized_at) {
       if (attempt < 2) return fetchSnapshot(attempt + 1);
@@ -81,6 +90,7 @@ export function createSupabaseTransport({ getClient, getUserId }) {
   }
 
   async function submitSnapshot(rpcName, snapshot, expectedRevision) {
+    const user = getUserId();
     let payload = snapshot;
     if (!await planningAvailable({ refresh: capabilities === false })) {
       // The current UI can use the legacy writer until the migration is applied.
@@ -94,10 +104,13 @@ export function createSupabaseTransport({ getClient, getUserId }) {
       const { planning_contract, setup_mode, setup_draft, menu_preferences, recipe_preferences, ...legacy } = snapshot;
       payload = legacy;
     }
-    return getClient().rpc(rpcName, {
+    requireAccount(user);
+    const result = await getClient().rpc(rpcName, {
       p_snapshot: payload,
       p_expected_revision: expectedRevision,
     });
+    requireAccount(user);
+    return result;
   }
 
   return { readRows, readOne, fetchSnapshot, submitSnapshot, planningAvailable, resetCapabilities };

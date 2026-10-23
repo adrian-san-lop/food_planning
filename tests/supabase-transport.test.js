@@ -2,6 +2,24 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createSupabaseTransport } from '../js/persistence/supabase-transport.js';
 
+test('a capability response from a previous account is discarded and cannot authorize the next account',async()=>{
+  let user='a',release;
+  const pending=new Promise(resolve=>{release=resolve});
+  const transport=createSupabaseTransport({getUserId:()=>user,getClient:()=>({rpc:()=>pending})});
+  const checking=transport.planningAvailable();user='b';release({data:{planning_contract:1}});
+  await assert.rejects(checking,{code:'ACCOUNT_CHANGED'});
+});
+
+test('changing accounts during capability detection never dispatches the old snapshot',async()=>{
+  let user='a',release,writes=0;
+  const pending=new Promise(resolve=>{release=resolve});
+  const transport=createSupabaseTransport({getUserId:()=>user,getClient:()=>({rpc:name=>{
+    if(name==='menuki_state_capabilities')return pending;writes++;return {data:1};
+  }})});
+  const writing=transport.submitSnapshot('sync_menuki_state',{},0);user='b';release({data:{planning_contract:1}});
+  await assert.rejects(writing,{code:'ACCOUNT_CHANGED'});assert.equal(writes,0);
+});
+
 test('cloud snapshot does not read the retired shortfalls table', async () => {
   const requestedTables = [];
   const getClient = () => ({

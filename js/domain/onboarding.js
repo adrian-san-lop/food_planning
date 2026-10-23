@@ -76,3 +76,34 @@ export function getSetupProgress({
     profileReady: true, canGenerateMenu: true, needsProfileReview: false,
   };
 }
+
+export function hasConfirmedPlan(state) {
+  return Boolean((!state.noActiveCycle && state.activeMenuConfirmedAt)
+    || state.nextMenu?.confirmedAt || state.archives?.some(cycle => cycle.confirmedAt));
+}
+
+export function accountSetupProgress(state, authenticated = true) {
+  return getSetupProgress({ authenticated, mode: state.setupMode, profile: state.profile,
+    profileConfirmed: state.profileConfirmed, draft: state.setupDraft,
+    hasConfirmedPlan: hasConfirmedPlan(state),
+    hasLegacyPlan: !state.noActiveCycle || Boolean(state.archives?.length) });
+}
+
+export function confirmSetupProfile(state) {
+  if (!validateProfileDraft(state.setupDraft.profile).valid) throw new TypeError('Completa tus datos, objetivo y movimiento diario.');
+  return { ...state, profile: structuredClone(state.setupDraft.profile), profileConfirmed: true };
+}
+
+/** One explicit first-plan transition. Retry the same state/IDs through normal sync. */
+export function confirmFirstPlan(state, plan, { todayISO, confirmedAt, cycleId, inspect }) {
+  if (state.setupMode !== 'guided' || hasConfirmedPlan(state) || !state.noActiveCycle) return null;
+  if (!accountSetupProgress(state).canGenerateMenu) throw new TypeError('Confirma primero un perfil válido.');
+  if (!plan || !dateFromISO(plan.start) || plan.start < todayISO) throw new TypeError('Elige hoy o una fecha posterior para empezar.');
+  if (!inspect(plan).complete) throw new TypeError('Revisa las comidas pendientes antes de empezar.');
+  if (!cycleId || !confirmedAt) throw new TypeError('No se pudo identificar el primer plan.');
+  return { ...state, start: plan.start, noActiveCycle: false, activeCycleId: cycleId,
+    activeMenus: structuredClone(plan.menus), activeMenuCatalogVersion: plan.catalogVersion,
+    activeMenuGeneratedAt: plan.generatedAt, activeMenuConfirmedAt: confirmedAt,
+    activeMenuRecoveryFocus: plan.recoveryFocus === true, nextMenu: null, plannerDraft: null,
+    setupDraft: { ...state.setupDraft, startDate: plan.start, preferencesReviewed: true } };
+}

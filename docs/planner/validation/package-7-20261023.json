@@ -1,0 +1,144 @@
+{
+  "runId": "20261023123443-4eeffe",
+  "project": "vkcedxvnmbmrmwvanznx",
+  "date": "2026-10-23",
+  "accounts": [
+    {
+      "id": "c2a91d05-99d1-498e-a454-086512a5780c",
+      "email": "menuki.qa.20261023123443-4eeffe.a@example.com"
+    },
+    {
+      "id": "675a701f-5330-4eee-9c66-3004f8f256bb",
+      "email": "menuki.qa.20261023123443-4eeffe.b@example.com"
+    }
+  ],
+  "latestHostedChecks": [
+    {
+      "name": "two real Auth sessions and planning capability are available",
+      "passed": true,
+      "at": "2026-10-23T12:57:49.628Z"
+    },
+    {
+      "name": "anonymous clients cannot read private tables or execute planning RPC",
+      "passed": true,
+      "at": "2026-10-23T12:57:50.920Z"
+    },
+    {
+      "name": "partial guided input is saved without an example profile or automatic cycle",
+      "passed": true,
+      "at": "2026-10-23T12:57:51.390Z"
+    },
+    {
+      "name": "same account can recover progress through a second real password session",
+      "passed": true,
+      "at": "2026-10-23T12:57:52.044Z"
+    },
+    {
+      "name": "stale sync returns HTTP 409/PT409 and leaves the accepted revision intact",
+      "passed": true,
+      "at": "2026-10-23T12:57:52.457Z"
+    },
+    {
+      "name": "invalid profile and first plan are rejected transactionally",
+      "passed": true,
+      "at": "2026-10-23T12:57:52.875Z"
+    },
+    {
+      "name": "a first plan cannot be accepted without a confirmed profile",
+      "passed": true,
+      "at": "2026-10-23T12:57:53.341Z"
+    },
+    {
+      "name": "first confirmation and retry preserve one cycle and exactly 105 meals",
+      "passed": true,
+      "at": "2026-10-23T12:57:54.056Z"
+    },
+    {
+      "name": "all six movement levels can be saved and recovered through the hosted RPC",
+      "passed": true,
+      "at": "2026-10-23T12:57:56.713Z"
+    },
+    {
+      "name": "normal and null explicitly withdraw one recipe preference and time limit",
+      "passed": true,
+      "at": "2026-10-23T12:57:57.152Z"
+    },
+    {
+      "name": "cross-account reads and direct writes cannot escape RLS/RPC boundaries",
+      "passed": true,
+      "at": "2026-10-23T12:57:59.451Z"
+    },
+    {
+      "name": "scoped RPC rejects forged ownership and binds second-user progress to auth.uid()",
+      "passed": true,
+      "at": "2026-10-23T12:58:00.255Z"
+    },
+    {
+      "name": "zero-stock meals and reversals stay nonnegative and idempotent with full usage snapshots",
+      "passed": true,
+      "at": "2026-10-23T12:58:01.684Z"
+    },
+    {
+      "name": "retired shortfall writes remain suppressed on the hosted project",
+      "passed": true,
+      "at": "2026-10-23T12:58:01.756Z"
+    }
+  ],
+  "initialFailures": [
+    {
+      "name": "zero-stock meals and reversals stay nonnegative and idempotent without shortfall records",
+      "at": "2026-10-23T12:34:54.850Z"
+    },
+    {
+      "name": "retired shortfall writes remain suppressed on the hosted project",
+      "at": "2026-10-23T12:39:31.588Z"
+    }
+  ],
+  "ownerRetirementReapplication": "Success reported on 2026-10-23; subsequent UI and RPC consumption verified zero retired rows",
+  "observations": {
+    "retiredShortfalls": {
+      "status": 200,
+      "ownRows": 0
+    },
+    "browser": {
+      "origins": [
+        "http://127.0.0.1:8767",
+        "http://127.0.0.1:8768"
+      ],
+      "realAuth": true,
+      "partialDraftRecovered": true,
+      "automaticProfileAndFirstPlanRefresh": true,
+      "reloadKeepsConfirmedPlan": true,
+      "activeCycles": 1,
+      "activeMeals": 105,
+      "favoritePersisted": true,
+      "mealFromEmptyPantry": {
+        "completed": 1,
+        "ingredients": 5,
+        "zeroStockMarkers": 5,
+        "retiredRows": 0
+      },
+      "consoleErrors": 0,
+      "localCopiesAndTabsRemoved": true,
+      "physicalDevices": false
+    },
+    "finalBrowserSmoke": {
+      "account": "B",
+      "synced": true,
+      "personalFieldsEmpty": true,
+      "consoleErrors": 0
+    }
+  },
+  "localChecks": {
+    "node": 184,
+    "postgresql": 18,
+    "profileCases": 80
+  },
+  "publication": false,
+  "authAccountDeletion": false,
+  "testStateCleared": {
+    "c2a91d05-99d1-498e-a454-086512a5780c": true,
+    "675a701f-5330-4eee-9c66-3004f8f256bb": true
+  },
+  "finishedAt": "2026-10-23T13:09:49.583Z"
+}

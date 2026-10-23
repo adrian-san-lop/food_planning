@@ -23,7 +23,7 @@ export function readPlanningState(source) {
   return structuredClone(result);
 }
 
-/** The guided UI will opt in in package 6. Existing local accounts always keep
+/** Guided signup opts in from the app. Existing local accounts always keep
  * their current data; a new guided account has neither a sample profile nor plan. */
 export function initializeAccountState({ localState, hasLocalCopy, guidedSetup = false, todayISO }) {
   if (hasLocalCopy || !guidedSetup) return localState;
