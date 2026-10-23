@@ -26,6 +26,7 @@ function harness({draft = null, confirmed = null, expired = false} = {}) {
   const state = {start: '2026-10-13', plannerDraft: draft};
   const context = vm.createContext({
     createStateNormalizer, state, plannerProposal: null,
+    plannerWeek:0,plannerEditScope:'cycle',plannerPreferencesNotice:false,plannerPreferencesSignature:'',plannerPersistedDraftSignature:'',plannerChangeMessage:'',
     emptyState: () => ({}), getFood: () => ({}), FOOD: {}, inventoryUnitService: {},
     normalizeLegacyDeduction: () => 0, dateFromISO, isoDate,
     today: () => dateFromISO('2026-10-21'), ACTIVITY_BY_ID: {},
@@ -99,4 +100,9 @@ test('generation errors stay inside planner feedback and never persist or open a
   assert.equal(app.calls.persisted, 0);
   assert.equal(app.calls.rendered, 0);
   assert.deepEqual(app.calls.feedback, ['Confirma un perfil válido en Mi perfil']);
+});
+
+test('an unreadable review never opens an empty or stale dialog',()=>{
+  const app=harness({draft:plan()});app.context.renderPlannerReview=()=>false;app.open();
+  assert.equal(app.calls.opened,0);assert.equal(app.calls.generated,0);assert.equal(app.calls.persisted,0);
 });

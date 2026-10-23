@@ -1,14 +1,14 @@
 # Paquete 4: persistencia de preferencias y configuración
 
 - Fecha: 23/10/2026.
-- Estado: **Implementado y probado localmente; migración aplicada en Supabase según confirmación del propietario el 23/10/2026.** Se continúa en `chore/common-menu-generator`, conservando el paquete 3. El propietario comunica `Success` al ejecutar el SQL y `ready = true` en las siete comprobaciones. Sin commit ni publicación; pendiente la validación funcional con sesiones reales.
+- Estado: **Incorporado a dev; migración aplicada en Supabase según confirmación del propietario el 23/10/2026.** Se desarrolló en `chore/common-menu-generator`, conservando el paquete 3. El propietario comunica `Success` al ejecutar el SQL y `ready = true` en las siete comprobaciones; posteriormente incorporó ambos paquetes a `origin/dev`, comprobado antes de iniciar el 5 (`a3b6af28c0ea`). Pendiente la validación funcional con sesiones reales; esto no acredita publicación del paquete 5.
 - Alcance: [plan integrado](implementation-plan.md), paquete 4; [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Qué está disponible y qué sigue pendiente
 
 Se preparan la lectura y escritura relacionales de preferencias y borradores, la migración local v12, la conciliación y las validaciones del servidor. La renovación recibe las preferencias guardadas cuando se carga un esquema compatible. Cambiar preferencias no sustituye automáticamente ningún menú ni borrador: se aplican al regenerar explícitamente.
 
-**No se añaden todavía botones de Favorita/No proponer ni campos de tiempo.** Corresponden al paquete 5. El recorrido de cuatro pasos y su activación para cuentas nuevas corresponden al paquete 6. Hasta entonces el arranque actual conserva el perfil de compatibilidad y la plantilla fija; no se activa a medias otro registro.
+Al cerrar el paquete 4 no se añadían botones ni campos de tiempo. El [paquete 5](package-5-preferences-and-weekly-review.md) los implementa y prueba localmente, junto con la revisión semanal, sin SQL nuevo. El recorrido de cuatro pasos y su activación para cuentas nuevas corresponden al 6. Hasta entonces el arranque conserva el perfil de compatibilidad y la plantilla fija.
 
 El propietario confirmó el 23/10/2026 que aplicó la migración en SQL Editor y que las siete comprobaciones estructurales dieron `ready = true`. La ejecución y el diagnóstico del esquema quedan registrados como completados según esa confirmación, sin inspección remota independiente del agente. El cliente conserva además la compatibilidad con proyectos que todavía usen el esquema anterior.
 
@@ -97,5 +97,5 @@ La aplicación de la migración y la comprobación estructural del esquema queda
 ## Pendientes de integración y desarrollo
 
 - Probar con dos sesiones reales preferencias, progreso, conflictos y primer plan. Las pruebas locales y las consultas estructurales no acreditan esos recorridos autenticados ni su comportamiento entre dispositivos.
-- Implementar **paquete 5**: controles de preferencias y revisión semanal; **paquete 6**: recorrido guiado y activación; **paquete 7**: validación funcional alojada y publicación autorizada. La migración del paquete 4 ya no es una acción pendiente de ese último paquete.
+- El paquete 5 está implementado y probado localmente. Implementar **paquete 6**: recorrido guiado y activación; **paquete 7**: validación funcional alojada y publicación autorizada. La migración del 4 ya no es una acción pendiente y el 5 no requiere SQL adicional.
 - Publicar el cliente cuando el propietario lo autorice. La ejecución de SQL no publica los cambios locales de la web ni añade por sí misma botones de favoritas.

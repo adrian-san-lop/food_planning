@@ -13,13 +13,12 @@ Esta secuencia distingue la próxima entrega aceptada de otras etapas candidatas
 
 ## Próxima entrega aprobada: configuración inicial y planificación personal
 
-Aceptada el 22/10/2026 y **en desarrollo por paquetes**, según [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md). El [paquete 1](planner/package-1-foundations.md) prepara los modelos de perfil, configuración y preferencias y ya está incorporado a `dev`. El [paquete 2](planner/package-2-practical-portions.md) aplica raciones prácticas y ya está incorporado a `dev`. El [paquete 3](planner/package-3-common-generator.md) está implementado localmente: renovación con motor común, preferencias y tiempos en dominio, tres candidatos y previsión de despensa. El [paquete 4](planner/package-4-persistence.md) prepara persistencia, compatibilidad y SQL, probado localmente; el propietario confirma la aplicación en Supabase el 23/10/2026 con Success y las siete comprobaciones estructurales en true. Las nuevas pantallas todavía no se activan. El [plan integrado](planner/implementation-plan.md) detalla la secuencia de siete paquetes y sus criterios; el siguiente es preferencias e interfaz de revisión semanal (paquete 5). Queda por completar:
+Aceptada el 22/10/2026 y **en desarrollo por paquetes**, según [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md). Los paquetes 1–4 están incorporados a `dev`: modelos, raciones, motor común y persistencia. El propietario confirma la migración del 4 en Supabase el 23/10/2026 con Success y siete comprobaciones en true. El [paquete 5](planner/package-5-preferences-and-weekly-review.md) implementa y prueba localmente preferencias en perfil y fichas, alternativas consultables y revisión semanal con cambios para tres semanas o una comida respetando bloqueos; no requiere SQL nuevo ni está publicado. El [plan integrado](planner/implementation-plan.md) fija los criterios; el siguiente es la configuración inicial guiada (6). Queda por completar:
 
 1. Incorporar el recorrido inicial: Sobre ti → Tu objetivo y tu día a día → Tus preferencias (omitible) → Tu primer menú. Guardar el progreso por cuenta; no crear un plan con datos personales de ejemplo.
-2. Conectar el primer acceso al motor común ya disponible y presentar preferencias, límites, diferencias y alternativas en la revisión; la renovación ya utiliza el motor y las raciones prácticas.
+2. Conectar el primer acceso al motor común y a la revisión ya disponibles; la renovación utiliza el motor, las preferencias, las raciones prácticas y las alternativas del paquete 5.
 3. Validar funcionalmente con sesiones reales los borradores y preferencias; la migración del paquete 4 ya está aplicada y comprobada estructuralmente según confirmación del propietario el 23/10/2026. Mapeo y conciliación están implementados y probados localmente.
-4. Actualizar perfil, fichas y revisión semanal; por defecto editar la semana base para las tres semanas, con opción individual y conservación de bloqueos.
-5. Validar dominio, escritorio/móvil, SQL, RLS y recorrido real entre dispositivos. Comprobar la migración remota antes de activar el cliente dependiente y publicar solo con autorización.
+4. Completar la validación funcional de Auth/RLS y recorridos entre dispositivos y publicar solo con autorización. Las pruebas de dominio y HTTP sintético del paquete 5 están documentadas; no acreditan esos recorridos reales.
 
 Despensa completa, valoración del catálogo, pesos de seguimiento y ejercicio no son requisitos de inicio. La optimización por envases, precios, caducidades, sobras y cocina por lotes queda para etapas posteriores; alergias, exclusiones de ingredientes y varias personas siguen fuera de esta entrega.
 
@@ -40,7 +39,7 @@ Despensa completa, valoración del catálogo, pesos de seguimiento y ejercicio n
 ### C. Implementar la propuesta de ciclo — primera versión completada
 
 - Generar 21 días y cinco espacios diarios a partir de recetas compatibles.
-- Aplicar las reglas aceptadas con heurísticas iniciales. El paquete 3 aplica las preferencias de ADR-0047 al motor común; su persistencia está preparada en el paquete 4 (SQL y siete comprobaciones estructurales confirmados por el propietario el 23/10/2026) y sus controles siguen pendientes en el paquete 5.
+- Aplicar las reglas aceptadas con heurísticas iniciales. El paquete 3 aplica las preferencias al motor común; el 4 incorpora persistencia (SQL y siete comprobaciones confirmados por el propietario el 23/10/2026) y el 5 añade controles, revisión semanal y alternativas, probados localmente.
 - Permitir revisar, cambiar y bloquear platos; preservar bloqueos al regenerar; guardar versión de catálogo y cantidades consumidas.
 
 ### D. Persistencia remota y Auth — implementación realizada; validación pendiente

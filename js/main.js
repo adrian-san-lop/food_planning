@@ -1,5 +1,9 @@
+import { changeProposalRecipe } from './domain/menu-review.js?v=20261023-weekly-review';
+import { createPlannerReviewView } from './ui/planner-review.js?v=20261023-weekly-review';
+import { recipePreferenceControls } from './ui/planning-preferences.js?v=20261023-weekly-review';
+import { createPlanningPreferencesController } from './ui/planning-preferences-controller.js?v=20261023-weekly-review';
 import { summarizeMenu } from './domain/menu-generator.js?v=20261023-common-generator';
-import { createMenuPlanner } from './domain/menu-planner.js?v=20261023-common-generator';
+import { createMenuPlanner } from './domain/menu-planner.js?v=20261023-weekly-review';
 import { addDays, civilDayOfMonth, dateDiff, dateFromISO, formatDate, formatEuropeanDate, formatMadridDateTime, isoDate, isoFromEuropeanDate, monday, today } from './domain/dates.js?v=20261015-european-date';
 import { weeklyMealSummary, dashboardCycleSummary } from './domain/dashboard.js?v=20261015-dashboard-plan';
 import { cycleHasEnded, confirmedCycleIsAvailable, canBuyNextCycle, shoppingDates, nextCycleCartScope } from './domain/cycle-shopping.js?v=20261015-cycle-shopping';
@@ -105,6 +109,7 @@ let authSessionUserId=null,currentUserId=null,currentUserEmail='',appReadyUserId
 const cloudArchivedCyclesByUser=new Map();
 const supabaseTransport=createSupabaseTransport({getClient:()=>supabaseClient,getUserId:()=>currentUserId});
 const recipeProposalService=createRecipeProposalService({getClient:()=>supabaseClient});
+let planningPersistenceAvailable=false;
 let cloudReady=false,cloudRevision=0,cloudSyncTimer=null,cloudSyncInFlight=false,cloudSyncPending=false,cloudSyncLastError=null,cloudSyncRetryTask='sync',cloudRefreshInFlight=false,lastCloudRefreshAt=0;
 let menukiAdmin=false,proposalInbox=[],proposalInboxLoaded=false,proposalInboxLoading=false,proposalInboxBusy=false,proposalExporting=false,proposalExportToken=0,proposalInboxError='';
 let proposalEditingId=null,proposalEditingDraft=null,proposalActionToken=0,proposalLoadToken=0;
@@ -228,7 +233,7 @@ async function initializeCloudState(user){
  cloudReady=false;cloudSyncLastError=null;cloudStatus('Conectando los datos de tu cuenta…','working');
  const localExists=!!localStorage.getItem(KEY),localState=load();
  state=localState;
- await supabaseTransport.planningAvailable({refresh:true});
+ planningPersistenceAvailable=await supabaseTransport.planningAvailable({refresh:true});
  const settings=await supabaseTransport.readOne('user_settings',user.id);
  if(!settings?.state_initialized_at){
   // Guided activation waits for package 6; keep existing signup usable meanwhile.
@@ -312,6 +317,13 @@ async function syncCloudNow(immediate=false){
 }
 function newOperationId(){return globalThis.crypto?.randomUUID?globalThis.crypto.randomUUID():'op-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
 let visibleWeek=0,selectedDay=0,view='inicio',shopStore='merc',shopRange='7',shopCycle='current',shoppingSearch='',recipeFilter='todos',recipeSearch='',pantryFilter='used',pantrySearch='',modalCtx=null,plannerProposal=null,toastTimer,mobileMoreOpen=false,mobileAccountOpen=false,cycleStartOpener=null,cycleStartDraft=null,cycleSetupDateDraft='',quickGuideStep=0,renewalPromptView=null;
+let plannerWeek=0,plannerEditScope='cycle',plannerPreferencesNotice=false,plannerPreferencesSignature='',plannerPersistedDraftSignature='',plannerChangeMessage='';
+const plannerReviewView=createPlannerReviewView({getRecipes:()=>RECIPES,portionsForRecipes,getMacro,getTarget:()=>nutritionTarget(0),formatDate});
+const planningPreferencesController=createPlanningPreferencesController({document,getState:()=>state,getRecipes:()=>RECIPES,isAvailable:()=>planningPersistenceAvailable,save,notify:showToast,onChange:()=>{
+ plannerPreferencesNotice=true;
+ if(document.getElementById('plannerDialog').open)renderPlannerReview();
+ if(document.getElementById('recipeDialog').open)renderRecipeModal();
+}});
 function renderQuickGuide(){
  const root=document.getElementById('quickGuideContent');
  if(!root)return;
@@ -570,7 +582,7 @@ function profileView(){
  </section>`;
  const goal='<section class="panel profile-form-section profile-goal" aria-labelledby="profileGoalTitle"><header class="profile-section-heading"><h2 id="profileGoalTitle">Tu objetivo</h2></header><div class="goal-choices">'+goals+'</div></section>';
  return `<div class="profile-page${p.sex==='manual'?' profile-page--manual':''}">
-  <header class="profile-page-heading"><div class="profile-heading-row"><div class="profile-page-intro"><h1>Mi perfil</h1><p>Tus datos, tu objetivo y el plan que encaja contigo.</p></div><div class="profile-account-host" aria-label="Cuenta"></div></div>${review}</header>
+  <header class="profile-page-heading"><div class="profile-heading-row"><div class="profile-page-intro"><h1>Mi perfil</h1><p>Tus datos, tu objetivo y el plan que encaja contigo.</p></div><div class="profile-heading-tools"><button type="button" class="btn" data-action="planning-preferences-open" aria-haspopup="dialog" aria-controls="planningPreferencesDialog">Preferencias del menú</button><div class="profile-account-host" aria-label="Cuenta"></div></div></div>${review}</header>
   <form id="profileForm" class="profile-board profile-form" aria-label="Datos y preferencias del perfil">
    ${personal}${settings}${goal}
    <aside class="profile-results" aria-label="Vista previa del plan"><div id="profilePreview">${profileSummaryMarkup(p)}</div></aside>
@@ -626,52 +638,64 @@ function plannerRequest(start){const asOf=isoDate(today());return {start,asOf,pr
 function buildCycleProposal(previous){
  const start=dateFromISO(previous?.start)&&dateFromISO(previous.start)>=today()?previous.start:nextCycleStart();
  const result=menuPlanner.generate({...plannerRequest(start),draft:previous});
- if(!result.complete)throw new Error('No se puede completar la propuesta con las condiciones actuales. Revisa las recetas y los bloqueos.');
  return {start,menus:result.menus,locked:result.locked,catalogVersion,recoveryFocus:!!state.profile.injury,generatedAt:new Date().toISOString(),confirmedAt:null};
 }
-function persistPlannerDraft(){if(!plannerProposal)return;state.plannerDraft={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice()))};save()}
-function plannerCounts(menus){return summarizeMenu(menus,RECIPES,state.noActiveCycle?null:MENUS)}
-function renderPlannerReview(){
+function persistPlannerDraft(){if(!plannerProposal||!validMenuSnapshot(plannerProposal.menus))return false;state.plannerDraft={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice()))};plannerPersistedDraftSignature=JSON.stringify(state.plannerDraft);save();return true}
+function plannerCounts(menus){return validMenuSnapshot(menus)?summarizeMenu(menus,RECIPES,state.noActiveCycle?null:MENUS):null}
+function renderPlannerReview(options={}){
  if(!plannerProposal)return;
- const root=document.getElementById('plannerContent'),summary=plannerCounts(plannerProposal.menus),date=dateFromISO(plannerProposal.start),dateLabel=formatDate(date,{day:'numeric',month:'long',year:'numeric'});
- const previousBody=root.querySelector('.planner-review-body'),scrollTop=previousBody?.scrollTop||0,helpOpen=!!root.querySelector('.planner-help[open]'),focused=root.contains(document.activeElement)?document.activeElement:null;
- const focusedMeal=focused?.closest('.planner-meal'),focusSelector=focusedMeal?(focused.matches('select')?'select':'button[data-action="'+escapeAttribute(focused.dataset.action)+'"]')+'[data-week="'+Number(focused.dataset.week)+'"][data-day="'+Number(focused.dataset.day)+'"][data-slot="'+Number(focused.dataset.slot)+'"]':focused?.dataset.action==='planner-regenerate'?'[data-action="planner-regenerate"]':null;
- const modeChanged=Boolean(state.profile.injury)!==Boolean(plannerProposal.recoveryFocus);
- const recoveryMessage=plannerProposal.recoveryFocus?'Se favorecen recetas con ingredientes etiquetados como fuentes de calcio y vitaminas D y C.':'Esta propuesta se generó sin la preferencia de recuperación ósea.';
- const modeNotice=modeChanged?'<p class="planner-profile-warning" role="status">'+ic('info')+'<span><strong>Has cambiado la recuperación en tu perfil.</strong> Pulsa «Cambiar platos» para aplicarla. Los bloqueados se conservan.</span></p>':'';
- const c=plannerProposal.recoveryFocus?plannerRecoveryCoverage(plannerProposal.menus):null;
- const coverage=c?'<div class="planner-recovery-coverage"><strong>Presencia de ingredientes etiquetados</strong><p>'+RECOVERY_TAG_LABELS.calcium+': <b>'+c.calcium+'/21 días</b> · '+RECOVERY_TAG_LABELS.vitamin_d+': <b>'+c.vitamin_d+'/21</b> · '+RECOVERY_TAG_LABELS.vitamin_c+': <b>'+c.vitamin_c+'/21</b>.</p><p>Indica presencia en recetas, no cantidades ni objetivos de ingesta.</p></div>':'';
- const help='<details class="planner-help"'+(helpOpen?' open':'')+'><summary>'+ic('info')+'Cómo se prepara este menú</summary><div class="planner-help-content"><ul><li><strong>Semana base:</strong> los mismos platos se repiten tres semanas. Las raciones se calculan con tu perfil. Un cambio manual afecta solo a esa comida.</li><li><strong>Continuidad:</strong> conservamos un repertorio familiar y buscamos incorporar solo 2–3 preparaciones nuevas por ciclo, si encajan. Los bloqueos tienen prioridad.</li><li><strong>Preparaciones:</strong> las recetas con los mismos ingredientes se agrupan, aunque cambien sus cantidades. Las variantes de ración no cuentan como platos nuevos.</li><li><strong>Despensa:</strong> prioriza lo que se prevé que quede al comenzar el ciclo, descontando las comidas pendientes anteriores. La falta de stock no excluye platos.</li><li><strong>Raciones:</strong> comparamos varias semanas con cantidades prácticas según tu perfil y objetivo base, sin forzar kcal exactas. Registra las sesiones cuando ocurran para ajustar solo esa fecha.</li><li><strong>Cambios:</strong> elegir una receta la deja bloqueada. «Cambiar platos» renueva únicamente las desbloqueadas.</li><li><strong>Recuperación:</strong> '+recoveryMessage+'</li><li><strong>Gustos y alergias:</strong> estos filtros aún no están disponibles.</li></ul>'+coverage+'</div></details>';
- const profileCard=(icon,label,value,extra='')=>'<article class="planner-profile-card'+extra+'">'+ic(icon)+'<div><span>'+label+'</span><strong>'+escapeHTML(value)+'</strong></div></article>';
- // Las raciones usan el perfil actual; recoveryFocus conserva la preferencia usada al generar.
- const profileSummary='<div class="planner-profile-summary'+(plannerProposal.recoveryFocus?' planner-profile-summary--recovery':'')+'" aria-label="Objetivo y preferencias de la propuesta">'+profileCard('target','Tu objetivo',GOAL_NAMES[state.profile.goal])+profileCard('sliders','Raciones automáticas',state.profile.autoPortions?'Activadas':'Desactivadas')+(plannerProposal.recoveryFocus?profileCard('bone','Recuperación ósea','Activa',' planner-profile-card--recovery'):'')+'</div>';
- const metadata='<div class="planner-cycle-meta"><span>'+ic('calendar')+'<span>Empieza <strong><time datetime="'+escapeAttribute(plannerProposal.start)+'" title="'+escapeAttribute(dateLabel)+'">'+escapeHTML(formatDate(date,{day:'numeric',month:'short',year:'numeric'}))+'</time></strong></span></span><span>'+ic('clock')+'<strong>21 días</strong></span><span>'+ic('utensils')+'<strong>105 comidas</strong></span></div>';
- const actions='<div class="planner-actions"><span class="planner-action-hint"><button type="button" class="btn" data-action="planner-regenerate" aria-describedby="plannerRegenerateHint">Cambiar platos</button><span id="plannerRegenerateHint" class="planner-action-tooltip" role="tooltip">Renueva únicamente los desbloqueados</span></span><button type="button" class="btn btn-primary" data-action="planner-save">Guardar</button></div>';
- const weeks=plannerProposal.menus.map((week,w)=>'<section class="planner-day"><h3>Semana '+(w+1)+'</h3>'+week.map((ids,d)=>{const dateAtPlan=addDays(date,w*7+d),recipes=ids.map(id=>REC[id]),portions=portionsForRecipes(recipes,0);return '<div class="planner-day"><h3>'+formatDate(dateAtPlan,{weekday:'long',day:'numeric',month:'short'})+'</h3>'+ids.map((id,s)=>{const recipe=REC[id],macro=getMacro(portions[s]),locked=plannerProposal.locked[w][d][s],options=RECIPES.filter(r=>r.type===SLOT_TYPES[s]).map(r=>'<option value="'+escapeAttribute(r.id)+'" '+(r.id===id?'selected':'')+'>'+escapeHTML(r.name)+'</option>').join('');return '<div class="planner-meal"><span class="planner-slot">'+SLOTS[s]+'</span><select data-change="proposal-recipe" data-week="'+w+'" data-day="'+d+'" data-slot="'+s+'" aria-label="Receta para '+SLOTS[s]+'">'+options+'</select><div class="planner-recipe-preview"><button type="button" class="btn" data-action="planner-recipe" data-week="'+w+'" data-day="'+d+'" data-slot="'+s+'" aria-haspopup="dialog" aria-controls="recipeDialog" aria-label="Ver receta: '+escapeAttribute(recipe.name)+'">Ver receta</button><small>'+nformat(macro.k)+' kcal aprox.</small></div><button type="button" class="btn planner-lock" data-action="planner-lock" data-week="'+w+'" data-day="'+d+'" data-slot="'+s+'">'+(locked?'🔒 Bloqueada':'Bloquear')+'</button></div>'}).join('')+'</div>'}).join('')+'</section>').join('');
- root.innerHTML='<div class="planner-content"><header class="planner-review-header"><div class="planner-intro"><div class="eyebrow">PROPUESTA EDITABLE · CATÁLOGO '+escapeHTML(plannerProposal.catalogVersion)+'</div><h2 id="plannerReviewTitle">Revisa el siguiente ciclo</h2></div>'+actions+'</header><div class="planner-review-body"><section class="planner-overview" aria-label="Resumen del próximo ciclo"><div class="planner-overview-copy">'+metadata+'<p class="planner-quick-tip">Una semana base, repetida tres veces. Elige una receta para <strong>cambiar solo esa comida y fijarla.</strong></p>'+help+'</div>'+profileSummary+'</section>'+modeNotice+'<div class="planner-summary" aria-label="Repertorio de la propuesta"><span><strong>'+summary.preparations+'</strong> preparaciones</span><span><strong>'+summary.portionVariants+'</strong> variantes de ración adicionales</span><span>'+(summary.newPreparations===null?'Sin ciclo previo para comparar':'<strong>'+summary.newPreparations+'</strong> preparaciones nuevas frente al ciclo actual')+'</span><span>'+(summary.weeklyExceptions?summary.weeklyExceptions+' comidas distintas respecto a la semana base':'Mismos platos en las tres semanas')+'</span></div>'+weeks+'</div></div>';
- const body=root.querySelector('.planner-review-body');body.scrollTop=scrollTop;
- if(focusSelector)root.querySelector(focusSelector)?.focus({preventScroll:true});
+ const stored=JSON.stringify(state.plannerDraft);
+ if(plannerPersistedDraftSignature&&stored!==plannerPersistedDraftSignature){
+  const refreshed=cleanCyclePlan(state.plannerDraft||confirmedNextMenu());
+  if(refreshed){plannerProposal=refreshed;plannerChangeMessage='La revisión se ha actualizado con los cambios guardados en tu cuenta.'}
+  plannerPersistedDraftSignature=stored;
+ }
+ const signature=JSON.stringify(state.planningPreferences);
+ if(plannerPreferencesSignature&&signature!==plannerPreferencesSignature)plannerPreferencesNotice=true;
+ plannerPreferencesSignature=signature;
+ try{
+  const inspection=menuPlanner.inspect(plannerRequest(plannerProposal.start),plannerProposal);
+  plannerReviewView.render(document.getElementById('plannerContent'),{proposal:plannerProposal,week:plannerWeek,scope:plannerEditScope,
+   preferences:state.planningPreferences,inspection,summary:plannerCounts(plannerProposal.menus),profile:state.profile,recoveryCoverage:plannerProposal.recoveryFocus&&validMenuSnapshot(plannerProposal.menus)?plannerRecoveryCoverage(plannerProposal.menus):null,
+   hasSavedDraft:!!state.plannerDraft,preferencesChanged:plannerPreferencesNotice||Boolean(state.profile.injury)!==Boolean(plannerProposal.recoveryFocus),changeMessage:plannerChangeMessage},options);
+  return true;
+ }catch(error){showToast(error.message);return false}
 }
 function openPlannerDialog(){
  document.getElementById('cycleRenewalDialog').close();
+ plannerWeek=0;plannerEditScope='cycle';plannerChangeMessage='';plannerPreferencesNotice=plannerPreferencesNotice||Boolean(plannerPreferencesSignature&&plannerPreferencesSignature!==JSON.stringify(state.planningPreferences));plannerPreferencesSignature=JSON.stringify(state.planningPreferences);
+ plannerPersistedDraftSignature=JSON.stringify(state.plannerDraft);
  plannerProposal=cleanCyclePlan(state.plannerDraft||confirmedNextMenu());
- if(!plannerProposal){try{plannerProposal=buildCycleProposal(null);persistPlannerDraft()}catch(error){showToast(error.message||'No se pudo preparar el menú');return}}
+ if(!plannerProposal){try{plannerProposal=buildCycleProposal(null);plannerPreferencesNotice=false;persistPlannerDraft()}catch(error){showToast(error.message||'No se pudo preparar el menú');return}}
  else if(cycleHasEnded(state.start)&&dateFromISO(plannerProposal.start)<today()){plannerProposal.start=isoDate(today());plannerProposal.confirmedAt=null;persistPlannerDraft()}
- renderPlannerReview();const dialog=document.getElementById('plannerDialog');if(!dialog.open)dialog.showModal();
+ if(renderPlannerReview()===false)return;const dialog=document.getElementById('plannerDialog');if(!dialog.open)dialog.showModal();
 }
-function regeneratePlannerProposal(){try{plannerProposal=buildCycleProposal(plannerProposal);persistPlannerDraft();renderPlannerReview();showToast('Propuesta regenerada · se conservaron las comidas bloqueadas')}catch(error){showToast(error.message||'No se pudo generar el menú')}}
-function swapPlannerRecipe(el){if(!plannerProposal)return;const w=Number(el.dataset.week),d=Number(el.dataset.day),s=Number(el.dataset.slot),recipe=REC[el.value];if(!recipe||recipe.type!==SLOT_TYPES[s])return;plannerProposal.menus[w][d][s]=recipe.id;plannerProposal.locked[w][d][s]=true;persistPlannerDraft();renderPlannerReview()}
+function regeneratePlannerProposal(){try{
+ plannerProposal=buildCycleProposal(plannerProposal);plannerPreferencesNotice=false;plannerPreferencesSignature=JSON.stringify(state.planningPreferences);plannerChangeMessage='';
+ persistPlannerDraft();renderPlannerReview();
+ showToast(validMenuSnapshot(plannerProposal.menus)?'Propuesta regenerada · se conservaron las comidas bloqueadas':'Completa las comidas pendientes para conservar la propuesta');
+}catch(error){showToast(error.message||'No se pudo generar el menú')}}
+function swapPlannerRecipe(el){
+ if(!plannerProposal)return;
+ try{
+  const result=changeProposalRecipe(plannerProposal,{week:Number(el.dataset.week),day:Number(el.dataset.day),slot:Number(el.dataset.slot),recipeId:el.dataset.recipe||el.value,scope:plannerEditScope},RECIPES);
+  plannerProposal=result.plan;
+  plannerChangeMessage='Plato cambiado en '+result.changed.length+' '+(result.changed.length===1?'comida':'comidas')+'.'+(result.preserved.length?(result.preserved.length===1?' Se conservó 1 bloqueo de otra semana.':' Se conservaron '+result.preserved.length+' bloqueos de otras semanas.'):'');
+  persistPlannerDraft();renderPlannerReview({closeChoices:true});
+ }catch(error){showToast(error.message)}
+}
 function showPlannerRecipe(button){
  if(!plannerProposal)return;
  const week=Number(button.dataset.week),day=Number(button.dataset.day),slot=Number(button.dataset.slot);
- const ids=plannerProposal.menus?.[week]?.[day],id=ids?.[slot];
- if(!id||!REC[id])return;
- const usage=portionsForRecipes(ids.map(recipeId=>REC[recipeId]),0)[slot];
- modalCtx={id,source:'planner',week,day,slot,usage,opener:button};
+ const ids=plannerProposal.menus?.[week]?.[day],id=button.dataset.recipe||ids?.[slot];
+ if(!ids||!id||!REC[id]||slot<0||slot>4)return;
+ const preview=ids.slice();preview[slot]=id;
+ const completeDay=preview.every(recipeId=>REC[recipeId]),usage=completeDay?portionsForRecipes(preview.map(recipeId=>REC[recipeId]),0)[slot]:mealUsage(REC[id]);
+ modalCtx={id,source:'planner',candidate:id!==ids[slot],basePreview:!completeDay,week,day,slot,usage,opener:button};
  renderRecipeModal();
  const dialog=document.getElementById('recipeDialog');if(!dialog.open)dialog.showModal();
 }
-function togglePlannerLock(button){if(!plannerProposal)return;const w=Number(button.dataset.week),d=Number(button.dataset.day),s=Number(button.dataset.slot);plannerProposal.locked[w][d][s]=!plannerProposal.locked[w][d][s];persistPlannerDraft();renderPlannerReview()}
+function togglePlannerLock(button){if(!plannerProposal)return;const w=Number(button.dataset.week),d=Number(button.dataset.day),s=Number(button.dataset.slot);if(!REC[plannerProposal.menus?.[w]?.[d]?.[s]])return;plannerProposal.locked[w][d][s]=!plannerProposal.locked[w][d][s];plannerProposal.confirmedAt=null;persistPlannerDraft();renderPlannerReview()}
 function savePlannerProposal(){
  if(!plannerProposal||!validMenuSnapshot(plannerProposal.menus)){showToast('La propuesta no es válida');return}
  try{
@@ -680,7 +704,7 @@ function savePlannerProposal(){
   }
  }catch(error){showToast(error.message);return}
  state.nextMenu={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice())),confirmedAt:new Date().toISOString()};
- state.plannerDraft=null;save();
+ state.plannerDraft=null;plannerPreferencesNotice=false;save();
  const advanced=activateScheduledCycleIfDue();
  document.getElementById('plannerDialog').close();render();
  showToast(advanced?'El nuevo ciclo ya está activo':'Siguiente menú guardado para el '+formatDate(dateFromISO(state.nextMenu?.start||state.start),{day:'numeric',month:'long'}));
@@ -761,7 +785,7 @@ function updateAuthValidation(){
   if(!user?.id||passwordRecoveryActive)return;
   authLegalDialogs?.close({restore:false});
   const id=user.id;authSessionUserId=id;currentUserEmail=user.email||'Sesión iniciada';
-  if(currentUserId!==id){currentUserId=id;appReadyUserId=null;state=undefined;persistent=true;cloudReady=false;cloudRevision=0;lastCloudRefreshAt=0;menukiAdmin=false;proposalInbox=[];proposalInboxLoaded=false;proposalInboxLoading=false;proposalInboxBusy=false;proposalInboxError='';proposalEditingId=null;proposalEditingDraft=null;proposalActionToken++;proposalLoadToken++;proposalExportToken++;proposalExporting=false;recipeProposalDraft=newRecipeProposalDraft();recipeProposalClientId=newRecipeProposalClientId();view='inicio';selectUserLocalState(id)}
+  if(currentUserId!==id){planningPersistenceAvailable=false;plannerPreferencesNotice=false;plannerPreferencesSignature='';plannerPersistedDraftSignature='';plannerChangeMessage='';currentUserId=id;appReadyUserId=null;state=undefined;persistent=true;cloudReady=false;cloudRevision=0;lastCloudRefreshAt=0;menukiAdmin=false;proposalInbox=[];proposalInboxLoaded=false;proposalInboxLoading=false;proposalInboxBusy=false;proposalInboxError='';proposalEditingId=null;proposalEditingDraft=null;proposalActionToken++;proposalLoadToken++;proposalExportToken++;proposalExporting=false;recipeProposalDraft=newRecipeProposalDraft();recipeProposalClientId=newRecipeProposalClientId();view='inicio';selectUserLocalState(id)}
   if(appReadyUserId===id){document.getElementById('authShell').hidden=true;document.querySelector('.app').hidden=false;document.querySelector('.app').inert=false;document.getElementById('mobileNav').hidden=false;return}
   if(openingUserId===id)return;openingUserId=id;
   showLoadingOverlay('Cargando Menuki…','Estamos cargando los catálogos y los datos asociados a tu cuenta.');
@@ -776,7 +800,7 @@ function updateAuthValidation(){
   finally{if(openingUserId===id)openingUserId=null}
  }
  function closeAuthenticatedApp(){
-  supabaseTransport.resetCapabilities();
+  supabaseTransport.resetCapabilities();planningPersistenceAvailable=false;plannerPreferencesNotice=false;plannerPreferencesSignature='';plannerPersistedDraftSignature='';plannerChangeMessage='';
   clearTimeout(cloudSyncTimer);authSessionUserId=null;if(currentUserId)cloudArchivedCyclesByUser.delete(currentUserId);
   currentUserId=null;currentUserEmail='';appReadyUserId=null;passwordRecoveryActive=false;cloudReady=false;cloudRevision=0;cloudSyncPending=false;state=undefined;KEY=LOCAL_STATE_KEY;
   menukiAdmin=false;proposalInbox=[];proposalInboxLoaded=false;proposalInboxError='';proposalInboxLoading=false;proposalInboxBusy=false;proposalEditingId=null;proposalEditingDraft=null;proposalActionToken++;proposalLoadToken++;proposalExportToken++;proposalExporting=false;
@@ -1036,7 +1060,7 @@ function guideView(){
   '<section class="guide-card"><h3>Pesos y porciones</h3><p>Arroz, pasta, fideos, cuscús, quinoa y avena: <strong>peso seco</strong>. Legumbres: <strong>cocidas y escurridas</strong>. Carnes y pescados: <strong>antes de cocinar</strong>. Las calorías son orientativas; comprueba las etiquetas reales de Supermercado.</p></section>',
   '<section class="guide-card guide-wide"><h3>Organización de la semana '+(visibleWeek+1)+'</h3><p>Prepara verduras y reparte la proteína el domingo. Repasa las existencias los miércoles.</p><div class="prep-items">'+PREP.map(x=>{const k=visibleWeek+'#'+x[0];return '<label class="prep-item '+(state.prep[k]?'checked':'')+'"><input type="checkbox" data-change="prep" data-id="'+k+'" '+(state.prep[k]?'checked':'')+'><span>'+x[1]+'</span></label>'}).join('')+'</div></section>',
   '<section class="guide-card"><h3>Conservación</h3><p>Prepara por tandas, pero no guardes tres semanas de comida fresca en la nevera. Refrigera pronto, congela lo que no vayas a consumir en breve y extrema las precauciones con el arroz cocido, carnes y pescados.</p></section>',
-  '<section class="guide-card guide-wide"><h3>Prepara el siguiente ciclo</h3><p>En Menú puedes generar una semana base que se repite tres veces, con un repertorio familiar y pocas preparaciones nuevas entre ciclos. Puedes cambiar una comida sin modificar las otras semanas. Revisa los platos y pulsa <strong>Guardar</strong>. Un borrador sin confirmar no activa el próximo ciclo ni su compra.</p><p>Cuando el menú esté confirmado y falten tres días o menos para su inicio, Compra mostrará <strong>Ciclo actual</strong> y <strong>Próximo ciclo</strong>. Cada lista cubre solo el ciclo seleccionado y permite comprar 3, 7, 14 días o el período restante. Para el próximo ciclo se estima la despensa que quedará después de las comidas pendientes del actual.</p><p>Si el ciclo termina sin otro menú confirmado, Inicio y Menú muestran un bloqueo con acceso al planificador. Puedes seguir usando Compra, Despensa, Perfil y Actividad y peso. Al llegar la fecha, el menú confirmado se activa automáticamente.</p><div class="shop-actions"><button type="button" class="btn btn-primary" data-action="planner-open">Preparar próximo menú</button><button type="button" class="btn" data-action="calendar-reminder">Descargar recordatorio (.ics)</button></div></section>',
+  '<section class="guide-card guide-wide"><h3>Prepara el siguiente ciclo</h3><p>En Menú puedes generar una semana base que se repite tres veces, con un repertorio familiar y pocas preparaciones nuevas entre ciclos. Puedes cambiar un plato para las tres semanas o elegir «Solo esta comida». Los bloqueos de otras semanas se conservan. En Mi perfil y en las fichas puedes ajustar tus preferencias para futuras propuestas. Revisa los platos y pulsa <strong>Confirmar menú</strong>. Un borrador sin confirmar no activa el próximo ciclo ni su compra.</p><p>Cuando el menú esté confirmado y falten tres días o menos para su inicio, Compra mostrará <strong>Ciclo actual</strong> y <strong>Próximo ciclo</strong>. Cada lista cubre solo el ciclo seleccionado y permite comprar 3, 7, 14 días o el período restante. Para el próximo ciclo se estima la despensa que quedará después de las comidas pendientes del actual.</p><p>Si el ciclo termina sin otro menú confirmado, Inicio y Menú muestran un bloqueo con acceso al planificador. Puedes seguir usando Compra, Despensa, Perfil y Actividad y peso. Al llegar la fecha, el menú confirmado se activa automáticamente.</p><div class="shop-actions"><button type="button" class="btn btn-primary" data-action="planner-open">Preparar próximo menú</button><button type="button" class="btn" data-action="calendar-reminder">Descargar recordatorio (.ics)</button></div></section>',
   '<section class="guide-card guide-wide"><h3>Datos nutricionales</h3><p>Los valores de composición son genéricos y pueden variar según los productos concretos de Supermercado. Si tienes dudas clínicas durante la recuperación, consulta con un profesional sanitario.</p></section>'
  ].join('');
  return firstUseBanner()+'<div class="page-intro"><div class="eyebrow">PLANIFICACIÓN Y SEGUIMIENTO</div><h1>Guía de uso y planificación</h1><p>Empieza por los pasos en orden. Después puedes consultar los detalles de tu plan, compra y cuenta.</p></div><section class="guide-start" aria-labelledby="guideStartTitle"><div class="guide-start-heading"><span class="mini-kicker">POR DÓNDE EMPEZAR</span><h2 id="guideStartTitle">Tu recorrido en Menuki</h2><p>Una forma sencilla de poner en marcha el plan y usarlo cada día.</p></div><ol class="guide-step-grid">'+steps+'</ol></section><h2 class="guide-section-title">Detalles que puedes consultar</h2><div class="guide-grid">'+details+'</div>';
@@ -1157,6 +1181,7 @@ function render(){
  function showRecipe(id,day,slot,week=visibleWeek){const r=REC[id];if(!r)return;modalCtx={id,week:week==null?visibleWeek:Number(week),day:day==null?null:Number(day),slot:slot==null?null:Number(slot)};renderRecipeModal();const dlg=document.getElementById('recipeDialog');if(!dlg.open)dlg.showModal()}
 function renderRecipeModal(){
  if(!modalCtx)return;
+ const activePreference=document.activeElement?.dataset.action==='recipe-preference'?document.activeElement.dataset.preference:null;
  const root=document.getElementById('modalContent'),continuing=document.getElementById('recipeDialog').open&&root.dataset.recipeId===modalCtx.id,previousScroll=continuing?root.querySelector('.recipe-dialog-content')?.scrollTop||0:0,moreOpen=continuing&&!!root.querySelector('.recipe-more')?.open,restoreActionFocus=continuing&&root.contains(document.activeElement)&&document.activeElement?.dataset.action==='toggle-meal';
  root.dataset.recipeId=modalCtx.id;
  const ctx=modalCtx,r=REC[ctx.id],isPlanner=ctx.source==='planner',hasDay=!isPlanner&&ctx.day!==null&&ctx.slot!==null;
@@ -1168,7 +1193,7 @@ function renderRecipeModal(){
  const dateLabel=date?formatDate(dateFromISO(date),{day:'numeric',month:'short'}):'';
  const stateText=hasDay?(done(ctx.day,ctx.slot,ctx.week)?'Marcar como pendiente':future?'Disponible el '+dateLabel:'Registrar comida'):'';
  const recipeType=r.type==='desayuno'?'DESAYUNO':r.type==='comida'?'COMIDA':r.type==='cena'?'CENA':'SNACK';
- const targetNote=isPlanner?'Raciones de esta propuesta, calculadas con tu perfil y el resto de comidas de ese día, sin anticipar sesiones. Consultar la receta no cambia ni bloquea el menú.':hasDay
+ const targetNote=isPlanner?(ctx.basePreview?'Cantidades base de la receta: este día aún tiene platos pendientes de elegir. Sus raciones se calcularán al completar el día. Consultar la receta no cambia ni bloquea el menú.':'Raciones de esta propuesta, calculadas con tu perfil y el resto de comidas de ese día, sin anticipar sesiones. Consultar la receta no cambia ni bloquea el menú.'):hasDay
   ?(future&&!done(ctx.day,ctx.slot,ctx.week)
     ?'Esta comida está planificada para el '+dateLabel+'. Podrás registrarla cuando llegue el día.'
     :sessions.length?sessions.length+' '+(sessions.length===1?'sesión realizada':'sesiones realizadas')+' el '+dateLabel+'; su ajuste afecta solo las comidas aún pendientes.'
@@ -1178,12 +1203,13 @@ function renderRecipeModal(){
  const intro=r.intro?.trim()?'<p class="recipe-description">'+escapeHTML(r.intro)+'</p>':'';
  const tip=r.tip?.trim()?'<p><strong>Consejo:</strong> '+escapeHTML(r.tip)+'</p>':'';
  root.innerHTML=
-  '<header class="recipe-dialog-header"><div class="recipe-title-block"><div class="eyebrow">'+escapeHTML(recipeType)+' · '+escapeHTML(r.time)+' MIN · 1 PERSONA</div><h2 id="recipeDialogTitle">'+escapeHTML(r.name)+'</h2></div><dl class="recipe-metrics">'+metrics+'</dl><p class="recipe-metric-note">Valores nutricionales estimados por ración.</p></header>'+
+  '<header class="recipe-dialog-header"><div class="recipe-title-block"><div class="eyebrow">'+escapeHTML(recipeType)+' · '+escapeHTML(r.time)+' MIN · 1 PERSONA</div><h2 id="recipeDialogTitle">'+escapeHTML(r.name)+'</h2></div><dl class="recipe-metrics">'+metrics+'</dl><p class="recipe-metric-note">Valores nutricionales estimados por ración.</p>'+recipePreferenceControls(ctx.id,state.planningPreferences,planningPersistenceAvailable)+'</header>'+
   '<div class="recipe-dialog-content" tabindex="0" role="region" aria-label="Ingredientes y preparación">'+intro+'<div class="recipe-sections"><section aria-labelledby="recipeIngredientsTitle"><h3 id="recipeIngredientsTitle">Ingredientes</h3>'+recipeIngredients(r,finalUsage)+'</section><section aria-labelledby="recipeStepsTitle"><h3 id="recipeStepsTitle">Preparación</h3><ol class="steps-list">'+r.steps.map((step,i)=>'<li><span class="step-n">'+(i+1)+'</span><span>'+escapeHTML(step)+'</span></li>').join('')+'</ol></section></div>'+
   '<details class="recipe-more"><summary>'+(tip?'Consejo y cantidades':'Sobre las cantidades')+'</summary><div>'+tip+'<p>'+escapeHTML(targetNote)+'</p></div></details></div>'+
-  '<footer class="recipe-dialog-footer">'+(hasDay?'<button type="button" class="btn btn-primary" data-action="toggle-meal" data-week="'+escapeAttribute(ctx.week)+'" data-day="'+escapeAttribute(ctx.day)+'" data-slot="'+escapeAttribute(ctx.slot)+'" data-modal="1" '+(future&&!done(ctx.day,ctx.slot,ctx.week)?'disabled aria-disabled="true"':'')+'>'+ic('check')+' '+escapeHTML(stateText)+'</button>':'<button type="button" class="btn" data-action="close-modal">'+(isPlanner?'Volver a la revisión':'Cerrar receta')+'</button>')+'</footer>';
+  '<footer class="recipe-dialog-footer">'+(isPlanner&&ctx.candidate?'<button type="button" class="btn btn-primary" data-action="planner-choose-preview">Elegir esta receta</button>':'')+(hasDay?'<button type="button" class="btn btn-primary" data-action="toggle-meal" data-week="'+escapeAttribute(ctx.week)+'" data-day="'+escapeAttribute(ctx.day)+'" data-slot="'+escapeAttribute(ctx.slot)+'" data-modal="1" '+(future&&!done(ctx.day,ctx.slot,ctx.week)?'disabled aria-disabled="true"':'')+'>'+ic('check')+' '+escapeHTML(stateText)+'</button>':'<button type="button" class="btn" data-action="close-modal">'+(isPlanner?'Volver a la revisión':'Cerrar receta')+'</button>')+'</footer>';
  root.querySelector('.recipe-more').open=moreOpen;root.querySelector('.recipe-dialog-content').scrollTop=previousScroll;
  if(restoreActionFocus)root.querySelector('[data-action="toggle-meal"]')?.focus({preventScroll:true});
+ if(continuing&&activePreference)root.querySelector('[data-preference="'+activePreference+'"]')?.focus({preventScroll:true});
 }
 function toggleMeal(day,slot,week=visibleWeek){
  if(state.noActiveCycle){showToast('Selecciona primero el día de inicio del ciclo');return}
@@ -1266,6 +1292,12 @@ document.addEventListener('click',function(event){const btn=event.target.closest
  if(action==='profile-activity-select'){selectProfileActivity(btn.dataset.level);return}
  if(action==='proposal-help-open'){openRecipeProposalHelp(btn);return}
  if(action==='proposal-help-close'){closeRecipeProposalHelp();return}
+ if(action==='planning-preferences-open'){planningPreferencesController.open(btn);return}
+ if(action==='planning-preferences-close'){planningPreferencesController.close();return}
+ if(action==='recipe-preference'){planningPreferencesController.setRecipe(btn.dataset.recipe,btn.dataset.preference);return}
+ if(action==='planner-week'){plannerWeek=Math.max(0,Math.min(2,Number(btn.dataset.week)));renderPlannerReview({resetScroll:true});return}
+ if(action==='planner-swap'){swapPlannerRecipe(btn);return}
+ if(action==='planner-choose-preview'){if(modalCtx?.source==='planner'){swapPlannerRecipe({dataset:{week:modalCtx.week,day:modalCtx.day,slot:modalCtx.slot,recipe:modalCtx.id}});document.getElementById('recipeDialog').close()}return}
  if(action==='profile-guide-open'){document.getElementById('profileHelpDialog').showModal();return}
  if(action==='profile-guide-close'){document.getElementById('profileHelpDialog').close();return}
  if(action==='profile-help'){const wasOpen=btn.getAttribute('aria-expanded')==='true';document.querySelectorAll('.profile-help-trigger[aria-expanded="true"]').forEach(other=>{if(other!==btn){other.setAttribute('aria-expanded','false');other.closest('.profile-help')?.classList.add('is-dismissed')}});const help=btn.closest('.profile-help');help?.classList.toggle('is-dismissed',wasOpen);btn.setAttribute('aria-expanded',String(!wasOpen));return}
@@ -1352,6 +1384,7 @@ document.addEventListener('change',function(event){const el=event.target,action=
  if(el.id==='cycleStartMenu'){updateCycleStartDateInput(true);return}
  if(el.id==='cycleStartPicker'){if(!dateFromISO(el.value))return;document.getElementById('cycleStartMenu').value=formatEuropeanDate(el.value);updateCycleStartDateInput();document.querySelector('[data-action="open-cycle-calendar"]')?.focus();return}
  if(action==='cycle-setup-date'){cycleSetupDateDraft=el.value;return}
+ if(action==='planner-scope'){plannerEditScope=el.value;return}
  if(action==='proposal-recipe'){swapPlannerRecipe(el);return}
 
  if(action==='cart-check'){const id=el.dataset.food,r=shoppingModel().rows.find(x=>x.id===id);if(r){cartChange(id,'checked',el.checked);render();document.querySelector('[data-change="cart-check"][data-food="'+CSS.escape(id)+'"]')?.focus()}return}
@@ -1375,6 +1408,7 @@ document.addEventListener('input',function(event){
  }
  if(event.target.closest('#recipeProposalEditForm')){captureAdminProposalDraft();return}if(event.target.closest('#recipeProposalForm')){captureRecipeProposalDraft();return}if(event.target.closest('#profileForm'))updateProfilePreview();if(event.target.id==='shoppingSearch'){shoppingSearch=event.target.value;applyShoppingSearch();return}if(event.target.id==='recipeSearch'){recipeSearch=event.target.value;const node=document.getElementById('recipeResults');if(node)node.innerHTML=recipesList()}if(event.target.id==='pantrySearch'){pantrySearch=event.target.value;const node=document.getElementById('pantryResults');if(node)node.innerHTML=pantryListHTML()}});
 document.addEventListener('submit',function(event){
+ if(event.target.id==='planningPreferencesForm'){event.preventDefault();planningPreferencesController.submit(event.target);return}
  if(event.target.id==='cycleStartForm'){event.preventDefault();const iso=updateCycleStartDateInput(true);if(!iso){document.getElementById('cycleStartMenu')?.reportValidity();return}changeCycleStart(iso);return}
  if(event.target.id==='recipeProposalEditForm'){return saveRecipeProposalEdit(event)}
  if(event.target.id==='recipeProposalForm'){return submitRecipeProposal(event)}
@@ -1392,7 +1426,7 @@ document.addEventListener('submit',function(event){
  }
  if(event.target.id==='activityForm'){event.preventDefault();saveActivitySession(event.target);return}
   if(event.target.id!=='weightForm')return;event.preventDefault();const date=document.getElementById('weightDate').value,kg=Number(document.getElementById('weightKg').value);if(!dateFromISO(date)||!Number.isFinite(kg)||kg<30||kg>250){showToast('Revisa fecha y peso');return}state.weights=state.weights.filter(w=>w.date!==date);state.weights.push({date,kg});state.weights.sort((a,b)=>a.date.localeCompare(b.date));state.deletedWeightDates=(state.deletedWeightDates||[]).filter(x=>x!==date);if(state.profile.followWeight)state.cart={};save();render();showToast('Peso guardado · '+(state.profile.followWeight?'objetivos y compra recalculados':'sin cambiar tu peso de referencia'))});
-document.getElementById('recipeDialog').addEventListener('close',()=>{const opener=modalCtx?.source==='planner'?modalCtx.opener:null;modalCtx=null;if(opener?.isConnected&&document.getElementById('plannerDialog').open)opener.focus({preventScroll:true})});
+document.getElementById('recipeDialog').addEventListener('close',()=>{const ctx=modalCtx,opener=ctx?.source==='planner'?ctx.opener:null;modalCtx=null;if(ctx?.source==='planner'&&document.getElementById('plannerDialog').open)(opener?.isConnected?opener:(opener?.dataset.reviewFocus?document.querySelector('[data-review-focus="'+opener.dataset.reviewFocus+'"]'):null)||document.querySelector('[data-review-focus="change-'+ctx.week+'-'+ctx.day+'-'+ctx.slot+'"]'))?.focus({preventScroll:true})});
 document.getElementById('cycleStartDialog').addEventListener('close',()=>{
  if(document.getElementById('cycleStartDialog').open)return;
  cycleStartDraft=null;
@@ -1426,7 +1460,7 @@ async function refreshCloudState(force=false){
    if((await stateFingerprint(state))!== (await stateFingerprint(stateFromCloud(remote)))){cloudStatus('Cambios combinados · sincronizando','pending');scheduleCloudSync()}
    else cloudSyncedStatus();
   }else{await adoptCloudState(remote);cloudSyncedStatus()}
-  const advanced=activateScheduledCycleIfDue();alignCurrentDay();render();if(advanced)showToast('Ha comenzado el menú de tu siguiente ciclo');
+  const advanced=activateScheduledCycleIfDue();alignCurrentDay();render();if(document.getElementById('plannerDialog').open)renderPlannerReview();if(document.getElementById('recipeDialog').open)renderRecipeModal();if(advanced)showToast('Ha comenzado el menú de tu siguiente ciclo');
   cloudSyncLastError=null;cloudSyncRetryTask='sync';
   return true;
  }catch(error){cloudSyncLastError=error;cloudSyncRetryTask='refresh';cloudStatus('No se pudo actualizar desde Supabase · se conserva la copia local','error');console.error('Menuki cloud refresh failed',error);return false}

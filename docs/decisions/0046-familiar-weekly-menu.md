@@ -4,7 +4,7 @@
 - Fecha: 2026-10-21
 - Alcance: selección de propuestas futuras y su resumen; sustituye la política de variedad/novedad de ADR-0002 y ADR-0004
 
-Actualización (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) extiende este diseño. El [paquete 3](../planner/package-3-common-generator.md) implementa la entrada común para primer ciclo y renovación, preferencias y tiempos en dominio, comparación de candidatos y previsión de despensa. La renovación ya la usa; la nueva configuración inicial y la revisión semanal con cambios por defecto a tres semanas siguen pendientes. Este registro conserva el fundamento del selector; la familiaridad, repetición y renovación gradual continúan. Las restricciones explícitas y los bloqueos prevalecen sobre el presupuesto suave de novedad y sus excepciones se señalan.
+Actualización (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) extiende este diseño. El paquete 3 incorpora motor común, preferencias, tiempos, candidatos y previsión de despensa; el 4 añade persistencia y el [5](../planner/package-5-preferences-and-weekly-review.md) implementa localmente controles y revisión semanal con cambios por defecto a tres semanas. La nueva configuración inicial queda para el 6. Este registro conserva el fundamento del selector: familiaridad, repetición y renovación gradual. Restricciones y bloqueos prevalecen sobre el presupuesto suave de novedad.
 
 ## Contexto
 
@@ -19,7 +19,7 @@ Se revisaron los cinco PDF de `docs/nutritional-plan-example` como referencia or
 3. Con un ciclo previo válido, conservar gran parte del repertorio e introducir solo 2–3 preparaciones nuevas en todo el ciclo, o menos si no encajan. Las elecciones manuales prevalecen y pueden superar esa cifra.
 4. Una familia es el conjunto de IDs de alimentos, sin considerar cantidades, orden ni ID de receta. Los tipos y recetas originales permanecen. La agrupación es derivada y no modifica catálogos, esquemas ni persistencia.
 5. Favorecer ingredientes compartidos y despensa disponible. Simular con copias de saldo; nunca escribir movimientos por generar o prever compras. Generar también con despensa vacía.
-6. Cambiar una receta modifica solo ese espacio y lo bloquea. Regenerar conserva todos los bloqueos, aunque las tres semanas difieran. No se aprenden gustos permanentes. La biblioteca completa del tipo sigue disponible en los selectores.
+6. Según la ampliación de ADR-0047, implementada en el paquete 5, cambiar una receta afecta por defecto a esa posición en las tres semanas, preservando bloqueos de las otras; Solo esta comida afecta una posición. Las posiciones modificadas quedan bloqueadas y regenerar conserva todos los bloqueos. No se infieren gustos de los consumos; las preferencias son explícitas. El catálogo completo del tipo sigue disponible para elección manual.
 7. Mantener los cuatro objetivos, actividad registrada por fecha, snapshots, unidades, límites de porción y contabilidad de todos los ingredientes cuantificados. La recuperación ósea conserva su preferencia cualitativa.
 8. Aplicar solo al generar/regenerar propuestas futuras mediante los controles existentes. No reemplazar automáticamente menús activos, confirmados, borradores existentes ni comidas completadas. Sin migraciones ni cambios en Supabase.
 

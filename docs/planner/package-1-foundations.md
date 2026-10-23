@@ -8,7 +8,7 @@
 
 Se separa la lógica del perfil de `main.js` y se preparan modelos de dominio para la configuración inicial y las preferencias. Los módulos no acceden al DOM, al almacenamiento ni a Supabase.
 
-Al cerrar este paquete, la extracción del perfil ya se usaba en la aplicación con la normalización anterior; configuración y preferencias aún no intervenían en el arranque, selección ni sincronización. Posteriormente, el paquete 3 conecta el contrato de preferencias al motor; las nuevas pantallas siguen pendientes y el [paquete 4](package-4-persistence.md) incorpora la persistencia, con migración y siete diagnósticos estructurales confirmados por el propietario el 23/10/2026; la validación funcional alojada sigue pendiente. El primer menú fijo y los menús guardados se conservan.
+Al cerrar este paquete, la extracción del perfil ya se usaba con la normalización anterior; configuración y preferencias aún no intervenían en arranque, selección ni sincronización. Posteriormente, el 3 conecta las preferencias al motor, el [4](package-4-persistence.md) incorpora persistencia (migración y siete diagnósticos confirmados por el propietario el 23/10/2026) y el [5](package-5-preferences-and-weekly-review.md) implementa controles y revisión semanal probados localmente. La configuración guiada y la validación funcional alojada siguen pendientes. El primer menú fijo y los menús guardados se conservan.
 
 No se cambia el estado persistido v11 ni se añade SQL. Las migraciones locales v5-v11 siguen vigentes. Al cerrar este paquete la lectura remota requería el perfil completo de una cuenta inicializada; aceptar borradores incompletos en Supabase corresponde al paquete 4. Este paquete no activa el nuevo registro guiado.
 
@@ -68,7 +68,7 @@ Los tiempos son opcionales e independientes. `null` significa sin límite; un l�
 
 `applyPlanningPreferencesPatch` devuelve una copia validada y conserva los campos omitidos. Una omisión de un cliente anterior no debe convertirse en borrado; `normal` y `null` son retiradas expresas. Valores o secciones inválidos producen un error en lugar de perder preferencias. La conciliación entre dispositivos y la persistencia de estas operaciones quedan para el paquete 4.
 
-El [paquete 3](package-3-common-generator.md) aplica favoritas, No proponer y tiempos en el motor. No proponer afecta a la selección automática; la elección manual y sus bloqueos conservan las excepciones aceptadas. La persistencia se incorpora en el paquete 4, con migración y siete comprobaciones estructurales correctas según el propietario el 23/10/2026; los controles siguen pendientes del paquete 5.
+El [paquete 3](package-3-common-generator.md) aplica favoritas, No proponer y tiempos en el motor. No proponer afecta a la selección automática; la elección manual y sus bloqueos conservan las excepciones aceptadas. El 4 incorpora persistencia, con migración y siete comprobaciones correctas según el propietario el 23/10/2026; el 5 incorpora los controles, probados localmente.
 
 ## Comprobaciones
 
@@ -78,4 +78,4 @@ El [paquete 3](package-3-common-generator.md) aplica favoritas, No proponer y ti
 - Lectura remota: se conserva el error ante un perfil ausente en una cuenta inicializada, sin inventar uno para ocultar datos inconsistentes.
 - Sintaxis del módulo de entrada comprobada. No se acredita aquí validación de navegador, Auth, RLS, escrituras remotas ni publicación.
 
-Continuación: el [paquete 2](package-2-practical-portions.md) desarrolla raciones prácticas y sus límites; el [paquete 3](package-3-common-generator.md) utiliza los contratos de perfil y preferencias en el generador común. El [paquete 4](package-4-persistence.md) incorpora la persistencia nueva; el propietario confirma la migración y sus siete diagnósticos estructurales correctos el 23/10/2026. Las pantallas siguen pendientes.
+Continuación: el [paquete 2](package-2-practical-portions.md) desarrolla raciones prácticas; el [3](package-3-common-generator.md), el generador común; el [4](package-4-persistence.md), la persistencia (SQL confirmado por el propietario); y el [5](package-5-preferences-and-weekly-review.md), preferencias visibles y revisión semanal probadas localmente. Quedan configuración guiada, integración funcional alojada y publicación autorizada.

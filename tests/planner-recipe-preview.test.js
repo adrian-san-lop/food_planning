@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { escapeHTML, escapeAttribute } from '../js/ui/html.js';
+import { recipePreferenceControls } from '../js/ui/planning-preferences.js';
 
 const source = await readFile(new URL('../js/main.js', import.meta.url), 'utf8');
 const preview = source.slice(source.indexOf('function showPlannerRecipe('), source.indexOf('function togglePlannerLock('));
@@ -26,7 +27,7 @@ function harness() {
     recipeUsage: () => ({rice: 999}), mealUsage: () => ({rice: 75}),
     recipeIngredients: (_recipe, usage) => `<p>${usage.rice} g de arroz</p>`,
     getMacro: usage => ({k: usage.rice, p: 10, c: 20, f: 5}),
-    escapeHTML, escapeAttribute, nformat: String, ic: () => '',
+    escapeHTML, escapeAttribute, recipePreferenceControls, planningPersistenceAvailable:true, nformat: String, ic: () => '',
     mealKey: () => 'active', dateISOAt: () => '2026-10-21',
     activitySessionsForDate: () => [], isoDate: () => '2026-10-21', today: () => new Date(),
     formatDate: () => '21 oct', dateFromISO: value => new Date(value), done: () => false,
@@ -68,4 +69,18 @@ test('missing proposal or stale positions do not open a recipe dialog', () => {
   app.context.showPlannerRecipe({dataset: {week: '0', day: '0', slot: '0'}});
   assert.equal(app.dialog.open, false);
   assert.equal(app.calls.length, 0);
+});
+
+test('alternative preview computes its proposed day without making the choice until the explicit button is used',()=>{
+  const app=harness(),before=structuredClone(app.proposal);
+  app.context.showPlannerRecipe({dataset:{week:'0',day:'0',slot:'2',recipe:'alternative'}});
+  assert.equal(app.context.modalCtx.candidate,true);assert.match(app.root.innerHTML,/Elegir esta receta/);
+  assert.deepEqual(app.proposal,before);assert.deepEqual(app.calls[0].ids,['a','b','alternative','d','e']);
+});
+
+test('a recipe in an incomplete proposal remains readable with base quantities and cannot register a meal',()=>{
+  const app=harness();app.proposal.menus[0][0][0]=null;
+  app.context.showPlannerRecipe({dataset:{week:'0',day:'0',slot:'2'}});
+  assert.match(app.root.innerHTML,/75 g de arroz/);assert.doesNotMatch(app.root.innerHTML,/data-action="toggle-meal"/);
+  assert.equal(app.calls.length,0);
 });

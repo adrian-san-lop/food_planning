@@ -1,7 +1,7 @@
 # Paquete 3: generador común
 
 - Fecha: 23/10/2026.
-- Estado: **Implementado y probado localmente** en `chore/common-menu-generator`, desde `dev` limpio y actualizado (`609ca36`). Sin commit, publicación ni cambios en Supabase en este paquete.
+- Estado: **Incorporado a dev** junto con el paquete 4, según el propietario y la comprobación de `dev`/`origin/dev` antes del 5 (`a3b6af28c0ea`). Se desarrolló y probó localmente en `chore/common-menu-generator` desde `dev` limpio (`609ca36`); este paquete no añadió SQL. Los resultados de pruebas siguientes corresponden a su cierre.
 - Alcance: tercer paquete del [plan integrado](implementation-plan.md), según [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Qué se activa y qué queda preparado
@@ -10,7 +10,7 @@ La renovación del menú ya utiliza la entrada común `createMenuPlanner`: exige
 
 La misma entrada permite generar un primer ciclo sin historial. Está probada en dominio y por HTTP, pero el arranque de cuentas nuevas sigue utilizando el menú fijo actual. Activar el nuevo recorrido requiere la persistencia del paquete 4 y las pantallas del paquete 6; no se introduce una dependencia de tablas nuevas en el arranque.
 
-Las preferencias por receta y los tiempos se aplican en el motor cuando se suministran. Al cerrar el paquete 3 la interfaz no permitía editarlos ni guardarlos por cuenta. El [paquete 4](package-4-persistence.md) añade persistencia y suministra preferencias guardadas a la renovación con un esquema compatible; los controles siguen pendientes del paquete 5. La revisión sigue mostrando tres semanas y los cambios siguen siendo individuales hasta el paquete 5.
+Las preferencias y tiempos se aplican en el motor cuando se suministran. Al cerrar el paquete 3 no se podían editar ni guardar por cuenta; el [paquete 4](package-4-persistence.md) añade persistencia y el [5](package-5-preferences-and-weekly-review.md) incorpora controles y revisión semanal, probados localmente. La revisión del 5 permite cambios a tres semanas o una comida conservando bloqueos; sustituye la presentación anterior de las tres semanas completas con cambios exclusivamente individuales.
 
 ## Entrada y responsabilidades
 
@@ -63,7 +63,7 @@ La selección compara:
 
 El análisis devuelve el candidato elegido, puntuaciones y métricas, totales/objetivo/diferencias por fecha, resúmenes semanales y contadores de preparaciones. La diferencia es `total − objetivo`. `complete: true` acredita las 105 posiciones compatibles; **no** significa que se hayan alcanzado las kcal ni que el menú cumpla una tolerancia clínica.
 
-Los pesos de búsqueda son ajustes revisables de implementación: nutrición × 8; distribución × 2; repetición × 0,2; preparación × 0,15; diversidad de ingredientes normalizada × 0,1; cobertura de stock y preferencias restan × 0,15. No son porcentajes nutricionales. Los límites de ración nunca se relajan para mejorar una puntuación. La presentación de diferencias y alternativas en la nueva revisión corresponde al paquete 5.
+Los pesos de búsqueda son ajustes revisables de implementación: nutrición × 8; distribución × 2; repetición × 0,2; preparación × 0,15; diversidad de ingredientes normalizada × 0,1; cobertura de stock y preferencias restan × 0,15. No son porcentajes nutricionales. Los límites de ración nunca se relajan para mejorar una puntuación. El paquete 5 presenta diferencias y alternativas en la nueva revisión local.
 
 ## Previsión de despensa
 

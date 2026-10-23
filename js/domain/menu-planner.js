@@ -14,9 +14,9 @@ const locksFor = draft => Array.from({length: 3}, (_, w) => Array.from({length: 
     return value === true;
   })));
 
-function eligibility(recipe, day, startDate, preferences) {
+export function recipePlanningIssue(recipe, date, preferences) {
   if (preferences.recipePreferences[recipe.id] === 'do_not_propose') return 'not_proposed';
-  const weekday = addDays(startDate, day).getUTCDay();
+  const weekday = date.getUTCDay();
   const limit = weekday !== 0 && weekday !== 6 ? preferences.weekdayTimeLimits[recipe.type] : null;
   if (limit != null) {
     if (typeof recipe.time !== 'number' || !Number.isFinite(recipe.time) || recipe.time < 0) return 'unknown_time';
@@ -24,6 +24,9 @@ function eligibility(recipe, day, startDate, preferences) {
   }
   return null;
 }
+
+const eligibility = (recipe, day, startDate, preferences) =>
+  recipePlanningIssue(recipe, addDays(startDate, day), preferences);
 
 /** Common entry for first plans and renewals. Domain only; no storage or Auth.
  * Profile confirmation is supplied by the account adapter; server enforcement

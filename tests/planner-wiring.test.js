@@ -72,3 +72,15 @@ test('the actual renewal adapter supplies persisted exclusions without replacing
   assert.equal(proposal.menus.flat(2).includes(excluded),false);
   assert.equal(JSON.stringify(state),before);
 });
+
+test('incomplete proposals are reviewable but never overwrite the last complete synced draft',()=>{
+  const {context,state}=harness();
+  state.planningPreferences={recipePreferences:{},weekdayTimeLimits:{comida:1,cena:1}};
+  const pending=context.buildCycleProposal(null);assert.equal(pending.menus.flat(2).some(id=>id===null),true);
+  state.plannerDraft={keep:'last complete draft'};let writes=0;
+  context.save=()=>writes++;context.cloneMenus=structuredClone;
+  context.plannerProposal=pending;
+  context.validMenuSnapshot=menus=>menus.flat(2).every(Boolean);
+  vm.runInContext(source.slice(source.indexOf('function persistPlannerDraft('),source.indexOf('function plannerCounts(')),context);
+  assert.equal(context.persistPlannerDraft(),false);assert.equal(writes,0);assert.deepEqual(state.plannerDraft,{keep:'last complete draft'});
+});

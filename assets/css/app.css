@@ -2378,3 +2378,123 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .proposal-editor-ingredient{grid-template-columns:minmax(0,1fr) 44px}
  .proposal-editor-review{min-height:44px}
 }
+
+/* Personal planning preferences and one-week proposal review (package 5). */
+.profile-heading-tools{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}
+.profile-heading-tools>.btn{min-height:44px;white-space:normal;text-align:center;flex:none}
+.planning-preferences-dialog{width:min(660px,calc(100% - 28px));max-height:90dvh;padding:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;color:var(--ink);background:var(--white)}
+.planning-preferences-dialog[open]{display:flex;flex-direction:column}
+.planning-preferences-dialog::backdrop{background:rgba(var(--shadow-rgb),.5)}
+#planningPreferencesContent{display:flex;flex-direction:column;max-height:inherit;min-height:0;width:100%}
+.preferences-dialog-heading{display:flex;flex:none;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;border-bottom:1px solid var(--line)}
+.preferences-dialog-heading h2{margin:0;font-size:24px}
+.preferences-dialog-heading .btn{min-height:44px}
+.preferences-dialog-body{padding:20px 24px;overflow-y:auto;min-height:0;overscroll-behavior:contain;line-height:1.5}
+.preferences-dialog-body>p{margin:0 0 20px;color:var(--ink-soft)}
+#planningPreferencesForm fieldset{margin:0;padding:16px;border:1px solid var(--line);border-radius:12px;min-width:0}
+#planningPreferencesForm legend{font-weight:650;padding:0 5px}
+#planningPreferencesForm fieldset>p{margin:0 0 14px;color:var(--ink-soft)}
+.planning-time-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.planning-time-fields label{display:flex;flex-direction:column;gap:6px;font-weight:600;min-width:0}
+.planning-time-fields small{font-weight:400;font-size:12px;color:var(--muted)}
+.planning-time-input{display:flex;align-items:center;gap:8px;font-weight:400}
+.planning-time-input input{min-width:0;width:100%;min-height:44px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--white)}
+.planning-time-input>span{color:var(--muted);font-size:12px}
+.planning-preferences-note{font-size:13px;color:var(--ink-soft);margin:16px 0}
+.preferences-dialog-body .dialog-actions{justify-content:flex-end;flex-wrap:wrap;margin:0 0 24px}
+.preferences-dialog-body .dialog-actions .btn{min-height:44px}
+.preferences-dialog-body h3{margin:0 0 12px}
+.marked-recipes{list-style:none;margin:0;padding:0}
+.marked-recipes li{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 0;border-top:1px solid var(--line)}
+.marked-recipes strong{font-size:14px;overflow-wrap:anywhere}
+.marked-recipes small{display:block;color:var(--muted);margin-top:4px}
+.marked-recipes .btn{flex:none;font-size:12px;min-height:44px}
+.recipe-preference{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.recipe-preference>span{display:block;color:var(--ink-soft);font-size:12px;font-weight:650;margin-bottom:6px}
+.recipe-preference-options{display:flex;gap:6px;flex-wrap:wrap}
+.recipe-preference-options .btn{min-height:44px;font-size:13px;justify-content:center;padding:8px 12px}
+.recipe-preference-options [aria-pressed=true]{color:var(--accent-dark);border-color:var(--accent);background:var(--accent-tint)}
+.recipe-preference small{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-top:6px}
+.recipe-preference-badge{display:inline-flex;align-self:flex-start;margin-top:5px;padding:3px 8px;background:var(--accent-tint);border-radius:6px;font-size:11px;color:var(--accent-dark)}
+.recipe-dialog-footer{gap:8px;flex-wrap:wrap}
+.planner-week-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:22px}
+.planner-week-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.planner-week-tabs .btn{min-height:44px;padding:8px 13px;justify-content:center}
+.planner-week-tabs [aria-pressed=true]{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.planner-edit-scope{min-width:0;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:0}
+.planner-edit-scope legend{font-size:12px;font-weight:650;padding:0 4px}
+.planner-edit-scope label{display:inline-flex;align-items:center;gap:6px;min-height:36px;margin-right:10px;font-size:13px;cursor:pointer}
+.planner-edit-scope input{accent-color:var(--accent);width:17px;height:17px}
+.planner-edit-scope small{display:block;color:var(--muted);font-size:11px}
+.planner-change-status{margin:12px 0;color:var(--accent-dark);font-size:13px;line-height:1.4}
+.planner-change-status:empty{display:none}
+.planner-review-body .planner-day{padding:14px 16px;margin:12px 0}
+.planner-day-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.planner-day-heading h3{margin:0;text-transform:capitalize}
+.planner-day-heading>span{font-size:11px;color:var(--muted);line-height:1.4}
+.planner-review-body .planner-meal{display:grid;grid-template-columns:100px minmax(0,1fr) 100px;gap:10px;padding:12px 0;align-items:center;border-top:1px solid var(--line)}
+.planner-meal-info{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
+.planner-recipe-title{border:0;padding:3px 0;color:var(--accent-dark);font-size:15px;font-weight:650;text-align:left;background:none;line-height:1.4;overflow-wrap:anywhere;min-height:32px;text-decoration:underline;text-underline-offset:3px}
+.planner-meal-meta{font-size:12px;color:var(--muted);line-height:1.4}
+.planner-review-body .planner-lock{grid-column:3;grid-row:auto;min-height:44px;font-size:12px}
+.planner-lock[aria-pressed=true]{background:var(--accent-tint);border-color:var(--accent-line);color:var(--accent-dark)}
+.planner-choices{grid-column:2/-1;min-width:0;color:var(--ink-soft);font-size:13px}
+.planner-choices>summary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--white);font-weight:600;color:var(--ink)}
+.planner-choices>div{margin-top:10px;padding:14px;background:var(--surface-subtle);border-radius:12px}
+.planner-choices p{margin:0 0 10px}
+.planner-choices label{display:flex;flex-direction:column;gap:6px;margin:14px 0 8px;font-weight:600;line-height:1.4}
+.planner-review-body .planner-choices select{width:100%;min-height:44px;font-size:14px}
+.planner-choices small{display:block;line-height:1.5}
+.planner-suggestions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.planner-suggestion{display:flex;flex-direction:column;gap:5px;min-width:0}
+.planner-review-body .planner-suggestion .btn{white-space:normal;text-align:left;align-items:flex-start;flex-direction:column;min-height:44px;font-size:13px;line-height:1.4;overflow-wrap:anywhere}
+.planner-review-body .planner-suggestion>.btn:first-child{flex:1;background:var(--white)}
+.planner-meal-issue,.planner-meal-warning{margin:6px 0 0;color:var(--warning-ink);font-size:12px;line-height:1.5}
+.planner-meal--issue{background:var(--warning-surface)}
+.planner-profile-warning{flex-wrap:wrap}
+@media(max-width:850px){
+ .profile-heading-tools{flex-wrap:wrap;gap:8px}
+ .profile-heading-tools .profile-account-host{width:auto}
+ .planner-review-header{align-items:flex-start;gap:12px;padding:20px 54px 16px 18px;flex-wrap:wrap}
+ .planner-review-header h2{font-size:24px}
+ .planner-actions{width:100%;justify-content:flex-start;flex-wrap:wrap}
+ .planner-review-body{padding:16px 18px}
+ .planner-week-toolbar{display:block}
+ .planner-edit-scope{margin-top:12px}
+ .planner-review-body .planner-meal{grid-template-columns:85px minmax(0,1fr) 90px}
+ .planner-suggestions{grid-template-columns:1fr}
+}
+@media(max-width:650px){
+ .profile-heading-tools{width:100%;justify-content:space-between}
+ .preferences-dialog-heading{padding:16px}
+ .preferences-dialog-heading h2{font-size:21px}
+ .preferences-dialog-body{padding:16px}
+ .planning-time-fields{grid-template-columns:1fr}
+ .planning-time-input input{font-size:16px}
+ .recipe-preference-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
+ .recipe-preference-options .btn{padding:7px 4px;font-size:12px;white-space:normal;gap:3px}
+ .planner-review-body .planner-day{padding:12px}
+ .planner-review-body .planner-meal{grid-template-columns:minmax(0,1fr) 92px;gap:7px}
+ .planner-meal .planner-slot{grid-column:1/-1;font-size:12px;font-weight:650}
+ .planner-meal-info{grid-column:1}
+ .planner-review-body .planner-lock{grid-column:2;grid-row:auto}
+ .planner-choices{grid-column:1/-1}
+ .planner-recipe-title{font-size:14px;min-height:44px}
+ .planner-review-body .planner-choices select{font-size:16px}
+ .planner-edit-scope label{min-height:44px}
+ .marked-recipes li{align-items:flex-start;flex-wrap:wrap}
+}
+
+.planner-tools{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin:12px 0}
+.planner-tools>.btn{min-height:44px}
+.planner-tools .planner-help summary{min-height:44px}
+.planner-tools .planner-help[open]{flex:1 0 100%}
+@media(max-width:650px){
+ .planner-tools>.btn,.planner-tools .planner-help summary{font-size:12px;padding:7px 9px}
+ .planner-review-body .planner-quick-tip{margin:10px 0;font-size:13px}
+ .planner-review-body .planner-summary{margin:10px 0}
+ .planner-review-body .planner-summary>span{padding:6px 9px;font-size:12px}
+ .planner-week-toolbar{margin-top:12px}
+ .planner-week-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .planner-week-tabs .btn{padding:7px 5px;font-size:12px;white-space:normal;line-height:1.3}
+}
