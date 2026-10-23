@@ -1,7 +1,7 @@
 # Paquete 2: raciones prácticas
 
 - Fecha: 22/10/2026.
-- Estado: **Implementado y probado localmente** en `chore/practical-portions`, desde `dev` limpio y actualizado. Sin commit, publicación ni cambios en Supabase en este paquete.
+- Estado: **Implementado y probado localmente** en `chore/practical-portions`; incorporado por el propietario a `dev` antes del paquete 3 (base `609ca36`). Este registro no acredita una nueva validación de la web publicada. No requirió cambios en Supabase.
 - Alcance: segundo paquete del [plan integrado](implementation-plan.md), según [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Comportamiento
@@ -80,4 +80,4 @@ No hay cambios de tablas, RPC, contrato de sincronización ni estado personal v1
 - Ambos catálogos validados también contra JSON Schema Draft 2020-12. Los informes nutricionales anteriores siguen coincidiendo, sin recalcular ni alterar evidencias históricas.
 - Navegador por HTTP local: módulos y catálogos reales 0.10.0, las 112 recetas y cuatro objetivos (448 días evaluados) con datos sintéticos. Sin iniciar Auth ni escribir en Supabase; página, pestaña y servidor de prueba retirados al finalizar. No equivale a validar el recorrido autenticado publicado.
 
-El siguiente paquete es el **generador común** para primer ciclo y renovaciones, con preferencias, tiempos, evaluación semanal y previsión de despensa, preservando familiaridad y bloqueos.
+Continuación: el [paquete 3](package-3-common-generator.md) implementa el generador común, con preferencias, tiempos, evaluación semanal y previsión de despensa, preservando familiaridad y bloqueos. La persistencia y las nuevas pantallas se desarrollan después.

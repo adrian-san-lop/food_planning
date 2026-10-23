@@ -4,7 +4,7 @@
 - Fecha: 2026-10-21
 - Alcance: selección de propuestas futuras y su resumen; sustituye la política de variedad/novedad de ADR-0002 y ADR-0004
 
-Actualización de diseño (22/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) acepta extender el generador al primer ciclo con perfil confirmado, preferencias explícitas y una revisión de semana base cuyo cambio se aplica por defecto a tres semanas, con opción individual y conservación de bloqueos. Esa evolución está pendiente de implementación; este registro conserva la descripción del generador ya implementado. La familiaridad, la repetición semanal y la renovación gradual siguen vigentes.
+Actualización (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) extiende este diseño. El [paquete 3](../planner/package-3-common-generator.md) implementa la entrada común para primer ciclo y renovación, preferencias y tiempos en dominio, comparación de candidatos y previsión de despensa. La renovación ya la usa; la nueva configuración inicial y la revisión semanal con cambios por defecto a tres semanas siguen pendientes. Este registro conserva el fundamento del selector; la familiaridad, repetición y renovación gradual continúan. Las restricciones explícitas y los bloqueos prevalecen sobre el presupuesto suave de novedad y sus excepciones se señalan.
 
 ## Contexto
 

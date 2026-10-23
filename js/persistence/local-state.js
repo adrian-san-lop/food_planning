@@ -1,3 +1,5 @@
+import { CURRENT_STATE_VERSION } from './state-normalization.js?v=20261023-planning-persistence';
+
 export function loadLocalState({ key, cleanState, emptyState, getStorage = () => globalThis.localStorage, onError = () => {} }) {
   try {
     const storage = getStorage();
@@ -15,15 +17,22 @@ export function loadLocalState({ key, cleanState, emptyState, getStorage = () =>
         }
         return parsed;
       }
+      // A current-format planning draft must not be silently replaced by an
+      // empty account if it is invalid. Keep the original bytes for recovery.
+      if (original.v >= CURRENT_STATE_VERSION) throw Object.assign(
+        new Error('La copia de trabajo guardada no pasa las validaciones. Se conserva en este navegador.'),
+        { code: 'PERSISTED_STATE_INVALID' },
+      );
     }
-  } catch {
+  } catch (error) {
     onError();
+    if (error.code === 'PERSISTED_STATE_INVALID') throw error;
   }
   return emptyState();
 }
 
 export function saveLocalState({ key, state, getStorage = () => globalThis.localStorage, updateEditedAt = true }) {
-  state.v = 11;
+  state.v = CURRENT_STATE_VERSION;
   try {
     const storage = getStorage();
     storage.setItem(key, JSON.stringify(state));

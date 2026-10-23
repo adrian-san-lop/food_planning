@@ -196,7 +196,7 @@ function mergeArchives(baseRows, localRows, remoteRows) {
 
 function mergeableState(state = {}) {
   return {
-    profile: state.profile || {},
+    profile: Object.hasOwn(state, 'profile') ? state.profile : {},
     profileConfirmed: state.profileConfirmed === true,
     noActiveCycle: state.noActiveCycle === true,
     activeCycleId: state.activeCycleId || null,
@@ -216,6 +216,10 @@ function mergeableState(state = {}) {
     cart: state.cart || {},
     cartExtras: state.cartExtras || [],
     lastBackupAt: state.lastBackupAt || null,
+    // Keep omission distinguishable from an explicit normal/null reset. Old
+    // reconciliation bases have no knowledge of these values.
+    ...Object.fromEntries(['setupMode', 'setupDraft', 'planningPreferences']
+      .filter(key => Object.hasOwn(state, key)).map(key => [key, state[key]])),
   };
 }
 
@@ -268,6 +272,12 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   result.reversedDone = activePlan?.reversedDone || {};
   result.profile = mergeValue(base.profile, local.profile, remote.profile);
   result.profileConfirmed = mergeValue(base.profileConfirmed, local.profileConfirmed, remote.profileConfirmed);
+  for (const key of ['setupMode', 'setupDraft', 'planningPreferences']) {
+    const baseline = valueAt(base, key), localValue = valueAt(local, key), remoteValue = valueAt(remote, key);
+    const value = mergeValue(baseline, localValue === MISSING ? baseline : localValue,
+      remoteValue === MISSING ? baseline : remoteValue);
+    if (value !== MISSING && value !== undefined) result[key] = value;
+  }
   // Cycle existence must follow the same winning value as its date and menu.
   // Merging this flag separately can produce an active plan marked as missing
   // (or vice versa), which may submit a snapshot without the selected cycle.

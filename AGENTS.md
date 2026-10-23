@@ -34,7 +34,7 @@ These instructions apply to the whole repository.
 - Keep the UI in Spanish. Keep `AGENTS.md` and `context.md` in English; write other project documentation in Spanish unless the owner asks otherwise.
 - `menuki.html` is the app shell and loads `assets/css/app.css` and the `js/main.js` ES-module entry. `data/foods.json` and `data/recipes.json` are the canonical generic catalogs; derive runtime models from them instead of maintaining duplicate catalog literals. The fixed initial menu remains a code template of stable recipe IDs.
 - Supabase Auth manages accounts, and personal data, including next-cycle proposals, syncs to relational Supabase tables. `localStorage` is a browser working copy. The configured project has the authentication and cloud-sync migrations applied; changes reach GitHub Pages after publication.
-- State format v5 is the oldest supported persisted browser state; current state is v11. Keep v5-v11 local-storage migrations for existing installations, do not add v1-v4 migrations, and do not offer personal-state JSON import or restore controls.
+- State format v5 is the oldest supported persisted browser state; current state is v12. Keep v5-v11 local-storage migrations plus the v12 planning-fields migration for existing installations, do not add v1-v4 migrations, and do not offer personal-state JSON import or restore controls.
 - Do not add export, import, or restore controls for personal state or periodic backup reminders. The only JSON download exception is the admin-only recipe proposal package documented in docs/schemas/recipe-proposal-export.schema.json.
 
 ## Catalogs and planner

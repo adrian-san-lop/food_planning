@@ -6,6 +6,7 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node tests/run.js"
+    "test": "node tests/run.js",
+    "test:sql": "node tests/sql/planning-persistence.mjs"
   }
 }

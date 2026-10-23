@@ -1,10 +1,13 @@
-const CURRENT_STATE_VERSION = 11;
-const SUPPORTED_STATE_VERSIONS = [5, 6, 7, 8, 9, 10, 11];
+import { readPlanningState } from './planning-state.js?v=20261023-planning-persistence';
+import { createProfileDraft, validateProfileDraft } from '../domain/profile.js?v=20261022-planner-foundations';
+
+const CURRENT_STATE_VERSION = 12;
+const SUPPORTED_STATE_VERSIONS = [5, 6, 7, 8, 9, 10, 11, 12];
 const RECIPE_GRAMS_TO_PIECES = new Set(['banana', 'apple', 'kiwi', 'mandarin', 'orange', 'pear', 'seasonFruit', 'bread']);
 
 /**
  * Builds the normalizer for Menuki's browser working copy. Conversion rules are
- * injected so this module can be tested against the supported v5-v11 migration path.
+ * injected so this module can be tested against the supported v5-v12 migration path.
  */
 export function createStateNormalizer({
   emptyState,
@@ -195,7 +198,13 @@ export function createStateNormalizer({
       || !obj.done || typeof obj.done !== 'object' || !obj.stock || typeof obj.stock !== 'object'
       || Object.keys(obj.done).length > 3000) return null;
     const state = emptyState();
-    state.profile = sanitizeProfile(obj.profile);
+    state.v = CURRENT_STATE_VERSION;
+    try { Object.assign(state, readPlanningState(obj.v < 12 ? {} : obj)); }
+    catch { return null; }
+    if (state.setupMode === 'guided') {
+      if (obj.profile != null && !validateProfileDraft(obj.profile).valid) return null;
+      state.profile = obj.profile == null ? null : createProfileDraft(obj.profile);
+    } else state.profile = sanitizeProfile(obj.profile);
     state.profileConfirmed = obj.profileConfirmed === true;
     state.start = obj.start;
     state.noActiveCycle = obj.noActiveCycle === true;

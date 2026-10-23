@@ -21,7 +21,7 @@ function plan() {
     generatedAt: '2026-10-21T12:00:00Z', confirmedAt: null};
 }
 function harness({draft = null, confirmed = null, expired = false} = {}) {
-  const calls = {generated: 0, persisted: 0, rendered: 0, opened: 0, closed: 0};
+  const calls = {generated: 0, persisted: 0, rendered: 0, opened: 0, closed: 0, feedback: []};
   const dialog = {open: false, showModal() { this.open = true; calls.opened++; }};
   const state = {start: '2026-10-13', plannerDraft: draft};
   const context = vm.createContext({
@@ -35,6 +35,7 @@ function harness({draft = null, confirmed = null, expired = false} = {}) {
     confirmedNextMenu: () => confirmed,
     cycleHasEnded: () => expired,
     buildCycleProposal: () => { calls.generated++; return plan(); },
+    showToast: message => { calls.feedback.push(message); },
     persistPlannerDraft: () => { calls.persisted++; },
     renderPlannerReview: () => { calls.rendered++; },
     document: {getElementById: id => {
@@ -88,4 +89,14 @@ test('an expired draft opens with a new proposed date without changing its saved
   assert.equal(app.calls.generated, 0);
   assert.equal(app.calls.persisted, 1);
   assert.equal(app.dialog.open, true);
+});
+
+test('generation errors stay inside planner feedback and never persist or open a broken proposal', () => {
+  const app = harness();
+  app.context.buildCycleProposal = () => { throw new TypeError('Confirma un perfil válido en Mi perfil'); };
+  assert.doesNotThrow(app.open);
+  assert.equal(app.calls.opened, 0);
+  assert.equal(app.calls.persisted, 0);
+  assert.equal(app.calls.rendered, 0);
+  assert.deepEqual(app.calls.feedback, ['Confirma un perfil válido en Mi perfil']);
 });

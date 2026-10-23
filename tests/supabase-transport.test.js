@@ -5,6 +5,7 @@ import { createSupabaseTransport } from '../js/persistence/supabase-transport.js
 test('cloud snapshot does not read the retired shortfalls table', async () => {
   const requestedTables = [];
   const getClient = () => ({
+    rpc: async () => ({data: null, error: {code: 'PGRST202'}}),
     from(table) {
       requestedTables.push(table);
       const query = {
@@ -29,6 +30,7 @@ test('cloud snapshot does not read the retired shortfalls table', async () => {
 
 test('cloud snapshot still surfaces unrelated table read errors', async () => {
   const getClient = () => ({
+    rpc: async () => ({data: null, error: {code: 'PGRST202'}}),
     from() {
       return {
         select() { return this; },

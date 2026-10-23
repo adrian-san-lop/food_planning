@@ -5,6 +5,7 @@ import { createInventoryUnitService } from '../js/domain/inventory-units.js';
 import { normalizeLegacyDeduction } from '../js/domain/inventory-balance.js';
 import { dateFromISO, isoDate } from '../js/domain/dates.js';
 import { sanitizeProfile } from '../js/domain/profile.js';
+import { initialPlanningState } from '../js/persistence/planning-state.js';
 
 const foods = {
   apple: { unit: 'ud', recipeUnit: 'ud', approximateEdibleWeight_g_per_unit: 180 },
@@ -20,7 +21,7 @@ const inventoryUnits = createInventoryUnitService({
 
 function createNormalizer() {
   return createStateNormalizer({
-    emptyState: () => ({ v: 11, start: '2026-10-13', profile: {}, done: {}, stock: {}, movements: [] }),
+    emptyState: () => ({ v: 12, start: '2026-10-13', profile: {}, done: {}, stock: {}, movements: [] }),
     getFood: () => legacyFoods,
     inventoryUnits,
     normalizeLegacyDeduction,
@@ -40,17 +41,38 @@ function baseState(v) {
   return { v, start: '2026-10-13', done: {}, stock: {} };
 }
 
-test('local state normalizer accepts exactly v5-v11 and returns the current v11 shape', () => {
+test('v11 to v12 migration adds empty planning fields without changing menus, history or confirmation', () => {
+  const raw = {...baseState(11), profileConfirmed: true, noActiveCycle: true};
+  const result = createNormalizer().cleanState(raw);
+  assert.equal(result.v,12);
+  assert.deepEqual(result.planningPreferences,initialPlanningState().planningPreferences);
+  assert.equal(result.setupMode,'legacy'); assert.equal(result.profileConfirmed,true);
+  assert.equal(result.noActiveCycle,true); assert.deepEqual(result.done,{});
+});
+
+test('v12 preserves partial setup, explicit preference resets and validates invalid persisted planning data', () => {
+  const raw = {...baseState(12),...initialPlanningState('guided'),profile:null,noActiveCycle:true};
+  raw.setupDraft.profile.age=34;
+  raw.planningPreferences.recipePreferences={recipe_one:'normal',recipe_two:'do_not_propose'};
+  const normalized=createNormalizer().cleanState(raw);
+  assert.equal(normalized.profile,null);assert.equal(normalized.setupDraft.profile.age,34);
+  assert.deepEqual(normalized.planningPreferences,raw.planningPreferences);
+  const bad=structuredClone(raw);bad.planningPreferences.weekdayTimeLimits.cena=0;
+  assert.equal(createNormalizer().cleanState(bad),null);
+  bad.planningPreferences=null;assert.equal(createNormalizer().cleanState(bad),null);
+});
+
+test('local state normalizer accepts exactly v5-v12 and returns the current v12 shape', () => {
   const { cleanState } = createNormalizer();
-  for (const version of [5, 6, 7, 8, 9, 10, 11]) {
-    assert.equal(cleanState(baseState(version)).v, 11);
+  for (const version of [5, 6, 7, 8, 9, 10, 11, 12]) {
+    assert.equal(cleanState(baseState(version)).v, 12);
   }
-  for (const version of [4, 12]) assert.equal(cleanState(baseState(version)), null);
+  for (const version of [4, 13]) assert.equal(cleanState(baseState(version)), null);
 });
 
 test('v5-v11 states keep real profile values and confirmation through the extracted compatibility service', () => {
   const { cleanState } = createNormalizer();
-  for (const version of [5, 6, 7, 8, 9, 10, 11]) {
+  for (const version of [5, 6, 7, 8, 9, 10, 11, 12]) {
     const raw = { ...baseState(version), noActiveCycle: true, profileConfirmed: true,
       profile: { sex: 'female', age: 42, height: 168, weight: 65, activity: 'high', goal: 'recomp',
         manualRmr: 1500, autoPortions: false, followWeight: true, injury: true } };
@@ -59,7 +81,7 @@ test('v5-v11 states keep real profile values and confirmation through the extrac
     assert.deepEqual(normalized.profile, { ...raw.profile, activity: 'moderate' });
     assert.equal(normalized.profileConfirmed, true);
     assert.equal(normalized.noActiveCycle, true);
-    assert.equal(normalized.v, 11);
+    assert.equal(normalized.v, 12);
     assert.deepEqual(raw, before);
   }
 });

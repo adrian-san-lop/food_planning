@@ -39,7 +39,7 @@ export function validateSetupDraft(draft) {
 
 /**
  * Facts must come from an authenticated account snapshot, not a local tutorial
- * flag. This model is not connected to the current v11 startup yet.
+ * flag. Persistence supports it; the guided UI activates it in package 6.
  * Legacy plans can establish prior use only in explicit legacy mode.
  */
 export function getSetupProgress({

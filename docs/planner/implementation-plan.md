@@ -1,7 +1,7 @@
 # Plan integrado: primera visita y generación personal de menús
 
 - Fecha: 22/10/2026.
-- Estado: **Aceptado; desarrollo por paquetes en curso.** Los paquetes [1](package-1-foundations.md) y [2](package-2-practical-portions.md) están implementados y probados localmente; el primero ya se ha incorporado a `dev`. Los nuevos flujos de usuario y la persistencia siguen pendientes; este plan distingue el resultado previsto de lo ya disponible.
+- Estado (23/10/2026): **Aceptado; desarrollo por paquetes en curso.** Los paquetes [1](package-1-foundations.md) y [2](package-2-practical-portions.md) ya están incorporados a `dev`. Los paquetes [3](package-3-common-generator.md) y [4](package-4-persistence.md) están implementados y probados localmente; el propietario confirma que aplicó la migración del 4 en Supabase el 23/10/2026, con Success y las siete comprobaciones estructurales en true. La validación funcional con sesiones reales sigue pendiente. Las nuevas pantallas siguen pendientes; este plan distingue el resultado previsto de lo ya disponible.
 - Decisión: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 - Comportamiento actualmente implementado: [especificación](specification.md), [ADR-0046](../decisions/0046-familiar-weekly-menu.md) y [arquitectura](../architecture.md).
 
@@ -15,9 +15,9 @@ Se mantiene el contrato de 21 días y cinco comidas diarias: 105 posiciones. Una
 
 - `js/main.js` coordina Auth, primer arranque y revisión. `emptyState()` incluye valores de ejemplo y el arranque de una cuenta sin inicializar puede sincronizarlos junto al menú fijo.
 - Ya existe `profiles.profile_confirmed`, pero la guía de ADR-0025 es opcional y no guarda progreso de configuración.
-- `js/domain/menu-generator.js` construye propuestas futuras con familiaridad y bloqueos. Actualmente recibe `state.stock`, aunque la propuesta empiece más adelante.
+- Desde el paquete 3, `js/domain/menu-planner.js` coordina la generación común y compara tres candidatos; `menu-generator.js` conserva familiaridad y bloqueos. La renovación recibe una despensa prevista a la fecha de inicio, calculada desde el saldo actual y las comidas pendientes anteriores.
 - `js/domain/nutrition.js` calcula objetivos y adapta cantidades. La revisión actual muestra las tres semanas completas y cada sustitución afecta a una sola posición.
-- Supabase guarda el estado personal en tablas relacionales mediante `sync_menuki_state` y `sync_revision`; `localStorage` es la copia de trabajo. Estado local vigente: v11.
+- Supabase guarda el estado personal en tablas relacionales mediante `sync_menuki_state` y `sync_revision`; `localStorage` es la copia de trabajo. Estado local vigente: v12; se conservan las migraciones v5-v11 y se añaden los campos nuevos.
 
 ## 1. Recorrido de primera visita
 
@@ -100,11 +100,11 @@ El acuerdo queda registrado en este plan y ADR-0047. El desarrollo se divide en 
 
 1. **Estados y compatibilidad — implementado localmente:** separar perfil válido confirmado de borrador incompleto; definir preferencias, progreso y transición de cuentas existentes. Extraer la normalización del perfil conservando el comportamiento vigente. Los modelos nuevos no activan todavía otro arranque ni cambian el contrato persistido v11. Véase [resultado y comprobaciones](package-1-foundations.md).
 2. **Raciones prácticas — implementado localmente:** límites y pasos por alimento en catálogo 0.10.0, validación y evaluación común de cantidades/totales/diferencias. Nutrición, compra y despensa usan las mismas cantidades. Se conservan fórmulas, bases y consumos ya registrados. Véase [resultado y comprobaciones](package-2-practical-portions.md).
-3. **Generador común — siguiente paquete:** servir primer ciclo y renovación con perfil confirmado, preferencias, tiempos, evaluación semanal y previsión de despensa. Conservar familiaridad y bloqueos, con pruebas reproducibles sin datos personales.
-4. **Persistencia Supabase y compatibilidad:** preparar migraciones aditivas; actualizar RPC, mapeo, normalización, conciliación e inicialización para borradores y preferencias. Validar la confirmación del perfil también en el servidor. Revisar el SQL y sus diagnósticos antes de aplicarlo.
-5. **Preferencias y revisión semanal:** extraer la revisión de `main.js`, añadir preferencias en perfil y fichas, y aplicar cambios a tres semanas o una comida conservando bloqueos. Comprobar por HTTP escritorio y móvil con estados sintéticos.
+3. **Generador común — implementado localmente:** entrada con perfil confirmado y fecha explícita, preferencias, tiempos, comparación de tres candidatos y previsión de despensa. La renovación ya lo usa; el primer menú queda preparado para el nuevo recorrido. Se conservan familiaridad, raciones y bloqueos; la interfaz sigue pendiente y la persistencia se desarrolla en el paquete 4. Véase [resultado y comprobaciones](package-3-common-generator.md).
+4. **Persistencia Supabase y compatibilidad — implementado y probado localmente; SQL aplicado según el propietario:** migración aditiva aplicada, RPC completos, mapeo, estado v12, conciliación, capacidades e inicialización compatibles. Se valida perfil y confirmación del plan en el servidor. El propietario confirma ejecución del SQL con Success y los siete diagnósticos en true el 23/10/2026; quedan las pruebas funcionales alojadas, sin inspección remota independiente del agente; véase [resultado del paquete 4](package-4-persistence.md).
+5. **Preferencias y revisión semanal — siguiente paquete:** extraer la revisión de `main.js`, añadir preferencias en perfil y fichas, y aplicar cambios a tres semanas o una comida conservando bloqueos. Comprobar por HTTP escritorio y móvil con estados sintéticos.
 6. **Configuración inicial guiada:** conectar los cuatro pasos, el guardado y reanudación y el primer menú revisable, utilizando los modelos, motor y persistencia anteriores. Conservar el acceso y los datos de las cuentas existentes.
-7. **Integración real y publicación:** aplicar y comprobar las migraciones en Supabase antes de activar el cliente que las necesita; probar cuentas, RLS y dispositivos; publicar cuando el propietario lo autorice. No considerar aplicada una migración porque su archivo esté en Git.
+7. **Integración real y publicación:** la migración del paquete 4 y sus siete comprobaciones estructurales están confirmadas por el propietario el 23/10/2026; verificar las capacidades que necesite el cliente y cualquier migración adicional antes de activarlo; probar cuentas, RLS y dispositivos; publicar cuando el propietario lo autorice. No considerar aplicada una migración porque su archivo esté en Git.
 
 La activación debe contemplar clientes anteriores y capacidades del esquema. Un componente pendiente no debe provocar una caída de toda la cuenta como ocurrió con dependencias de tablas nuevas; limitar el mensaje y el bloqueo al flujo que necesite esa capacidad.
 

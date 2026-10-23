@@ -1,9 +1,11 @@
 # Auditoría de arquitectura front-end y back-end
 
 - **Fecha de auditoría inicial:** 13 de octubre de 2026
-- **Actualización documental:** 17 de octubre de 2026
+- **Actualización documental:** 23 de octubre de 2026 (confirmación del SQL del paquete 4; sin nueva auditoría funcional)
 - **Alcance:** revisión estática del repositorio y del cliente web, junto con sus catálogos, documentación, migraciones y comprobación SQL.
 - **Estado:** diagnóstico estático actualizado al código del repositorio y a la extracción incremental autorizada el 17/10/2026. La conciliación automática, el historial, la landing y el buzón admin están implementados. La corrección HTTP 409 está aplicada y resuelta según confirmación del administrador del 17/10/2026; la purga global sigue pendiente de confirmación. La validación integral del cliente publicado y el aislamiento con dos cuentas siguen abiertos. Las observaciones sobre la arquitectura anterior se conservan como antecedentes.
+
+Actualización del 23/10/2026: el propietario confirma que ejecutó `20261023120000_planning_preferences_and_setup.sql` en Supabase con Success y las siete consultas de diagnóstico en true. La migración y sus comprobaciones estructurales quedan registradas como aplicadas según su comunicación; no hay inspección remota independiente ni validación funcional entre dispositivos. Los paquetes 1-4 incorporan cambios posteriores al diagnóstico inicial, incluido el estado v12; véase el [registro vigente del paquete 4](planner/package-4-persistence.md). Las referencias técnicas al estado v11 de esta auditoría describen sus antecedentes.
 
 ## Resumen
 

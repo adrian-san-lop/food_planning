@@ -8,6 +8,16 @@ Las credenciales pertenecen a Supabase Auth (`auth.users`). `public.profiles` gu
 
 ## Migraciones
 
+### Paquete 4 aplicado en Supabase según el propietario (23/10/2026)
+
+`20261023120000_planning_preferences_and_setup.sql` añade las tablas privadas `profile_setup_drafts`, `menu_preferences` y `recipe_preferences`, la capacidad `planning_contract: 1` y las definiciones completas de sincronización/reinicio. Conserva PT409 e idempotencia y valida el perfil y la confirmación de planes nuevos. Las preferencias omitidas por clientes antiguos se conservan; normal/null retiran valores concretos. El navegador solo tiene lectura de las tablas nuevas y pierde la escritura directa de perfiles, ciclos, comidas planificadas y ajustes: la app ya usa RPC para ello.
+
+**El propietario confirma que la migración se ejecutó en SQL Editor con Success y que las siete comprobaciones de `diagnostics/planning_persistence.sql` dieron `ready = true` el 23/10/2026.** Se registra su confirmación de ejecución y estructura; no es una inspección independiente del agente ni una prueba funcional con sesiones reales. Antes se comprobaron todas las migraciones en PostgreSQL local temporal, con 18 verificaciones, 80 casos de perfil y dos roles/identidades simulados. El cliente detecta el esquema anterior y mantiene la sincronización habitual sin consultar tablas inexistentes; no declara guardadas preferencias que el servidor antiguo no admite.
+
+El [registro del paquete 4](../docs/planner/package-4-persistence.md#aplicación-en-supabase-confirmada-el-23102026) detalla los siete resultados comunicados. La aplicación y el diagnóstico estructural ya están confirmados; no hay que repetir la migración. Los botones de preferencias corresponden al paquete 5 y el recorrido guiado al 6. Sigue pendiente probar los recorridos con dos sesiones reales y la publicación autorizada del cliente; el [diagnóstico de planificación](diagnostics/planning_persistence.sql) se conserva como consulta de solo lectura.
+
+### Migraciones anteriores y estado comunicado
+
 Las siete migraciones iniciales de `migrations/` están aplicadas al proyecto desde **SQL Editor**. La quinta, `20261011120000_menuki_cloud_sync.sql`, añade metadatos de inicialización/revisión, identificadores de sesión del cliente y la función transaccional `sync_menuki_state`. La sexta, `20261011130000_menuki_cloud_reset.sql`, añade `reset_menuki_state` para el reinicio total confirmado. La séptima, `20261011150000_profile_confirmation.sql`, añade `profiles.profile_confirmed` y actualiza `sync_menuki_state`. La corrección HTTP 409 de la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, está aplicada y el problema asociado está resuelto en Supabase, según confirmación del administrador comunicada el 17/10/2026. No se ha realizado una nueva verificación independiente en vivo. El propietario informa que la novena, `20261013160000_recipe_proposal_inbox.sql`, ya se ejecutó y que la cuenta admin ya se asignó; crea cuatro tablas de propuestas/administradores y tres RPCs acotados. La novena no altera las filas personales ni el RPC `sync_menuki_state`. En un proyecto nuevo, revisa el estado real antes de ejecutar migraciones; en el proyecto existente no vuelvas a ejecutar scripts que ya se hayan aplicado.
 
 La migración `20261018140000_activity_movement_factors.sql` amplía `profiles.activity_level` a los seis niveles actuales, transforma los cuatro IDs anteriores al factor nuevo más cercano y cambia el predeterminado a `sedentary`. Está preparada localmente y debe ejecutarse en **SQL Editor antes de publicar o usar el cliente actualizado**; hasta que se ejecute, Supabase rechazará los nuevos IDs.
@@ -59,6 +69,7 @@ SQL Editor no mantiene el historial de los archivos del repositorio en la tabla 
 - `prep_tasks`: preparación semanal.
 - `shopping_sessions` y `shopping_session_items`: lista, cantidades de envases y elementos marcados.
 - `user_settings`: copia registrada, inicialización y revisión de sincronización.
+- `profile_setup_drafts`, `menu_preferences` y `recipe_preferences`: borradores incompletos, límites de tiempo y gustos explícitos; **tablas aplicadas según confirmación del propietario el 23/10/2026**, con las siete comprobaciones estructurales correctas.
 - `recipe_proposals`, `recipe_proposal_ingredients` y `recipe_proposal_steps`: buzón compartido con contenido en texto libre. Solo el administrador puede leer las filas; el envío se realiza por RPC.
 - `menuki_admins`: cuentas con acceso administrativo, gestionadas por el propietario desde SQL Editor y sin permisos directos para el navegador.
 

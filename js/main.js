@@ -1,4 +1,5 @@
-import { generateMenuCycle, summarizeMenu } from './domain/menu-generator.js?v=20261021-familiar-week';
+import { summarizeMenu } from './domain/menu-generator.js?v=20261023-common-generator';
+import { createMenuPlanner } from './domain/menu-planner.js?v=20261023-common-generator';
 import { addDays, civilDayOfMonth, dateDiff, dateFromISO, formatDate, formatEuropeanDate, formatMadridDateTime, isoDate, isoFromEuropeanDate, monday, today } from './domain/dates.js?v=20261015-european-date';
 import { weeklyMealSummary, dashboardCycleSummary } from './domain/dashboard.js?v=20261015-dashboard-plan';
 import { cycleHasEnded, confirmedCycleIsAvailable, canBuyNextCycle, shoppingDates, nextCycleCartScope } from './domain/cycle-shopping.js?v=20261015-cycle-shopping';
@@ -9,12 +10,13 @@ import { DEFAULT_PROFILE, defaultProfile, sanitizeProfile } from './domain/profi
 import { consumeAvailableStock, normalizeLegacyDeduction, projectAvailableStock } from './domain/inventory-balance.js?v=20261018-no-meal-shortfalls';
 import { createInventoryLedger } from './domain/inventory-ledger.js?v=20261017-inventory-ledger';
 import { createRecipeProposalExport, serializeRecipeProposalExport } from './domain/recipe-proposal-export.js?v=20261013-admin-proposal-maintenance';
-import { createReconciliationBase, reconcileStates } from './domain/state-reconciliation.js?v=20261015-cycle-shopping';
-import { loadLocalState, saveLocalState } from './persistence/local-state.js?v=20261018-no-meal-shortfalls';
-import { createStateNormalizer } from './persistence/state-normalization.js?v=20261021-planner-opening';
-import { createCloudStateMapper } from './persistence/cloud-state-mapper.js?v=20261021-fixed-menu-injection';
-import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261018-no-shortfalls';
+import { createReconciliationBase, reconcileStates } from './domain/state-reconciliation.js?v=20261023-planning-persistence';
+import { loadLocalState, saveLocalState } from './persistence/local-state.js?v=20261023-planning-persistence';
+import { createStateNormalizer } from './persistence/state-normalization.js?v=20261023-planning-persistence';
+import { createCloudStateMapper } from './persistence/cloud-state-mapper.js?v=20261023-planning-persistence';
+import { createSupabaseTransport } from './persistence/supabase-transport.js?v=20261023-planning-persistence';
 import { createRecipeProposalService } from './persistence/recipe-proposals.js?v=20261013-admin-proposal-maintenance';
+import { initialPlanningState, hasPlanningChanges, initializeAccountState } from './persistence/planning-state.js?v=20261023-planning-persistence';
 import { escapeAttribute, escapeHTML } from './ui/html.js?v=20261013-ux-repair';
 import { createRecipeProposalViews } from './ui/recipe-proposal-views.js?v=20261019-proposal-dashboard';
 import { setupLegalDialogs } from './ui/legal-dialog.js?v=20261017-legal-dialog';
@@ -124,7 +126,7 @@ const FIRST_CYCLE_START='2026-10-13';
 const WEEK_TITLES=['Equilibrio y primeras recetas','Más variedad sin complicaciones','Nuevas ideas para terminar fuerte'];
 let persistent=true;
 function initialStart(){return FIRST_CYCLE_START}
-function emptyState(){return {v:11,start:initialStart(),noActiveCycle:false,activeCycleId:null,profile:defaultProfile(),profileConfirmed:false,cart:{},cartExtras:[],done:{},reversedDone:{},legacyStrengthDays:{},activitySessions:[],deletedActivitySessionIds:[],stock:{},movements:[],purchases:[],weights:[],deletedWeightDates:[],resetCloudPending:false,prep:{},archives:[],activeMenus:null,activeMenuCatalogVersion:null,activeMenuGeneratedAt:null,activeMenuConfirmedAt:null,activeMenuRecoveryFocus:false,nextMenu:null,plannerDraft:null,lastBackupAt:null}}
+function emptyState(){return {v:12,...initialPlanningState(),start:initialStart(),noActiveCycle:false,activeCycleId:null,profile:defaultProfile(),profileConfirmed:false,cart:{},cartExtras:[],done:{},reversedDone:{},legacyStrengthDays:{},activitySessions:[],deletedActivitySessionIds:[],stock:{},movements:[],purchases:[],weights:[],deletedWeightDates:[],resetCloudPending:false,prep:{},archives:[],activeMenus:null,activeMenuCatalogVersion:null,activeMenuGeneratedAt:null,activeMenuConfirmedAt:null,activeMenuRecoveryFocus:false,nextMenu:null,plannerDraft:null,lastBackupAt:null}}
 function mealUsage(recipe){const ans={};for(const item of recipe.ingredients)ans[item.id]=(ans[item.id]||0)+item.rest;return ans}
 function effectiveWeight(profile=state.profile){
  if(profile.followWeight&&state.weights.length){const recent=[...state.weights].filter(x=>dateFromISO(x.date)&&dateFromISO(x.date)<=today()).sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);if(recent.length)return Math.round(recent.reduce((n,x)=>n+Number(x.kg),0)/recent.length*10)/10}
@@ -149,6 +151,7 @@ const ACTIVITY_OPTIONS=[
 ];
 const ACTIVITY_BY_ID=Object.fromEntries(ACTIVITY_OPTIONS.map(x=>[x.id,x]));
 const nutritionService=createNutritionService({getFood:()=>FOOD,getFoodMeta:()=>FOOD_META,getEffectiveWeight:profile=>effectiveWeight(profile)});
+const menuPlanner=createMenuPlanner({getRecipes:()=>RECIPES,nutrition:nutritionService,toStockAmount:(id,amount)=>recipeToStockAmount(id,amount),recipePreference:(recipe,profile)=>recoveryRecipeScore(recipe,profile),dayPreference:(recipes,profile)=>recoveryDayScore(recipes,profile)});
 function nutritionProfile(profile=state.profile,overrideWeight){return nutritionService.nutritionProfile(profile,overrideWeight)}
 function nutritionTarget(activityKcal=0,profile=state.profile,overrideWeight){return nutritionService.nutritionTarget(activityKcal,profile,overrideWeight)}
 const getMacro=usage=>nutritionService.getMacro(usage);
@@ -225,9 +228,11 @@ async function initializeCloudState(user){
  cloudReady=false;cloudSyncLastError=null;cloudStatus('Conectando los datos de tu cuenta…','working');
  const localExists=!!localStorage.getItem(KEY),localState=load();
  state=localState;
+ await supabaseTransport.planningAvailable({refresh:true});
  const settings=await supabaseTransport.readOne('user_settings',user.id);
  if(!settings?.state_initialized_at){
-  state=localState;cloudRevision=Number(settings?.sync_revision)||0;cloudReady=true;
+  // Guided activation waits for package 6; keep existing signup usable meanwhile.
+  state=initializeAccountState({localState,hasLocalCopy:localExists,guidedSetup:false,todayISO:isoDate(today())});cloudRevision=Number(settings?.sync_revision)||0;cloudReady=true;
   const ok=await syncCloudNow(true);if(!ok)throw Error(cloudErrorForUser(cloudSyncLastError));
   return;
  }
@@ -249,7 +254,7 @@ async function initializeCloudState(user){
  await adoptCloudState(remote);
  cloudSyncedStatus();
 }
-function hasMeaningfulLocalState(value){return !!(value.profileConfirmed||Object.keys(value.done||{}).length||value.movements?.length||value.weights?.length||value.activitySessions?.length||value.archives?.length||value.nextMenu||value.plannerDraft||Object.keys(value.cart||{}).length||value.cartExtras?.length||value.activeMenus||JSON.stringify(value.profile)!==JSON.stringify(defaultProfile()))}
+function hasMeaningfulLocalState(value){return !!(hasPlanningChanges(value)||value.profileConfirmed||Object.keys(value.done||{}).length||value.movements?.length||value.weights?.length||value.activitySessions?.length||value.archives?.length||value.nextMenu||value.plannerDraft||Object.keys(value.cart||{}).length||value.cartExtras?.length||value.activeMenus||JSON.stringify(value.profile)!==JSON.stringify(defaultProfile()))}
 function cloudMetaSnapshot(remote){return {movements:(remote.movements||[]).map(x=>({operation_id:x.operation_id})),completions:(remote.completions||[]).map(x=>({operation_id:x.operation_id})),activity_sessions:(remote.activities||[]).map(x=>({client_id:x.client_id||x.id})),weights:(remote.weights||[]).map(x=>({measured_on:x.measured_on,weight_kg:x.weight_kg}))}}
 async function adoptCloudState(remote){
  const remoteState=stateFromCloud(remote),revision=Number(remote.settings?.sync_revision)||0;
@@ -616,16 +621,13 @@ function dashboard(){
  const lower='<div class="dashboard-lower">'+dashboardMenu(position)+energyStatus(position?.day??null,position?.week??null,date,!!position)+dashboardDaySummary(position)+'</div>';
  return '<div class="dashboard-page dashboard-page--overview">'+heading+stats+lower+dashboardPlanSummary()+'</div>';
 }
-function nextCycleStart(){const current=dateFromISO(state.start),scheduled=addDays(current,21),now=today();return isoDate(scheduled<now?now:scheduled)}
-function plannerNutrition(recipes){return nutritionService.evaluateRecipePortions(recipes,0,state.profile)}
+function nextCycleStart(){if(state.noActiveCycle)return isoDate(today());const current=dateFromISO(state.start),scheduled=addDays(current,21),now=today();return isoDate(scheduled<now?now:scheduled)}
+function plannerRequest(start){const asOf=isoDate(today());return {start,asOf,profile:state.profile,profileConfirmed:state.profileConfirmed,preferences:state.planningPreferences,previousMenus:state.noActiveCycle?null:MENUS,stock:state.stock,currentCycle:state.noActiveCycle?null:{start:state.start,menus:MENUS,done:state.done},activityKcalToday:activityEnergyForDate(asOf)}}
 function buildCycleProposal(previous){
- const {menus,locked}=generateMenuCycle({
-  recipes:RECIPES,previousMenus:state.noActiveCycle?null:MENUS,draft:previous,stock:state.stock,
-  evaluateDay:plannerNutrition,target:nutritionTarget(0),toStockAmount:recipeToStockAmount,
-  recipePreference:recipe=>recoveryRecipeScore(recipe,state.profile),
-  dayPreference:recipes=>recoveryDayScore(recipes,state.profile)
- });
- return {start:nextCycleStart(),menus,locked,catalogVersion,recoveryFocus:!!state.profile.injury,generatedAt:new Date().toISOString(),confirmedAt:null};
+ const start=dateFromISO(previous?.start)&&dateFromISO(previous.start)>=today()?previous.start:nextCycleStart();
+ const result=menuPlanner.generate({...plannerRequest(start),draft:previous});
+ if(!result.complete)throw new Error('No se puede completar la propuesta con las condiciones actuales. Revisa las recetas y los bloqueos.');
+ return {start,menus:result.menus,locked:result.locked,catalogVersion,recoveryFocus:!!state.profile.injury,generatedAt:new Date().toISOString(),confirmedAt:null};
 }
 function persistPlannerDraft(){if(!plannerProposal)return;state.plannerDraft={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice()))};save()}
 function plannerCounts(menus){return summarizeMenu(menus,RECIPES,state.noActiveCycle?null:MENUS)}
@@ -639,7 +641,7 @@ function renderPlannerReview(){
  const modeNotice=modeChanged?'<p class="planner-profile-warning" role="status">'+ic('info')+'<span><strong>Has cambiado la recuperación en tu perfil.</strong> Pulsa «Cambiar platos» para aplicarla. Los bloqueados se conservan.</span></p>':'';
  const c=plannerProposal.recoveryFocus?plannerRecoveryCoverage(plannerProposal.menus):null;
  const coverage=c?'<div class="planner-recovery-coverage"><strong>Presencia de ingredientes etiquetados</strong><p>'+RECOVERY_TAG_LABELS.calcium+': <b>'+c.calcium+'/21 días</b> · '+RECOVERY_TAG_LABELS.vitamin_d+': <b>'+c.vitamin_d+'/21</b> · '+RECOVERY_TAG_LABELS.vitamin_c+': <b>'+c.vitamin_c+'/21</b>.</p><p>Indica presencia en recetas, no cantidades ni objetivos de ingesta.</p></div>':'';
- const help='<details class="planner-help"'+(helpOpen?' open':'')+'><summary>'+ic('info')+'Cómo se prepara este menú</summary><div class="planner-help-content"><ul><li><strong>Semana base:</strong> los mismos platos se repiten tres semanas. Las raciones se calculan con tu perfil. Un cambio manual afecta solo a esa comida.</li><li><strong>Continuidad:</strong> conservamos un repertorio familiar y buscamos incorporar solo 2–3 preparaciones nuevas por ciclo, si encajan. Los bloqueos tienen prioridad.</li><li><strong>Preparaciones:</strong> las recetas con los mismos ingredientes se agrupan, aunque cambien sus cantidades. Las variantes de ración no cuentan como platos nuevos.</li><li><strong>Despensa:</strong> prioriza lo que tienes, sin excluir platos por falta de stock.</li><li><strong>Raciones:</strong> se calculan con tu perfil actual y el objetivo base. Registra las sesiones cuando ocurran para ajustar solo esa fecha.</li><li><strong>Cambios:</strong> elegir una receta la deja bloqueada. «Cambiar platos» renueva únicamente las desbloqueadas.</li><li><strong>Recuperación:</strong> '+recoveryMessage+'</li><li><strong>Gustos y alergias:</strong> estos filtros aún no están disponibles.</li></ul>'+coverage+'</div></details>';
+ const help='<details class="planner-help"'+(helpOpen?' open':'')+'><summary>'+ic('info')+'Cómo se prepara este menú</summary><div class="planner-help-content"><ul><li><strong>Semana base:</strong> los mismos platos se repiten tres semanas. Las raciones se calculan con tu perfil. Un cambio manual afecta solo a esa comida.</li><li><strong>Continuidad:</strong> conservamos un repertorio familiar y buscamos incorporar solo 2–3 preparaciones nuevas por ciclo, si encajan. Los bloqueos tienen prioridad.</li><li><strong>Preparaciones:</strong> las recetas con los mismos ingredientes se agrupan, aunque cambien sus cantidades. Las variantes de ración no cuentan como platos nuevos.</li><li><strong>Despensa:</strong> prioriza lo que se prevé que quede al comenzar el ciclo, descontando las comidas pendientes anteriores. La falta de stock no excluye platos.</li><li><strong>Raciones:</strong> comparamos varias semanas con cantidades prácticas según tu perfil y objetivo base, sin forzar kcal exactas. Registra las sesiones cuando ocurran para ajustar solo esa fecha.</li><li><strong>Cambios:</strong> elegir una receta la deja bloqueada. «Cambiar platos» renueva únicamente las desbloqueadas.</li><li><strong>Recuperación:</strong> '+recoveryMessage+'</li><li><strong>Gustos y alergias:</strong> estos filtros aún no están disponibles.</li></ul>'+coverage+'</div></details>';
  const profileCard=(icon,label,value,extra='')=>'<article class="planner-profile-card'+extra+'">'+ic(icon)+'<div><span>'+label+'</span><strong>'+escapeHTML(value)+'</strong></div></article>';
  // Las raciones usan el perfil actual; recoveryFocus conserva la preferencia usada al generar.
  const profileSummary='<div class="planner-profile-summary'+(plannerProposal.recoveryFocus?' planner-profile-summary--recovery':'')+'" aria-label="Objetivo y preferencias de la propuesta">'+profileCard('target','Tu objetivo',GOAL_NAMES[state.profile.goal])+profileCard('sliders','Raciones automáticas',state.profile.autoPortions?'Activadas':'Desactivadas')+(plannerProposal.recoveryFocus?profileCard('bone','Recuperación ósea','Activa',' planner-profile-card--recovery'):'')+'</div>';
@@ -653,7 +655,7 @@ function renderPlannerReview(){
 function openPlannerDialog(){
  document.getElementById('cycleRenewalDialog').close();
  plannerProposal=cleanCyclePlan(state.plannerDraft||confirmedNextMenu());
- if(!plannerProposal){plannerProposal=buildCycleProposal(null);persistPlannerDraft()}
+ if(!plannerProposal){try{plannerProposal=buildCycleProposal(null);persistPlannerDraft()}catch(error){showToast(error.message||'No se pudo preparar el menú');return}}
  else if(cycleHasEnded(state.start)&&dateFromISO(plannerProposal.start)<today()){plannerProposal.start=isoDate(today());plannerProposal.confirmedAt=null;persistPlannerDraft()}
  renderPlannerReview();const dialog=document.getElementById('plannerDialog');if(!dialog.open)dialog.showModal();
 }
@@ -670,7 +672,19 @@ function showPlannerRecipe(button){
  const dialog=document.getElementById('recipeDialog');if(!dialog.open)dialog.showModal();
 }
 function togglePlannerLock(button){if(!plannerProposal)return;const w=Number(button.dataset.week),d=Number(button.dataset.day),s=Number(button.dataset.slot);plannerProposal.locked[w][d][s]=!plannerProposal.locked[w][d][s];persistPlannerDraft();renderPlannerReview()}
-function savePlannerProposal(){if(!plannerProposal||!validMenuSnapshot(plannerProposal.menus)){showToast('La propuesta no es válida');return}state.nextMenu={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice())),confirmedAt:new Date().toISOString()};state.plannerDraft=null;save();const advanced=activateScheduledCycleIfDue();document.getElementById('plannerDialog').close();render();showToast(advanced?'El nuevo ciclo ya está activo':'Siguiente menú guardado para el '+formatDate(dateFromISO(state.nextMenu?.start||state.start),{day:'numeric',month:'long'}))}
+function savePlannerProposal(){
+ if(!plannerProposal||!validMenuSnapshot(plannerProposal.menus)){showToast('La propuesta no es válida');return}
+ try{
+  if(!menuPlanner.inspect(plannerRequest(plannerProposal.start),plannerProposal).complete){
+   showToast('Revisa las comidas pendientes antes de confirmar el menú');return;
+  }
+ }catch(error){showToast(error.message);return}
+ state.nextMenu={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice())),confirmedAt:new Date().toISOString()};
+ state.plannerDraft=null;save();
+ const advanced=activateScheduledCycleIfDue();
+ document.getElementById('plannerDialog').close();render();
+ showToast(advanced?'El nuevo ciclo ya está activo':'Siguiente menú guardado para el '+formatDate(dateFromISO(state.nextMenu?.start||state.start),{day:'numeric',month:'long'}));
+}
 function activateScheduledCycleIfDue(){
  if(!state||state.noActiveCycle)return false;const next=confirmedNextMenu();if(!next||dateFromISO(next.start)>today())return false;
  const prefix=nextCycleCartScope(next)+'~',cart=Object.fromEntries(Object.entries(state.cart||{}).filter(([key])=>key.startsWith(prefix)).map(([key,value])=>[key.slice(prefix.length),value]));
@@ -762,6 +776,7 @@ function updateAuthValidation(){
   finally{if(openingUserId===id)openingUserId=null}
  }
  function closeAuthenticatedApp(){
+  supabaseTransport.resetCapabilities();
   clearTimeout(cloudSyncTimer);authSessionUserId=null;if(currentUserId)cloudArchivedCyclesByUser.delete(currentUserId);
   currentUserId=null;currentUserEmail='';appReadyUserId=null;passwordRecoveryActive=false;cloudReady=false;cloudRevision=0;cloudSyncPending=false;state=undefined;KEY=LOCAL_STATE_KEY;
   menukiAdmin=false;proposalInbox=[];proposalInboxLoaded=false;proposalInboxError='';proposalInboxLoading=false;proposalInboxBusy=false;proposalEditingId=null;proposalEditingDraft=null;proposalActionToken++;proposalLoadToken++;proposalExportToken++;proposalExporting=false;

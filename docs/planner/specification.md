@@ -1,8 +1,8 @@
 # Especificación del catálogo y del planificador
 
-Estado: generación orientada a familiaridad implementada localmente (21/10/2026) y [raciones prácticas del paquete 2](package-2-practical-portions.md) implementadas y probadas localmente (22/10/2026). Reglas aceptadas en ADR-0046 y ADR-0047; ponderaciones y límites son ajustes del producto, no garantías nutricionales.
+Estado: familiaridad y raciones prácticas implementadas; [generador común del paquete 3](package-3-common-generator.md) implementado y probado localmente (23/10/2026). Reglas aceptadas en ADR-0046 y ADR-0047; ponderaciones y límites son ajustes del producto, no garantías nutricionales.
 
-Evolución aceptada el 22/10/2026, **en desarrollo por paquetes**: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) integra la configuración inicial, el primer ciclo generado, las preferencias y la revisión semanal. El [paquete 1](package-1-foundations.md) prepara sus modelos de dominio; el paquete 2 aplica las raciones prácticas. El [plan de implementación](implementation-plan.md) fija el orden y la aceptación restantes. Las secciones de flujo y presentación implementados de este documento siguen describiendo el código actual, incluida la sustitución individual; el nuevo alcance por defecto de tres semanas se aplicará al desarrollar esa evolución.
+Evolución aceptada el 22/10/2026, **en desarrollo por paquetes**: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) integra configuración inicial, primer ciclo generado, preferencias y revisión semanal. Los paquetes 1-3 cubren modelos, raciones y motor común. La renovación ya utiliza ese motor; el primer arranque continúa con el menú fijo y las preferencias todavía no tienen controles ni persistencia. El [plan de implementación](implementation-plan.md) fija los paquetes restantes. La revisión sigue con sustitución individual; el cambio por defecto en tres semanas pertenece al paquete 5.
 
 ## Objetivo del ciclo
 
@@ -102,23 +102,23 @@ Los MET de las actividades incluidas son estimaciones de categorías del [2024 A
 
 `portionsForRecipes` toma los grupos del catálogo y aplica los márgenes relativos existentes junto con mínimos, máximos y pasos por alimento. Suma ingredientes repetidos antes de ajustar para limitar el total por comida. Los ingredientes fijos y sin política conservan sus cantidades; no se pierde ningún ingrediente cuantificado. Desactivar el ajuste conserva las bases exactas y las comidas completadas siempre conservan su snapshot.
 
-`evaluateRecipePortions` reúne cantidades, totales, objetivo y diferencias firmadas (total menos objetivo) sin volver a escalar para cerrar el desfase. El planificador usa esta evaluación. La elección entre semanas candidatas y la presentación de diferencias/alternativas pertenecen a los paquetes 3 y 5; no se introduce aquí una nueva tolerancia aceptable de kcal.
+`evaluateRecipePortions` reúne cantidades, totales, objetivo y diferencias firmadas (total menos objetivo) sin volver a escalar para cerrar el desfase. El planificador usa esta evaluación. La elección entre candidatos está implementada en el paquete 3 y la presentación de diferencias/alternativas pertenece al paquete 5; no se introduce aquí una nueva tolerancia aceptable de kcal.
 
 ## Flujo implementado de generación
 
-1. Cargar y validar los catálogos actuales. `js/domain/menu-generator.js` recibe recetas, ciclo anterior, bloqueos, copia de stock, azar inyectable y funciones de nutrición/conversión/preferencia de recuperación.
-2. Derivar familias por ingredientes. Elegir pequeños repertorios por tipo, favoreciendo familias frecuentes del ciclo anterior, ingredientes compartidos y existencias. Las familias bloqueadas entran aunque superen el tamaño orientativo.
-3. Construir siete días y evaluar combinaciones con `portionsForRecipes` y `nutritionTarget` actuales, sin actividad futura. La preferencia de recuperación ósea sigue siendo cualitativa. Las variantes conservan sus cantidades de catálogo y pasan por el ajuste existente.
-4. Permitir alternativas familiares fuera del repertorio si mejoran materialmente el ajuste nutricional. No se fuerzan límites de porción para cerrar una cifra exacta.
-5. Si hay ciclo anterior válido, evaluar sustituciones de familias para introducir 2–3 nuevas como máximo automático, descontando las novedades ya bloqueadas. Comparar las desviaciones de los días afectados y admitir menos novedades si las alternativas empeoran demasiado el ajuste. No hay una bonificación general por receta ausente.
-6. Copiar las recetas de los siete días a tres semanas y aplicar todos los bloqueos en sus posiciones. Los arrays son independientes para que sustituir una comida no cambie otra semana.
-7. Revisar, sustituir y bloquear individualmente. Guardar conserva el contrato de 3 × 7 × 5, fechas y versión del catálogo del estado v11; se utiliza la persistencia existente. La implementación no regenera el ciclo activo ni las comidas completadas y no requiere migraciones.
+1. Cargar y validar catálogos. `createMenuPlanner` recibe perfil confirmado, inicio explícito, preferencias opcionales, historial/bloqueos, saldo y fecha de referencia. La entrada común sirve también sin historial. El adaptador actual la usa para renovar y conserva los errores dentro del planificador.
+2. Proyectar la despensa al inicio descontando solo comidas pendientes anteriores desde la fecha de referencia. Las completadas permanecen fijas; solo se incorpora actividad real de la fecha de referencia, sin prever sesiones futuras ni escribir movimientos.
+3. Aplicar No proponer y máximos opcionales de comida/cena de lunes a viernes según las fechas reales. Conservar elecciones manuales y señalar sus excepciones. Si faltan alternativas, devolver posiciones incompletas y causas sin permitir confirmarlas. En la app actual las preferencias siguen vacías hasta conectar persistencia y controles.
+4. Para cada candidato, derivar familias y repertorios pequeños, favoreciendo continuidad, ingredientes compartidos, saldo previsto, favoritas y recuperación cualitativa. Evaluar siete días con raciones reales y permitir alternativas familiares si mejoran el ajuste. No forzar cantidades para cerrar kcal.
+5. Introducir dos o tres familias nuevas voluntarias cuando encajen, o menos. Las condiciones explícitas y los bloqueos pueden requerir más cambios; se señalan como renovación ampliada. No se eluden exclusiones por mantener una cuota.
+6. Repetir la semana tres veces y aplicar todos los bloqueos. Una receta manual excluida en la primera semana no se convierte en elección automática de las demás. Comparar tres candidatos completos, incluidos sus bloqueos, por nutrición, distribución, repetición, preparación, ingredientes, preferencias y stock; elegir la menor puntuación sin declararla clínicamente adecuada.
+7. Revisar, sustituir y bloquear individualmente en la interfaz vigente. Guardar comprueba perfil confirmado y compatibilidad; conserva 3 × 7 × 5, fechas y versión del catálogo en el estado local vigente (v12 desde el paquete 4). No se guardan los análisis temporales. El ciclo activo y sus comidas completadas se conservan; el paquete 3 no requirió migraciones; el paquete 4 prepara la persistencia relacional nueva.
 
 ### Parámetros de ajuste, no garantías
 
-El tamaño inicial usa 3/2/4/2/4 familias por tipo; el uso efectivo puede ser menor o mayor. La selección prueba 28 combinaciones por día, puntúa nutrición, ingredientes compartidos, stock y recuperación, y penaliza suavemente repeticiones cercanas solo de comida/cena. La salida es heurística: no garantiza óptimo global, coste mínimo ni equivalencia nutricional exacta. La proyección interna del stock es una copia local no negativa.
+El tamaño inicial usa 3/2/4/2/4 familias por tipo; el uso efectivo puede ser menor o mayor. Cada candidato prueba 28 combinaciones por día. La comparación común usa las raciones reales de sus 21 días; los pesos y métricas están en el [paquete 3](package-3-common-generator.md). La salida es heurística: no garantiza óptimo global, coste mínimo ni equivalencia nutricional exacta. La proyección interna del stock es una copia local no negativa.
 
-El error de selección conserva la ponderación relativa de calorías/proteína/hidratos/grasa y utiliza las raciones reales del servicio. Una mejora de más de 0,20 en ese error permite salir del repertorio inicial. Para renovación, una sustitución se acepta si aumenta el error medio como mucho 0,08 y ningún día más de 0,18. Estos valores son puntuaciones adimensionales de implementación, **no tolerancias clínicas ni porcentajes de calorías**. El objetivo aleatorio de novedad es dos o tres familias por ciclo. Los bloqueos manuales pueden excederlo. El azar se inyecta en pruebas; no se guarda una semilla en datos personales.
+El error de selección conserva la ponderación relativa de calorías/proteína/hidratos/grasa y utiliza las raciones reales del servicio. Una mejora de más de 0,20 en ese error permite salir del repertorio inicial. Para renovación voluntaria, una sustitución se acepta si aumenta el error medio como mucho 0,08 y ningún día más de 0,18. Estos valores son puntuaciones adimensionales de implementación, **no tolerancias clínicas ni porcentajes de calorías**. El objetivo aleatorio de novedad es dos o tres familias; condiciones y bloqueos prevalecen. El azar se inyecta en pruebas; no se guarda una semilla en datos personales.
 
 El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
@@ -143,7 +143,7 @@ Cada comida incluye **Ver receta**, que abre la ficha existente encima del diál
 
 ## Preferencias aceptadas y restricciones fuera de alcance
 
-Según ADR-0047, se aceptan preferencias personales por receta **normal**, **favorita** y **No proponer**. Su modelo está preparado en el paquete 1; su aplicación al generador, persistencia e interfaz siguen pendientes. Favorita favorece sin obligar a aparecer; No proponer excluye la selección automática pero permite una elección manual. Registrar una comida no es una valoración. Se aceptan también máximos opcionales separados para comida y cena entre semana. Si no quedan alternativas automáticas, explicar la condición y pedir revisarla, sin relajarla en silencio ni confirmar un ciclo incompleto.
+Según ADR-0047, se aceptan preferencias personales por receta **normal**, **favorita** y **No proponer**. El paquete 3 las aplica en el motor, junto con los máximos opcionales de comida y cena entre semana; el [paquete 4](package-4-persistence.md) incorpora su persistencia relacional y validación, con SQL y siete comprobaciones estructurales confirmados por el propietario el 23/10/2026; los controles corresponden al paquete 5. Favorita favorece sin obligar a aparecer; No proponer excluye la selección automática pero permite una elección manual. Registrar una comida no es una valoración. Si no quedan alternativas, el motor devuelve posiciones incompletas y causas; no relaja las condiciones ni permite confirmarlas como un ciclo completo.
 
 Las preferencias son privadas y no modifican el catálogo compartido ni reemplazan menús confirmados automáticamente. Las exclusiones de ingredientes y las alergias/intolerancias quedan fuera de esta entrega y requieren un diseño independiente; No proponer no es un filtro de alergias.
 
@@ -153,7 +153,7 @@ Si se incorpora un menú compartido por varias personas, falta decidir cómo com
 
 ## Datos y privacidad
 
-El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v11 conserva una copia local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v12 conserva una copia de trabajo local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
 
 
 ## Convenciones del catálogo confirmadas el 19/10/2026

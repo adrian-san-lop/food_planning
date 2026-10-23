@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createCloudStateMapper } from '../js/persistence/cloud-state-mapper.js';
 import { addDays, dateFromISO, dateDiff, isoDate, today } from '../js/domain/dates.js';
+import { initialPlanningState, planningRows } from '../js/persistence/planning-state.js';
 
 const menus = Array.from({ length: 3 }, () => Array.from({ length: 7 }, () => Array(5).fill('recipe')));
 
@@ -39,6 +40,30 @@ function createMapper() {
 
 test('current cloud reads still reject an initialized account missing its profile instead of inventing one', () => {
   assert.throws(() => createMapper().stateFromCloud({ profile: null }), /no contiene su perfil/);
+});
+
+test('guided snapshots do not serialize an example profile or install the fixed initial menu',async()=>{
+  const source={...initialPlanningState('guided'),profile:{sex:'manual',age:30},profileConfirmed:false,noActiveCycle:true,start:'2026-10-23'};
+  source.setupDraft.profile.height=172;
+  source.planningPreferences.recipePreferences={recipe:'normal',other_recipe:'favorite'};
+  const result=await createMapper().buildCloudSnapshot(source);
+  assert.equal(result.profile,null);assert.equal(result.cycles.length,0);assert.equal(result.planned_meals.length,0);
+  assert.equal(result.setup_draft.height_cm,172);assert.equal(result.setup_draft.age,null);
+  assert.equal(result.planning_contract,1);assert.equal(result.recipe_preferences.length,2);
+});
+
+test('guided account without confirmed profile restores its partial draft and preferences from relational rows',()=>{
+  const planning=initialPlanningState('guided');planning.setupDraft.profile.weight=72;
+  planning.planningPreferences.recipePreferences={recipe:'do_not_propose'};
+  planning.planningPreferences.weekdayTimeLimits.cena=25;
+  const r=planningRows(planning);
+  const data={planningSupported:true,profile:null,settings:{setup_mode:'guided'},setupDraft:r.setup_draft,
+    recipePreferences:r.recipe_preferences,menuPreferences:r.menu_preferences,
+    cycles:[],plannedMeals:[],prep:[],ingredients:[],movements:[],completions:[],weights:[],activities:[],training:[],shoppingSessions:[],shoppingItems:[]};
+  const restored=createMapper().stateFromCloud(data);
+  assert.equal(restored.profile,null);assert.equal(restored.profileConfirmed,false);assert.equal(restored.noActiveCycle,true);
+  assert.deepEqual(restored.setupDraft,planning.setupDraft);assert.deepEqual(restored.planningPreferences,planning.planningPreferences);
+  assert.throws(()=>createMapper().stateFromCloud({...data,settings:{setup_mode:'legacy'}}),/no contiene su perfil/);
 });
 
 test('cloud mapper keeps the relational snapshot contract and shopping unit fields', async () => {

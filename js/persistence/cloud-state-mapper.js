@@ -1,3 +1,6 @@
+import { planningRows, planningStateFromRows } from './planning-state.js?v=20261023-planning-persistence';
+import { createProfileDraft } from '../domain/profile.js?v=20261022-planner-foundations';
+
 /** Maps Menuki's in-memory state to and from the relational Supabase snapshot contract. */
 export function createCloudStateMapper({
   getUserId, getFood, getRecipes, getCatalogVersion,
@@ -117,11 +120,12 @@ async function buildCloudSnapshot(source){
   shoppingItems.push({id:await cloudUuid('shopping-item',key),item_key:key,food_id:foodId,item_kind:'planned',is_checked:!!choice?.checked,package_count:count,package_size:size,unit:foodStockUnit(foodId)});
  }
  for(const [index,extra] of (source.cartExtras||[]).entries())if(getFood()[extra.id]&&Number(extra.size)>0){const key='extra:'+(extra.scope&&extra.scope!=='current'?extra.scope+':':'')+extra.id+':'+index;shoppingItems.push({id:await cloudUuid('shopping-item',key),item_key:key,food_id:extra.id,item_kind:'extra',is_checked:false,package_count:Math.max(0,Number(extra.count)||0),package_size:Number(extra.size),unit:foodStockUnit(extra.id)})}
- const profile=source.profile||defaultProfile(),todayISO=isoDate(today()),shoppingStart=source.start||todayISO;
- return {profile:{sex:profile.sex,age:profile.age,height_cm:profile.height,reference_weight_kg:profile.weight,activity_level:profile.activity,goal:profile.goal,injury_recovery:profile.injury,auto_portions:profile.autoPortions,follow_weight:profile.followWeight,manual_rmr_kcal:profile.manualRmr,profile_confirmed:source.profileConfirmed===true},cycles,planned_meals:plannedMeals,prep_tasks:prepTasks,completions,movements,weights,deleted_weight_dates:source.deletedWeightDates||[],activity_sessions:activitySessions,deleted_activity_ids:source.deletedActivitySessionIds||[],legacy_training_dates:Object.keys(source.legacyStrengthDays||{}).filter(dateFromISO),shopping:{id:await cloudUuid('shopping-session','shared-cart'),starts_on:shoppingStart,ends_on:planDate(shoppingStart,20),items:shoppingItems},last_backup_at:source.lastBackupAt||null};
+ const profile=source.setupMode==='guided'&&source.profileConfirmed!==true?null:source.profile||defaultProfile(),todayISO=isoDate(today()),shoppingStart=source.start||todayISO;
+ return {...planningRows(source),profile:profile?{sex:profile.sex,age:profile.age,height_cm:profile.height,reference_weight_kg:profile.weight,activity_level:profile.activity,goal:profile.goal,injury_recovery:profile.injury,auto_portions:profile.autoPortions,follow_weight:profile.followWeight,manual_rmr_kcal:profile.manualRmr,profile_confirmed:source.profileConfirmed===true}:null,cycles,planned_meals:plannedMeals,prep_tasks:prepTasks,completions,movements,weights,deleted_weight_dates:source.deletedWeightDates||[],activity_sessions:activitySessions,deleted_activity_ids:source.deletedActivitySessionIds||[],legacy_training_dates:Object.keys(source.legacyStrengthDays||{}).filter(dateFromISO),shopping:{id:await cloudUuid('shopping-session','shared-cart'),starts_on:shoppingStart,ends_on:planDate(shoppingStart,20),items:shoppingItems},last_backup_at:source.lastBackupAt||null};
 }
   function stateFromCloud(data){
- if(!data.profile)throw Error('La cuenta tiene sincronización iniciada pero no contiene su perfil. No he sustituido los datos de este navegador.');
+ const planning=data.planningSupported?planningStateFromRows(data):planningStateFromRows({});
+ if(!data.profile&&!(data.planningSupported&&planning.setupMode==='guided'))throw Error('La cuenta tiene sincronización iniciada pero no contiene su perfil. No he sustituido los datos de este navegador.');
  const s=emptyState(),mealRowsByCycle=new Map(),cycleInfo=new Map(),menuOf=new Map(),locksOf=new Map(),prepOf=new Map();
  const visibleArchivedIds=new Set(data.cycles.filter(x=>x.status==='archived').sort((a,b)=>String(a.archived_at||a.created_at).localeCompare(String(b.archived_at||b.created_at))).slice(-6).map(x=>x.id));
  for(const row of data.plannedMeals){if(!mealRowsByCycle.has(row.cycle_id))mealRowsByCycle.set(row.cycle_id,[]);mealRowsByCycle.get(row.cycle_id).push(row)}
@@ -145,8 +149,9 @@ async function buildCloudSnapshot(source){
   return {operationId:move.operation_id,foodId:move.food_id,quantity:Number(move.quantity),kind:move.movement_kind==='reversal'?'meal_reversal':move.movement_kind,sourceId:planned?planned.meal_date+'#'+planned.slot:undefined,createdAt:move.created_at,note:move.note||undefined};
  });
  const sProfile=data.profile;
- s.profile=sanitizeProfile({sex:sProfile.sex,age:sProfile.age,height:sProfile.height_cm,weight:sProfile.reference_weight_kg,activity:sProfile.activity_level,goal:sProfile.goal,injury:sProfile.injury_recovery,autoPortions:sProfile.auto_portions,followWeight:sProfile.follow_weight,manualRmr:sProfile.manual_rmr_kcal});
- s.profileConfirmed=sProfile.profile_confirmed===true;
+ Object.assign(s,planning);
+ s.profile=sProfile?(planning.setupMode==='guided'?createProfileDraft:sanitizeProfile)({sex:sProfile.sex,age:sProfile.age,height:sProfile.height_cm,weight:sProfile.reference_weight_kg,activity:sProfile.activity_level,goal:sProfile.goal,injury:sProfile.injury_recovery,autoPortions:sProfile.auto_portions,followWeight:sProfile.follow_weight,manualRmr:sProfile.manual_rmr_kcal}):null;
+ s.profileConfirmed=sProfile?.profile_confirmed===true;
  if(active){s.noActiveCycle=false;s.activeCycleId=active.id;s.start=active.start_date;s.activeMenus=menuOf.get(active.id);s.activeMenuCatalogVersion=active.catalog_version;s.activeMenuGeneratedAt=active.generated_at;s.activeMenuConfirmedAt=active.confirmed_at;s.activeMenuRecoveryFocus=!!active.recovery_focus;s.done=doneByCycle.get(active.id)||{};s.reversedDone=reversedDoneByCycle.get(active.id)||{};s.prep=prepOf.get(active.id)||{}}
  else{s.noActiveCycle=true;s.activeCycleId=null;s.start=isoDate(today());s.activeMenus=null;s.activeMenuCatalogVersion=null;s.activeMenuGeneratedAt=null;s.activeMenuConfirmedAt=null;s.activeMenuRecoveryFocus=false;s.done={};s.prep={}}
  s.movements=allMovements;s.stock={};rebuildStock(s);

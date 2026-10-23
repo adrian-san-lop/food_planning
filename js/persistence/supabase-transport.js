@@ -1,3 +1,5 @@
+import { hasPlanningChanges, planningStateFromRows } from './planning-state.js?v=20261023-planning-persistence';
+
 const TABLES = [
   'plan_cycles',
   'planned_meals',
@@ -13,6 +15,22 @@ const TABLES = [
 ];
 
 export function createSupabaseTransport({ getClient, getUserId }) {
+  let capabilityUser = null;
+  let capabilities = null;
+
+  function resetCapabilities() { capabilityUser = null; capabilities = null; }
+
+  async function planningAvailable({ refresh = false } = {}) {
+    const user = getUserId();
+    if (!refresh && capabilityUser === user && capabilities !== null) return capabilities;
+    const { data, error } = await getClient().rpc('menuki_state_capabilities');
+    // Only an absent capability RPC denotes the old schema. Permissions/network
+    // errors and failures in existing/new tables must remain visible.
+    if (error && !['PGRST202', '42883'].includes(error.code)) throw error;
+    capabilities = !error && data?.planning_contract === 1;
+    capabilityUser = user;
+    return capabilities;
+  }
   async function readRows(table) {
     const rows = [];
     for (let from = 0; ; from += 1000) {
@@ -38,22 +56,49 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     return data;
   }
 
-  async function fetchSnapshot() {
-    const [settings, profile, ...rows] = await Promise.all([
-      readOne('user_settings'),
+  async function fetchSnapshot(attempt = 0) {
+    const planningSupported = await planningAvailable();
+    const settings = await readOne('user_settings');
+    const [profile, ...rows] = await Promise.all([
       readOne('profiles'),
       ...TABLES.map((table) => readRows(table)),
     ]);
     const [cycles, plannedMeals, completions, ingredients, movements, weights, activities, training, prep, shoppingSessions, shoppingItems] = rows;
-    return { settings, profile, cycles, plannedMeals, completions, ingredients, movements, weights, activities, training, prep, shoppingSessions, shoppingItems };
+    const planning = planningSupported ? await Promise.all([
+      readOne('profile_setup_drafts'), readOne('menu_preferences'), readRows('recipe_preferences'),
+    ]) : [null, null, []];
+    const [setupDraft, menuPreferences, recipePreferences] = planning;
+    // Individual PostgREST reads are separate transactions. Never acknowledge a
+    // mixture of old menu/profile data and preferences from a newer revision.
+    const after = await readOne('user_settings');
+    if (Number(settings?.sync_revision || 0) !== Number(after?.sync_revision || 0)
+        || settings?.state_initialized_at !== after?.state_initialized_at) {
+      if (attempt < 2) return fetchSnapshot(attempt + 1);
+      throw Object.assign(new Error('La cuenta está recibiendo cambios desde otro dispositivo. Vuelve a intentarlo.'), { code: 'CLOUD_SNAPSHOT_BUSY' });
+    }
+    return { settings, profile, cycles, plannedMeals, completions, ingredients, movements, weights, activities, training, prep, shoppingSessions, shoppingItems,
+      planningSupported, setupDraft, menuPreferences, recipePreferences };
   }
 
-  function submitSnapshot(rpcName, snapshot, expectedRevision) {
+  async function submitSnapshot(rpcName, snapshot, expectedRevision) {
+    let payload = snapshot;
+    if (!await planningAvailable({ refresh: capabilities === false })) {
+      // The current UI can use the legacy writer until the migration is applied.
+      // Never acknowledge preferences/progress that the old RPC would ignore.
+      const defaults = { setupMode: snapshot.setup_mode };
+      if (snapshot.setup_draft || snapshot.menu_preferences || snapshot.recipe_preferences) {
+        Object.assign(defaults, planningStateFromRows({ settings: { setup_mode: snapshot.setup_mode },
+          setupDraft: snapshot.setup_draft, menuPreferences: snapshot.menu_preferences, recipePreferences: snapshot.recipe_preferences }));
+      }
+      if (hasPlanningChanges(defaults)) throw Object.assign(new Error('El guardado de preferencias y configuración requiere aplicar la migración de planificación en Supabase. El resto de la cuenta sigue disponible.'), { code: 'PLANNING_SCHEMA_REQUIRED' });
+      const { planning_contract, setup_mode, setup_draft, menu_preferences, recipe_preferences, ...legacy } = snapshot;
+      payload = legacy;
+    }
     return getClient().rpc(rpcName, {
-      p_snapshot: snapshot,
+      p_snapshot: payload,
       p_expected_revision: expectedRevision,
     });
   }
 
-  return { readRows, readOne, fetchSnapshot, submitSnapshot };
+  return { readRows, readOne, fetchSnapshot, submitSnapshot, planningAvailable, resetCapabilities };
 }
