@@ -11,12 +11,9 @@ Esta secuencia distingue la próxima entrega aceptada de otras etapas candidatas
 - El esquema remoto tiene diecisiete tablas personales con RLS según las confirmaciones del propietario, incluidas las tres del paquete 4 aplicado y comprobado estructuralmente el 23/10/2026; el propietario confirma que las migraciones de inventario no negativo y de movimiento con cantidad cero se aplicaron el 17/10/2026. El 22/10/2026 confirmó que `20261018120000_retire_meal_shortfalls.sql` está aplicada y comprobó en SQL Editor que la tabla histórica quedó vacía, el disparador descarta escrituras antiguas y `authenticated` no tiene permisos directos de inserción, actualización o borrado. La primera prueba alojada del paquete 7 detectó nuevas filas de prueba; tras reaplicar el propietario la retirada el 23/10/2026 con Success, se verificaron cero filas ante nuevos consumos. La tabla se conserva por compatibilidad. La corrección HTTP 409 está aplicada y resuelta según confirmación del administrador comunicada el 17/10/2026. El propietario informa que las migraciones del buzón y mantenimiento admin y la asignación del rol están aplicadas, y que el borrado individual funciona. La exportación JSON está implementada en el repositorio; queda validar el recorrido completo publicado con una cuenta admin y otra normal. Los snapshots tienen retención indefinida y no se purgan automáticamente; revisar el crecimiento global y por tabla al añadir usuarios y alrededor de 350 MB.
 - Las sesiones reales ajustan las comidas pendientes de su misma fecha; días futuros mantienen el objetivo base y las comidas registradas conservan sus cantidades.
 
-## Próxima entrega aprobada: configuración inicial y planificación personal
+## Entrega aprobada: configuración inicial y planificación personal — cerrada
 
-Aceptada el 22/10/2026 según [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md). Paquetes 1–5 en dev; [6](planner/package-6-guided-first-setup.md) implementado y [7](planner/package-7-integration.md) con integración real comprobada. Pasan 184 pruebas Node, 18 comprobaciones PostgreSQL local y 14 alojadas con dos cuentas; dos orígenes de navegador recuperan y actualizan automáticamente progreso y primer plan. El propietario reaplicó la retirada de faltantes y nuevos consumos ya no crean filas. No hay SQL nuevo pendiente para esta entrega. El [plan integrado](planner/implementation-plan.md) conserva los criterios. Queda por completar:
-
-1. Revisar y publicar con autorización; comprobar el recorrido en GitHub Pages y PC/móvil físicos. Las sesiones locales contra Supabase real no acreditan esa publicación ni dispositivos físicos.
-2. Si el propietario desea retirarlas, ejecutar el SQL acotado de limpieza de las dos cuentas Auth de prueba; su estado personal y copias de trabajo ya están vacíos.
+Aceptada el 22/10/2026 según [ADR-0047](decisions/0047-guided-first-use-and-personalized-planning.md) y cerrada el 23/10/2026. Los paquetes 1–7 están incorporados en `dev`. Pasan 184 pruebas Node, 18 comprobaciones PostgreSQL local y 14 alojadas con dos cuentas; dos orígenes de navegador recuperan y actualizan automáticamente progreso y primer plan. El propietario confirma que la versión actual funciona en PC y móvil, que las cuentas de prueba fueron eliminadas y que `dev` quedó limpia. El propietario reaplicó la retirada de faltantes y nuevos consumos ya no crean filas. No queda SQL ni trabajo de aceptación pendiente para esta entrega. Véase el [plan integrado](planner/implementation-plan.md).
 
 
 
@@ -42,14 +39,14 @@ Despensa completa, valoración del catálogo, pesos de seguimiento y ejercicio n
 - Aplicar las reglas aceptadas con heurísticas iniciales. El paquete 3 aplica las preferencias al motor común; el 4 incorpora persistencia (SQL y siete comprobaciones confirmados por el propietario el 23/10/2026) y el 5 añade controles, revisión semanal y alternativas, probados localmente.
 - Permitir revisar, cambiar y bloquear platos; preservar bloqueos al regenerar; guardar versión de catálogo y cantidades consumidas.
 
-### D. Persistencia remota y Auth — implementación realizada; validación pendiente
+### D. Persistencia remota y Auth — implementación realizada; validación del paquete cerrada
 
 - Esquema inicial, RLS, `activity_sessions` y `meal_completion_ingredients`: aplicados. La migración de snapshots se verificó estructuralmente; el paquete 7 comprueba el aislamiento personal con dos cuentas Auth reales.
 - Retención de snapshots: indefinida, sin purga automática. Revisar tamaño total y por tabla al incorporar usuarios; decidir cualquier cambio de retención solo tras analizar el uso real.
 - Método de Auth aceptado en ADR-0009: correo + contraseña, registro libre y sin confirmación del correo. Auth y el cliente HTML están configurados; la migración transaccional/idempotente de sincronización está aplicada.
 - Prueba de aislamiento personal con dos usuarios: comprobada en el paquete 7 para lecturas entre propietarios, rechazo de escritura directa y RPC vinculado a la sesión. El buzón admin se valida por separado.
-- Verificar la versión del cliente publicado y la primera importación v8 desde el navegador con datos hacia una cuenta sin inicializar. La sincronización ya está implementada; falta documentar el recorrido integral en producción.
-- Comprobar en PC/móvil la conciliación automática de cambios independientes y simultáneos, los errores de conexión, el borrado de sesiones y el reinicio total confirmado antes de declarar validada la sincronización.
+- El paquete 7 verificó Auth, recuperación del plan y aislamiento personal; el propietario confirma que la versión actual funciona en PC y móvil. Véanse las evidencias y sus límites en el [registro de integración](planner/package-7-integration.md).
+- Las comprobaciones adicionales de errores de red y recuperación pueden añadirse ante cambios o incidencias; no bloquean el cierre comunicado de esta entrega.
 
 ### E. Compra, inventario y robustez
 

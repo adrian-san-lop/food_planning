@@ -1,8 +1,8 @@
 # Especificación del catálogo y del planificador
 
-Estado: familiaridad y raciones prácticas implementadas; [generador común del paquete 3](package-3-common-generator.md) implementado y probado localmente (23/10/2026). Reglas aceptadas en ADR-0046 y ADR-0047; ponderaciones y límites son ajustes del producto, no garantías nutricionales.
+Estado: familiaridad y raciones prácticas implementadas; los paquetes 1–7 de la evolución del planificador están completados. Reglas aceptadas en ADR-0046 y ADR-0047; ponderaciones y límites son ajustes del producto, no garantías nutricionales.
 
-Evolución aceptada el 22/10/2026 según [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md). Paquetes 1–5 en `dev`, [6](package-6-guided-first-setup.md) implementado y [7](package-7-integration.md) con integración Auth/PostgREST comprobada usando dos cuentas y dos orígenes de navegador independientes. El primer menú usa el motor común y perfil confirmado, sin datos de ejemplo; se conservan cuentas existentes y estado v12. No hay SQL nuevo para esta entrega. Quedan publicación autorizada y dispositivos físicos; véase el [plan integrado](implementation-plan.md).
+Evolución aceptada el 22/10/2026 según [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md). Los paquetes 1–7 están incorporados a `dev`; la integración Auth/PostgREST se comprobó con dos cuentas y dos orígenes de navegador independientes. El propietario confirma que la versión actual funciona en PC y móvil y que se eliminaron las cuentas de prueba. El primer menú usa el motor común y perfil confirmado, sin datos de ejemplo; se conservan cuentas existentes y estado v12. No hay SQL ni trabajo de aceptación pendiente para esta entrega; véase el [plan integrado](implementation-plan.md).
 
 ## Objetivo del ciclo
 
@@ -143,7 +143,7 @@ El nombre del plato abre su ficha. **Cambiar plato** ofrece hasta tres alternati
 
 ## Preferencias aceptadas y restricciones fuera de alcance
 
-Según ADR-0047, se aceptan preferencias personales por receta **normal**, **favorita** y **No proponer**. El paquete 3 las aplica en el motor y el [paquete 4](package-4-persistence.md) incorpora su persistencia relacional, aplicada y comprobada estructuralmente según el propietario el 23/10/2026. El paquete 5 añade los controles en las fichas y **Mi perfil → Preferencias del menú**, con máximos opcionales y separados de comida y cena entre semana; vacío significa sin límite. Favorita favorece sin obligar a aparecer; No proponer excluye la selección automática pero permite una elección manual. Registrar una comida no es una valoración. Si no quedan alternativas se muestran causas; no se relajan las condiciones ni se confirma un ciclo incompleto. La validación funcional alojada sigue pendiente.
+Según ADR-0047, se aceptan preferencias personales por receta **normal**, **favorita** y **No proponer**. El paquete 3 las aplica en el motor y el [paquete 4](package-4-persistence.md) incorpora su persistencia relacional, aplicada y comprobada estructuralmente según el propietario el 23/10/2026. El paquete 5 añade los controles en las fichas y **Mi perfil → Preferencias del menú**, con máximos opcionales y separados de comida y cena entre semana; vacío significa sin límite. Favorita favorece sin obligar a aparecer; No proponer excluye la selección automática pero permite una elección manual. Registrar una comida no es una valoración. Si no quedan alternativas se muestran causas; no se relajan las condiciones ni se confirma un ciclo incompleto. La integración funcional alojada está documentada en el [paquete 7](package-7-integration.md).
 
 Las preferencias son privadas y no modifican el catálogo compartido ni reemplazan menús confirmados automáticamente. Las exclusiones de ingredientes y las alergias/intolerancias quedan fuera de esta entrega y requieren un diseño independiente; No proponer no es un filtro de alergias.
 

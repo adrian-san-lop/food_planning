@@ -1,6 +1,6 @@
 # ADR-0047 — Configuración inicial guiada y planificación personal
 
-- Estado: Aceptada; implementación e integración real comprobadas. Revisión y publicación autorizada pendientes.
+- Estado: Aceptada e implementada; integración y aceptación cerradas el 23/10/2026. El propietario confirma que la versión actual funciona en PC y móvil y que las cuentas de prueba fueron eliminadas.
 - Fecha: 2026-10-22
 - Alcance: primera visita, perfil, preferencias, generación y revisión de menús, persistencia personal.
 - Desarrollo y aceptación: [plan integrado](../planner/implementation-plan.md).
@@ -31,7 +31,7 @@ El propietario acepta las cinco decisiones de evolución del planificador y el r
 - Se mantienen las fórmulas de objetivos actuales, la actividad real limitada a su fecha, los IDs del catálogo y las reglas de unidades. La previsión de stock para generar un ciclo futuro no escribe movimientos.
 - Quedan fuera de esta entrega alergias, exclusiones de ingredientes, varias personas, precios, caducidades, sobras y cocina por lotes. Las preferencias de receta no se presentarán como un filtro de alergias.
 
-## Avance de implementación y pendientes
+## Avance de implementación y cierre
 
 El 22/10/2026 se implementó y probó localmente el [paquete 1](../planner/package-1-foundations.md): perfil extraído con compatibilidad, borradores, progreso y preferencias con cambios parciales explícitos. Al cerrar ese paquete no activaban recorrido ni preferencias; el estado seguía en v11, sin SQL ni publicación. Los paquetes 4 y 5 los conectan posteriormente.
 
@@ -41,4 +41,4 @@ El 23/10/2026 se implementó y probó localmente el [paquete 3](../planner/packa
 
 El 23/10/2026 el [paquete 4](../planner/package-4-persistence.md) prepara estado v12, borradores y preferencias relacionales, conciliación, capacidades y RPC con validación del servidor. Se prueba en PostgreSQL local. El propietario confirma su migración en Supabase con Success y siete diagnósticos en true; no es una inspección remota independiente. La renovación recibe preferencias guardadas; los controles se añaden en el 5. Los paquetes 1–4 están incorporados a dev antes de iniciar el 5.
 
-El [paquete 5](../planner/package-5-preferences-and-weekly-review.md) implementa y prueba localmente preferencias en perfil/fichas, revisión semanal, alternativas consultables y alcance de tres semanas o una comida respetando bloqueos. Incluye 162 pruebas Node y recorridos HTTP sintéticos, sin SQL nuevo ni publicación. Las propuestas incompletas se revisan temporalmente sin sustituir el último borrador completo. El [paquete 6](../planner/package-6-guided-first-setup.md) está implementado y probado localmente desde dev con el 5 incorporado: cuatro pasos, perfil vacío, reanudación, preferencias omitibles y primer ciclo generado con confirmación explícita e idempotente. Incluye 175 pruebas Node y recorridos HTTP sintéticos; reutiliza el SQL del 4 sin migración adicional. El [paquete 7](../planner/package-7-integration.md) comprueba la integración real con 14 casos alojados y dos sesiones de navegador, y corrige conciliación visible y respuestas de la cuenta anterior. El propietario reaplicó la retirada de faltantes con Success; se verificó funcionalmente que no se crean filas. Quedan revisión, publicación autorizada y dispositivos físicos. No quedan decisiones de producto bloqueantes dentro del alcance aceptado.
+El [paquete 5](../planner/package-5-preferences-and-weekly-review.md) implementa y prueba localmente preferencias en perfil/fichas, revisión semanal, alternativas consultables y alcance de tres semanas o una comida respetando bloqueos. Incluye 162 pruebas Node y recorridos HTTP sintéticos. El [paquete 6](../planner/package-6-guided-first-setup.md) implementa cuatro pasos, reanudación, preferencias omitibles y primer ciclo generado con confirmación explícita e idempotente. Incluye 175 pruebas Node y recorridos HTTP sintéticos; reutiliza el SQL del 4 sin migración adicional. El [paquete 7](../planner/package-7-integration.md) comprueba la integración real con 14 casos alojados y dos sesiones de navegador, y corrige conciliación visible y respuestas de la cuenta anterior. El propietario reaplicó la retirada de faltantes con Success; se verificó funcionalmente que no se crean filas. La rama `dev` está limpia según la confirmación del propietario; las 184 pruebas Node, 18 comprobaciones PostgreSQL local y 14 alojadas están documentadas. El propietario confirma funcionamiento actual en PC y móvil y eliminación de las cuentas de prueba. La entrega queda cerrada.

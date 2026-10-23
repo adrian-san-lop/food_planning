@@ -2,7 +2,7 @@
 
 Estado de referencia: 23 de octubre de 2026. Este documento reúne el alcance acordado; lo que aún sea una propuesta aparece señalado como tal.
 
-Evolución aceptada: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) y [plan integrado](../planner/implementation-plan.md). Paquetes 1–5 incorporados a `dev`; [6](../planner/package-6-guided-first-setup.md) implementado y [7](../planner/package-7-integration.md) comprobado contra Supabase real con dos cuentas y dos sesiones de navegador independientes. El propietario reaplicó la retirada de faltantes y se verificaron cero filas tras nuevos consumos. No hay SQL nuevo para esta entrega. Se conservan cuentas, fórmulas, catálogos y consumos previos. Quedan revisión, publicación autorizada y dispositivos físicos.
+Evolución aceptada: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md) y [plan integrado](../planner/implementation-plan.md). Los paquetes 1–7 están completados e incorporados a `dev`; el paquete 7 se comprobó contra Supabase real con dos cuentas y dos sesiones de navegador independientes. El propietario reaplicó la retirada de faltantes y se verificaron cero filas tras nuevos consumos. El propietario confirma que la versión actual funciona en PC y móvil y que se eliminaron las cuentas de prueba. No hay SQL ni trabajo de aceptación pendiente para esta entrega. Se conservan cuentas de usuarios, fórmulas, catálogos y consumos previos.
 
 ## Propósito y usuarios
 
@@ -105,7 +105,7 @@ El aviso de renovación se muestra al abrir la aplicación; no es push. El produ
 - Guardar la propuesta con su versión de catálogo en Supabase y activarla en la fecha guardada.
 - Con Recuperación ósea activa, dar preferencia cualitativa a recetas con fuentes catalogadas de calcio y vitamina D y con frutas/verduras que aporten vitamina C; presentar presencia por día como referencia, no como objetivo nutricional cuantificado. El ciclo actual no se sustituye al cambiar el perfil.
 
-Las cuentas nuevas generan y revisan su primer ciclo mediante la configuración guiada del paquete 6, probada localmente. Las preferencias explícitas Normal, Favorita y No proponer ya están aprobadas e implementadas; las alergias y exclusiones por ingrediente siguen fuera de alcance. Las cuentas existentes conservan sus menús y la plantilla fija solo sirve como compatibilidad.
+Las cuentas nuevas generan y revisan su primer ciclo mediante la configuración guiada del paquete 6. El paquete 7 comprueba la integración con Supabase; el propietario confirma el funcionamiento actual en PC y móvil. Las preferencias explícitas Normal, Favorita y No proponer ya están implementadas; las alergias y exclusiones por ingrediente siguen fuera de alcance. Las cuentas existentes conservan sus menús y la plantilla fija solo sirve como compatibilidad.
 
 Los valores MET de actividad son aproximaciones basadas en categorías del [2024 Adult Compendium](https://pacompendium.com/adult-compendium/), no mediciones individuales. No se ha aprobado el aprendizaje automático de una rutina futura a partir del historial; la posibilidad de mostrar un resumen para revisión manual sigue abierta.
 
@@ -138,4 +138,4 @@ La política de repetición y renovación está aceptada en [ADR-0046](../decisi
 - Los catálogos son datos genéricos; no deben contener perfiles, pesos, preferencias personales, despensa, comidas completadas ni copias de seguridad.
 - GitHub Pages es alojamiento estático y de acceso público. Los datos personales no se guardan en el repositorio; Supabase los separa por `auth.uid()` y RLS. `localStorage` es una copia de trabajo, no la sincronización entre dispositivos.
 - No añadir colas offline, avisos en segundo plano ni notificaciones push. La sincronización se inicia automáticamente al guardar cambios y al detectar una revisión remota nueva; la interfaz solo ofrece reintento cuando falla. El reinicio total conserva su confirmación explícita y usa el RPC de reemplazo; no participa en la conciliación habitual entre dispositivos. La restauración personal desde JSON ya no está disponible.
-- El inicio de sesión y la sincronización relacional están implementados en el HTML y el esquema. La publicación del HTML actualizado, la prueba RLS con dos cuentas y la verificación PC/móvil siguen pendientes; véase [arquitectura](../architecture.md).
+- El inicio de sesión y la sincronización relacional están implementados en el HTML y el esquema. El paquete 7 comprobó RLS y los recorridos de cuenta con dos cuentas reales; el propietario confirma que la versión actual funciona en PC y móvil. Véase [arquitectura](../architecture.md).

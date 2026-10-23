@@ -1,7 +1,7 @@
 # Paquete 6: configuración inicial guiada
 
 - Fecha: 23/10/2026.
-- Estado: **Implementado y probado localmente** en `chore/guided-first-setup`, desde `dev` limpio y coincidente con `origin/dev` en `6c1d9ec62dc1`. El paquete 5 ya estaba incorporado. Sin commit, push, publicación ni ejecución de SQL alojado.
+- Estado: **Implementado localmente en `chore/guided-first-setup`; después integrado y cerrado en `dev` como parte de los paquetes 1–7.** El paquete 5 ya estaba incorporado al iniciar. La aceptación final, la confirmación del propietario en PC/móvil y la eliminación de las cuentas de prueba están en el [registro del paquete 7](package-7-integration.md).
 - Alcance: [plan integrado](implementation-plan.md), paquete 6; [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Qué verá una cuenta nueva
@@ -36,7 +36,7 @@ La reanudación se deriva de hechos validados:
 - Borrador completo → Continuar revisión, conservando recetas y bloqueos.
 - Plan confirmado, incluso terminado o archivado → aplicación habitual; el fin del ciclo abre renovación y no repite la configuración.
 
-Recargar recupera la copia de trabajo pendiente; otro dispositivo recupera el último progreso que haya confirmado Supabase. El paquete 7 comprueba esta recuperación y la actualización automática en dos sesiones de navegador con orígenes independientes contra Supabase real; dispositivos físicos y publicación siguen pendientes. Los números de paso no se guardan como autorización para saltarse validaciones.
+Recargar recupera la copia de trabajo pendiente; otro dispositivo recupera el último progreso que haya confirmado Supabase. El paquete 7 comprueba esta recuperación y la actualización automática en dos sesiones de navegador con orígenes independientes contra Supabase real. Después, el propietario confirmó que la versión actual funciona en PC y móvil. Los números de paso no se guardan como autorización para saltarse validaciones.
 
 ## Compatibilidad y Supabase
 
@@ -64,4 +64,4 @@ Recargar recupera la copia de trabajo pendiente; otro dispositivo recupera el ú
 - Prueba por HTTP con shell, módulos, catálogos, normalizador local y eventos reales, en el navegador integrado y con cuentas sintéticas. Solo se sustituyó el arranque de Auth en un servidor temporal local, sin llamadas a Supabase ni datos personales del propietario.
 - Comprobados datos vacíos y validación; recarga después de datos básicos, omisión de preferencias y borrador; fichas de recetas; confirmación y entrada en Inicio; nueva recarga sin repetir configuración; gasto manual obligatorio; límites de un minuto con huecos y confirmación deshabilitada; cuenta antigua y capacidad ausente.
 - Revisión visual en marcos de escritorio 1366 × 768, tablet 1024 × 768 y móvil 390 × 844 / 360 × 640; contenido largo y acciones accesibles por desplazamiento. No acredita dispositivos físicos ni Firefox/Edge.
-- La validación posterior del [paquete 7](package-7-integration.md) añade 14 comprobaciones Auth/PostgREST reales con dos cuentas y el recorrido en dos orígenes de navegador. Quedan publicación autorizada y dispositivos físicos. Las 175 pruebas y los recorridos anteriores describen el cierre local del paquete 6, no esa prueba alojada.
+- La validación posterior del [paquete 7](package-7-integration.md) añade 14 comprobaciones Auth/PostgREST reales con dos cuentas y el recorrido en dos orígenes de navegador. El propietario confirma que la versión actual funciona en PC y móvil y que las cuentas de prueba se eliminaron. Las 175 pruebas y los recorridos anteriores describen el cierre local del paquete 6, no esa prueba alojada.

@@ -134,11 +134,19 @@
     "postgresql": 18,
     "profileCases": 80
   },
-  "publication": false,
-  "authAccountDeletion": false,
+  "publicationAtTestEnd": false,
+  "authAccountDeletionAtTestEnd": false,
   "testStateCleared": {
     "c2a91d05-99d1-498e-a454-086512a5780c": true,
     "675a701f-5330-4eee-9c66-3004f8f256bb": true
   },
-  "finishedAt": "2026-10-23T13:09:49.583Z"
+  "finishedAt": "2026-10-23T13:09:49.583Z",
+  "ownerConfirmation": {
+    "date": "2026-10-23",
+    "ownerConfirmedDevWasCleanBeforeDocumentationUpdate": true,
+    "currentVersionWorksOnDesktopAndMobileOwnerConfirmed": true,
+    "testAuthAccountsDeleted": true,
+    "confirmedBy": "owner",
+    "independentlyVerifiedByAgent": false
+  }
 }

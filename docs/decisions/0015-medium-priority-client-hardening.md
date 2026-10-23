@@ -20,4 +20,4 @@ La auditoría front-end identificó que Supabase JS se cargaba sin fijar el parc
 - `menuki.html` carga la dependencia desde una URL de versión exacta. Al no haber compilación, no se requiere archivo de bloqueo npm para producción.
 - `npm test` cubre fechas civiles en los cambios de horario, conversiones de inventario, contratos de catálogos, escape HTML/atributos y rechazo de URL no permitidas. No introduce un runtime adicional a la web publicada.
 - Los catálogos JSON siguen siendo canónicos para los datos genéricos. Supabase relacional sigue siendo la fuente remota canónica de los datos personales; `localStorage` sigue siendo la copia de trabajo.
-- El [paquete 7](../planner/package-7-integration.md) comprueba Auth/PostgREST y aislamiento personal con dos cuentas reales. Quedan carga y recorridos publicados en GitHub Pages y PC/móvil físicos.
+- El [paquete 7](../planner/package-7-integration.md) comprueba Auth/PostgREST y aislamiento personal con dos cuentas reales. El propietario confirma que la versión actual funciona en PC y móvil; no se volvió a ejecutar una auditoría exhaustiva de cada flujo descrito en este registro.

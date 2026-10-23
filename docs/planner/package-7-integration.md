@@ -1,7 +1,7 @@
 # Paquete 7: integración real y preparación de publicación
 
 - Fecha: 23/10/2026.
-- Estado: **Integración comprobada; publicación pendiente de autorización.** Se continúa en `chore/guided-first-setup`, junto al paquete 6, por indicación del propietario. No se ha hecho commit, push ni publicación.
+- Estado: **Cerrado e incorporado a `dev`.** El propietario confirma que los cambios quedaron guardados, que `dev` está limpia y que la versión actual funciona en PC y móvil. El agente comprobó `dev` en `c010ade`, coincidente con `origin/dev`, y el árbol limpio antes de esta actualización documental. La comprobación de PC/móvil y la eliminación posterior de las cuentas de prueba son confirmaciones del propietario, no verificaciones independientes del agente.
 - Alcance: [plan integrado](implementation-plan.md), [paquete 6](package-6-guided-first-setup.md) y [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
 ## Correcciones del cliente
@@ -42,7 +42,7 @@ Se comprobó formulario vacío, guardado de edad parcial, recuperación en la se
 
 Con la despensa vacía se registró un desayuno: cinco ingredientes completos, cinco marcadores de consumo de cantidad cero y ningún faltante. La primera sesión actualizó automáticamente la comida registrada; ambas mostraron Sincronizado con Supabase. La consola de la segunda sesión no mostró avisos ni errores. Se retiraron las copias locales y sesiones de los dos orígenes y se cerraron las pestañas de prueba.
 
-Son dos sesiones con almacenamiento independiente en el navegador integrado, **no dos dispositivos físicos ni una validación de Firefox/Edge o del cliente publicado**. La compatibilidad antigua y los tamaños de pantalla conservan las pruebas locales de paquetes anteriores.
+En esta ejecución fueron dos sesiones con almacenamiento independiente en el navegador integrado, no dos dispositivos físicos ni una validación independiente de Firefox/Edge o del cliente publicado. Después, el propietario confirmó que la versión actual funciona en PC y móvil; esta confirmación cierra la comprobación de aceptación de la entrega.
 
 Tras completar las protecciones de cambio de cuenta se repitió el acceso con la cuenta B: Sincronizado con Supabase, Paso 1 y edad/altura/peso vacíos, sin avisos ni errores de consola. Se retiró también esa copia local.
 
@@ -58,6 +58,6 @@ La prueba de los seis niveles confirma además que el servidor admite sus IDs ac
 
 - **184 pruebas Node** y **18 comprobaciones PostgreSQL local** correctas; las segundas incluyen 80 casos de perfil y dos roles simulados. Son evidencia separada de las 14 comprobaciones alojadas.
 - El RPC de reinicio limpió exclusivamente el estado de las dos cuentas creadas para esta ejecución, comprobando antes sus IDs y etiqueta Auth. No quedan sus perfiles, ciclos, comidas, movimientos, pesos ni sesiones de actividad. Permanecen las filas vacías de inicialización que crea el propio RPC.
-- Las dos cuentas de Auth permanecen hasta que el propietario ejecute, si desea retirarlas, [el SQL de limpieza acotado](../../tests/live/cleanup/20261023-package7-test-accounts.sql). Exige coincidencia de IDs, correo reservado y etiqueta de ejecución y excluye administradores; no es una migración ni una purga general. No se han eliminado cuentas desde el agente.
+- El propietario confirma que también eliminó las dos cuentas de prueba de Auth. El [SQL de limpieza acotado](../../tests/live/cleanup/20261023-package7-test-accounts.sql) queda como referencia reproducible; no se ejecutó desde el agente.
 - Contraseñas y tokens solo se utilizaron en archivos temporales privados fuera del repositorio y del servidor HTTP; se eliminan al terminar las comprobaciones. No se incorporan al informe ni a Git.
-- **Siguiente paso:** revisión de estos cambios, commit/push y PR a `dev` únicamente con autorización del propietario. Después comprobar el recorrido en GitHub Pages y en PC/móvil físicos. La integración local contra el servicio real no acredita esa publicación.
+- **Cierre:** no queda implementación ni comprobación de aceptación pendiente para los paquetes 1–7. La entrega está en `dev`; el propietario confirma el funcionamiento actual en PC y móvil y la eliminación de las cuentas temporales. La purga global del buzón de propuestas es una tarea administrativa separada del paquete y conserva su propio estado en la documentación de Supabase.

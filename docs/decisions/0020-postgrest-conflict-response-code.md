@@ -24,4 +24,4 @@
 
 ## Estado y validación
 
-El administrador confirmó la resolución el 17/10/2026. El [paquete 7](../planner/package-7-integration.md) añade una comprobación independiente: una revisión obsoleta devuelve HTTP 409 / PT409 mediante PostgREST y conserva el estado aceptado. Las regresiones locales comprueban además que la conciliación actualiza la pantalla visible. No se han inspeccionado logs administrativos; el recorrido publicado y los dispositivos físicos siguen pendientes.
+El administrador confirmó la resolución el 17/10/2026. El [paquete 7](../planner/package-7-integration.md) añade una comprobación independiente: una revisión obsoleta devuelve HTTP 409 / PT409 mediante PostgREST y conserva el estado aceptado. Las regresiones locales comprueban además que la conciliación actualiza la pantalla visible. No se inspeccionaron logs administrativos; el propietario confirma que la versión actual funciona en PC y móvil.

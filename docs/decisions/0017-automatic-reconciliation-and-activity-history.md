@@ -22,7 +22,7 @@ La sincronización transaccional ya rechazaba escrituras con una revisión antig
 - Cambios locales independientes se conservan al reconciliarse con cambios remotos. Para cambios simultáneos sobre el mismo valor, la revisión remota aceptada más reciente determina el valor conservado.
 - El borrado de una sesión continúa usando su ID estable y la lista `deleted_activity_ids` del RPC; no requiere cambios de esquema.
 - El reinicio total puede reemplazar los datos personales porque el usuario confirma explícitamente esa acción. No forma parte del cambio normal de dispositivo; la restauración JSON ya no se ofrece (ADR-0029).
-- Este cambio no modificó migraciones. El [paquete 7](../planner/package-7-integration.md) comprueba después HTTP 409, aislamiento personal con dos cuentas, recuperación/actualización automática en dos orígenes de navegador y el RPC de reinicio en cuentas de prueba. Quedan publicación y PC/móvil físicos, errores de red en esos dispositivos y el recorrido del reinicio confirmado desde la interfaz.
+- Este cambio no modificó migraciones. El [paquete 7](../planner/package-7-integration.md) comprueba después HTTP 409, aislamiento personal con dos cuentas, recuperación/actualización automática en dos orígenes de navegador y el RPC de reinicio en cuentas de prueba. El propietario confirma que la versión actual funciona en PC y móvil; los escenarios excepcionales de red y el recorrido del reinicio desde la interfaz no formaron parte de esa comprobación.
 
 ## Decisiones sustituidas
 

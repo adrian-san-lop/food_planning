@@ -37,7 +37,7 @@ Petición de dominio:
 
 La ausencia de historial válido no instala una plantilla en este motor ni exige despensa. El perfil se valida sin rellenar valores de ejemplo y su confirmación es explícita. Una preferencia inválida o una fecha incorrecta produce un error; no se ignoran para generar con condiciones diferentes. La inspección detecta también fechas discordantes y posiciones incompletas.
 
-La confirmación recibida es un dato del adaptador, **no un control de seguridad del servidor**. El [paquete 4](package-4-persistence.md) incorpora su validación transaccional en SQL, aplicado con los siete diagnósticos correctos según el propietario el 23/10/2026; la validación funcional con sesiones reales sigue pendiente. La aplicación actual consulta el indicador de su perfil y pide revisarlo antes de nuevas propuestas o confirmaciones; los ciclos existentes siguen disponibles.
+La confirmación recibida es un dato del adaptador, **no un control de seguridad del servidor**. El [paquete 4](package-4-persistence.md) incorpora su validación transaccional en SQL, aplicado con los siete diagnósticos correctos según el propietario el 23/10/2026. El [paquete 7](package-7-integration.md) completa la validación funcional con sesiones reales. La aplicación consulta el indicador del perfil y pide revisarlo antes de nuevas propuestas o confirmaciones; los ciclos existentes siguen disponibles.
 
 ## Preferencias, tiempos y bloqueos
 

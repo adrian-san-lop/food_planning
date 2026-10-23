@@ -14,7 +14,7 @@ Las credenciales pertenecen a Supabase Auth (`auth.users`). `public.profiles` gu
 
 **El propietario confirma que la migración se ejecutó en SQL Editor con Success y que las siete comprobaciones de `diagnostics/planning_persistence.sql` dieron `ready = true` el 23/10/2026.** Se registra su confirmación de ejecución y estructura; no es una inspección independiente del agente ni una prueba funcional con sesiones reales. Antes se comprobaron todas las migraciones en PostgreSQL local temporal, con 18 verificaciones, 80 casos de perfil y dos roles/identidades simulados. El cliente detecta el esquema anterior y mantiene la sincronización habitual sin consultar tablas inexistentes; no declara guardadas preferencias que el servidor antiguo no admite.
 
-El [registro del paquete 4](../docs/planner/package-4-persistence.md#aplicación-en-supabase-confirmada-el-23102026) conserva los siete resultados estructurales comunicados. Los paquetes [5](../docs/planner/package-5-preferences-and-weekly-review.md) y [6](../docs/planner/package-6-guided-first-setup.md) reutilizan ese contrato. El [7](../docs/planner/package-7-integration.md) añade 14 comprobaciones Auth/PostgREST reales con dos cuentas y recuperación/actualización automática en dos sesiones de navegador independientes. No hay SQL nuevo pendiente para esta entrega; quedan publicación autorizada y dispositivos físicos. El [diagnóstico de planificación](diagnostics/planning_persistence.sql) se conserva como consulta de solo lectura.
+El [registro del paquete 4](../docs/planner/package-4-persistence.md#aplicación-en-supabase-confirmada-el-23102026) conserva los siete resultados estructurales comunicados. Los paquetes [5](../docs/planner/package-5-preferences-and-weekly-review.md) y [6](../docs/planner/package-6-guided-first-setup.md) reutilizan ese contrato. El [7](../docs/planner/package-7-integration.md) añade 14 comprobaciones Auth/PostgREST reales con dos cuentas y recuperación/actualización automática en dos sesiones de navegador independientes. El propietario confirma que la versión actual funciona en PC y móvil y que las cuentas de prueba fueron eliminadas. No hay SQL nuevo pendiente para esta entrega. El [diagnóstico de planificación](diagnostics/planning_persistence.sql) se conserva como consulta de solo lectura.
 
 ### Migraciones anteriores y estado comunicado
 
@@ -77,18 +77,18 @@ Los IDs de alimentos y recetas se resuelven contra los catálogos JSON; no se du
 
 ## Pendiente de validar
 
-- La corrección HTTP 409 ya está aplicada y resuelta según el administrador (17/10/2026). No volver a ejecutarla por figurar en un listado antiguo. Mantener pendientes las pruebas completas de conciliación entre dispositivos; la novena y la décima también constan como aplicadas según el propietario.
+- La corrección HTTP 409 ya está aplicada y resuelta según el administrador (17/10/2026). No volver a ejecutarla por figurar en un listado antiguo. El paquete 7 comprobó el rechazo de revisiones obsoletas y la conciliación en dos sesiones; el propietario confirma el funcionamiento actual en PC y móvil. Las pruebas adicionales de escenarios excepcionales de red pueden añadirse si se cambia el flujo o aparece una incidencia.
 - Aplicar `20261013180000_recipe_proposal_purge_where_clause.sql` desde SQL Editor para corregir la purga global; no volver a ejecutar migraciones ya aplicadas. Esta corrección no modifica tablas.
 - Validar con una cuenta normal y otra admin: envío, aislamiento de lectura, JSON admin conforme al esquema v1, permisos del botón de borrado, confirmación del recuento y borrado en cascada de ingredientes y pasos.
 - Aislamiento personal comprobado en el paquete 7 con dos cuentas Auth: lectura entre propietarios, escritura directa rechazada y RPC ligado a la sesión. Las referencias y permisos del buzón admin requieren comprobación separada.
-- Probar en la web publicada los cambios desde PC y móvil, los conflictos y la recuperación ante un error de red.
+- La validación integral del buzón de propuestas requiere una cuenta normal y una admin; es independiente de la entrega del planificador.
 - Definir una copia externa periódica y revisar el crecimiento de almacenamiento.
 
 ## Prueba de aislamiento entre usuarios (comprobación personal del paquete 7)
 
 El control `tests/001_schema_check.sql` solo confirma que existen las tablas, RLS, políticas y permisos. No demuestra que una sesión real del usuario A quede aislada de la del usuario B.
 
-El paquete 7 usa dos cuentas Auth reales y comprueba lecturas cruzadas en las 16 tablas personales activas, rechazo de escrituras directas en las siete tablas protegidas por planificación y RPC vinculado a `auth.uid()`. El [registro](../docs/planner/package-7-integration.md) delimita la evidencia y las comprobaciones pendientes de publicación/buzón. Para una revisión manual ampliada del esquema, se conserva esta guía con dos cuentas temporales:
+El paquete 7 usa dos cuentas Auth reales y comprueba lecturas cruzadas en las 16 tablas personales activas, rechazo de escrituras directas en las siete tablas protegidas por planificación y RPC vinculado a `auth.uid()`. El [registro](../docs/planner/package-7-integration.md) delimita la evidencia; el propietario confirma que la versión actual funciona en PC y móvil. La validación completa del buzón admin sigue separada. Para una revisión manual ampliada del esquema, se conserva esta guía con dos cuentas temporales:
 
 1. Con A, crear filas sintéticas propias en las tablas personales y enlazar sus ciclos, comidas, snapshots y movimientos usando IDs de A.
 2. Con B, consultar esas mismas tablas sin filtrar por propietario. No debe aparecer ninguna fila de A; B sí debe poder leer sus propias filas.

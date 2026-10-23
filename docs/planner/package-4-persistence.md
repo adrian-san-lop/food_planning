@@ -1,10 +1,10 @@
 # Paquete 4: persistencia de preferencias y configuración
 
 - Fecha: 23/10/2026.
-- Estado: **Incorporado a dev; migración aplicada en Supabase según confirmación del propietario el 23/10/2026.** Se desarrolló en `chore/common-menu-generator`, conservando el paquete 3. El propietario comunica `Success` al ejecutar el SQL y `ready = true` en las siete comprobaciones; posteriormente incorporó ambos paquetes a `origin/dev`, comprobado antes de iniciar el 5 (`a3b6af28c0ea`). El paquete 7 añade validación funcional con sesiones reales; la publicación continúa pendiente.
+- Estado: **Incorporado a dev; migración aplicada en Supabase según confirmación del propietario el 23/10/2026.** Se desarrolló en `chore/common-menu-generator`, conservando el paquete 3. El propietario comunica `Success` al ejecutar el SQL y `ready = true` en las siete comprobaciones; posteriormente incorporó ambos paquetes a `origin/dev`, comprobado antes de iniciar el 5 (`a3b6af28c0ea`). El paquete 7 añadió validación funcional con sesiones reales y el propietario confirmó el funcionamiento actual en PC y móvil.
 - Alcance: [plan integrado](implementation-plan.md), paquete 4; [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 
-## Qué está disponible y qué sigue pendiente
+## Implementación y validación posterior
 
 Se preparan la lectura y escritura relacionales de preferencias y borradores, la migración local v12, la conciliación y las validaciones del servidor. La renovación recibe las preferencias guardadas cuando se carga un esquema compatible. Cambiar preferencias no sustituye automáticamente ningún menú ni borrador: se aplican al regenerar explícitamente.
 
@@ -94,8 +94,7 @@ El propietario comunica: «Ha salido todo correcto, success y true todo». La co
 
 La aplicación de la migración y la comprobación estructural del esquema quedan cerradas **según la confirmación del propietario**, no por la existencia del archivo en Git ni por las pruebas locales. En ese cierre no se consultó independientemente el proyecto alojado. El paquete 7 añade comprobaciones funcionales Auth/PostgREST con dos cuentas; no ejecuta SQL administrativo ni acredita por sí solo la definición completa instalada. Las consultas de diagnóstico permanecen disponibles como comprobación de solo lectura.
 
-## Pendientes de integración y desarrollo
+## Cierre e integración posterior
 
-- Probar con dos sesiones reales preferencias, progreso, conflictos y primer plan. Las pruebas locales y las consultas estructurales no acreditan esos recorridos autenticados ni su comportamiento entre dispositivos.
-- Los paquetes 5 y 6 están implementados; el 5 ya está en dev. El [paquete 7](package-7-integration.md) comprueba la integración alojada con dos cuentas reales. La migración del 4 no es una acción pendiente; no hay SQL nuevo para esta entrega. Quedan revisión, publicación autorizada y recorrido publicado/PC/móvil.
-- Publicar el cliente cuando el propietario lo autorice. La ejecución de SQL no publica los cambios locales de la web ni añade por sí misma botones de favoritas.
+- El [paquete 7](package-7-integration.md) comprobó con dos cuentas reales las preferencias, el progreso, los conflictos y el primer plan. El propietario confirmó que la versión actual funciona en PC y móvil y que las cuentas de prueba se eliminaron.
+- La migración del paquete 4 no es una acción pendiente y no hay SQL nuevo para esta entrega. Los paquetes 1–7 están cerrados según el [plan integrado](implementation-plan.md).
