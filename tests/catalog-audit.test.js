@@ -5,6 +5,7 @@ import { loadCatalogs } from '../js/data/catalogs.js';
 import { createNutritionService } from '../js/domain/nutrition.js';
 
 const audit = new URL('../docs/audits/catalog-quality/results/', import.meta.url);
+const culinary = await readJson(new URL('../docs/audits/recipe-culinary-changes.json', import.meta.url));
 const [baseline, changes, sources, plan, foodDoc, recipeDoc] = await Promise.all([
   readJson(new URL('source-data/baseline-catalogs.json', audit)),
   readJson(new URL('source-data/catalog-changes.json', audit)),
@@ -22,9 +23,9 @@ async function currentRuntimeCatalogs() {
   } finally { globalThis.fetch = originalFetch; }
 }
 
-test('audit corrections preserve all IDs, units, weights, quantities and other contracts', () => {
+test('retained audited recipes preserve IDs, units, weights, quantities and other contracts', () => {
   assert.deepEqual(foodDoc.foods.map((f) => f.id), baseline.foods.foods.map((f) => f.id));
-  assert.deepEqual(recipeDoc.recipes.map((r) => r.id), baseline.recipes.recipes.map((r) => r.id));
+  assert.deepEqual(recipeDoc.recipes.map((r) => r.id), baseline.recipes.recipes.filter(r => recipeDoc.recipes.some(current => current.id === r.id)).map((r) => r.id));
   for (const [index, food] of foodDoc.foods.entries()) {
     const change = changes.foods.find((item) => item.food_id === food.id);
     const expected = structuredClone(baseline.foods.foods[index]);
@@ -39,12 +40,22 @@ test('audit corrections preserve all IDs, units, weights, quantities and other c
   }
   for (const [index, recipe] of recipeDoc.recipes.entries()) {
     const change = changes.recipes.find((item) => item.recipe_id === recipe.id);
-    const expected = structuredClone(baseline.recipes.recipes[index]);
+    const expected = structuredClone(baseline.recipes.recipes.find(item => item.id === recipe.id));
     if (change) {
       expected.steps = change.after_steps;
       expected.tip = change.after_tip;
       if (change.after_name) expected.name = change.after_name;
       if (change.after_description) expected.description = change.after_description;
+    }
+    const editorial = culinary.edits.find(item => item.id === recipe.id);
+    if (editorial) {
+      for (const key of Object.keys(editorial.before)) assert.deepEqual(expected[key], editorial.before[key], recipe.id + '/' + key);
+      Object.assign(expected, editorial.after);
+    }
+    const baseReview = culinary.baseRecipeReview.edits.find(item => item.id === recipe.id);
+    if (baseReview) {
+      for (const key of Object.keys(baseReview.before)) assert.deepEqual(expected[key], baseReview.before[key], recipe.id + '/' + key);
+      Object.assign(expected, baseReview.after);
     }
     assert.deepEqual(recipe, expected, recipe.id);
   }
@@ -116,9 +127,12 @@ test('recipe arithmetic respects edible piece weight, per-unit food and base ser
   assert.throws(() => recipeNutrition(recipe, foods), /Invalid ingredient/);
 });
 
-test('the complete before/after impact artifact is current', async () => {
-  assert.deepEqual(await calculateImpact(), await readJson(new URL('recipe-impact.json', audit)));
-  assert.deepEqual(await calculateImpact('source-data/l3-state.json'), await readJson(new URL('recipe-impact-l4.json', audit)));
+test('historical impact artifacts still agree for every retained recipe', async () => {
+  const ids = new Set(recipeDoc.recipes.map(recipe => recipe.id));
+  // Names are editorial; their authorized changes are checked against the manifest above.
+  const comparable = rows => rows.filter(row => ids.has(row.recipe_id)).map(({name, ...row}) => row);
+  assert.deepEqual(comparable(await calculateImpact()), comparable(await readJson(new URL('recipe-impact.json', audit))));
+  assert.deepEqual(comparable(await calculateImpact('source-data/l3-state.json')), comparable(await readJson(new URL('recipe-impact-l4.json', audit))));
 });
 
 test('the L egg convention uses a source-backed edible estimate while preserving unit measurement', () => {
@@ -158,7 +172,7 @@ test('eight similar recipes retain quantities and nutrition while descriptions d
   assert.equal(checked, 8);
 });
 
-test('one raw USDA record supplies all four L egg values and exactly 16 recipe deltas', async () => {
+test('one raw USDA record supplies all four L egg values and deltas for retained recipes', async () => {
   const record = sources.records['171287'];
   assert.equal(record.description, 'Egg, whole, raw, fresh');
   assert.equal(record.basis, 'per_100g');
@@ -181,6 +195,8 @@ test('one raw USDA record supplies all four L egg values and exactly 16 recipe d
     if (amount) affected++;
   }
   assert.equal(affected, 16);
+  const historical = await readJson(new URL('recipe-impact-l4.json', audit));
+  assert.equal(historical.filter(row => Math.abs(row.delta.kcal) > 1e-9).length, 16);
 });
 
 test('quantified oil, cayenne, soy sauce and vinegar all contribute through runtime nutrition', async () => {

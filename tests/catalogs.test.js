@@ -14,7 +14,7 @@ test('the canonical JSON catalogs pass their runtime contract', () => {
   const catalogs = validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recoveryTags });
   assert.equal(Object.keys(catalogs.foods).length, foodDoc.foods.length);
   assert.equal(catalogs.recipes.length, recipeDoc.recipes.length);
-  assert.equal(foodDoc.catalogVersion, '0.10.0');
+  assert.equal(foodDoc.catalogVersion, '0.10.1');
   assert.equal(recipeDoc.catalogVersion, foodDoc.catalogVersion);
   assert.equal(foodDoc.foods.find((food) => food.id === 'kiwi').recipeUnit, 'ud');
   const bread = foodDoc.foods.find((food) => food.id === 'bread');

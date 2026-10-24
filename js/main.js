@@ -70,7 +70,7 @@ const WEEK_3=[
  ['yogur_avena_rojos','mini_pavo_tomate','pasta_salmon_espinacas','mandarina_almendras','huevos_alubias'],
  ['yogur_miel_no','yogur_kiwi_ligero','pollo_garbanzos','yogur_fruta_ligero','trucha_patatas'],
  ['yogur_avena_rojos','huevo_fruta','fideos_gambas','yogur_fruta_ligero','wrap_pavo'],
- ['tostada_huevo_pavo','yogur_kiwi_ligero','hamburguesa_pavo','yogur_nueces','alubias_revuelto'],
+ ['tostada_huevo_pavo','yogur_kiwi_ligero','pollo_boniato_ensalada','yogur_nueces','alubias_revuelto'],
  ['yogur_avena_rojos','hummus_ligero','quinoa_salmon','mini_pavo_tomate','tortitas_atun']
 ];
 const FIXED_MENUS=[WEEK_1,WEEK_2,WEEK_3];

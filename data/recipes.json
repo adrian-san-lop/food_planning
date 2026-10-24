@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.10.0",
+  "catalogVersion": "0.10.1",
   "source": "Existing recipes from menuki.html plus curated generic recipes using catalog foods. Version 0.8.0 adds Ensalada templada de gulas as a one-person recipe. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams. Version 0.9.2 applies evidence-backed USDA corrections and explicit recipe ingredient instructions; see docs/audits/catalog-quality/results/summary.md. Version 0.9.3 defines a generic L egg estimate and documents identical-ingredient recipe families under ADR-0045. Version 0.10.0 adds practical food portion limits and rounding policies without changing nutrition, units or base recipe quantities.",
-  "status": "Catálogo 0.10.0: 112 recetas y 543 referencias de ingredientes, con cantidades base para una persona; las porciones de fruta entera se expresan en piezas y el pan de molde en rebanadas.",
+  "status": "Catálogo 0.10.1; 111 recetas y 537 referencias. Revisión completa de recetas base: 52 fichas mejoradas documentalmente, sin cambiar ingredientes, cantidades, tiempos ni nutrición. Una receta eliminada en la selección anterior.",
   "recipes": [
     {
       "id": "yogur_platano",
@@ -43,12 +43,12 @@
         "Termina con la granola justo antes de comer para que quede crujiente.",
         "Prepara el café con la leche indicada."
       ],
-      "tip": "Puedes repetir este desayuno cambiando la fruta. No incluye queso.",
+      "tip": "Añade la granola justo antes de comer para conservar su textura crujiente.",
       "description": ""
     },
     {
       "id": "tostada_queso",
-      "name": "Tostada de queso fresco y tomate",
+      "name": "Tostadas de queso fresco y tomate",
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
@@ -75,11 +75,11 @@
         }
       ],
       "steps": [
-        "Tuesta el pan.",
-        "Añade el tomate rallado o en rodajas y el queso fresco.",
-        "Acompaña con una mandarina."
+        "Tuesta las rebanadas de pan indicadas.",
+        "Reparte el tomate rallado o en rodajas y el queso fresco entre las tostadas. Si parte del queso no cabe, sírvelo al lado sin reducir la ración.",
+        "Acompaña con la mandarina indicada."
       ],
-      "tip": "El queso solo aparece como snack o en comidas/cenas, nunca en el desayuno.",
+      "tip": "Escurre el queso fresco antes de colocarlo sobre el pan para que las tostadas mantengan su textura.",
       "description": ""
     },
     {
@@ -121,11 +121,11 @@
         }
       ],
       "steps": [
-        "Cuece el arroz en agua siguiendo el tiempo indicado por el fabricante.",
-        "Corta pimiento, calabacín y cebolla en trozos pequeños.",
-        "Saltea las verduras con el aceite durante 6–8 minutos.",
-        "Añade el pollo en tiras, pimentón y ajo; cocínalo por completo.",
-        "Mezcla con el arroz y ajusta la sal y pimienta."
+        "Cuece el arroz en agua siguiendo las indicaciones del envase y escúrrelo si queda agua.",
+        "Corta el pimiento, el calabacín y la cebolla en trozos pequeños y el pollo en tiras.",
+        "Saltea las verduras con todo el aceite indicado hasta que la cebolla esté tierna y el calabacín empiece a dorarse.",
+        "Incorpora el pollo y, si quieres, pimentón y ajo en polvo como condimentos opcionales. Remueve hasta que el pollo esté completamente cocinado.",
+        "Añade el arroz, mezcla y calienta el conjunto antes de servir."
       ],
       "tip": "Prepara dos raciones de verduras para aprovechar en otra receta. Enfría el arroz cocido con rapidez si lo guardas.",
       "description": ""
@@ -236,7 +236,7 @@
         "Tuesta el pan y acompaña con tomate en rodajas.",
         "Pela el kiwi y prepara el café con leche."
       ],
-      "tip": "No hace falta añadir queso al desayuno. Puedes cambiar el revuelto por tortilla francesa.",
+      "tip": "Remueve los huevos a fuego suave para que el revuelto cuaje de forma uniforme.",
       "description": ""
     },
     {
@@ -266,7 +266,7 @@
     },
     {
       "id": "lentejas_huevo",
-      "name": "Lentejas templadas con huevo",
+      "name": "Lentejas templadas con huevo y queso fresco",
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 20,
@@ -313,11 +313,11 @@
         }
       ],
       "steps": [
-        "Cuece el huevo en agua durante unos 10 minutos y enfríalo.",
-        "Enjuaga y escurre las lentejas del bote.",
-        "Pica zanahoria, cebolla y pimiento, y saltéalos 7–8 minutos con el aceite.",
-        "Incorpora las lentejas y calienta 3 minutos.",
-        "Sirve con el huevo cortado, el queso fresco y un poco de pan."
+        "Cuece el huevo en agua unos 10 minutos, enfríalo, pélalo y córtalo.",
+        "Enjuaga las lentejas cocidas y escúrrelas. Corta el pimiento y la cebolla pequeños y la zanahoria en dados finos.",
+        "Saltea las verduras con todo el aceite indicado hasta que la zanahoria esté tierna; añade un poco de agua si se seca antes.",
+        "Incorpora las lentejas y remueve hasta calentarlas.",
+        "Sirve con el huevo, el queso fresco troceado y la cantidad de pan indicada."
       ],
       "tip": "Conserva las legumbres en un recipiente adecuado tras abrir el bote, sin dejarlas varios días en la lata.",
       "description": ""
@@ -386,12 +386,13 @@
         }
       ],
       "steps": [
-        "Cuece la pasta integral al dente.",
-        "Corta el pavo en dados y dóralo con el aceite.",
-        "Añade calabacín picado y tomate triturado.",
-        "Cocina 6–8 minutos, añade orégano y mezcla con la pasta."
+        "Cuece la pasta según el envase. Reserva un poco del agua de cocción antes de escurrirla.",
+        "Corta el pavo en dados y el calabacín en trozos pequeños.",
+        "Dora el pavo con todo el aceite indicado. Añade el calabacín y remueve hasta que empiece a ablandarse.",
+        "Incorpora el tomate triturado y orégano opcional. Cocina hasta que el pavo esté completamente hecho y el calabacín tierno.",
+        "Añade la pasta y mezcla; si queda seca, incorpora poco a poco el agua de cocción reservada."
       ],
-      "tip": "Usa especias, ajo y orégano para variar el sabor sin recurrir a salsas muy pesadas.",
+      "tip": "Reserva agua de cocción para ligar la pasta con el tomate, sin añadir aceite ni otra salsa.",
       "description": ""
     },
     {
@@ -432,12 +433,12 @@
         "Añade avena y frutos rojos (descongélalos antes si estaban congelados).",
         "Mezcla y acompaña con café con leche."
       ],
-      "tip": "Desayuno sin queso, aunque uses una variedad de yogur espesa.",
+      "tip": "Mezcla primero la avena con el yogur y añade los frutos rojos al servir.",
       "description": ""
     },
     {
       "id": "bocadillo_pavo",
-      "name": "Minibocadillo integral de pavo",
+      "name": "Sándwich integral de pavo y tomate",
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
@@ -459,10 +460,10 @@
         }
       ],
       "steps": [
-        "Abre el pan integral y coloca el tomate cortado.",
-        "Rellena con pavo loncheado."
+        "Coloca el tomate cortado sobre una de las rebanadas indicadas.",
+        "Reparte todo el pavo loncheado y cierra con la otra rebanada."
       ],
-      "tip": "Puedes sustituir el pavo loncheado por restos de pechuga de pavo cocinada.",
+      "tip": "Monta el sándwich justo antes de comer para que el tomate no humedezca demasiado el pan.",
       "description": "2 rebanadas de pan integral con 80 g de pavo loncheado y 80 g de tomate fresco."
     },
     {
@@ -567,10 +568,10 @@
         }
       ],
       "steps": [
-        "Saltea champiñones y espinacas troceados con parte del aceite.",
-        "Bate los huevos y añade el atún al natural bien escurrido.",
-        "Vierte los huevos sobre la sartén y cuaja la tortilla.",
-        "Acompaña con las verduras y una tostada integral."
+        "Corta los champiñones en láminas. Saltéalos con las espinacas y la mitad del aceite indicado hasta que se evapore el agua que sueltan; retira las verduras.",
+        "Bate los huevos y mézclalos con el atún bien escurrido.",
+        "Usa el resto del aceite para cuajar la mezcla por ambos lados hasta que el huevo esté hecho.",
+        "Sirve la tortilla con las verduras y todas las rebanadas de pan indicadas, tostadas si lo prefieres."
       ],
       "tip": "Escurre bien el atún para evitar que la tortilla quede acuosa.",
       "description": ""
@@ -613,7 +614,7 @@
         "Añade el kiwi en cubos y la granola.",
         "Prepara el café con leche."
       ],
-      "tip": "Es el nuevo desayuno del jueves: sustituye el anterior con queso fresco.",
+      "tip": "Pela y corta el kiwi al servir y añade la granola al final para que no se ablande.",
       "description": ""
     },
     {
@@ -728,11 +729,11 @@
         }
       ],
       "steps": [
-        "Pela el boniato, córtalo en cubos y precocínalo 4–5 minutos en microondas.",
-        "Corta el pimiento y la cebolla.",
-        "Condimenta el pollo con pimentón, ajo y orégano.",
-        "Termina el boniato y las verduras en freidora de aire; cocina también el pollo hasta que quede completamente hecho.",
-        "Añade el aceite medido entre las preparaciones."
+        "Pela el boniato y córtalo en dados pequeños. Precocínalo tapado en el microondas hasta que empiece a ablandarse.",
+        "Corta el pimiento y la cebolla en tiras de tamaño parecido.",
+        "Reparte todo el aceite indicado entre el boniato, las verduras y el pollo antes de cocinarlos. Puedes añadir pimentón, ajo en polvo y orégano como condimentos opcionales.",
+        "Termina el boniato y las verduras en la freidora de aire hasta que estén tiernos y ligeramente dorados. Cocina también el pollo hasta que esté completamente hecho.",
+        "Sirve el pollo con el boniato y las verduras, sin añadir aceite extra."
       ],
       "tip": "No sobrecargues la cesta: haz dos tandas si es necesario.",
       "description": ""
@@ -780,12 +781,12 @@
         "Añade frutos rojos, granola y nueces troceadas.",
         "Prepara el café con leche."
       ],
-      "tip": "Un desayuno repetible pero con pequeñas variaciones de fruta.",
+      "tip": "Trocea las nueces y añade la granola justo antes de comer para mantener el contraste de texturas.",
       "description": ""
     },
     {
       "id": "bocadillo_pavo_peq",
-      "name": "Bocadillo ligero de pavo",
+      "name": "Sándwich tostado de pavo y tomate",
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
@@ -807,8 +808,8 @@
         }
       ],
       "steps": [
-        "Tuesta ligeramente el pan.",
-        "Rellénalo con tomate y pavo loncheado."
+        "Tuesta ligeramente las rebanadas de pan indicadas.",
+        "Corta el tomate fino, reparte sobre una rebanada con todo el pavo loncheado y cierra con la otra."
       ],
       "tip": "Ideal si trabajas desde casa y necesitas algo rápido.",
       "description": "2 rebanadas de pan integral con 80 g de pavo loncheado y 60 g de tomate fresco."
@@ -852,11 +853,11 @@
         }
       ],
       "steps": [
-        "Hierve la pasta integral.",
-        "Corta los champiñones y pimiento en trozos pequeños.",
-        "Saltea el pavo con aceite; incorpora las verduras.",
-        "Agrega tomate triturado y cocina 5–7 minutos.",
-        "Mezcla con la pasta y termina con orégano."
+        "Cuece la pasta según el envase y reserva un poco del agua antes de escurrirla.",
+        "Corta los champiñones en láminas, el pimiento en trozos pequeños y el pavo en dados.",
+        "Saltea el pavo con todo el aceite indicado. Añade el pimiento y los champiñones y cocina hasta que las verduras se ablanden y se evapore el agua que sueltan.",
+        "Incorpora el tomate triturado y orégano opcional; cocina hasta que el pavo esté completamente hecho.",
+        "Mezcla con la pasta. Si queda seca, añade poco a poco el agua de cocción reservada."
       ],
       "tip": "Puedes aprovechar parte del sofrito de otra comida.",
       "description": ""
@@ -926,12 +927,12 @@
       ],
       "steps": [
         "Corta el pollo, el pimiento y la cebolla en tiras finas.",
-        "Saltea el pollo con aceite y añade las verduras.",
-        "Calienta las tortillas integrales.",
-        "Unta un poco de hummus y reparte el relleno.",
-        "Sirve con limón y tus especias favoritas."
+        "Usa todo el aceite indicado para saltear el pimiento y la cebolla hasta que empiecen a ablandarse. Incorpora el pollo y cocina hasta que esté completamente hecho.",
+        "Calienta la cantidad indicada de tortillas siguiendo el envase.",
+        "Reparte todo el hummus indicado sobre las tortillas y añade el relleno de pollo y verduras.",
+        "Dobla y sirve. Puedes añadir especias opcionales al relleno, sin incorporar salsas ni aceite extra."
       ],
-      "tip": "El hummus aporta una textura cremosa; ajusta la cantidad al gusto.",
+      "tip": "Escurre el exceso de líquido del relleno antes de montar las fajitas para que no se ablanden. Mantén la cantidad indicada de hummus.",
       "description": ""
     },
     {
@@ -992,12 +993,12 @@
         }
       ],
       "steps": [
-        "Corta el boniato en cubos y precocínalo 4–5 minutos en microondas.",
-        "Cocina el boniato en freidora de aire con pimentón y algo de aceite.",
-        "Cocina el pollo especiado hasta que esté completamente hecho.",
-        "Prepara una ensalada de lechuga y tomate."
+        "Pela el boniato, córtalo en dados pequeños y precocínalo tapado en el microondas hasta que empiece a ablandarse.",
+        "Reserva la mitad del aceite para la ensalada. Reparte la otra mitad entre el boniato y el pollo; puedes añadir pimentón y ajo en polvo opcionales.",
+        "Termina el boniato en la freidora de aire hasta que esté tierno y dorado. Cocina el pollo hasta que esté completamente hecho.",
+        "Lava y corta la lechuga y el tomate. Alíñalos con el aceite reservado y sirve junto al pollo y el boniato."
       ],
-      "tip": "Puedes usar el mismo adobo que el jueves, con limón, pimentón y ajo.",
+      "tip": "Corta el boniato en dados parecidos para que se cocinen a la vez; no añadas más aceite al servir.",
       "description": ""
     },
     {
@@ -1027,7 +1028,7 @@
     },
     {
       "id": "sardinas_tostas",
-      "name": "Tostas integrales de sardinas y tomate",
+      "name": "Tostas de sardinas, queso fresco y tomate",
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 10,
@@ -1059,10 +1060,10 @@
         }
       ],
       "steps": [
-        "Tuesta el pan integral.",
-        "Ralla o corta el tomate y repártelo sobre las tostadas.",
-        "Coloca las sardinas escurridas y el queso fresco.",
-        "Aliña con limón y un poco de aceite de oliva."
+        "Tuesta todas las rebanadas de pan indicadas.",
+        "Ralla o corta el tomate y repártelo sobre el pan.",
+        "Escurre las sardinas y trocéalas. Corta el queso fresco en dados pequeños y reparte ambos ingredientes entre las tostadas.",
+        "Añade todo el aceite indicado, repartido entre las tostadas. Si parte de la cobertura no cabe, sírvela al lado como acompañamiento, manteniendo toda la ración."
       ],
       "tip": "Si eliges sardinas con espinas blandas comestibles, también aportarán calcio.",
       "description": ""
@@ -1106,7 +1107,7 @@
         "Incorpora la avena y la canela.",
         "Acompaña con café con leche."
       ],
-      "tip": "Sin queso por la mañana; el yogur se mantiene porque te gusta y te resulta cómodo.",
+      "tip": "Ralla la manzana si prefieres que se integre con el yogur; córtala en dados si la quieres más crujiente.",
       "description": ""
     },
     {
@@ -1173,18 +1174,18 @@
         }
       ],
       "steps": [
-        "Cuece el arroz en agua durante el tiempo indicado en el paquete.",
-        "Pica el pimiento, la cebolla y el calabacín.",
-        "Saltea las verduras con aceite durante 7–8 minutos.",
-        "Añade las gambas peladas, descongeladas y escurridas; cocina hasta que estén hechas.",
-        "Mezcla con arroz y termina con limón o salsa de soja reducida en sal."
+        "Cuece el arroz en agua siguiendo el envase y escúrrelo si queda agua.",
+        "Corta el pimiento, la cebolla y el calabacín en trozos pequeños.",
+        "Saltea las verduras con todo el aceite indicado hasta que estén tiernas.",
+        "Incorpora las gambas peladas y bien escurridas; remueve hasta que estén cocinadas.",
+        "Añade el arroz, mezcla y calienta el conjunto. No añadas salsa de soja ni aceite extra fuera de los ingredientes calculados."
       ],
       "tip": "Si el arroz se prepara con antelación, enfríalo rápido y refrigera.",
       "description": ""
     },
     {
       "id": "crema_tortilla",
-      "name": "Crema de calabacín con tortilla y tostada",
+      "name": "Crema de calabacín con tortilla y queso fresco",
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 25,
@@ -1226,10 +1227,10 @@
         }
       ],
       "steps": [
-        "Hierve calabacín, patata y cebolla troceados durante 15–20 minutos.",
-        "Tritura con parte del agua de cocción y todo el aceite de oliva indicado; ajusta la textura.",
-        "Cuaja una tortilla francesa de dos huevos.",
-        "Sirve la crema con la tortilla, el queso fresco y pan integral."
+        "Corta el calabacín, la patata y la cebolla en dados. Cuécelos en agua hasta que la patata esté tierna.",
+        "Reserva parte del agua de cocción. Tritura las verduras con todo el aceite indicado y añade el agua reservada poco a poco hasta lograr una crema.",
+        "Bate los huevos y cuaja una tortilla francesa en una sartén antiadherente a fuego suave, sin añadir aceite fuera de la receta.",
+        "Sirve la crema con la tortilla, el queso fresco y todas las rebanadas de pan indicadas, tostadas si lo prefieres."
       ],
       "tip": "Puedes preparar dos raciones de crema y congelar la sobrante.",
       "description": ""
@@ -1288,7 +1289,7 @@
     },
     {
       "id": "alubias_huevo",
-      "name": "Ensalada templada de alubias con huevo y atún",
+      "name": "Ensalada de alubias con huevo y atún",
       "mealType": "cena",
       "baseServings": 1,
       "timeMinutes": 15,
@@ -1335,10 +1336,10 @@
         }
       ],
       "steps": [
-        "Cuece el huevo durante 10 minutos y enfríalo.",
-        "Enjuaga las alubias y mézclalas con tomate, pepino y cebolla picados.",
-        "Añade el atún y el huevo, y aliña con aceite, comino y limón.",
-        "Acompaña con pan integral."
+        "Cuece el huevo en agua unos 10 minutos, enfríalo, pélalo y córtalo.",
+        "Enjuaga las alubias cocidas y escúrrelas. Pica el tomate, el pepino y la cebolla.",
+        "Mezcla las alubias, las verduras, el atún escurrido y el huevo.",
+        "Aliña con todo el aceite indicado; puedes añadir comino como condimento opcional. Acompaña con toda la cantidad de pan indicada."
       ],
       "tip": "Las legumbres de bote te ahorran mucho tiempo.",
       "description": ""
@@ -1429,12 +1430,12 @@
         }
       ],
       "steps": [
-        "Saltea las gambas descongeladas y bien escurridas con ajo y aceite.",
-        "Añade las espinacas; cuando reduzcan el volumen, incorpora las gulas.",
-        "Cocina un par de minutos hasta que todo esté bien caliente.",
-        "Sirve con tostadas integrales y tomate."
+        "Escurre bien las gambas peladas. Corta el tomate y prepara las rebanadas de pan indicadas para tostarlas.",
+        "Saltea las gambas con todo el aceite indicado; puedes añadir ajo en polvo como condimento opcional.",
+        "Incorpora las espinacas y remueve hasta que pierdan volumen. Añade las gulas y cocina hasta que todo esté caliente y las gambas cocinadas.",
+        "Sirve con todas las tostadas y el tomate preparado."
       ],
-      "tip": "Una alternativa a tu ensalada de gulas habitual, con más verduras.",
+      "tip": "Escurre bien las gambas y deja evaporar el líquido de las espinacas para que el salteado no quede aguado.",
       "description": ""
     },
     {
@@ -1481,10 +1482,11 @@
         }
       ],
       "steps": [
-        "Sofríe la cebolla con aceite.",
-        "Añade tomate, garbanzos cocidos y espinacas, y cocina 6 minutos.",
-        "Incorpora bacalao en trozos pequeños y cocina hasta que esté hecho.",
-        "Sirve con pan integral."
+        "Enjuaga los garbanzos cocidos y escúrrelos. Pica la cebolla y corta el bacalao en trozos de tamaño parecido.",
+        "Sofríe la cebolla con todo el aceite indicado hasta que esté tierna.",
+        "Incorpora el tomate triturado, los garbanzos y las espinacas; remueve y cocina hasta que las espinacas pierdan volumen. Añade un poco de agua si lo prefieres más caldoso.",
+        "Añade el bacalao y cocina suavemente hasta que esté hecho y se separe en lascas.",
+        "Sirve con toda la cantidad de pan indicada."
       ],
       "tip": "Calienta suavemente el bacalao para que no se reseque.",
       "description": ""
@@ -1528,10 +1530,10 @@
         }
       ],
       "steps": [
-        "Cuece los fideos integrales según el paquete.",
-        "Saltea la zanahoria, el pimiento y el calabacín cortados finos con todo el aceite de oliva indicado.",
-        "Añade tiras de pollo y cocínalas por completo.",
-        "Mezcla con los fideos y condimenta con un chorrito opcional de soja baja en sal."
+        "Cuece los fideos según el envase y escúrrelos.",
+        "Corta la zanahoria en tiras finas y el pimiento y el calabacín en trozos parecidos; corta el pollo en tiras.",
+        "Saltea las verduras con todo el aceite indicado hasta que se ablanden. Incorpora el pollo y cocina hasta que esté completamente hecho.",
+        "Añade los fideos y mezcla hasta calentarlos. Si se pegan, incorpora un poco de agua; no añadas salsa de soja ni aceite extra fuera de la receta."
       ],
       "tip": "Para ahorrar tiempo, usa verdura ya lavada y cortada.",
       "description": ""
@@ -1580,7 +1582,7 @@
         "Corta pepino y tomate y prepara una cama de espinacas.",
         "Mezcla la quinoa y las verduras, añade el salmón y aliña con aceite y limón."
       ],
-      "tip": "Puedes reemplazar quinoa por arroz integral si te resulta más cómodo.",
+      "tip": "Escurre bien la quinoa y deja que pierda algo de calor antes de mezclarla con las verduras para mantener su textura.",
       "description": ""
     },
     {
@@ -1627,10 +1629,10 @@
         }
       ],
       "steps": [
-        "Corta la patata fina y cocínala en microondas tapada unos 8 minutos.",
-        "Bate los huevos y añade atún escurrido y la patata.",
-        "Cuaja en sartén antiadherente con el aceite.",
-        "Acompaña con ensalada y un poco de pan."
+        "Pela y corta la patata en láminas finas. Cocínala tapada en el microondas hasta que se pueda atravesar con un tenedor; remueve a mitad para repartir la cocción.",
+        "Escurre el atún. Bate los huevos y mezcla con el atún y la patata ya tierna.",
+        "Usa todo el aceite indicado para cuajar la mezcla por ambos lados hasta que el huevo esté hecho.",
+        "Lava y corta la lechuga y el tomate. Sirve junto a la tortilla y toda la cantidad de pan indicada, sin añadir aceite extra a la ensalada."
       ],
       "tip": "Evitas freír las patatas en abundante aceite.",
       "description": ""
@@ -1679,10 +1681,10 @@
         }
       ],
       "steps": [
-        "Saltea cebolla, pimiento y zanahoria picados con aceite.",
-        "Añade el pavo en dados y dóralo.",
-        "Incorpora tomate triturado y alubias escurridas.",
-        "Cocina junto unos 7 minutos y ajusta con agua y pimentón."
+        "Enjuaga las alubias cocidas y escúrrelas. Corta el pavo en dados, la zanahoria en dados pequeños y el pimiento y la cebolla finos.",
+        "Saltea las verduras con todo el aceite indicado hasta que empiecen a ablandarse; añade un poco de agua si se secan.",
+        "Incorpora el pavo y remueve para dorarlo. Añade el tomate triturado y las alubias.",
+        "Agrega agua poco a poco hasta obtener la textura de guiso que prefieras y cocina suavemente hasta que la zanahoria esté tierna y el pavo completamente hecho."
       ],
       "tip": "Se conserva bien una ración en la nevera siguiendo normas de refrigeración.",
       "description": ""
@@ -1721,10 +1723,10 @@
         }
       ],
       "steps": [
-        "Cubre el cuscús con agua caliente siguiendo las instrucciones y deja reposar.",
-        "Cocina merluza sazonada en freidora de aire.",
-        "Saltea calabacín y pimiento con aceite.",
-        "Suelta el cuscús con un tenedor y sirve con pescado y verduras."
+        "Hidrata el cuscús con la cantidad de agua caliente y el tiempo indicados en su envase.",
+        "Corta el calabacín y el pimiento en trozos pequeños y saltéalos con todo el aceite indicado hasta que estén tiernos.",
+        "Cocina la merluza sazonada en la freidora de aire, ajustando el tiempo al grosor de la pieza, hasta que esté hecha y se separe en lascas.",
+        "Suelta el cuscús con un tenedor, mézclalo con las verduras y sirve junto a la merluza."
       ],
       "tip": "Añade limón y perejil al final.",
       "description": ""
@@ -1909,10 +1911,11 @@
         }
       ],
       "steps": [
-        "Hierve calabaza, patata y cebolla picadas unos 15–20 minutos.",
-        "Tritura con parte del agua de cocción y todo el aceite de oliva indicado.",
-        "Prepara una tortilla con los huevos y el pavo loncheado.",
-        "Sirve con pan integral."
+        "Corta la calabaza, la patata y la cebolla en dados. Cuécelas en agua hasta que la patata esté tierna.",
+        "Reserva parte del agua y tritura las verduras con todo el aceite indicado; añade agua poco a poco para ajustar el espesor.",
+        "Corta el pavo loncheado en tiras y mézclalo con los huevos batidos.",
+        "Cuaja la mezcla en una sartén antiadherente a fuego suave, sin añadir aceite fuera de los ingredientes.",
+        "Sirve la crema con la tortilla y toda la cantidad de pan indicada."
       ],
       "tip": "La crema queda bien congelada en raciones.",
       "description": ""
@@ -1956,11 +1959,11 @@
         }
       ],
       "steps": [
-        "Cuece el arroz.",
-        "Saltea cebolla, calabacín y pavo en dados con aceite.",
-        "Añade curry suave, un chorrito de agua y cocina hasta que el pavo esté hecho.",
-        "Retira del fuego y mezcla el yogur para dar cremosidad sin nata.",
-        "Acompaña con arroz."
+        "Cuece el arroz siguiendo el envase. Corta la cebolla fina y el calabacín y el pavo en dados.",
+        "Saltea la cebolla y el calabacín con todo el aceite indicado hasta que empiecen a ablandarse. Incorpora el pavo y remueve.",
+        "Añade curry suave opcional y un poco de agua. Cocina hasta que el pavo esté completamente hecho y se haya reducido el exceso de líquido.",
+        "Retira del fuego e incorpora todo el yogur indicado, removiendo hasta formar una salsa uniforme, sin volver a hervir.",
+        "Sirve con el arroz."
       ],
       "tip": "Utiliza yogur natural sin azúcar; evita hervirlo para que no se corte.",
       "description": ""
@@ -2102,10 +2105,10 @@
         }
       ],
       "steps": [
-        "Hidrata el cuscús con agua caliente.",
-        "Saltea las verduras en tiras finas con todo el aceite de oliva indicado.",
-        "Añade el pollo y cocínalo completamente.",
-        "Mezcla con cuscús y termina con comino y limón."
+        "Hidrata el cuscús con la cantidad de agua caliente y durante el tiempo indicados en el envase.",
+        "Corta el pollo en tiras y las verduras finas, especialmente la zanahoria.",
+        "Saltea las verduras con todo el aceite indicado hasta que empiecen a ablandarse. Añade el pollo y cocina hasta que esté completamente hecho.",
+        "Suelta el cuscús con un tenedor, incorpora el salteado y mezcla. Puedes añadir comino como condimento opcional."
       ],
       "tip": "Puedes preparar dos raciones de verduras para otra comida.",
       "description": ""
@@ -2144,12 +2147,12 @@
         }
       ],
       "steps": [
-        "Cuece la pasta integral.",
-        "Haz el salmón a la plancha o en freidora de aire.",
-        "Saltea espinacas y tomate brevemente con el aceite.",
-        "Desmenuza el salmón cocinado y mezcla con la pasta y verduras."
+        "Cuece la pasta siguiendo el envase y reserva un poco del agua antes de escurrirla.",
+        "Cocina el salmón a la plancha o en freidora de aire hasta que esté hecho; sepáralo en lascas.",
+        "Trocea el tomate y saltéalo con las espinacas y todo el aceite indicado hasta que las espinacas pierdan volumen.",
+        "Añade la pasta y el salmón y mezcla con cuidado para no deshacerlo. Si queda seco, incorpora un poco del agua de cocción reservada."
       ],
-      "tip": "Salmón y pasta funcionan bien cuando se acerca la vuelta a los entrenamientos.",
+      "tip": "Incorpora el salmón al final y mezcla suavemente para mantener las lascas enteras.",
       "description": ""
     },
     {
@@ -2201,7 +2204,7 @@
     },
     {
       "id": "pollo_garbanzos",
-      "name": "Bol mediterráneo de pollo y garbanzos",
+      "name": "Ensalada de pollo y garbanzos",
       "mealType": "comida",
       "baseServings": 1,
       "timeMinutes": 22,
@@ -2243,11 +2246,10 @@
         }
       ],
       "steps": [
-        "Cocina el pollo troceado a la plancha con pimentón.",
-        "Escurre los garbanzos.",
-        "Lava y corta tomate, pepino y lechuga.",
-        "Monta un bol con pollo, garbanzos, verduras y aceite.",
-        "Acompaña con pan integral."
+        "Enjuaga los garbanzos cocidos y escúrrelos. Lava y corta el tomate, el pepino y la lechuga.",
+        "Reserva la mitad del aceite para aliñar. Corta el pollo en trozos y cocínalo con la otra mitad hasta que esté completamente hecho; puedes añadir pimentón opcional.",
+        "Mezcla las verduras y los garbanzos. Incorpora el pollo y todo el aceite reservado.",
+        "Sirve con toda la cantidad de pan indicada."
       ],
       "tip": "Puedes dejar el pollo hecho y montar el bol en cinco minutos.",
       "description": ""
@@ -2333,10 +2335,10 @@
         }
       ],
       "steps": [
-        "Sofríe cebolla y pimiento con aceite y tomate.",
-        "Agrega los fideos y agua caliente según el envase.",
-        "Cuando falten pocos minutos, añade guisantes y gambas.",
-        "Cocina hasta que los fideos y las gambas estén hechos."
+        "Pica la cebolla y el pimiento. Escurre bien las gambas peladas.",
+        "Sofríe la cebolla y el pimiento con todo el aceite indicado hasta que se ablanden; incorpora el tomate triturado y remueve.",
+        "Añade los fideos y agua caliente siguiendo las indicaciones de su envase para la cocción; incorpora los guisantes según su formato y tiempo de cocción.",
+        "Cuando los fideos estén casi tiernos, añade las gambas y termina la cocción hasta que estén cocinadas. Si el conjunto se seca antes, añade un poco más de agua caliente."
       ],
       "tip": "Versión rápida, sin caldo elaborado ni tinta.",
       "description": ""
@@ -2385,59 +2387,12 @@
         }
       ],
       "steps": [
-        "Corta el pavo, el pimiento y la cebolla y saltéalos con todo el aceite de oliva indicado.",
-        "Mezcla yogur natural con limón, ajo y pimienta para una salsa rápida.",
-        "Calienta la tortilla, añade lechuga y relleno.",
-        "Termina con la salsa de yogur."
+        "Corta el pavo, el pimiento y la cebolla en tiras finas. Lava y corta la lechuga.",
+        "Saltea el pimiento y la cebolla con todo el aceite indicado hasta que empiecen a ablandarse. Añade el pavo y cocina hasta que esté completamente hecho.",
+        "Remueve todo el yogur indicado para formar la salsa; puedes añadir pimienta y ajo en polvo opcionales.",
+        "Calienta la cantidad de tortilla indicada siguiendo el envase. Reparte la lechuga, el relleno y toda la salsa de yogur, dobla y sirve."
       ],
       "tip": "Puedes preparar el relleno y montar justo antes de comer.",
-      "description": ""
-    },
-    {
-      "id": "hamburguesa_pavo",
-      "name": "Bocadillo de pavo con patatas",
-      "mealType": "comida",
-      "baseServings": 1,
-      "timeMinutes": 25,
-      "ingredients": [
-        {
-          "foodId": "turkey",
-          "amount": 180,
-          "unit": "g"
-        },
-        {
-          "foodId": "potato",
-          "amount": 230,
-          "unit": "g"
-        },
-        {
-          "foodId": "tomato",
-          "amount": 130,
-          "unit": "g"
-        },
-        {
-          "foodId": "lettuce",
-          "amount": 100,
-          "unit": "g"
-        },
-        {
-          "foodId": "bread",
-          "amount": 2,
-          "unit": "ud"
-        },
-        {
-          "foodId": "oliveoil",
-          "amount": 10,
-          "unit": "g"
-        }
-      ],
-      "steps": [
-        "Para esta versión, utiliza los filetes de pavo fresco indicados en los ingredientes como relleno del pan.",
-        "Precocina las patatas cortadas y termina en freidora de aire.",
-        "Cocina los filetes de pavo completamente en sartén con todo el aceite de oliva indicado en los ingredientes.",
-        "Monta con pan, tomate y lechuga y acompaña con patatas."
-      ],
-      "tip": "Esta versión lleva filetes de pavo fresco. Una versión con pavo picado necesita su propia referencia nutricional; no se considera equivalente automáticamente.",
       "description": ""
     },
     {
@@ -2479,10 +2434,10 @@
         }
       ],
       "steps": [
-        "Saltea los champiñones y las espinacas en sartén con todo el aceite de oliva indicado.",
-        "Añade las alubias escurridas y calienta.",
-        "Cuaja dos huevos revueltos y sirve junto a las alubias.",
-        "Acompaña con pan integral."
+        "Enjuaga las alubias cocidas y escúrrelas. Corta los champiñones en láminas.",
+        "Saltea los champiñones y las espinacas con todo el aceite indicado hasta que se evapore el agua que sueltan.",
+        "Incorpora las alubias y remueve hasta calentarlas. Baja el fuego, añade los huevos batidos y mezcla suavemente hasta que cuajen.",
+        "Sirve el revuelto con toda la cantidad de pan indicada."
       ],
       "tip": "Cena sencilla con legumbres, verduras y proteína.",
       "description": ""
@@ -2531,12 +2486,13 @@
         }
       ],
       "steps": [
-        "Hierve calabaza, patata y cebolla y tritura.",
-        "Mezcla atún escurrido, huevos y avena hasta conseguir una masa densa.",
-        "Haz pequeñas tortitas en sartén antiadherente con un poco del aceite indicado.",
-        "Sirve la crema junto a las tortitas."
+        "Cuece la calabaza, la patata y la cebolla troceadas en agua hasta que estén tiernas. Reserva todo el aceite indicado para repartirlo entre la crema y las tortitas, sin añadir aceite extra.",
+        "Tritura las verduras con parte del agua de cocción y la mitad del aceite; ajusta el espesor con el agua reservada.",
+        "Escurre el atún, desmenúzalo y mézclalo con los huevos batidos y la avena molida hasta obtener una mezcla uniforme.",
+        "Usa la otra mitad del aceite para cocinar porciones pequeñas de la mezcla por ambos lados, hasta que estén cuajadas y firmes.",
+        "Sirve la crema de calabaza junto con las tortitas de atún."
       ],
-      "tip": "Puedes triturar la avena para dar mejor textura a las tortitas.",
+      "tip": "Muele los copos de avena para que se integren en la mezcla. Haz las tortitas pequeñas para poder darles la vuelta sin que se rompan.",
       "description": ""
     },
     {
@@ -2582,7 +2538,7 @@
         "Añade kiwi troceado.",
         "Acompaña con café con leche."
       ],
-      "tip": "No lleva queso; el cacao aporta sabor sin azúcar añadido.",
+      "tip": "Mezcla primero el cacao con parte del yogur para evitar grumos antes de añadir la avena y el kiwi.",
       "description": ""
     },
     {
@@ -2628,7 +2584,7 @@
         "Completa con granola y nueces.",
         "Prepara el café con leche."
       ],
-      "tip": "Desayuno completo sin queso.",
+      "tip": "Trocea la pera justo antes de servir y reserva la granola y las nueces para añadirlas al final.",
       "description": ""
     },
     {
@@ -2679,7 +2635,7 @@
     },
     {
       "id": "tostada_huevo_pavo",
-      "name": "Tostada de huevo y pavo",
+      "name": "Tostadas de huevo y pavo",
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 12,
@@ -2716,11 +2672,11 @@
         }
       ],
       "steps": [
-        "Revuelve los huevos en una sartén.",
-        "Tuesta el pan y añade tomate y pavo loncheado.",
-        "Acompaña con el café con leche."
+        "Bate los huevos y remuévelos a fuego suave en una sartén antiadherente hasta que cuajen, sin añadir aceite fuera de los ingredientes.",
+        "Tuesta todas las rebanadas indicadas. Reparte el tomate, el pavo loncheado y el revuelto sobre ellas.",
+        "Prepara el café con la leche indicada y sirve con las tostadas."
       ],
-      "tip": "Otra opción salada de desayuno sin queso.",
+      "tip": "Corta el pavo en tiras si te resulta más fácil repartirlo entre las tostadas.",
       "description": ""
     },
     {
@@ -2859,11 +2815,11 @@
         }
       ],
       "steps": [
-        "Cuece o revuelve dos huevos.",
-        "Aplasta el aguacate sobre las tostadas y añade tomate.",
-        "Acompaña con kiwi y café con leche."
+        "Cuece los huevos indicados, enfríalos, pélalos y córtalos.",
+        "Tuesta las rebanadas indicadas, reparte el aguacate aplastado y el tomate y coloca el huevo encima.",
+        "Acompaña con el kiwi y prepara el café con la leche indicada."
       ],
-      "tip": "Sin queso en el desayuno.",
+      "tip": "Aplasta el aguacate con un tenedor para repartirlo en una capa uniforme sobre las tostadas.",
       "description": ""
     },
     {
@@ -2905,11 +2861,11 @@
         }
       ],
       "steps": [
-        "Sirve el yogur en un bol.",
-        "Añade granola y copos de avena.",
-        "Acompaña con mandarina y café con leche."
+        "Sirve el yogur en un bol y mezcla los copos de avena.",
+        "Añade la granola al final y pela las mandarinas indicadas.",
+        "Sirve con las mandarinas y prepara el café con la leche indicada."
       ],
-      "tip": "Sin azúcar adicional ni queso.",
+      "tip": "Mantén la granola aparte hasta el momento de comer si dejas el yogur preparado.",
       "description": ""
     },
     {
@@ -3219,15 +3175,15 @@
         }
       ],
       "steps": [
-        "Pela una o dos mandarinas.",
-        "Acompaña con unas almendras naturales."
+        "Pela todas las mandarinas de la ración indicada.",
+        "Acompaña con la cantidad indicada de almendras naturales."
       ],
       "tip": "Snack muy rápido de fruta y grasas saludables.",
       "description": ""
     },
     {
       "id": "mini_pavo_tomate",
-      "name": "Minibocadillo de pavo y tomate",
+      "name": "Sándwich de tomate con pavo",
       "mealType": "media",
       "baseServings": 1,
       "timeMinutes": 5,
@@ -3249,10 +3205,10 @@
         }
       ],
       "steps": [
-        "Tuesta un poco de pan integral.",
-        "Rellena con pavo loncheado y tomate."
+        "Tuesta ligeramente las rebanadas de pan indicadas y corta el tomate en rodajas.",
+        "Reparte el tomate y todo el pavo loncheado sobre una rebanada y cierra con la otra."
       ],
-      "tip": "Para el apetito de media mañana sin una ración de pan muy grande.",
+      "tip": "Reparte el tomate en una capa fina para que el sándwich se cierre sin perder relleno.",
       "description": "2 rebanadas de pan integral con 50 g de pavo loncheado y 80 g de tomate fresco."
     },
     {
@@ -3381,7 +3337,7 @@
     },
     {
       "id": "tostada_tofu_revuelto",
-      "name": "Tostada de tofu revuelto con espinacas",
+      "name": "Tostadas de tofu, huevo y espinacas",
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 12,
@@ -3423,9 +3379,9 @@
         }
       ],
       "steps": [
-        "Desmenuza el tofu y saltéalo con las espinacas.",
-        "Añade el huevo batido y cocina hasta que cuaje.",
-        "Sirve sobre la tostada con tomate y prepara el café con leche."
+        "Escurre y desmenuza el tofu. Cocínalo con las espinacas en una sartén antiadherente; añade un poco de agua si se pega, sin incorporar aceite no indicado.",
+        "Añade el huevo batido y remueve hasta que cuaje.",
+        "Tuesta las dos rebanadas, reparte el tomate y el revuelto sobre ellas. Prepara el café con la leche indicada."
       ],
       "tip": "Escurre el tofu antes de desmenuzarlo para que se dore mejor.",
       "description": ""
@@ -3561,9 +3517,9 @@
         }
       ],
       "steps": [
-        "Corta el tempeh en láminas y dóralo en una sartén.",
-        "Tuesta el pan y añade tomate, lechuga y tempeh.",
-        "Prepara el café con leche."
+        "Corta el tempeh en láminas y cocínalo siguiendo las indicaciones de su envase, en una sartén antiadherente con un poco de agua si hace falta; no añadas aceite no indicado.",
+        "Tuesta las dos rebanadas y reparte sobre ellas el tomate, la lechuga y el tempeh.",
+        "Prepara el café con la leche indicada."
       ],
       "tip": "Sazona el tempeh con especias que ya tengas en casa.",
       "description": ""
@@ -3617,10 +3573,10 @@
         }
       ],
       "steps": [
-        "Calienta el edamame siguiendo las instrucciones del envase.",
-        "Escúrrelo y añade una pequeña cantidad de salsa de soja."
+        "Calienta el edamame sin vaina siguiendo las instrucciones del envase y escúrrelo.",
+        "Añade toda la cantidad indicada de salsa de soja y mezcla."
       ],
-      "tip": "La salsa de soja puede ser salada; ajusta la cantidad al gusto.",
+      "tip": "La cantidad de edamame corresponde a los granos sin vaina. No añadas sal antes de probarlo con la salsa de soja medida.",
       "description": ""
     },
     {
@@ -3677,8 +3633,8 @@
         }
       ],
       "steps": [
-        "Corta media zanahoria en bastones.",
-        "Sirve con el queso cottage y una porción pequeña de pan."
+        "Pesa la zanahoria indicada, lávala y córtala en bastones.",
+        "Sirve toda la cantidad de queso cottage con los bastones y la rebanada de pan indicada."
       ],
       "tip": "El queso cottage se conserva refrigerado; consulta su fecha de consumo.",
       "description": ""
@@ -3769,9 +3725,10 @@
         }
       ],
       "steps": [
-        "Lava las lentejas y corta el puerro, el apio y la zanahoria.",
-        "Pon las verduras y las lentejas en una cazuela con agua; cuece hasta que estén tiernas.",
-        "Añade el tomate triturado y todo el aceite de oliva indicado al final de la cocción; mezcla y sirve con el pan."
+        "Lava las lentejas y corta el puerro, el apio y la zanahoria en trozos pequeños.",
+        "Pon las verduras y las lentejas en una cazuela con agua suficiente para cubrirlas. Cuece suavemente, removiendo y añadiendo agua si se espesa antes de tiempo.",
+        "Cuando las lentejas y las verduras estén tiernas, incorpora el tomate triturado y deja cocinar el conjunto hasta que el tomate esté integrado.",
+        "Añade todo el aceite indicado, mezcla y sirve con toda la cantidad de pan indicada."
       ],
       "tip": "Las lentejas rojas suelen cocerse más rápido que las lentejas enteras habituales.",
       "description": ""
@@ -3810,9 +3767,10 @@
         }
       ],
       "steps": [
-        "Cuece el arroz y cocina la coliflor al vapor o en agua.",
-        "Corta el solomillo en medallones y dóralo con el aceite.",
-        "Añade unas gotas de salsa de soja y sirve con el arroz y la coliflor."
+        "Cuece el arroz siguiendo el envase. Separa la coliflor en ramilletes pequeños y cuécela en agua o al vapor hasta que esté tierna; escúrrela.",
+        "Corta el solomillo en medallones y cocínalos con todo el aceite indicado hasta que estén hechos.",
+        "Añade toda la cantidad indicada de salsa de soja y un poco de agua para recoger el jugo de la sartén.",
+        "Sirve el solomillo con el arroz y la coliflor, repartiendo la salsa sobre el plato."
       ],
       "tip": "Cocina el cerdo completamente y evita reutilizar el plato que estuvo en contacto con la carne cruda.",
       "description": ""
@@ -3856,9 +3814,9 @@
         }
       ],
       "steps": [
-        "Cuece el arroz y calienta el edamame.",
-        "Dora el tofu en dados con el aceite.",
-        "Corta la lombarda fina y sirve todo en un bol con salsa de soja."
+        "Cuece el arroz siguiendo el envase. Calienta el edamame sin vaina y escúrrelo.",
+        "Escurre el tofu, córtalo en dados y dóralo con todo el aceite indicado.",
+        "Corta la lombarda en tiras finas. Repártela con el arroz, el tofu y el edamame en un bol; añade toda la cantidad indicada de salsa de soja y mezcla."
       ],
       "tip": "Si prefieres la lombarda más tierna, saltéala junto con el tofu.",
       "description": ""
@@ -4029,11 +3987,11 @@
         }
       ],
       "steps": [
-        "Calienta el edamame y escúrrelo.",
-        "Corta el tempeh en dados y dóralo en una sartén.",
-        "Añade unas gotas de salsa de soja y sirve junto al edamame."
+        "Calienta el edamame sin vaina siguiendo las instrucciones del envase y escúrrelo.",
+        "Corta el tempeh en dados y cocínalo según las indicaciones del envase en una sartén antiadherente, con un poco de agua si hace falta y sin añadir aceite no indicado.",
+        "Incorpora el edamame y toda la cantidad indicada de salsa de soja. Mezcla y sirve caliente."
       ],
-      "tip": "Ajusta la salsa de soja al gusto y a la etiqueta del producto.",
+      "tip": "El peso del edamame corresponde a los granos sin vaina. Usa la salsa medida como aliño, sin añadir otra cantidad al servir.",
       "description": ""
     },
     {
@@ -4063,7 +4021,7 @@
         "Mezcla la chía con el skyr y deja reposar unos minutos.",
         "Añade las pasas antes de servir."
       ],
-      "tip": "Si la mezcla queda muy espesa, puedes aligerarla con un poco de leche contabilizada aparte.",
+      "tip": "Mezcla bien antes de comer; si queda demasiado espeso, añade agua poco a poco hasta conseguir la textura que prefieras.",
       "description": ""
     },
     {
@@ -4100,10 +4058,11 @@
         }
       ],
       "steps": [
-        "Parte la berenjena a lo largo y ásala hasta que la pulpa se ablande.",
-        "Cuece el arroz y corta la ternera en trozos pequeños.",
-        "Saltea la ternera con todo el aceite de oliva indicado, incorpora la pulpa de berenjena y el tomate, y cocina hasta que esté hecha.",
-        "Rellena la berenjena y sirve con el arroz."
+        "Parte la berenjena a lo largo y haz cortes superficiales en la pulpa sin atravesar la piel. Ásala hasta que la pulpa esté blanda.",
+        "Mientras tanto, cuece el arroz según el envase y corta la ternera en trozos pequeños.",
+        "Extrae la pulpa de la berenjena con una cuchara, conserva la piel para rellenarla y trocea la pulpa.",
+        "Saltea la ternera con todo el aceite indicado. Añade la pulpa y el tomate triturado y cocina hasta que la carne esté hecha y el relleno no tenga exceso de líquido.",
+        "Reparte el relleno dentro de las mitades de berenjena y sirve con el arroz."
       ],
       "tip": "La cantidad de ternera corresponde al peso en crudo.",
       "description": ""
@@ -4137,11 +4096,12 @@
         }
       ],
       "steps": [
-        "Corta el boniato en dados y hornéalo o cocínalo hasta que esté tierno.",
-        "Saltea la lombarda cortada fina con el aceite y un poco de agua.",
-        "Cocina el solomillo en medallones y sirve con las verduras."
+        "Pesa el boniato indicado, pélalo y córtalo en dados pequeños. Cocínalo tapado en el microondas hasta que esté tierno.",
+        "Corta la lombarda en tiras finas. Saltéala con todo el aceite indicado y un poco de agua hasta que se ablande; retírala de la sartén.",
+        "Corta el solomillo en medallones y cocínalo en la misma sartén hasta que esté hecho, sin añadir aceite extra.",
+        "Sirve el solomillo con la lombarda y el boniato."
       ],
-      "tip": "El peso de la pieza de boniato puede variar; ajusta la cantidad en la compra si lo necesitas.",
+      "tip": "Corta la lombarda fina para que se ablande de forma uniforme; pesa el boniato en gramos en lugar de calcular una pieza.",
       "description": ""
     },
     {
@@ -4234,9 +4194,9 @@
         }
       ],
       "steps": [
-        "Cuece los fideos siguiendo el tiempo del envase y calienta el edamame.",
-        "Saltea el tempeh, el calabacín y el pimiento con el aceite.",
-        "Añade los fideos, el edamame y la salsa de soja; mezcla y sirve."
+        "Cuece los fideos siguiendo el tiempo del envase. Calienta el edamame sin vaina y escúrrelo.",
+        "Corta el tempeh, el calabacín y el pimiento en trozos pequeños. Cocínalos con todo el aceite indicado, siguiendo también las indicaciones del envase del tempeh; añade un poco de agua si hace falta para terminar las verduras.",
+        "Incorpora los fideos escurridos, el edamame y toda la cantidad indicada de salsa de soja. Mezcla y sirve caliente."
       ],
       "tip": "Corta las verduras de tamaño parecido para que se cocinen a la vez.",
       "description": ""
@@ -4336,10 +4296,10 @@
         }
       ],
       "steps": [
-        "Lava y corta en tiras el pimiento verde y rojo, la cebolla, el calabacín y los champiñones; pica el ajo.",
-        "Calienta el aceite en una sartén. Añade el ajo y las verduras y cocínalas tapadas a fuego medio durante 8-10 minutos, removiendo de vez en cuando.",
-        "Cocina la pechuga de pavo a la plancha en otra sartén o retira temporalmente las verduras.",
-        "Sirve el pavo junto con las verduras."
+        "Lava y corta el pimiento, la cebolla, el calabacín y los champiñones en trozos de tamaño parecido; pica el ajo.",
+        "Calienta todo el aceite indicado, añade el ajo y las verduras y cocina tapado a fuego medio, removiendo, hasta que estén tiernas. Añade un poco de agua si se secan.",
+        "Retira las verduras y cocina los filetes de pavo en la misma sartén hasta que estén completamente hechos por ambos lados, sin añadir aceite extra.",
+        "Sirve la pechuga con las verduras y los jugos de cocción."
       ],
       "tip": "Los 80 g de pimiento representan la mezcla de pimiento verde y rojo.",
       "description": ""
@@ -4376,7 +4336,7 @@
     },
     {
       "id": "desayuno_tostada_aguacate_pavo_huevo",
-      "name": "Tostada integral de aguacate, pavo y huevo con café con leche",
+      "name": "Tostadas de aguacate, pavo y huevo con café con leche",
       "mealType": "desayuno",
       "baseServings": 1,
       "timeMinutes": 15,
@@ -4418,13 +4378,13 @@
         }
       ],
       "steps": [
-        "Tuesta el pan integral.",
-        "Corta el aguacate en láminas y reparte sobre el pan.",
-        "Cocina el huevo en una sartén con los 5 g de aceite.",
-        "Calienta brevemente las lonchas de pavo, monta la tostada y coloca el huevo encima.",
-        "Prepara el café con la leche semidesnatada."
+        "Tuesta todas las rebanadas de pan indicadas.",
+        "Corta el aguacate en láminas y repártelo sobre el pan.",
+        "Cocina el huevo con todo el aceite indicado hasta que cuaje.",
+        "Calienta brevemente el pavo loncheado y repártelo entre las tostadas junto con el huevo.",
+        "Prepara el café con la leche indicada."
       ],
-      "tip": "La ración de pavo corresponde aproximadamente a dos lonchas.",
+      "tip": "Pesa el pavo loncheado según la cantidad indicada: el número de lonchas depende de su grosor.",
       "description": ""
     },
     {
@@ -4523,10 +4483,11 @@
         }
       ],
       "steps": [
-        "Saltea las gulas en una sartén con el ajo troceado y la cayena entera hasta que estén calientes.",
-        "Trocea el cogollo o la lechuga, la cebolla dulce, la zanahoria, el aguacate, el queso curado y la mozzarella.",
-        "Pon todo en un bol junto con la remolacha y las gulas cocinadas.",
-        "Aliña al gusto con el aceite de oliva virgen extra, el vinagre y sal."
+        "Reserva la mitad del aceite indicado para el aliño. Con la otra mitad, cocina suavemente el ajo picado y la cayena entera, sin quemar el ajo.",
+        "Añade las gulas y remueve hasta que estén calientes. Puedes retirar la cayena al terminar.",
+        "Lava la lechuga, corta la cebolla en tiras finas y ralla o corta la zanahoria fina. Trocea el aguacate y el queso curado y escurre y trocea la mozzarella.",
+        "Mezcla las verduras con la remolacha y los quesos. Añade las gulas con los jugos de la sartén.",
+        "Aliña con todo el aceite reservado y la cantidad indicada de vinagre; mezcla y sirve."
       ],
       "tip": "Las cantidades son para una ración: se estima la media bandeja como 100 g (envase catalogado de 200 g), medio aguacate como 75 g y las cantidades de lechuga, remolacha y quesos como aproximaciones. La cayena se pesa de forma aproximada; puedes retirarla al servir.",
       "description": ""

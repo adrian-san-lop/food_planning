@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "catalogVersion": "0.10.0",
+  "catalogVersion": "0.10.1",
   "source": "Existing foods plus curated generic additions with USDA FoodData Central, AESAN/BEDCA, and manufacturer nutrition references; qualitative recovery tags use NHS fracture guidance and NIH Office of Dietary Supplements food-source guidance. Version 0.8.0 adds ingredients for Ensalada templada de gulas and updates the generic gulas estimate from the manufacturer's natural product label. Recipe quantities use whole pieces for whole-fruit portions and whole bread-slice portions, maximum two per meal; bread pantry and package quantities remain in grams. Version 0.9.2 applies evidence-backed USDA corrections and explicit recipe ingredient instructions; see docs/audits/catalog-quality/results/summary.md. Version 0.9.3 defines a generic L egg estimate and documents identical-ingredient recipe families under ADR-0045. Version 0.10.0 adds practical food portion limits and rounding policies without changing nutrition, units or base recipe quantities.",
-  "status": "Catálogo 0.10.0; 90 alimentos. Recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
+  "status": "Catálogo 0.10.1; 90 alimentos. Recuperación ósea marcada cualitativamente mediante fuentes de calcio, vitamina D y vitamina C, sin cantidades de micronutrientes.",
   "foods": [
     {
       "id": "skyr",

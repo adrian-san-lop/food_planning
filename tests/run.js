@@ -1,5 +1,6 @@
 import './catalogs.test.js';
 import './catalog-audit.test.js';
+import './recipe-curation.test.js';
 import './domain.test.js';
 import './inventory-ledger.test.js';
 import './nutrition.test.js';

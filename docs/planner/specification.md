@@ -15,9 +15,9 @@ Se construye una semana base de siete días y cinco comidas, y se repiten sus re
 Los catálogos son JSON genéricos e independientes de los datos personales:
 
 - [`foods.json`](../../data/foods.json): 90 alimentos.
-- [`recipes.json`](../../data/recipes.json): 112 recetas y 543 referencias de ingredientes.
+- [`recipes.json`](../../data/recipes.json): 111 recetas y 537 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.10.0`: añade políticas opcionales de ración sin cambiar cantidades base ni nutrición. La versión `0.9.3` fijó el huevo L y las descripciones de familias; `0.9.0` actualizó frutas enteras a piezas y pan de molde a rebanadas; `0.9.1` limita el pan a rebanadas enteras, máximo dos por comida. La versión `0.8.0` incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
+Ambos catálogos usan actualmente **catalogVersion 0.10.1**: tras reconsiderar las once eliminaciones, recupera diez fichas y conserva 111; solo elimina hamburguesa_pavo. Siete recuperadas tienen aclaraciones documentales, sin cambios de ingredientes, cantidades o nutrición. La revisión posterior de las 111 recetas base añade 52 mejoras de nombre, pasos o consejo; mantiene tiempos y cantidades y produce cero diferencias nutricionales. No modifica el escalado ni acredita calidad culinaria de todas las porciones ajustadas. No se descartan por origen, formato o ingredientes como tofu o tahini, ni se valoran utensilios como criterio. No hay fichas ocultas ni metadatos de retirada. Ver [ADR-0048](../decisions/0048-everyday-recipe-curation.md). La versión 0.10.0 añadió políticas opcionales de ración sin cambiar cantidades base ni nutrición. La versión `0.9.3` fijó el huevo L y las descripciones de familias; `0.9.0` actualizó frutas enteras a piezas y pan de molde a rebanadas; `0.9.1` limita el pan a rebanadas enteras, máximo dos por comida. La versión `0.8.0` incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
 
 Distribución actual de recetas por tipo:
 
@@ -25,7 +25,7 @@ Distribución actual de recetas por tipo:
 | --- | ---: | ---: |
 | Desayuno | 19 | 21 |
 | Media mañana (`media`) | 19 | 21 |
-| Comida | 25 | 21 |
+| Comida | 24 | 21 |
 | Media tarde (`tarde`) | 20 | 21 |
 | Cena | 29 | 21 |
 
