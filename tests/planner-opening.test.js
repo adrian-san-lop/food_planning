@@ -26,7 +26,7 @@ function harness({draft = null, confirmed = null, expired = false} = {}) {
   const state = {start: '2026-10-13', plannerDraft: draft};
   const context = vm.createContext({
     createStateNormalizer, state, plannerProposal: null,
-    plannerWeek:0,plannerEditScope:'cycle',plannerPreferencesNotice:false,plannerPreferencesSignature:'',plannerPersistedDraftSignature:'',plannerChangeMessage:'',
+    plannerWeek:0,plannerDay:0,plannerChoice:null,plannerEditScope:'cycle',plannerPreferencesNotice:false,plannerPreferencesSignature:'',plannerPersistedDraftSignature:'',plannerChangeMessage:'',
     emptyState: () => ({}), getFood: () => ({}), FOOD: {}, inventoryUnitService: {},
     normalizeLegacyDeduction: () => 0, dateFromISO, isoDate,
     today: () => dateFromISO('2026-10-21'), ACTIVITY_BY_ID: {},

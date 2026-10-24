@@ -8,14 +8,22 @@
 
 1. **Mi perfil → Preferencias del menú.** Abre un diálogo con máximos opcionales de minutos para comida y cena de lunes a viernes. Vacío significa sin límite. Guarda solo los tiempos editados y permite consultar las recetas marcadas o devolverlas a Normal.
 2. **Abre cualquier ficha de receta**, desde el recetario, menú actual o propuesta. Ahora incluye **Normal**, **Favorita** y **No proponer**. La selección se actualiza al pulsar y usa la sincronización habitual de la cuenta. Normal retira la preferencia explícita anterior.
-3. **Menú 3 semanas → Preparar próximo menú / Continuar revisión / Revisar menú guardado.** La propuesta muestra una semana de siete días, con pestañas para las tres semanas. **Confirmar menú** conserva la confirmación y activación existentes.
-4. En **Cambiar plato**, consulta hasta tres sugerencias compatibles o el catálogo completo del tipo para una elección manual. **Ver receta** abre la ficha sin modificar el plan; **Elegir esta receta** realiza el cambio explícito.
+3. **Menú 3 semanas → Preparar próximo menú / Continuar revisión / Revisar menú guardado.** El editor permite elegir semana y día y muestra las cinco comidas del día seleccionado. El resumen ocupa una columna en escritorio y una franja compacta en portátil y tablet apaisada. La cabecera mantiene **Confirmar menú**, con la confirmación y activación existentes.
+4. **Cambiar**, junto a cada plato, abre un panel independiente con hasta tres sugerencias, búsqueda en el catálogo completo del tipo y el alcance del cambio. **Ver receta** consulta sin modificar el plan; **Elegir** o **Elegir esta receta** en su ficha realizan la sustitución. **Conservar** es la presentación del bloqueo existente; los cambios manuales lo activan automáticamente.
 
-El menú actual, los borradores, la compra y la despensa no se reemplazan al marcar una receta ni guardar tiempos. Para aplicar preferencias a la selección automática hay que generar o pulsar **Cambiar platos**. Los avisos indican cambios detectados durante la sesión y las condiciones que impiden confirmar; la ayuda recuerda cómo aplicar ajustes a menús ya guardados. No se persiste una copia histórica de preferencias por generación.
+El menú actual, los borradores, la compra y la despensa no se reemplazan al marcar una receta ni guardar tiempos. Para aplicar preferencias a la selección automática hay que generar o pulsar **Generar otra propuesta** (antes **Cambiar platos**). Los avisos indican cambios detectados durante la sesión y las condiciones que impiden confirmar; la ayuda del plan reúne las explicaciones y las diferencias de energía. No se persiste una copia histórica de preferencias por generación.
+
+### Ajuste de presentación del 24/10/2026
+
+Implementado localmente en `fix/planner-review-dashboard`, pendiente de publicación. Se mantiene el motor, la repetición semanal, los bloqueos, el contrato v12 y la sincronización existentes. Se sustituyen la lista de siete tarjetas diarias y las alternativas desplegadas dentro de cada comida por navegación de semana/día y un diálogo independiente. Las semanas 2 y 3 siguen disponibles; se señalan sus diferencias respecto a la base. Las semanas y días con incidencias muestran contadores y **Ir a pendientes** lleva a la primera comida afectada.
+
+El panel de elección conserva consulta de receta, búsqueda y desplazamiento al refrescarse. Escape o Volver al menú recuperan el control Cambiar; consultar una receta superpone su ficha y al cerrarla vuelve a la alternativa de origen. Los controles de elección se ofrecen siempre en pantallas táctiles. En móvil la revisión usa scroll natural y mantiene la cabecera accesible; en ventanas bajas o días con avisos extensos se permite desplazamiento interior.
+
+Revisión visual local sobre HTTP en Firefox, con shell, módulos, catálogos y estado sintético: 1920 × 1080, 1366 × 768, 1194 × 834, 1024 × 768 y 390 × 844. Las vistas normales de escritorio/portátil/tablet muestran las cinco comidas sin scroll; móvil se desplaza verticalmente. Se revisó también la presentación del panel de alternativas en 1024 × 768. Pasan las comprobaciones de sintaxis y diferencias de Git. No se añadieron ni ejecutaron pruebas automatizadas para este ajuste; los resultados de la sección de cierre original corresponden al paquete 5 anterior. Sin dispositivos físicos, Auth real, escrituras en Supabase ni publicación.
 
 ## Cambios para tres semanas o una comida
 
-- **Las tres semanas** es el alcance inicial. Cambia ese mismo día y tipo de comida en las tres semanas y bloquea las posiciones modificadas.
+- **También a las otras semanas** es el alcance inicial del panel de elección. Cambia ese mismo día y tipo de comida en las tres semanas y conserva las posiciones modificadas.
 - **Solo esta comida** cambia y bloquea una única posición de la semana visible.
 - La posición que se está editando se puede cambiar explícitamente aunque esté bloqueada. Cualquier bloqueo de las otras semanas se conserva, incluso si su receta difiere; un mensaje cuenta los cambios y los bloqueos respetados.
 - Cada semana conserva sus posiciones independientes. Se muestran las excepciones respecto a la base y se mantienen las 105 comidas del contrato.
@@ -37,7 +45,7 @@ Si las condiciones dejan huecos, la revisión sigue disponible con causas por co
 
 Un resultado con huecos se mantiene temporalmente en la ventana de revisión y **no sustituye el último borrador completo** de la copia de trabajo ni se envía al RPC: este sigue requiriendo las 105 recetas. Al completar los huecos se conserva mediante el guardado habitual. Cerrar y recargar antes de completarlo recupera el último borrador completo, si existía; no se promete reanudar posiciones incompletas entre dispositivos.
 
-Los borradores completos se siguen conservando al elegir platos y bloquear, sin confirmarlos. Los cambios de preferencias no fuerzan regeneración. Si llega una versión nueva del borrador desde la sincronización de la cuenta mientras se revisa, la vista adopta esa versión y mantiene la semana visible, el alcance, el desplazamiento y el foco cuando corresponde.
+Los borradores completos se siguen conservando al elegir platos y bloquear, sin confirmarlos. Los cambios de preferencias no fuerzan regeneración. Si llega una versión nueva del borrador desde la sincronización de la cuenta mientras se revisa, la vista adopta esa versión y mantiene semana, día, alcance, búsqueda, desplazamiento y foco cuando corresponde.
 
 ## Estructura del código y persistencia
 
@@ -45,7 +53,7 @@ Los borradores completos se siguen conservando al elegir platos y bloquear, sin 
 | --- | --- |
 | `js/domain/menu-review.js` | Cambios inmutables de una o tres posiciones, respeto de bloqueos y selección de alternativas compatibles. Sin DOM, almacenamiento ni RPC. |
 | `js/domain/menu-planner.js` | Exporta la comprobación de elegibilidad común, conservando el motor de generación y evaluación. |
-| `js/ui/planner-review.js` | Vista semanal, alternativas, causas, excepciones, diferencias y conservación del foco y desplazamiento. Dependencias de recetas y nutrición inyectadas. |
+| `js/ui/planner-review.js` | Vista por semana/día, resumen adaptable, panel de alternativas con búsqueda y alcance, causas, excepciones, ayuda y conservación del foco y desplazamiento. Dependencias de recetas, iconos y nutrición inyectadas. |
 | `js/ui/planning-preferences.js` | Controles de ficha, diálogo de preferencias y validación de cambios de tiempo. |
 | `js/ui/planning-preferences-controller.js` | Edición del diálogo y preferencias; utiliza estado, guardado, avisos y capacidad de persistencia inyectados. |
 | `js/main.js` | Conexión de los controles, orquestación del planificador y confirmación por la sincronización existente. La revisión HTML se extrae a su módulo. |

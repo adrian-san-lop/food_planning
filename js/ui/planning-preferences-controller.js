@@ -1,5 +1,5 @@
 import { applyPlanningPreferencesPatch } from '../domain/planning-preferences.js?v=20261022-planner-foundations';
-import { planningPreferencesMarkup, markedRecipesMarkup, timeLimitsPatch } from './planning-preferences.js?v=20261023-weekly-review';
+import { planningPreferencesMarkup, markedRecipesMarkup, timeLimitsPatch } from './planning-preferences.js?v=20261024-planner-workspace';
 
 /** View/editor boundary only. The injected save uses the existing account sync. */
 export function createPlanningPreferencesController({ document, getState, getRecipes, isAvailable, save, notify, onChange }) {

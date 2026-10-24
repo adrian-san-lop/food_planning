@@ -657,65 +657,202 @@ dialog::backdrop{background:rgba(var(--shadow-rgb),.66);backdrop-filter:blur(4px
 .catalog-overlay p{margin:10px 0 0;color:var(--ink-soft);line-height:1.6}
 .catalog-overlay.error strong{color:var(--danger)}
 .catalog-overlay .btn{margin-top:16px}
-#plannerDialog{width:min(1100px,calc(100vw - 24px));max-width:none;max-height:92vh;max-height:92dvh;padding:0;border:0;border-radius:var(--radius);box-shadow:0 22px 70px rgba(var(--shadow-rgb),.3);overflow:hidden}
+/* Cycle review: selected-day workspace, contextual choices and shared Menuki styling. */
+#plannerDialog{width:min(1480px,calc(100vw - 32px));height:min(920px,calc(100dvh - 32px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border:0;border-radius:var(--radius-lg);box-shadow:0 22px 70px rgba(var(--shadow-rgb),.3);overflow:hidden}
 #plannerDialog[open]{display:flex;flex-direction:column}
-#plannerDialog::backdrop{background:rgba(var(--shadow-rgb),.58)}
-#plannerDialog>.dialog-close{position:absolute;top:12px;right:12px;float:none;margin:0}
-#plannerContent{display:flex;flex:1;min-height:0;min-width:0}
-.planner-content{display:flex;flex-direction:column;min-height:0;min-width:0;width:100%;max-height:92vh;max-height:92dvh}
-.planner-review-header{position:relative;z-index:2;display:flex;flex:none;align-items:flex-end;justify-content:space-between;gap:20px;padding:24px 68px 20px 28px;border-bottom:1px solid var(--line);background:var(--white)}
+html:has(#plannerDialog[open]){overflow:hidden}
+#plannerDialog::backdrop,.planner-choice-dialog::backdrop,.planner-help-dialog::backdrop{background:rgba(var(--shadow-rgb),.58)}
+#plannerDialog>.dialog-close{position:absolute;top:18px;right:16px;float:none;margin:0;z-index:3}
+#plannerContent,.planner-content{display:flex;flex:1;flex-direction:column;min-height:0;min-width:0;width:100%}
+.planner-review-header{display:flex;flex:none;align-items:center;justify-content:space-between;gap:20px;padding:20px 76px 18px 24px;border-bottom:1px solid var(--line);background:var(--white)}
 .planner-intro{min-width:0}
-.planner-intro .eyebrow{margin-bottom:7px;font-size:11px}
-.planner-intro h2{margin:0;font:700 28px/1.2 var(--font);letter-spacing:-.5px}
-.planner-review-body{position:relative;z-index:1;flex:1;min-height:0;overflow-y:auto;overscroll-behavior-y:contain;padding:20px 28px 28px;scrollbar-gutter:stable}
-.planner-overview{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:start;gap:20px}
-.planner-overview-copy{min-width:0}
-.planner-cycle-meta{display:flex;flex-wrap:wrap;align-items:center;gap:9px 14px;color:var(--ink-soft);font-size:14px;line-height:1.4}
-.planner-cycle-meta>span{display:inline-flex;align-items:center;gap:7px}
-.planner-cycle-meta .icon{color:var(--accent)}
-.planner-cycle-meta .icon svg{width:18px;height:18px}
-.planner-cycle-meta strong{color:var(--ink);font-weight:650}
-.planner-quick-tip{margin:14px 0 12px;color:var(--ink-soft);font-size:15px;line-height:1.5}
-.planner-profile-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;min-width:0}
-.planner-profile-summary--recovery{grid-template-columns:repeat(3,minmax(0,1fr))}
-.planner-profile-card{display:flex;align-items:flex-start;gap:9px;min-width:0;min-height:88px;padding:14px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface-subtle)}
-.planner-profile-card>.icon{color:var(--accent)}
-.planner-profile-card>.icon svg{width:20px;height:20px}
-.planner-profile-card>div{min-width:0}
-.planner-profile-card span:not(.icon){display:block;margin-bottom:6px;color:var(--ink-soft);font-size:13px;line-height:1.3}
-.planner-profile-card strong{display:block;font-size:16px;line-height:1.35;overflow-wrap:anywhere}
-.planner-profile-card--recovery{border-color:var(--warning-line);background:var(--warning-surface)}
-.planner-profile-card--recovery>.icon,.planner-profile-card--recovery strong{color:var(--warning-ink)}
-.planner-help{max-width:100%;color:var(--ink-soft);font-size:14px;line-height:1.5}
-.planner-help summary{display:inline-flex;align-items:center;gap:7px;max-width:100%;min-height:40px;padding:7px 10px;list-style:none;border:1px solid var(--line);border-radius:10px;color:var(--accent-dark);font-weight:600;cursor:pointer;background:var(--white)}
-.planner-help summary::-webkit-details-marker{display:none}
-.planner-help summary::after{content:'+';margin-left:7px;font-size:19px;font-weight:500}
-.planner-help[open] summary::after{content:'−'}
-.planner-help summary .icon svg{width:17px;height:17px}
-.planner-help-content{padding:8px 0 0}
-.planner-help-content ul{margin:4px 0;padding-left:20px}
-.planner-help-content li{margin:7px 0}
-.planner-recovery-coverage{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
-.planner-recovery-coverage p{margin:7px 0 0}
-.planner-profile-warning{display:flex;align-items:flex-start;gap:9px;padding:12px 14px;margin:16px 0 0;border:1px solid var(--warning-line);border-radius:10px;background:var(--warning-surface);color:var(--warning-ink);font-size:14px;line-height:1.5}
-.planner-summary{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}
-.planner-summary>span{display:inline-flex;align-items:baseline;gap:5px;padding:8px 11px;background:var(--accent-tint);border-radius:10px;font-size:14px;color:var(--ink-soft);line-height:1.3}
-.planner-summary strong{color:var(--accent-dark);font-size:16px}
-.planner-day{margin:14px 0;padding:14px;border:1px solid var(--line);border-radius:16px}
-.planner-day h3{margin:0 0 10px;font-size:15px}
-.planner-meal{display:grid;grid-template-columns:120px minmax(200px,1fr) 90px 110px;gap:9px;align-items:center;padding:8px 0;border-top:1px solid var(--surface-subtle)}
-.planner-meal:first-of-type{border-top:0}
-.planner-meal select{min-width:0;width:100%;padding:8px;border:1px solid var(--line);border-radius:9px;background:var(--white)}
-.planner-meal small{color:var(--muted)}
-.planner-recipe-preview{display:flex;flex-direction:column;align-items:center;gap:4px}
-.planner-recipe-preview .btn{min-height:44px;white-space:nowrap}
-.planner-meal .btn{justify-content:center;padding:7px 9px;font-size:12px}
-.planner-actions{display:flex;flex:none;align-items:center;justify-content:flex-end;gap:9px}
+.planner-intro .eyebrow{margin:0 0 5px;font-size:11px}
+.planner-intro h2{margin:0;font-size:clamp(24px,2vw,30px);line-height:1.15;letter-spacing:-.5px}
+.planner-intro p{margin:7px 0 0;font-size:14px;color:var(--ink-soft)}
+.planner-actions{display:flex;flex:none;align-items:center;gap:8px}
 .planner-actions .btn{min-height:44px;justify-content:center;font-size:15px}
-.planner-action-hint{position:relative;display:inline-flex}
-.planner-action-tooltip{display:none;position:absolute;top:calc(100% + 8px);right:0;z-index:4;width:250px;max-width:calc(100vw - 48px);padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--white);box-shadow:0 8px 22px rgba(var(--shadow-rgb),.16);color:var(--ink-soft);font-size:14px;line-height:1.4;font-weight:400}
-.planner-action-hint .btn:focus-visible+.planner-action-tooltip{display:block}
-@media(hover:hover) and (pointer:fine){.planner-action-hint:hover .planner-action-tooltip{display:block}}
+.planner-review-body{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:18px;flex:1;min-height:0;padding:18px 24px 24px;background:var(--bg);overflow:hidden}
+.planner-workspace{display:flex;flex-direction:column;gap:12px;min-width:0;min-height:0}
+.planner-navigation{flex:none}
+.planner-week-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 12px}
+.planner-week-tabs{display:flex;gap:6px;flex:none}
+.planner-week-tabs .btn{min-height:44px;padding:8px 14px;justify-content:center;font-size:14px}
+.planner-week-tabs [aria-pressed=true]{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.planner-repeat-note{color:var(--muted);font-size:13px;line-height:1.4;text-align:right}
+.planner-day-tabs{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.planner-day-button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;min-height:70px;padding:8px;border:1px solid var(--line);border-radius:12px;background:var(--white);color:var(--ink)}
+.planner-day-button>span:first-child{font-size:12px;text-transform:uppercase;color:var(--ink-soft)}
+.planner-day-button strong{font-size:25px;line-height:1.1}
+.planner-day-button:hover{border-color:var(--accent)}
+.planner-day-button[aria-pressed=true]{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.planner-day-button[aria-pressed=true]>span:first-child{color:inherit}
+.planner-attention{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 4px;border-radius:10px;background:var(--warning-surface);color:var(--warning-ink);font-size:11px;font-weight:700}
+.planner-day-button .planner-attention{position:absolute;top:4px;right:4px}
+.planner-exception-dot{width:7px;height:7px;border-radius:50%;background:var(--orange);flex:none}
+.planner-notices{flex:none}
+.planner-notices:not(:has(.planner-profile-warning)):has(.planner-change-status:empty){display:none}
+.planner-profile-warning{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;border:1px solid var(--warning-line);border-radius:10px;background:var(--warning-surface);color:var(--warning-ink);font-size:14px;line-height:1.4}
+.planner-profile-warning+.planner-profile-warning{margin-top:8px}
+.planner-profile-warning>span{flex:1;min-width:160px}
+.planner-profile-warning .btn{min-height:44px;font-size:13px}
+.planner-change-status{margin:0;color:var(--accent-dark);font-size:14px;line-height:1.4}
+.planner-change-status:empty{display:none}
+.planner-profile-warning~.planner-change-status:not(:empty){margin-top:8px}
+.planner-pending-reason{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.planner-review-body .planner-day{display:flex;flex:1;flex-direction:column;min-height:0;margin:0;padding:0 18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--white);overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+.planner-day-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;flex:none;padding:16px 0 12px;border-bottom:1px solid var(--line)}
+.planner-day-heading h3{margin:0;font-size:20px;line-height:1.25;text-transform:capitalize}
+.planner-day-heading>span{font-size:12px;color:var(--muted)}
+.planner-meals{display:flex;flex-direction:column;flex:1}
+.planner-review-body .planner-meal{display:grid;grid-template-columns:108px minmax(0,1fr) auto;gap:14px;align-items:center;flex:1;padding:13px 0;min-height:78px;border-top:1px solid var(--line)}
+.planner-review-body .planner-meal:first-child{border-top:0}
+.planner-slot{display:flex;align-items:center;gap:8px;color:var(--orange);font-size:13px;font-weight:650}
+.planner-slot .icon svg{width:18px;height:18px}
+.planner-meal-info{min-width:0}
+.planner-recipe-title{display:inline-flex;align-items:center;gap:7px;max-width:100%;border:0;padding:4px 0;background:none;color:var(--ink);font-size:16px;font-weight:700;text-align:left;line-height:1.35;overflow-wrap:anywhere}
+.planner-recipe-title:hover{color:var(--accent-dark);text-decoration:underline;text-underline-offset:3px}
+.planner-recipe-title>.icon{color:var(--muted)}
+.planner-recipe-title .icon svg{width:15px;height:15px}
+.planner-meal-meta{display:block;margin-top:3px;font-size:13px;color:var(--muted);line-height:1.4}
+.planner-meal-actions{display:flex;align-items:center;gap:6px}
+.planner-meal-actions .btn{min-height:44px;justify-content:center;padding:8px 11px;font-size:13px}
+.planner-lock{min-width:120px}
+.planner-lock .icon svg{width:16px;height:16px}
+.planner-lock[aria-pressed=true]{background:var(--accent-tint);border-color:var(--accent-line);color:var(--accent-dark)}
+.planner-meal-issue,.planner-meal-warning{margin:5px 0 0;font-size:13px;line-height:1.4;color:var(--warning-ink)}
+.planner-meal--issue{background:var(--warning-surface)}
+.planner-plan-summary{display:flex;flex-direction:column;gap:18px;min-height:0;min-width:0;padding:18px;border:1px solid var(--line);border-radius:var(--radius);background:var(--white);overflow:auto;overscroll-behavior:contain}
+.planner-summary-heading{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.planner-summary-heading h3{margin:0;font-size:21px}
+.planner-help-button{min-width:44px;min-height:44px;padding:9px;justify-content:center;color:var(--accent-dark)}
+.planner-plan-tags{display:flex;flex-wrap:wrap;gap:7px}
+.planner-plan-tags>span{display:inline-flex;align-items:center;gap:5px;padding:7px 9px;border-radius:8px;background:var(--accent-tint);color:var(--accent-dark);font-size:13px;font-weight:600}
+.planner-plan-tags>.planner-recovery-tag{background:var(--warning-surface);color:var(--warning-ink)}
+.planner-plan-tags .icon svg{width:17px;height:17px}
+.planner-preferences-summary{display:flex;flex-direction:column;gap:10px;font-size:14px}
+.planner-preferences-summary>strong{margin-bottom:2px;font-size:14px}
+.planner-preferences-summary>span{display:flex;justify-content:space-between;gap:12px;color:var(--ink-soft)}
+.planner-preferences-summary b{color:var(--ink);font-weight:600}
+.planner-preferences-summary .btn{justify-content:center;min-height:44px;margin-top:2px;font-size:14px}
+.planner-overview-counts{display:flex;flex-direction:column;gap:8px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-size:14px;color:var(--ink-soft)}
+.planner-overview-counts strong{color:var(--ink);font-size:17px}
+.planner-energy{display:flex;flex-direction:column;gap:5px;color:var(--muted);font-size:13px}
+.planner-energy>strong{font-size:30px;line-height:1.1;color:var(--accent);letter-spacing:-.5px}
+.planner-energy small{font-size:14px;font-weight:500;letter-spacing:0}
+.planner-renew{display:flex;flex-direction:column;gap:7px;margin-top:auto}
+.planner-renew .btn{min-height:44px;padding:10px;justify-content:center;font-size:14px;white-space:normal}
+.planner-renew small{font-size:12px;line-height:1.4;color:var(--muted);text-align:center}
+.planner-choice-dialog,.planner-help-dialog{width:min(680px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border:0;border-radius:var(--radius);box-shadow:0 22px 70px rgba(var(--shadow-rgb),.3);overflow:hidden}
+.planner-choice-dialog[open],.planner-help-dialog[open],#plannerChoiceContent{display:flex;flex-direction:column;min-height:0}
+.planner-choice-heading{display:flex;flex:none;justify-content:space-between;align-items:center;gap:16px;padding:20px 24px;border-bottom:1px solid var(--line);background:var(--white)}
+.planner-choice-heading h2{margin:3px 0 0;font-size:24px;line-height:1.2}
+.planner-choice-heading span{font-size:13px;color:var(--muted);text-transform:capitalize}
+.planner-choice-heading .btn{min-height:44px}
+.planner-choice-body{min-height:0;padding:20px 24px;overflow:auto;overscroll-behavior:contain;font-size:15px;line-height:1.5}
+.planner-choice-body p{margin:0 0 16px}
+.planner-current-recipe{color:var(--ink-soft)}
+.planner-edit-scope{min-width:0;margin:0 0 18px;padding:12px;border:1px solid var(--accent-line);border-radius:12px;background:var(--accent-tint)}
+.planner-edit-scope legend{padding:0 4px;font-size:14px;font-weight:700}
+.planner-edit-scope label{display:inline-flex;align-items:center;gap:8px;margin-right:16px;min-height:44px;font-size:14px;cursor:pointer}
+.planner-edit-scope input{width:18px;height:18px;accent-color:var(--accent);flex:none}
+.planner-edit-scope small{display:block;font-size:12px;color:var(--ink-soft);line-height:1.4}
+.planner-recipe-search{display:flex;flex-direction:column;gap:7px;margin-bottom:20px;font-weight:650;font-size:14px}
+.planner-recipe-search input{width:100%;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface-subtle);font-size:16px;color:var(--ink)}
+.planner-recommended>h3{margin:0 0 10px;font-size:17px}
+.planner-candidate{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 12px;margin:8px 0;border:1px solid var(--line);border-radius:12px;background:var(--white)}
+.planner-candidate>div:first-child{min-width:0}
+.planner-candidate h3{margin:0 0 4px;font-size:15px;line-height:1.4;overflow-wrap:anywhere}
+.planner-candidate span{font-size:13px;color:var(--muted)}
+.planner-candidate-actions{display:flex;flex:none;gap:6px}
+.planner-candidate-actions .btn{min-height:44px;padding:8px 10px;font-size:13px;justify-content:center}
+.planner-catalog{margin-top:18px}
+.planner-catalog summary{display:flex;align-items:center;justify-content:space-between;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer;list-style:none;font-size:14px;font-weight:650;color:var(--accent-dark)}
+.planner-catalog summary::-webkit-details-marker{display:none}
+.planner-catalog summary::after{content:'+';font-size:22px;margin-left:10px}
+.planner-catalog[open] summary::after{content:'−'}
+.planner-search-status{font-size:13px;color:var(--muted);margin:10px 0!important}
+.planner-choice-note{margin:18px 0 0!important;font-size:13px;color:var(--muted)}
+.planner-help-dialog h3{font-size:17px;margin:6px 0 8px}
+/* The summary becomes a compact strip before the selected day on laptops and landscape tablets. */
+@media(min-width:721px) and (max-width:1200px){
+ .planner-review-header{padding:14px 68px 12px 18px}
+ .planner-review-body{display:flex;flex-direction:column;padding:12px 18px 18px;gap:10px}
+ .planner-plan-summary{order:-1;display:grid;grid-template-columns:auto minmax(0,1fr) auto auto;align-items:center;gap:8px 12px;flex:none;padding:10px 12px;overflow:visible}
+ .planner-summary-heading{grid-column:1;grid-row:1}
+ .planner-summary-heading h3{font-size:17px}
+ .planner-help-button{min-height:44px}
+ .planner-plan-tags{grid-column:2;grid-row:1}
+ .planner-preferences-summary{display:contents}
+ .planner-preferences-summary>strong,.planner-preferences-summary>span,.planner-overview-counts,.planner-energy,.planner-renew small{display:none}
+ .planner-preferences-summary>.btn{grid-column:3;grid-row:1;margin:0;font-size:13px}
+ .planner-renew{grid-column:4;grid-row:1;margin:0;align-items:flex-end}
+ .planner-renew>.btn{min-height:44px;font-size:13px;padding:7px 10px}
+ .planner-workspace{flex:1;gap:10px}
+ .planner-repeat-note{font-size:12px}
+ .planner-week-toolbar{margin-bottom:8px}
+ .planner-day-button{min-height:58px;padding:5px}
+ .planner-day-button strong{font-size:24px}
+ .planner-review-body .planner-day{padding:0 14px}
+ .planner-day-heading{padding:12px 0 10px}
+ .planner-review-body .planner-meal{min-height:66px;padding:9px 0;gap:10px;grid-template-columns:102px minmax(0,1fr) auto}
+ .planner-recipe-title{font-size:16px}
+ .planner-meal-meta{font-size:12px}
+}
+@media(min-width:721px) and (min-width:1201px) and (max-height:800px){
+ .planner-plan-summary{gap:11px;padding:14px}
+ .planner-preferences-summary{gap:7px}
+ .planner-overview-counts{padding:10px 0;gap:5px}
+ .planner-review-header{padding-top:14px;padding-bottom:12px}
+ .planner-review-body{padding-top:12px;padding-bottom:16px}
+ .planner-day-button{min-height:60px}
+ .planner-review-body .planner-meal{min-height:70px;padding:10px 0}
+}
+@media(max-width:720px){
+ #plannerDialog{width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);border-radius:14px}
+ #plannerDialog>.dialog-close{top:12px;right:10px}
+ .planner-review-header{align-items:flex-start;padding:16px 54px 14px 16px;gap:12px;flex-direction:column}
+ .planner-intro h2{font-size:24px}
+ .planner-intro p{font-size:13px}
+ .planner-actions{width:100%}
+ .planner-actions .btn{width:100%;font-size:14px}
+ .planner-review-body{display:flex;flex-direction:column;gap:14px;padding:14px 12px 18px;overflow:auto}
+ .planner-workspace{flex:none;gap:10px}
+ .planner-week-toolbar{display:block;margin-bottom:10px}
+ .planner-week-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .planner-week-tabs .btn{min-width:0;padding:8px 5px;font-size:12px;white-space:normal}
+ .planner-repeat-note{display:block;margin-top:8px;font-size:12px;text-align:left}
+ .planner-day-tabs{gap:4px}
+ .planner-day-button{min-height:59px;border-radius:9px;padding:6px 2px}
+ .planner-day-button>span:first-child{font-size:10px}
+ .planner-day-button strong{font-size:23px}
+ .planner-day-button .planner-attention{top:1px;right:1px;min-width:15px;height:15px;font-size:9px}
+ .planner-review-body .planner-day{flex:none;padding:0 12px;overflow:visible;scrollbar-gutter:auto}
+ .planner-day-heading{padding:14px 0 10px}
+ .planner-day-heading h3{font-size:18px}
+ .planner-day-heading>span{font-size:11px}
+ .planner-review-body .planner-meal{grid-template-columns:minmax(0,1fr);gap:6px;padding:14px 0;min-height:0}
+ .planner-slot{font-size:12px}
+ .planner-recipe-title{font-size:16px;min-height:44px}
+ .planner-meal-meta{font-size:13px}
+ .planner-meal-actions{justify-content:flex-end;margin-top:3px}
+ .planner-meal-actions .btn{font-size:13px}
+ .planner-plan-summary{flex:none;overflow:visible;gap:14px;padding:14px}
+ .planner-choice-dialog,.planner-help-dialog{width:calc(100vw - 12px);max-height:calc(100dvh - 12px);border-radius:14px}
+ .planner-choice-heading{align-items:flex-start;gap:10px;padding:16px}
+ .planner-choice-heading h2{font-size:21px}
+ .planner-choice-heading .btn{font-size:12px;padding:8px}
+ .planner-choice-body{padding:16px}
+ .planner-edit-scope label{display:flex;margin-right:0}
+ .planner-candidate{align-items:stretch;flex-direction:column;gap:10px}
+ .planner-candidate-actions{justify-content:flex-end}
+ .planner-candidate-actions .btn{font-size:14px}
+}
+@media(min-width:721px) and (max-height:600px){
+ #plannerDialog{height:calc(100dvh - 16px);max-height:calc(100dvh - 16px)}
+ .planner-review-body{overflow:auto}
+ .planner-workspace{min-height:480px;flex:none}
+ .planner-plan-summary{overflow:visible}
+}
 .planner-card{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:16px 0;padding:18px 20px}
 .planner-card h3{margin:0 0 5px}
 .planner-card p{margin:0;color:var(--ink-soft);line-height:1.5}
@@ -1162,32 +1299,7 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 .profile-strip{padding:12px}
 .nutrition-meter .meter-heading{flex-wrap:wrap}}
 
-@media(min-width:721px) and (max-width:900px){.planner-overview{grid-template-columns:minmax(0,1fr)}}
-@media(max-width:720px){.planner-review-header{align-items:stretch;flex-direction:column;gap:14px;padding:20px 16px 16px}
-.planner-intro{padding-right:40px}
-.planner-intro h2{font-size:24px}
-.planner-actions{justify-content:stretch}
-.planner-actions>.btn,.planner-action-hint{flex:1;min-width:0}
-.planner-action-hint .btn{width:100%}
-.planner-actions .btn{font-size:14px;padding:10px}
-.planner-action-tooltip{left:0;right:auto}
-.planner-review-body{padding:16px 14px 20px}
-.planner-overview{grid-template-columns:minmax(0,1fr);gap:16px}
-.planner-profile-summary--recovery{grid-template-columns:repeat(2,minmax(0,1fr))}
-.planner-profile-card--recovery{grid-column:1/-1;min-height:0}
-.planner-cycle-meta{font-size:13px;gap:8px 12px}
-.planner-profile-card{padding:12px 10px}
-.planner-profile-card strong{font-size:15px}
-.planner-summary{gap:7px;margin:16px 0}
-.planner-summary>span{font-size:13px;padding:7px 9px}
-.planner-meal{grid-template-columns:1fr 96px;gap:7px}
-.planner-meal .planner-slot{grid-column:1/-1;font-size:11px;color:var(--muted)}
-.planner-meal select{grid-column:1}
-.planner-meal .planner-lock{grid-column:2;grid-row:2}
-.planner-meal small{grid-column:1/-1}
-.planner-meal .planner-recipe-preview{grid-column:1/-1;flex-direction:row;justify-content:space-between}
-.planner-card{align-items:flex-start;flex-direction:column}
-.planner-card .btn{width:100%;justify-content:center}}
+@media(max-width:720px){.planner-card{align-items:flex-start;flex-direction:column}.planner-card .btn{width:100%;justify-content:center}}
 
 @media(max-width:580px){.auth-shell{padding:15px}
 .auth-layout{gap:9px}
@@ -2417,52 +2529,9 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
 .recipe-preference small{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-top:6px}
 .recipe-preference-badge{display:inline-flex;align-self:flex-start;margin-top:5px;padding:3px 8px;background:var(--accent-tint);border-radius:6px;font-size:11px;color:var(--accent-dark)}
 .recipe-dialog-footer{gap:8px;flex-wrap:wrap}
-.planner-week-toolbar{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-top:22px}
-.planner-week-tabs{display:flex;gap:6px;flex-wrap:wrap}
-.planner-week-tabs .btn{min-height:44px;padding:8px 13px;justify-content:center}
-.planner-week-tabs [aria-pressed=true]{background:var(--accent);color:var(--white);border-color:var(--accent)}
-.planner-edit-scope{min-width:0;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:0}
-.planner-edit-scope legend{font-size:12px;font-weight:650;padding:0 4px}
-.planner-edit-scope label{display:inline-flex;align-items:center;gap:6px;min-height:36px;margin-right:10px;font-size:13px;cursor:pointer}
-.planner-edit-scope input{accent-color:var(--accent);width:17px;height:17px}
-.planner-edit-scope small{display:block;color:var(--muted);font-size:11px}
-.planner-change-status{margin:12px 0;color:var(--accent-dark);font-size:13px;line-height:1.4}
-.planner-change-status:empty{display:none}
-.planner-review-body .planner-day{padding:14px 16px;margin:12px 0}
-.planner-day-heading{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.planner-day-heading h3{margin:0;text-transform:capitalize}
-.planner-day-heading>span{font-size:11px;color:var(--muted);line-height:1.4}
-.planner-review-body .planner-meal{display:grid;grid-template-columns:100px minmax(0,1fr) 100px;gap:10px;padding:12px 0;align-items:center;border-top:1px solid var(--line)}
-.planner-meal-info{min-width:0;display:flex;flex-direction:column;align-items:flex-start}
-.planner-recipe-title{border:0;padding:3px 0;color:var(--accent-dark);font-size:15px;font-weight:650;text-align:left;background:none;line-height:1.4;overflow-wrap:anywhere;min-height:32px;text-decoration:underline;text-underline-offset:3px}
-.planner-meal-meta{font-size:12px;color:var(--muted);line-height:1.4}
-.planner-review-body .planner-lock{grid-column:3;grid-row:auto;min-height:44px;font-size:12px}
-.planner-lock[aria-pressed=true]{background:var(--accent-tint);border-color:var(--accent-line);color:var(--accent-dark)}
-.planner-choices{grid-column:2/-1;min-width:0;color:var(--ink-soft);font-size:13px}
-.planner-choices>summary{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:7px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;background:var(--white);font-weight:600;color:var(--ink)}
-.planner-choices>div{margin-top:10px;padding:14px;background:var(--surface-subtle);border-radius:12px}
-.planner-choices p{margin:0 0 10px}
-.planner-choices label{display:flex;flex-direction:column;gap:6px;margin:14px 0 8px;font-weight:600;line-height:1.4}
-.planner-review-body .planner-choices select{width:100%;min-height:44px;font-size:14px}
-.planner-choices small{display:block;line-height:1.5}
-.planner-suggestions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.planner-suggestion{display:flex;flex-direction:column;gap:5px;min-width:0}
-.planner-review-body .planner-suggestion .btn{white-space:normal;text-align:left;align-items:flex-start;flex-direction:column;min-height:44px;font-size:13px;line-height:1.4;overflow-wrap:anywhere}
-.planner-review-body .planner-suggestion>.btn:first-child{flex:1;background:var(--white)}
-.planner-meal-issue,.planner-meal-warning{margin:6px 0 0;color:var(--warning-ink);font-size:12px;line-height:1.5}
-.planner-meal--issue{background:var(--warning-surface)}
-.planner-profile-warning{flex-wrap:wrap}
 @media(max-width:850px){
  .profile-heading-tools{flex-wrap:wrap;gap:8px}
  .profile-heading-tools .profile-account-host{width:auto}
- .planner-review-header{align-items:flex-start;gap:12px;padding:20px 54px 16px 18px;flex-wrap:wrap}
- .planner-review-header h2{font-size:24px}
- .planner-actions{width:100%;justify-content:flex-start;flex-wrap:wrap}
- .planner-review-body{padding:16px 18px}
- .planner-week-toolbar{display:block}
- .planner-edit-scope{margin-top:12px}
- .planner-review-body .planner-meal{grid-template-columns:85px minmax(0,1fr) 90px}
- .planner-suggestions{grid-template-columns:1fr}
 }
 @media(max-width:650px){
  .profile-heading-tools{width:100%;justify-content:space-between}
@@ -2473,30 +2542,7 @@ html.auth-embedded .auth-foot-action{cursor:pointer}
  .planning-time-input input{font-size:16px}
  .recipe-preference-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
  .recipe-preference-options .btn{padding:7px 4px;font-size:12px;white-space:normal;gap:3px}
- .planner-review-body .planner-day{padding:12px}
- .planner-review-body .planner-meal{grid-template-columns:minmax(0,1fr) 92px;gap:7px}
- .planner-meal .planner-slot{grid-column:1/-1;font-size:12px;font-weight:650}
- .planner-meal-info{grid-column:1}
- .planner-review-body .planner-lock{grid-column:2;grid-row:auto}
- .planner-choices{grid-column:1/-1}
- .planner-recipe-title{font-size:14px;min-height:44px}
- .planner-review-body .planner-choices select{font-size:16px}
- .planner-edit-scope label{min-height:44px}
  .marked-recipes li{align-items:flex-start;flex-wrap:wrap}
-}
-
-.planner-tools{display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin:12px 0}
-.planner-tools>.btn{min-height:44px}
-.planner-tools .planner-help summary{min-height:44px}
-.planner-tools .planner-help[open]{flex:1 0 100%}
-@media(max-width:650px){
- .planner-tools>.btn,.planner-tools .planner-help summary{font-size:12px;padding:7px 9px}
- .planner-review-body .planner-quick-tip{margin:10px 0;font-size:13px}
- .planner-review-body .planner-summary{margin:10px 0}
- .planner-review-body .planner-summary>span{padding:6px 9px;font-size:12px}
- .planner-week-toolbar{margin-top:12px}
- .planner-week-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
- .planner-week-tabs .btn{padding:7px 5px;font-size:12px;white-space:normal;line-height:1.3}
 }
 /* Guided first use: shared controls, natural scrolling, no application navigation. */
 .setup-shell{min-height:100dvh;background:var(--bg);color:var(--ink)}
