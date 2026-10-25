@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "sourceCatalogVersion": "0.10.0",
+  "recipes": {
+    "hamburguesa_pavo": {
+      "id": "hamburguesa_pavo",
+      "name": "Bocadillo de pavo con patatas",
+      "type": "comida",
+      "time": 25,
+      "ingredients": [
+        {
+          "id": "turkey",
+          "rest": 180.0
+        },
+        {
+          "id": "potato",
+          "rest": 230.0
+        },
+        {
+          "id": "tomato",
+          "rest": 130.0
+        },
+        {
+          "id": "lettuce",
+          "rest": 100.0
+        },
+        {
+          "id": "bread",
+          "rest": 2.0
+        },
+        {
+          "id": "oliveoil",
+          "rest": 10.0
+        }
+      ],
+      "steps": [
+        "Para esta versión, utiliza los filetes de pavo fresco indicados en los ingredientes como relleno del pan.",
+        "Precocina las patatas cortadas y termina en freidora de aire.",
+        "Cocina los filetes de pavo completamente en sartén con todo el aceite de oliva indicado en los ingredientes.",
+        "Monta con pan, tomate y lechuga y acompaña con patatas."
+      ],
+      "tip": "Esta versión lleva filetes de pavo fresco. Una versión con pavo picado necesita su propia referencia nutricional; no se considera equivalente automáticamente.",
+      "intro": ""
+    }
+  }
+}

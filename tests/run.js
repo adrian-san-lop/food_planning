@@ -29,3 +29,4 @@ import './local-state.test.js';
 import './state-normalization.test.js';
 import './cloud-state-mapper.test.js';
 import './recipe-proposal-views.test.js';
+import './account-authority.test.js';

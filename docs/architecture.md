@@ -8,6 +8,8 @@ Estado documental actualizado: 23 de octubre de 2026. El [paquete 7](planner/pac
 
 ## Arquitectura actual
 
+Evolución aceptada del 25/10/2026: el contrato de cuenta 2 está implementado y probado localmente; su migración alojada está pendiente. [ADR-0051](decisions/0051-server-authoritative-account-state.md) y [activación](backend/account-contract.md) son la referencia vigente para lectura canónica, acciones acotadas, snapshots de recetas/raciones y memoria de sesión. La evidencia alojada de paquetes 1–7 que figura arriba es anterior a esta evolución.
+
 ```text
 Navegador
   └── GitHub Pages / HTML estático
@@ -47,7 +49,9 @@ Navegador
         │     ├── persistence/planning-state.js (campos tipados y mapeo de borradores/preferencias)
         │     ├── persistence/cloud-state-mapper.js (mapeo estado/snapshot relacional)
         │     ├── persistence/recipe-proposals.js (envío, consulta, edición y limpieza del buzón)
-        │     └── persistence/supabase-transport.js (lecturas y RPC)
+        │     └── persistence/supabase-transport.js (lector canónico y RPC)
+        │     ├── persistence/account-actions.js (parches acotados desde la base de sesión)
+        │     ├── domain/plan-details.js (snapshots portables y raciones/objetivos guardados)
         └── data/*.json + esquemas JSON
               └── carga desde el módulo de catálogos
 
@@ -73,13 +77,13 @@ Actualización del 15 de octubre de 2026: el planificador interno gestiona la re
 - Los RPC devuelven conflictos de revisión como `PT409` con mensaje `SYNC_CONFLICT`. La migración `20261013120000_menuki_sync_conflict_http_409.sql` sustituye el antiguo `40001`, que PostgREST 14 interpretaba como fallo transitorio y reintentaba, generando errores repetidos.
 - Las comidas de fechas futuras se muestran como planificadas y no se pueden registrar como consumidas antes de que llegue ese día.
 - `data/foods.json` y `data/recipes.json` son la fuente canónica de los catálogos genéricos. `js/data/catalogs.js` valida esos ficheros y deriva las estructuras en memoria que necesita la interfaz.
-- Para datos personales, Supabase es la fuente canónica remota de una cuenta y `localStorage` es su copia de trabajo en el navegador. Los cambios se sincronizan automáticamente; el indicador muestra si están guardados, pendientes o si hubo un error. La acción de reintento solo aparece tras un error. Cambiar de dispositivo no muestra una elección de copias.
+- Para datos personales, Supabase es la fuente canónica de una cuenta. En el contrato 2 el navegador conserva estado/base en memoria de sesión; la copia de `localStorage` anterior queda para transición y compatibilidad. Los cambios se sincronizan automáticamente; el indicador muestra si están guardados, pendientes o si hubo un error. La acción de reintento solo aparece tras un error. Cambiar de dispositivo no muestra una elección de copias.
 - Los alimentos separan medida de receta (`recipeUnit`) y medida de inventario (`unit`). Las raciones de fruta entera usan piezas en receta y despensa; las verduras cocinadas o troceadas siguen en gramos en receta y piezas en despensa. El pan de molde se expresa en rebanadas en receta y en gramos en despensa/compra. El peso aproximado por pieza o rebanada permite convertir y calcular nutrición.
 - Las sesiones se registran después de realizarse. Su energía neta estimada se aplica solo a la fecha de la sesión y a comidas aún pendientes; no cambia días futuros ni cantidades ya registradas.
 - Supabase conserva identidad en `auth.users` y los datos personales en sus tablas relacionales con RLS. El perfil se guarda en `profiles`; las credenciales no se copian a tablas públicas.
 - La migración `20261011120000_menuki_cloud_sync.sql` añade la operación transaccional e idempotente de sincronización, control de revisión para evitar sobrescribir cambios recientes y metadatos de ciclos/sesiones. La migración `20261011150000_profile_confirmation.sql` añade la confirmación del perfil y actualiza la sincronización para guardarla sin borrar una confirmación al recibir clientes antiguos. No se almacena el estado completo como JSON en una columna.
 - El reinicio total requiere una confirmación específica y usa reset_menuki_state, que reemplaza las filas propias en la misma transacción. Si la revisión cambia antes de ejecutar la acción confirmada, el cliente actualiza la revisión y reintenta; el reinicio queda fuera de la conciliación habitual.
-- El primer acceso de una cuenta sin inicializar importa su estado local una sola vez. Los dispositivos siguientes leen el estado remoto. No hay cola offline; la app requiere conexión para sincronizar y muestra cuándo conserva cambios locales pendientes.
+- En el contrato 2 una cuenta nueva inicia el recorrido guiado; una cuenta inicializada lee Supabase. Solo se concilian una vez cambios anteriores con base conocida. En el contrato anterior, el primer acceso de una cuenta sin inicializar importa su estado local una sola vez. Los dispositivos siguientes leen el estado remoto. No hay cola offline; la app requiere conexión para sincronizar y muestra cuándo conserva cambios locales pendientes.
 - Los snapshots de ingredientes mantienen retención indefinida y no se purgan automáticamente. Vigilar el crecimiento de la base al añadir usuarios, con revisión alrededor de 350 MB.
 
 ## Sincronización de datos personales
@@ -103,11 +107,11 @@ Los catálogos comunes se versionan junto al código. El estado personal (perfil
 | Alimentos, nutrición aproximada y formato de compra | `data/foods.json`, descrito por `foods.schema.json` | Modelo en memoria derivado al cargar el catálogo |
 | Recetas e ingredientes | `data/recipes.json`, descrito por `recipes.schema.json` | Modelo en memoria derivado con referencias a IDs estables de alimentos |
 | Plantilla fija heredada | IDs de receta en `js/main.js` | Compatibilidad con cuentas existentes; las cuentas nuevas generan el primer ciclo con el planificador común |
-| Ciclos y comidas personales | `plan_cycles` y `planned_meals` en Supabase | `localStorage` mantiene la copia de trabajo del navegador |
-| Perfil, peso, actividad, comidas realizadas e inventario | Tablas relacionales de Supabase vinculadas por `user_id` | `localStorage` mantiene la copia de trabajo del navegador |
-| Preparación y compra | `prep_tasks`, `shopping_sessions` y `shopping_session_items` en Supabase | `localStorage` mantiene la copia de trabajo del navegador |
+| Ciclos y comidas personales | `plan_cycles` y `planned_meals` en Supabase | Memoria de sesión en contrato 2; copia local solo para transición/contrato anterior |
+| Perfil, peso, actividad, comidas realizadas e inventario | Tablas relacionales de Supabase vinculadas por `user_id` | Memoria de sesión en contrato 2; copia local solo para transición/contrato anterior |
+| Preparación y compra | `prep_tasks`, `shopping_sessions` y `shopping_session_items` en Supabase | Memoria de sesión en contrato 2; copia local solo para transición/contrato anterior |
 | Ideas de recetas enviadas | `recipe_proposals` y sus tablas de ingredientes/pasos en Supabase; novena migración aplicada según el propietario | Texto de propuesta; el admin descarga JSON v1 para revisión, no se mezcla con el estado personal ni se publica automáticamente |
-| Gustos/restricciones | No hay sistema general implementado | Preferencias por persona fuera del catálogo; modelo pendiente |
+| Preferencias | Recetas favoritas/no proponer y límites de tiempo en Supabase | No hay un sistema general de alergias/exclusiones de ingredientes |
 
 No colocar datos personales o copias de seguridad en GitHub. Aunque un repositorio sea privado, GitHub Pages publica el sitio. Las tablas personales usan RLS; la clave pública del proyecto puede aparecer en el navegador, pero una clave `service_role` o cualquier otro secreto nunca debe incluirse ahí.
 
@@ -133,7 +137,7 @@ Las tablas requieren Auth y aplican RLS. La política aceptada en ADR-0009 es co
 
 ## Migración y recuperación
 
-- Supabase sincroniza la cuenta entre dispositivos cuando hay conexión. Al detectar una revisión nueva, el cliente carga el estado remoto y combina cualquier cambio local pendiente. Si una petición falla, la copia local se conserva y la interfaz permite reintentar. No hay cola offline.
+- Supabase sincroniza la cuenta entre dispositivos cuando hay conexión. Al detectar una revisión nueva, el cliente carga el estado remoto y combina cualquier cambio pendiente. En el contrato 2, si una petición falla el borrador permanece en memoria de la sesión y la interfaz permite reintentar; cerrar o recargar puede perderlo. No hay cola offline.
 - Mantener la lectura y migración de estados locales v5-v11 y la ampliación v12, que es el estado actual. No se ofrecen importación ni restauración personal desde archivo; no se añaden migraciones v1-v4. Tratar el stock v5 como saldo de apertura y no sumar otra vez sobre él compras/comidas que ya estén reflejadas. Al actualizar v5, convertir las cantidades antiguas en gramos a unidades de inventario; al actualizar v6/v7, conservar movimientos y stock, y convertir los snapshots históricos de consumo a unidades de receta. Al migrar desde v8, usar transitoriamente los faltantes antiguos solo para calcular el importe realmente descontado y regularizar saldos negativos sin borrar movimientos; el estado resultante no conserva esos faltantes.
 - La app no permite importar ni restaurar archivos JSON de estado personal. Los catálogos JSON del repositorio contienen datos genéricos y no deben incluir datos personales.
 

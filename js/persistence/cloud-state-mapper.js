@@ -1,3 +1,4 @@
+import { materializePlan, detailsFromRows } from '../domain/plan-details.js?v=20261025-account-contract';
 import { planningRows, planningStateFromRows } from './planning-state.js?v=20261023-planning-persistence';
 import { createProfileDraft } from '../domain/profile.js?v=20261022-planner-foundations';
 
@@ -7,7 +8,7 @@ export function createCloudStateMapper({
   archivedCyclesByUser, addDays, dateFromISO, dateDiff, isoDate, today,
   validMenuSnapshot, cloneMenus, fixedMenus, isUuid, emptyState, cleanState, rebuildStock,
   defaultProfile, sanitizeProfile, foodStockUnit, foodRecipeUnit,
-  storedRecipeToCurrentAmount, commercialPack,
+  storedRecipeToCurrentAmount, commercialPack, getCatalog, installPlanDetails,
 }) {
   const cloudUuidCache = new Map();
   function cloudUuid(kind,key){
@@ -22,7 +23,7 @@ export function createCloudStateMapper({
 }
   function planDate(start,offset){return isoDate(addDays(dateFromISO(start),offset))}
 function planLockAt(locked,week,day,slot){return !!locked?.[week]?.[day]?.[slot]}
-async function buildCloudSnapshot(source){
+async function buildCloudSnapshot(source,{materialize=true}={}){
  const definitions=[];
  const addCycle=(kind,key,start,menus,version,options={})=>{
   // The fixed menu intentionally interchanges the two snack slots; accept that
@@ -31,11 +32,12 @@ async function buildCloudSnapshot(source){
   definitions.push({kind,key,start,menus:cloneMenus(menus),version:version||getCatalogVersion(),...options});
  };
  const activeMenus=source.activeMenus?cloneMenus(source.activeMenus):cloneMenus(fixedMenus);
- if(!source.noActiveCycle)addCycle('active','current',source.start,activeMenus,source.activeMenuCatalogVersion||getCatalogVersion(),{cycleId:isUuid(source.activeCycleId)?source.activeCycleId:null,prep:source.prep||{},done:source.done||{},reversedDone:source.reversedDone||{},generatedAt:source.activeMenuGeneratedAt||null,confirmedAt:source.activeMenuConfirmedAt||null,recoveryFocus:!!source.activeMenuRecoveryFocus});
- for(const [i,a] of (source.archives||[]).entries())if(a&&dateFromISO(a.start)&&validMenuSnapshot(a.menus,true))addCycle('archived','archive:'+a.start+':'+(a.archivedAt||i),a.start,a.menus,a.catalogVersion||getCatalogVersion(),{cycleId:isUuid(a.cycleId)?a.cycleId:null,prep:a.prep||{},done:a.done||{},reversedDone:a.reversedDone||{},archivedAt:a.archivedAt||new Date(a.start+'T12:00:00Z').toISOString(),generatedAt:a.generatedAt||null,confirmedAt:a.confirmedAt||null,recoveryFocus:!!a.recoveryFocus});
- if(source.nextMenu)addCycle('scheduled','next:'+source.nextMenu.start+':'+(source.nextMenu.generatedAt||''),source.nextMenu.start,source.nextMenu.menus,source.nextMenu.catalogVersion,{locked:source.nextMenu.locked,generatedAt:source.nextMenu.generatedAt||null,confirmedAt:source.nextMenu.confirmedAt||null,recoveryFocus:!!source.nextMenu.recoveryFocus});
- if(source.plannerDraft)addCycle('draft','draft:'+source.plannerDraft.start+':'+(source.plannerDraft.generatedAt||''),source.plannerDraft.start,source.plannerDraft.menus,source.plannerDraft.catalogVersion,{locked:source.plannerDraft.locked,generatedAt:source.plannerDraft.generatedAt||null,confirmedAt:source.plannerDraft.confirmedAt||null,recoveryFocus:!!source.plannerDraft.recoveryFocus});
+ if(!source.noActiveCycle)addCycle('active','current',source.start,activeMenus,source.activeMenuCatalogVersion||getCatalogVersion(),{details:source.activePlanDetails,cycleId:isUuid(source.activeCycleId)?source.activeCycleId:null,prep:source.prep||{},done:source.done||{},reversedDone:source.reversedDone||{},generatedAt:source.activeMenuGeneratedAt||null,confirmedAt:source.activeMenuConfirmedAt||null,recoveryFocus:!!source.activeMenuRecoveryFocus});
+ for(const [i,a] of (source.archives||[]).entries())if(a&&dateFromISO(a.start)&&validMenuSnapshot(a.menus,true))addCycle('archived','archive:'+a.start+':'+(a.archivedAt||i),a.start,a.menus,a.catalogVersion||getCatalogVersion(),{details:a.details,cycleId:isUuid(a.cycleId)?a.cycleId:null,prep:a.prep||{},done:a.done||{},reversedDone:a.reversedDone||{},archivedAt:a.archivedAt||new Date(a.start+'T12:00:00Z').toISOString(),generatedAt:a.generatedAt||null,confirmedAt:a.confirmedAt||null,recoveryFocus:!!a.recoveryFocus});
+ if(source.nextMenu)addCycle('scheduled','next:'+source.nextMenu.start+':'+(source.nextMenu.generatedAt||''),source.nextMenu.start,source.nextMenu.menus,source.nextMenu.catalogVersion,{details:source.nextMenu.details,locked:source.nextMenu.locked,generatedAt:source.nextMenu.generatedAt||null,confirmedAt:source.nextMenu.confirmedAt||null,recoveryFocus:!!source.nextMenu.recoveryFocus});
+ if(source.plannerDraft)addCycle('draft','draft:'+source.plannerDraft.start+':'+(source.plannerDraft.generatedAt||''),source.plannerDraft.start,source.plannerDraft.menus,source.plannerDraft.catalogVersion,{details:source.plannerDraft.details,locked:source.plannerDraft.locked,generatedAt:source.plannerDraft.generatedAt||null,confirmedAt:source.plannerDraft.confirmedAt||null,recoveryFocus:!!source.plannerDraft.recoveryFocus});
 
+ const planRecipes=[],planIngredients=[],mealPortions=[],dayTargets=[];
  const cycles=[],plannedMeals=[],prepTasks=[],mealByKey=new Map(),cycleByKey=new Map();
  const usedCycleIds=new Set();
  for(const [definitionIndex,def] of definitions.entries()){
@@ -51,10 +53,29 @@ async function buildCloudSnapshot(source){
    const key=mealDate+'#'+slot,id=await cloudUuid('planned-meal',cycleId+':'+key),row={id,cycle_id:cycleId,meal_date:mealDate,slot,recipe_id:recipeId,is_locked:planLockAt(def.locked,week,day,slot)};
    plannedMeals.push(row);mealByKey.set(def.key+'|'+key,row);
   }
+  const details=materialize&&def.kind!=='archived'&&getCatalog&&source.profileConfirmed?materializePlan({start:def.start,menus:def.menus,profile:source.profile,weights:source.weights,activities:source.activitySessions,done:def.done,previous:def.details,catalog:getCatalog(),asOf:isoDate(today())}):def.details;
+  if(details){
+   if(def.kind==='active')source.activePlanDetails=details;
+   else if(def.kind==='scheduled')source.nextMenu.details=details;
+   else if(def.kind==='draft')source.plannerDraft.details=details;
+   for(const recipe of Object.values(details.recipes)){
+    planRecipes.push({cycle_id:cycleId,recipe_id:recipe.id,name:recipe.name,meal_type:recipe.type,time_minutes:recipe.time,description:recipe.intro||'',tip:recipe.tip||'',steps:recipe.steps});
+    recipe.ingredients.forEach((ingredient,index)=>planIngredients.push({cycle_id:cycleId,recipe_id:recipe.id,ingredient_index:index,food_id:ingredient.id,base_quantity:ingredient.rest,recipe_unit:details.foods[ingredient.id][1],food_snapshot:{food:details.foods[ingredient.id],meta:details.foodMeta[ingredient.id],purchase:details.catalog[ingredient.id]}}));
+   }
+   for(const [key,usage] of Object.entries(details.portions)){const meal=mealByKey.get(def.key+'|'+key);if(meal)for(const [foodId,quantity] of Object.entries(usage))mealPortions.push({planned_meal_id:meal.id,food_id:foodId,quantity})}
+   for(const [date,target] of Object.entries(details.targets))dayTargets.push({cycle_id:cycleId,meal_date:date,event_signature:details.events?.[date]||'',calculation_version:details.versions?.[date]||details.calculationVersion,input_signature:details.signatures[date],target});
+  }
   for(const [taskKey,isCompleted] of Object.entries(def.prep||{})){
    const split=taskKey.indexOf('#'),weekIndex=Number(taskKey.slice(0,split)),task=split>=0?taskKey.slice(split+1):taskKey;
    if(Number.isInteger(weekIndex)&&weekIndex>=0&&weekIndex<3&&task)prepTasks.push({cycle_id:cycleId,week_index:weekIndex,task_key:task,is_completed:!!isCompleted});
   }
+ }
+ // Preserve remote rows that this client cannot render. They are not deletion instructions.
+ for(const raw of source.unavailablePlanRows?.cycles||[]){
+  if(cycles.some(c=>c.id===raw.id))continue;
+  const replacing=cycles.some(c=>c.status===raw.status&&c.id!==raw.id);
+  cycles.push({...raw,status:replacing?(raw.status==='active'?'archived':'superseded'):raw.status});
+  plannedMeals.push(...(source.unavailablePlanRows.plannedMeals||[]).filter(row=>row.cycle_id===raw.id));
  }
  const findMeal=(key)=>{for(const def of definitions){const row=mealByKey.get(def.key+'|'+key);if(row)return {def,row}}return null};
  const completionByOperation=new Map();
@@ -119,11 +140,13 @@ async function buildCloudSnapshot(source){
   const pack=commercialPack(foodId),size=Number(choice?.size)||pack.size,count=Math.max(0,Number(choice?.count)||0);
   shoppingItems.push({id:await cloudUuid('shopping-item',key),item_key:key,food_id:foodId,item_kind:'planned',is_checked:!!choice?.checked,package_count:count,package_size:size,unit:foodStockUnit(foodId)});
  }
- for(const [index,extra] of (source.cartExtras||[]).entries())if(getFood()[extra.id]&&Number(extra.size)>0){const key='extra:'+(extra.scope&&extra.scope!=='current'?extra.scope+':':'')+extra.id+':'+index;shoppingItems.push({id:await cloudUuid('shopping-item',key),item_key:key,food_id:extra.id,item_kind:'extra',is_checked:false,package_count:Math.max(0,Number(extra.count)||0),package_size:Number(extra.size),unit:foodStockUnit(extra.id)})}
+ for(const [index,extra] of (source.cartExtras||[]).entries())if(getFood()[extra.id]&&Number(extra.size)>0){const key=extra.clientKey||'extra:'+(extra.scope&&extra.scope!=='current'?extra.scope+':':'')+extra.id+':'+index;shoppingItems.push({id:isUuid(extra.clientId)?extra.clientId:await cloudUuid('shopping-item',key),item_key:key,food_id:extra.id,item_kind:'extra',is_checked:false,package_count:Math.max(0,Number(extra.count)||0),package_size:Number(extra.size),unit:foodStockUnit(extra.id)})}
  const profile=source.setupMode==='guided'&&source.profileConfirmed!==true?null:source.profile||defaultProfile(),todayISO=isoDate(today()),shoppingStart=source.start||todayISO;
- return {...planningRows(source),profile:profile?{sex:profile.sex,age:profile.age,height_cm:profile.height,reference_weight_kg:profile.weight,activity_level:profile.activity,goal:profile.goal,injury_recovery:profile.injury,auto_portions:profile.autoPortions,follow_weight:profile.followWeight,manual_rmr_kcal:profile.manualRmr,profile_confirmed:source.profileConfirmed===true}:null,cycles,planned_meals:plannedMeals,prep_tasks:prepTasks,completions,movements,weights,deleted_weight_dates:source.deletedWeightDates||[],activity_sessions:activitySessions,deleted_activity_ids:source.deletedActivitySessionIds||[],legacy_training_dates:Object.keys(source.legacyStrengthDays||{}).filter(dateFromISO),shopping:{id:await cloudUuid('shopping-session','shared-cart'),starts_on:shoppingStart,ends_on:planDate(shoppingStart,20),items:shoppingItems},last_backup_at:source.lastBackupAt||null};
+ return {plan_recipes:planRecipes,plan_ingredients:planIngredients,meal_portions:mealPortions,day_targets:dayTargets,...planningRows(source),profile:profile?{sex:profile.sex,age:profile.age,height_cm:profile.height,reference_weight_kg:profile.weight,activity_level:profile.activity,goal:profile.goal,injury_recovery:profile.injury,auto_portions:profile.autoPortions,follow_weight:profile.followWeight,manual_rmr_kcal:profile.manualRmr,profile_confirmed:source.profileConfirmed===true}:null,cycles,planned_meals:plannedMeals,prep_tasks:prepTasks,completions,movements,weights,deleted_weight_dates:source.deletedWeightDates||[],activity_sessions:activitySessions,deleted_activity_ids:source.deletedActivitySessionIds||[],legacy_training_dates:Object.keys(source.legacyStrengthDays||{}).filter(dateFromISO),shopping:{id:await cloudUuid('shopping-session','shared-cart'),starts_on:shoppingStart,ends_on:planDate(shoppingStart,20),items:shoppingItems},last_backup_at:source.lastBackupAt||null};
 }
   function stateFromCloud(data){
+ const detailsByCycle=new Map((data.cycles||[]).map(c=>[c.id,detailsFromRows(data,c.id)]));
+ installPlanDetails?.([...detailsByCycle.values()].filter(Boolean),detailsByCycle.get(data.cycles?.find(c=>c.status==='active')?.id));
  const planning=data.planningSupported?planningStateFromRows(data):planningStateFromRows({});
  if(!data.profile&&!(data.planningSupported&&planning.setupMode==='guided'))throw Error('La cuenta tiene sincronización iniciada pero no contiene su perfil. No he sustituido los datos de este navegador.');
  const s=emptyState(),mealRowsByCycle=new Map(),cycleInfo=new Map(),menuOf=new Map(),locksOf=new Map(),prepOf=new Map(),usableCycleIds=new Set(),cycleIssues=new Map();
@@ -143,7 +166,7 @@ async function buildCloudSnapshot(source){
    const ids=menus.flat(2),filled=ids.filter(id=>typeof id==='string').length;
    const missingRecipeIds=[...new Set(ids.filter(id=>typeof id==='string'&&!getRecipes()[id]))].sort();
    let reason=null;
-   if(invalidPosition)reason='incompatible';
+   if(invalidPosition||((data.planRecipes||[]).some(row=>row.cycle_id===cycle.id)&&!detailsByCycle.get(cycle.id)))reason='incompatible';
    else if(filled<105)reason='incomplete';
    else if(missingRecipeIds.length)reason='missing_catalog_recipe';
    else if(!validMenuSnapshot(menus,true))reason='incompatible';
@@ -170,23 +193,24 @@ async function buildCloudSnapshot(source){
  Object.assign(s,planning);
  s.profile=sProfile?(planning.setupMode==='guided'?createProfileDraft:sanitizeProfile)({sex:sProfile.sex,age:sProfile.age,height:sProfile.height_cm,weight:sProfile.reference_weight_kg,activity:sProfile.activity_level,goal:sProfile.goal,injury:sProfile.injury_recovery,autoPortions:sProfile.auto_portions,followWeight:sProfile.follow_weight,manualRmr:sProfile.manual_rmr_kcal}):null;
  s.profileConfirmed=sProfile?.profile_confirmed===true;
- if(active&&usableCycleIds.has(active.id)){s.noActiveCycle=false;s.activeCycleId=active.id;s.start=active.start_date;s.activeMenus=menuOf.get(active.id);s.activeMenuCatalogVersion=active.catalog_version;s.activeMenuGeneratedAt=active.generated_at;s.activeMenuConfirmedAt=active.confirmed_at;s.activeMenuRecoveryFocus=!!active.recovery_focus;s.done=doneByCycle.get(active.id)||{};s.reversedDone=reversedDoneByCycle.get(active.id)||{};s.prep=prepOf.get(active.id)||{}}
- else{s.noActiveCycle=true;s.activeCycleId=null;s.start=dateFromISO(active?.start_date)?active.start_date:isoDate(today());s.activeMenus=null;s.activeMenuCatalogVersion=null;s.activeMenuGeneratedAt=null;s.activeMenuConfirmedAt=null;s.activeMenuRecoveryFocus=false;s.done={};s.reversedDone={};s.prep={}}
+ if(active&&usableCycleIds.has(active.id)){s.noActiveCycle=false;s.activeCycleId=active.id;s.activePlanDetails=detailsByCycle.get(active.id);s.start=active.start_date;s.activeMenus=menuOf.get(active.id);s.activeMenuCatalogVersion=active.catalog_version;s.activeMenuGeneratedAt=active.generated_at;s.activeMenuConfirmedAt=active.confirmed_at;s.activeMenuRecoveryFocus=!!active.recovery_focus;s.done=doneByCycle.get(active.id)||{};s.reversedDone=reversedDoneByCycle.get(active.id)||{};s.prep=prepOf.get(active.id)||{}}
+ else{s.noActiveCycle=true;s.activeCycleId=null;s.activePlanDetails=null;s.start=dateFromISO(active?.start_date)?active.start_date:isoDate(today());s.activeMenus=null;s.activeMenuCatalogVersion=null;s.activeMenuGeneratedAt=null;s.activeMenuConfirmedAt=null;s.activeMenuRecoveryFocus=false;s.done={};s.reversedDone={};s.prep={}}
  s.cloudPlanIssue=(active&&!usableCycleIds.has(active.id)?cycleIssues.get(active.id):null)
   ||['scheduled','draft'].map(status=>data.cycles.find(c=>c.status===status&&!usableCycleIds.has(c.id))).filter(Boolean).map(c=>cycleIssues.get(c.id)).find(Boolean)
   ||null;
+ s.unavailablePlanRows={cycles:data.cycles.filter(c=>['active','scheduled','draft'].includes(c.status)&&!usableCycleIds.has(c.id)),plannedMeals:data.plannedMeals.filter(row=>cycleIssues.has(row.cycle_id))};
  s.movements=allMovements;s.stock={};rebuildStock(s);
  s.purchases=allMovements.filter(x=>x.kind==='purchase'&&x.quantity>0).slice(-2500).map(x=>({id:x.foodId,amount:x.quantity,date:x.createdAt,operationId:x.operationId}));
  s.weights=data.weights.map(x=>({date:x.measured_on,kg:Number(x.weight_kg)})).sort((a,b)=>a.date.localeCompare(b.date));
  s.activitySessions=data.activities.slice().sort((a,b)=>String(a.session_date).localeCompare(String(b.session_date))||String(a.created_at).localeCompare(String(b.created_at))).slice(-2000).map(x=>({id:x.client_id||x.id,date:x.session_date,activityId:x.activity_code,met:Number(x.met_value),durationMinutes:Number(x.duration_minutes),createdAt:x.created_at}));
  s.legacyStrengthDays=Object.fromEntries(data.training.map(x=>[x.training_date,true]));
- const allArchived=data.cycles.filter(x=>x.status==='archived').sort((a,b)=>String(a.archived_at||a.created_at).localeCompare(String(b.archived_at||b.created_at))),toArchiveState=c=>({cycleId:c.id,start:c.start_date,done:doneByCycle.get(c.id)||{},reversedDone:reversedDoneByCycle.get(c.id)||{},legacyStrengthDays:{},prep:prepOf.get(c.id)||{},menus:menuOf.get(c.id),catalogVersion:c.catalog_version,archivedAt:c.archived_at||c.created_at,generatedAt:c.generated_at,confirmedAt:c.confirmed_at,recoveryFocus:!!c.recovery_focus});
+ const allArchived=data.cycles.filter(x=>x.status==='archived').sort((a,b)=>String(a.archived_at||a.created_at).localeCompare(String(b.archived_at||b.created_at))),toArchiveState=c=>({details:detailsByCycle.get(c.id),cycleId:c.id,start:c.start_date,done:doneByCycle.get(c.id)||{},reversedDone:reversedDoneByCycle.get(c.id)||{},legacyStrengthDays:{},prep:prepOf.get(c.id)||{},menus:menuOf.get(c.id),catalogVersion:c.catalog_version,archivedAt:c.archived_at||c.created_at,generatedAt:c.generated_at,confirmedAt:c.confirmed_at,recoveryFocus:!!c.recovery_focus});
  const archiveCache=new Map();for(const cycle of allArchived){const cached=toArchiveState(cycle);if(isUuid(cycle.id)&&validMenuSnapshot(cached.menus,true))archiveCache.set(cycle.id,cached)}if(getUserId())archivedCyclesByUser.set(getUserId(),archiveCache);
  const archived=allArchived.slice(-6);s.archives=archived.map(toArchiveState);
- const toPlan=c=>c&&usableCycleIds.has(c.id)?({start:c.start_date,menus:menuOf.get(c.id),locked:locksOf.get(c.id),catalogVersion:c.catalog_version,generatedAt:c.generated_at,confirmedAt:c.confirmed_at,recoveryFocus:!!c.recovery_focus}):null;
+ const toPlan=c=>c&&usableCycleIds.has(c.id)?({details:detailsByCycle.get(c.id),start:c.start_date,menus:menuOf.get(c.id),locked:locksOf.get(c.id),catalogVersion:c.catalog_version,generatedAt:c.generated_at,confirmedAt:c.confirmed_at,recoveryFocus:!!c.recovery_focus}):null;
  s.nextMenu=toPlan(data.cycles.find(x=>x.status==='scheduled'));s.plannerDraft=toPlan(data.cycles.find(x=>x.status==='draft'));
  const shopping=data.shoppingSessions.find(x=>x.status==='open');
- if(shopping){for(const item of data.shoppingItems.filter(x=>x.session_id===shopping.id)){if(item.item_kind==='planned')s.cart[item.item_key]={count:Number(item.package_count),size:Number(item.package_size),checked:!!item.is_checked};else{const parts=String(item.item_key||'').split(':'),scope=parts.length===4?parts[1]:'current';s.cartExtras.push({id:item.food_id,count:Number(item.package_count),size:Number(item.package_size),...(scope==='current'?{}:{scope})})}}}
+ if(shopping){for(const item of data.shoppingItems.filter(x=>x.session_id===shopping.id)){if(item.item_kind==='planned')s.cart[item.item_key]={count:Number(item.package_count),size:Number(item.package_size),checked:!!item.is_checked};else{const parts=String(item.item_key||'').split(':'),scope=parts.length===4?parts[1]:'current';s.cartExtras.push({clientKey:item.item_key,clientId:item.id,id:item.food_id,count:Number(item.package_count),size:Number(item.package_size),...(scope==='current'?{}:{scope})})}}}
  s.lastBackupAt=data.settings?.last_backup_at||null;s.deletedWeightDates=[];s.deletedActivitySessionIds=[];
  const cleaned=cleanState(s);if(!cleaned)throw Error('Los datos recuperados de Supabase no pasan las validaciones locales. No he sustituido los datos de este navegador.');return cleaned;
 }

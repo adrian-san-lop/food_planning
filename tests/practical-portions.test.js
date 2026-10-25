@@ -105,7 +105,7 @@ function app(stock) {
     portionsForRecipes: (recipes, activity = 0, current = state.profile, weight, fixed) => nutrition.portionsForRecipes(recipes, activity, current, weight, fixed),
     recipeToStockAmount: units.recipeToStockAmount, consumeAvailableStock, roundAmount,
     applyMovement: ledger.applyMovement, newOperationId: () => `meal:${++operation}`,
-    save: () => {}, showToast: () => {}, plannedDays: () => state.noActiveCycle ? [] : [dateFromISO(state.start)],
+    save: () => {}, afterCloudSave:()=>{},showToast: () => {}, plannedDays: () => state.noActiveCycle ? [] : [dateFromISO(state.start)],
     dateFromISO, dateDiff, isoDate,
     shoppingCycle: () => ({ kind: 'current', start: state.start, menus }),
   });

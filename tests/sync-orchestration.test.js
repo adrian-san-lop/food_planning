@@ -9,7 +9,7 @@ const refreshSource=main.slice(main.indexOf('async function refreshCloudState(')
 function harness() {
   const calls={render:0,schedule:0,saved:0,accepted:0,errors:0,metadata:0};
   const context=vm.createContext({state:{profile:null,noActiveCycle:true,resetCloudPending:false,deletedWeightDates:[],deletedActivitySessionIds:[]},
-    currentUserId:'user-a',authSessionUserId:'user-a',supabaseClient:{},cloudReady:true,cloudRevision:0,
+    accountStateContract:1,pendingSaveFeedback:null,currentUserId:'user-a',authSessionUserId:'user-a',supabaseClient:{},cloudReady:true,cloudRevision:0,
     cloudSyncInFlight:false,cloudSyncPending:false,cloudSyncTimer:null,cloudSyncLastError:null,
     clearTimeout(){},cloudStatus(){},cloudSyncedStatus(){calls.accepted++},cloudErrorForUser:e=>e.message,
     readCloudMeta:()=>({}),stateFingerprint:async value=>JSON.stringify(value),

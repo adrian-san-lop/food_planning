@@ -4,6 +4,8 @@
 - **Estado:** Aceptada e implementada para los catálogos
 - **Alcance:** catálogos genéricos y estado personal de la aplicación
 
+Actualización aceptada (25/10/2026): [ADR-0051](0051-server-authoritative-account-state.md) amplía este registro. El contrato 2 usa lectura única, acciones acotadas, snapshots reproducibles de plan y base completa en memoria de sesión. La copia personal persistida corresponde al contrato anterior y a la transición; la conciliación concurrente sigue siendo automática. Activación alojada pendiente según [instrucciones](../backend/account-contract.md).
+
 ## Contexto
 
 Los alimentos, recetas, formatos de compra y pesos comestibles aparecían tanto en los catálogos JSON como en literales de `main.js`. El cliente ya cargaba y validaba los JSON antes de abrir la aplicación autenticada, y después reemplazaba los literales. `localStorage` conserva una copia de trabajo de los datos personales mientras Supabase ya almacena esos datos en tablas relacionales.

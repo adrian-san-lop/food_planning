@@ -24,15 +24,17 @@ function conditionText(issue) {
   return 'Elige un plato para completar esta comida.';
 }
 
-export function createPlannerReviewView({ getRecipes, portionsForRecipes, getMacro, getTarget, formatDate, icon = () => '' }) {
+export function createPlannerReviewView({ getRecipes, portionsForRecipes, getMacro, getTarget, getSavedDay = () => null, formatDate, icon = () => '' }) {
   function markup(model) {
     const { proposal: plan, week, preferences, inspection, summary, profile } = model;
     const day = Math.max(0, Math.min(6, model.day ?? 0));
     const recipes = getRecipes(), byId = new Map(recipes.map(recipe => [recipe.id, recipe]));
     const start = dateFromISO(plan.start), date = addDays(start, week * 7 + day);
     const ids = plan.menus[week][day], dayRecipes = ids.map(id => byId.get(id));
-    const portions = dayRecipes.every(Boolean) ? portionsForRecipes(dayRecipes, 0) : null;
-    const total = portions?.reduce((sum, usage) => sum + getMacro(usage).k, 0), target = getTarget().calories;
+    const saved = getSavedDay(plan,week,day);
+    const portions = saved?.portions || (dayRecipes.every(Boolean) ? portionsForRecipes(dayRecipes, 0) : null);
+    const macro = usage => getMacro(usage,saved?.foods);
+    const total = portions?.reduce((sum, usage) => sum + macro(usage).k, 0), target = (saved?.target || getTarget()).calories;
     const conserved = plan.locked.flat(2).filter(Boolean).length;
     const exceptions = summary?.weeklyExceptions ?? 0;
     const tabs = [0, 1, 2].map(w => {
@@ -51,7 +53,7 @@ export function createPlannerReviewView({ getRecipes, portionsForRecipes, getMac
       const warnings = inspection.warnings.filter(item => at(item, week, day, slot));
       const preference = preferences.recipePreferences[id] ?? 'normal';
       const different = week > 0 && id !== plan.menus[0][day][slot];
-      const details = recipe ? `<button type="button" class="planner-recipe-title" data-action="planner-recipe" ${attrs} data-review-focus="recipe-${pos}" aria-haspopup="dialog" aria-controls="recipeDialog" aria-label="Ver receta: ${a(recipe.name)}">${h(recipe.name)}${icon('book')}</button><span class="planner-meal-meta">${h(time(recipe))}${portions ? ` · ${number(getMacro(portions[slot]).k)} kcal` : ''}${different ? ' · Distinta de la base' : ''}${preference !== 'normal' ? ` · ${PREFERENCE_LABELS[preference]}` : ''}</span>` : '<strong>Elige un plato</strong>';
+      const details = recipe ? `<button type="button" class="planner-recipe-title" data-action="planner-recipe" ${attrs} data-review-focus="recipe-${pos}" aria-haspopup="dialog" aria-controls="recipeDialog" aria-label="Ver receta: ${a(recipe.name)}">${h(recipe.name)}${icon('book')}</button><span class="planner-meal-meta">${h(time(recipe))}${portions ? ` · ${number(macro(portions[slot]).k)} kcal` : ''}${different ? ' · Distinta de la base' : ''}${preference !== 'normal' ? ` · ${PREFERENCE_LABELS[preference]}` : ''}</span>` : '<strong>Elige un plato</strong>';
       return `<div class="planner-meal${issue ? ' planner-meal--issue' : ''}" data-review-meal="${pos}"><span class="planner-slot">${icon(SLOT_ICONS[slot])}<span>${SLOTS[slot]}</span></span><div class="planner-meal-info">${details}${issue ? `<p class="planner-meal-issue">${h(conditionText(issue))}</p>` : ''}${warnings.map(item => `<p class="planner-meal-warning">Elección manual: ${h(conditionText(item))}</p>`).join('')}</div><div class="planner-meal-actions"><button type="button" class="btn" data-action="planner-choices-open" ${attrs} data-review-focus="change-${pos}" aria-haspopup="dialog" aria-controls="plannerChoiceDialog" aria-label="Cambiar ${a(SLOTS[slot].toLocaleLowerCase('es-ES'))}: ${a(recipe?.name || 'plato pendiente')}">Cambiar</button><button type="button" class="btn planner-lock" data-action="planner-lock" ${attrs} data-review-focus="lock-${pos}" aria-pressed="${lock}" aria-label="Conservar ${a(recipe?.name || 'plato pendiente')}" title="${lock ? 'Se mantendrá al generar otra propuesta. Pulsa para liberarlo.' : 'Mantener este plato al generar otra propuesta.'}" ${recipe ? '' : 'disabled'}>${lockIcon}<span>${lock ? 'Conservado' : 'Conservar'}</span></button></div></div>`;
     }).join('');
     const firstIssue = inspection.issues[0];

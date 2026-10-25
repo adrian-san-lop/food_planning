@@ -33,9 +33,9 @@ function harness() {
     stock: {bread: 1000}, done: {}, movements: [], plannerDraft: null};
   const feedback = [];
   const context = vm.createContext({state, MENUS: menus, RECIPES: catalog.recipes, catalogVersion: catalog.catalogVersion,
-    createMenuPlanner, nutritionService, recipeToStockAmount: units.recipeToStockAmount,
+    createMenuPlanner, nutritionService,plannerNutrition:nutritionService, recipeToStockAmount: units.recipeToStockAmount,
     recoveryRecipeScore: () => 0, recoveryDayScore: () => 0,
-    validMenuSnapshot: () => true, cloneMenus: value => structuredClone(value), showToast: message => feedback.push(message),
+    validMenuSnapshot: () => true, cloneMenus: value => structuredClone(value), showToast: message => feedback.push(message),afterCloudSave:message=>feedback.push(message),
     today: () => dateFromISO('2026-10-23'), dateFromISO, isoDate, addDays, activityEnergyForDate: () => 0});
   vm.runInContext(wiring + functions + saving, context);
   return {context, state, feedback};

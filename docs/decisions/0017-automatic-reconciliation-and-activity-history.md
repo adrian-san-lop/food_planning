@@ -4,6 +4,8 @@
 - **Estado:** Aceptada e implementada en el cliente local; publicación y validación real pendientes
 - **Alcance:** sincronización de estado personal, navegación móvil e historial de sesiones
 
+Actualización aceptada (25/10/2026): [ADR-0051](0051-server-authoritative-account-state.md) amplía este registro. El contrato 2 usa lectura única, acciones acotadas, snapshots reproducibles de plan y base completa en memoria de sesión. La copia personal persistida corresponde al contrato anterior y a la transición; la conciliación concurrente sigue siendo automática. Activación alojada pendiente según [instrucciones](../backend/account-contract.md).
+
 ## Contexto
 
 La sincronización transaccional ya rechazaba escrituras con una revisión antigua, pero el cliente convertía ese control en una pantalla que pedía elegir entre la copia local y Supabase. Al pasar del móvil al ordenador, un usuario podía encontrarse con esa decisión aunque solo quisiera seguir usando la cuenta. Además, la página de seguimiento mezclaba actividad y peso, quedaba bajo **Más** en móvil y ofrecía un botón de borrado solo con icono.

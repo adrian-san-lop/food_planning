@@ -1,3 +1,4 @@
+import { cleanPlanDetails } from '../domain/plan-details.js?v=20261025-account-contract';
 import { readPlanningState } from './planning-state.js?v=20261023-planning-persistence';
 import { createProfileDraft, validateProfileDraft } from '../domain/profile.js?v=20261022-planner-foundations';
 
@@ -182,6 +183,7 @@ export function createStateNormalizer({
       }
     }
     return {
+      details: cleanPlanDetails(raw.details),
       start: raw.start,
       menus: cloneMenus(raw.menus),
       locked,
@@ -298,6 +300,8 @@ export function createStateNormalizer({
     state.activeMenuGeneratedAt = typeof obj.activeMenuGeneratedAt === 'string' ? obj.activeMenuGeneratedAt : null;
     state.activeMenuConfirmedAt = typeof obj.activeMenuConfirmedAt === 'string' ? obj.activeMenuConfirmedAt : null;
     state.activeMenuRecoveryFocus = obj.activeMenuRecoveryFocus === true;
+    state.unavailablePlanRows = obj.unavailablePlanRows && Array.isArray(obj.unavailablePlanRows.cycles) && Array.isArray(obj.unavailablePlanRows.plannedMeals) ? JSON.parse(JSON.stringify(obj.unavailablePlanRows)) : null;
+    state.activePlanDetails = cleanPlanDetails(obj.activePlanDetails);
     state.cloudPlanIssue = cleanCloudPlanIssue(obj.cloudPlanIssue);
     state.nextMenu = cleanCyclePlan(obj.nextMenu);
     state.plannerDraft = cleanCyclePlan(obj.plannerDraft);

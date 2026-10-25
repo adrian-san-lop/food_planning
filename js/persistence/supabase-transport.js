@@ -17,11 +17,12 @@ const TABLES = [
 export function createSupabaseTransport({ getClient, getUserId }) {
   let capabilityUser = null;
   let capabilities = null;
+  let accountContract = 1;
   function requireAccount(user) {
     if (getUserId() !== user) throw Object.assign(new Error('La sesión ha cambiado; se descartó la respuesta anterior.'), { code: 'ACCOUNT_CHANGED' });
   }
 
-  function resetCapabilities() { capabilityUser = null; capabilities = null; }
+  function resetCapabilities() { capabilityUser = null; capabilities = null; accountContract = 1; }
 
   async function planningAvailable({ refresh = false } = {}) {
     const user = getUserId();
@@ -32,6 +33,7 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     // errors and failures in existing/new tables must remain visible.
     if (error && !['PGRST202', '42883'].includes(error.code)) throw error;
     capabilities = !error && data?.planning_contract === 1;
+    accountContract = !error && data?.account_contract === 2 ? 2 : 1;
     capabilityUser = user;
     return capabilities;
   }
@@ -66,6 +68,13 @@ export function createSupabaseTransport({ getClient, getUserId }) {
   async function fetchSnapshot(attempt = 0) {
     const user = getUserId();
     const planningSupported = await planningAvailable();
+    if (accountContract === 2) {
+      const { data, error } = await getClient().rpc('get_menuki_state');
+      requireAccount(user);
+      if (error) throw error;
+      if (!data || data.accountContract !== 2) throw new Error('Supabase no devolvió un estado de cuenta válido.');
+      return data;
+    }
     const settings = await readOne('user_settings');
     const [profile, ...rows] = await Promise.all([
       readOne('profiles'),
@@ -87,6 +96,15 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     }
     return { settings, profile, cycles, plannedMeals, completions, ingredients, movements, weights, activities, training, prep, shoppingSessions, shoppingItems,
       planningSupported, setupDraft, menuPreferences, recipePreferences };
+  }
+
+  async function submitAction(action, expectedRevision, operationId) {
+    const user = getUserId();
+    const result = await getClient().rpc('apply_menuki_action', {
+      p_action: action, p_expected_revision: expectedRevision, p_operation_id: operationId,
+    });
+    requireAccount(user);
+    return result;
   }
 
   async function submitSnapshot(rpcName, snapshot, expectedRevision) {
@@ -113,5 +131,5 @@ export function createSupabaseTransport({ getClient, getUserId }) {
     return result;
   }
 
-  return { readRows, readOne, fetchSnapshot, submitSnapshot, planningAvailable, resetCapabilities };
+  return { readRows, readOne, fetchSnapshot, submitSnapshot, submitAction, planningAvailable, resetCapabilities, stateContract: () => accountContract };
 }

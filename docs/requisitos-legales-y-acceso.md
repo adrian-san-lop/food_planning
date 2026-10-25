@@ -123,14 +123,15 @@ La página puede usar lenguaje cotidiano, pero debe conservar los nombres y alca
 
 ## 10. Inventario técnico revisado en código
 
-La revisión es estática: no acredita cookies recibidas por red, duración efectiva de la sesión, comportamiento de una cuenta real ni configuración del entorno publicado.
+La revisión es estática: no acredita cookies recibidas por red, duración efectiva de la sesión, comportamiento de una cuenta real ni configuración del entorno publicado. El inventario de almacenamiento se actualiza el 25/10/2026 para el contrato de cuenta 2, implementado localmente y pendiente de activación alojada; véase [contrato y despliegue](backend/account-contract.md). No cambia las conclusiones jurídicas pendientes de este borrador.
 
 | Mecanismo o servicio | Datos y finalidad comprobables | Duración y comprobaciones pendientes |
 | --- | --- | --- |
 | Landing y páginas legales | Archivos estáticos, recursos locales; la landing carga el iframe de acceso al solicitarlo. Sin escritura propia de cookies ni almacenamiento en su código. | Revisar respuestas HTTP y cookies del alojamiento en una sesión nueva. |
 | Supabase Auth | Correo, contraseña gestionada por Auth y sesión persistente; `persistSession`, `autoRefreshToken` y `detectSessionInUrl` activos. Familia de claves local `sb-…-auth-token`, según la biblioteca. | Configuración de expiración, revocación, recuperación de contraseña, correo transaccional y cookies de respuestas pendientes de revisar. |
-| Copia local por cuenta | `mi_plan_saludable_v3_13oct:user:…`, estado v11 con perfil, menús, registros e inventario; posible marca auxiliar `:edited_at`. | Sin caducidad automática; cerrar sesión conserva la copia. El borrado de datos del navegador no elimina la cuenta remota. |
-| Conciliación local | `mi_plan_saludable_v3_13oct:sync:user:…`, revisión, identificadores, fechas y estado base personal de conciliación. | Sin caducidad automática; no es solo metadata anónima. |
+| Copia local anterior por cuenta | `mi_plan_saludable_v3_13oct:user:…`, estados v5–v12 con perfil, menús, registros e inventario; posible marca auxiliar `:edited_at`. El contrato 2 deja de escribirla y solo considera una transición con base conocida. | Sin caducidad automática; cerrar sesión puede conservar esa copia anterior. El borrado del navegador no elimina la cuenta remota. |
+| Conciliación anterior y transición | `mi_plan_saludable_v3_13oct:sync:user:…` puede contener revisión, identificadores, fechas y base personal. El contrato 2 no la actualiza; añade solo una marca `:account-contract-2` para no repetir la transición. | Claves anteriores y marca sin caducidad automática. La base anterior no es metadata anónima. |
+| Estado de sesión | El contrato 2 mantiene estado personal y base completa de conciliación en memoria; Supabase devuelve el estado confirmado. | Un fallo conserva cambios solo mientras siga abierta la sesión; cerrar o recargar puede perder los pendientes. No hay cola offline persistente. |
 | Copia previa a cuentas | `mi_plan_saludable_v3_13oct` y posible `:edited_at`; transición al espacio por cuenta. | La clave principal se retira al trasladarla; la marca auxiliar antigua puede permanecer. |
 | Supabase relacional | Estado personal en tablas con `user_id`; buzón compartido vinculado al remitente y administradores con permisos específicos. | No hay purga temporal general; región, DPA, subencargados, transferencias, backups y su borrado pendientes. |
 | jsDelivr | Carga de `@supabase/supabase-js@2.117.3` en `menuki.html`; solicitudes de conexión al CDN. | Revisar registros, respuesta HTTP, cookies y transferencias del proveedor. No se presume exento por ser una biblioteca. |

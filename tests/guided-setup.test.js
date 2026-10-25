@@ -144,7 +144,7 @@ test('the cycle notice explains that account data loaded and offers a new cycle 
   vm.runInContext(main.slice(start,end),context);context.renderCycleSetupNotice();
   assert.match(root.innerHTML,/El menú guardado no está disponible/);
   assert.match(root.innerHTML,/se han cargado desde Supabase/);
-  assert.match(root.innerHTML,/Crear ciclo nuevo/);
+  assert.match(root.innerHTML,/Actualizar aplicación/);assert.doesNotMatch(root.innerHTML,/Crear ciclo nuevo/);
   assert.doesNotMatch(root.innerHTML,/revisar/i);
 });
 test('the actual signup adapter initializes guided drafts without a sample profile or fixed menu, and gates unsupported schemas',async()=>{

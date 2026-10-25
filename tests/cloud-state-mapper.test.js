@@ -171,7 +171,7 @@ test('a missing recipe in the active cycle does not block account hydration or c
   assert.deepEqual(state.cloudPlanIssue,{status:'active',start:'2026-10-13',filled:105,reason:'missing_catalog_recipe',missingRecipeIds:['hamburguesa_pavo']});
   assert.equal(state.profile.age,30);assert.deepEqual(state.stock,{apple:1});
   const snapshot=await mapper.buildCloudSnapshot(state);
-  assert.deepEqual(snapshot.cycles,[]);assert.deepEqual(snapshot.planned_meals,[]);
+  assert.equal(snapshot.cycles[0].id,data.cycles[0].id);assert.equal(snapshot.planned_meals.length,105);assert.equal(snapshot.planned_meals[0].recipe_id,'hamburguesa_pavo');
 });
 
 test('an incomplete active cycle is isolated from account hydration without inventing the missing meal', () => {

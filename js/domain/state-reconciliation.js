@@ -206,6 +206,8 @@ function mergeableState(state = {}) {
     activeMenuGeneratedAt: state.activeMenuGeneratedAt || null,
     activeMenuConfirmedAt: state.activeMenuConfirmedAt || null,
     activeMenuRecoveryFocus: state.activeMenuRecoveryFocus === true,
+    activePlanDetails: state.activePlanDetails || null,
+    unavailablePlanRows: state.unavailablePlanRows || null,
     cloudPlanIssue: state.cloudPlanIssue || null,
     done: state.done || {},
     reversedDone: state.reversedDone || {},
@@ -259,12 +261,13 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   const remote = mergeableState(remoteState);
   const result = JSON.parse(JSON.stringify(remoteState));
   const activePlan = mergePlan(
-    { active: !base.noActiveCycle, cycleId: base.activeCycleId, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus, reversedDone: base.reversedDone },
-    { active: !local.noActiveCycle, cycleId: local.activeCycleId, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus, reversedDone: local.reversedDone },
-    { active: !remote.noActiveCycle, cycleId: remote.activeCycleId, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus, reversedDone: remote.reversedDone },
+    { active: !base.noActiveCycle, cycleId: base.activeCycleId, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, details:base.activePlanDetails,recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus, reversedDone: base.reversedDone },
+    { active: !local.noActiveCycle, cycleId: local.activeCycleId, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, details:local.activePlanDetails,recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus, reversedDone: local.reversedDone },
+    { active: !remote.noActiveCycle, cycleId: remote.activeCycleId, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, details:remote.activePlanDetails,recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus, reversedDone: remote.reversedDone },
   );
   result.start = activePlan?.start ?? remote.start;
   result.activeCycleId = activePlan?.cycleId ?? null;
+  result.activePlanDetails = activePlan?.details || null;
   result.activeMenus = activePlan?.menus ?? null;
   result.activeMenuCatalogVersion = activePlan?.catalogVersion ?? null;
   result.activeMenuGeneratedAt = activePlan?.generatedAt ?? null;

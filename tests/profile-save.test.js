@@ -24,7 +24,7 @@ function harness({nextProfile, manualRmr = '1600', valid = true} = {}) {
     profileFormData:()=>({...original,...nextProfile}),
     profileHasChanges:profile=>Object.keys(original).some(key=>profile[key]!==state.profile[key]),
     cycleHasEnded:()=>false,confirm:()=>true,save:()=>calls.save++,render:()=>calls.render++,
-    showToast:message=>calls.toasts.push(message),
+    showToast:message=>calls.toasts.push(message),afterCloudSave:message=>calls.toasts.push(message),
     adaptActiveMenuForGoalChange:profile=>{calls.adapt++;return {adapted:true,changed:7}},
   });
   vm.runInContext(saveHandler,context);
