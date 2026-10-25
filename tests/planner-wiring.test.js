@@ -26,6 +26,7 @@ const units = createInventoryUnitService({getFood: () => catalog.foods, getFoodM
 const profile = {sex: 'manual', age: 30, height: 170, weight: 70, activity: 'sedentary', goal: 'maintain', manualRmr: 1600,
   injury: false, autoPortions: true, followWeight: false};
 const menus = Array.from({length: 3}, () => Array.from({length: 7}, () => ['desayuno', 'media', 'comida', 'tarde', 'cena'].map(type => catalog.recipes.find(recipe => recipe.type === type).id)));
+function seededRandom(seed) { return () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; }; }
 
 function harness() {
   const state = {start: '2026-10-22', noActiveCycle: false, profile: {...profile}, profileConfirmed: true,
@@ -34,7 +35,7 @@ function harness() {
   const context = vm.createContext({state, MENUS: menus, RECIPES: catalog.recipes, catalogVersion: catalog.catalogVersion,
     createMenuPlanner, nutritionService, recipeToStockAmount: units.recipeToStockAmount,
     recoveryRecipeScore: () => 0, recoveryDayScore: () => 0,
-    validMenuSnapshot: () => true, showToast: message => feedback.push(message),
+    validMenuSnapshot: () => true, cloneMenus: value => structuredClone(value), showToast: message => feedback.push(message),
     today: () => dateFromISO('2026-10-23'), dateFromISO, isoDate, addDays, activityEnergyForDate: () => 0});
   vm.runInContext(wiring + functions + saving, context);
   return {context, state, feedback};
@@ -73,6 +74,49 @@ test('the actual renewal adapter supplies persisted exclusions without replacing
   const proposal=context.buildCycleProposal(null);
   assert.equal(proposal.menus.flat(2).includes(excluded),false);
   assert.equal(JSON.stringify(state),before);
+});
+
+test('changing the goal replans only pending meals and preserves completed and past menu positions',()=>{
+  const {context,state}=harness();state.activeMenus=structuredClone(menus);
+  state.done={'2026-10-23#0':{rid:menus[0][1][0],usage:{bread:2},completedAt:'2026-10-23T08:00:00Z'}};
+  const before=structuredClone(menus),replacement=structuredClone(menus),planner=vm.runInContext('menuPlanner',context);
+  let received;
+  replacement.forEach((week,w)=>week.forEach((day,d)=>day.forEach((id,slot)=>{
+    const date=isoDate(addDays(dateFromISO(state.start),w*7+d));
+    if(date<'2026-10-23'||(date==='2026-10-23'&&slot===0))return;
+    const type=catalog.recipeById[id].type,alternative=catalog.recipes.find(recipe=>recipe.type===type&&recipe.id!==id);
+    if(alternative)replacement[w][d][slot]=alternative.id;
+  })));
+  planner.generate=request=>{received=request;return {complete:true,menus:replacement}};
+  const result=context.adaptActiveMenuForGoalChange({...profile,goal:'muscle_gain'});
+  assert.equal(result.adapted,true);assert.ok(result.changed>0);
+  assert.equal(received.profile.goal,'muscle_gain');assert.equal(received.previousMenus,null);
+  assert.ok(received.draft.locked[0][0].every(Boolean));
+  assert.equal(received.draft.locked[0][1][0],true);assert.equal(received.draft.locked[0][1][1],false);
+  assert.deepEqual(state.activeMenus[0][0],before[0][0]);assert.equal(state.activeMenus[0][1][0],before[0][1][0]);
+  assert.deepEqual(state.done['2026-10-23#0'],{rid:before[0][1][0],usage:{bread:2},completedAt:'2026-10-23T08:00:00Z'});
+  assert.deepEqual(state.activeMenus,replacement);assert.equal(state.activeMenuCatalogVersion,catalog.catalogVersion);
+});
+
+test('the real catalog generator selects pending recipes against the newly saved goal',()=>{
+  const {context,state}=harness();state.activeMenus=structuredClone(menus);
+  state.done={'2026-10-23#0':{rid:menus[0][1][0],usage:{bread:2},completedAt:'2026-10-23T08:00:00Z'}};
+  const before=structuredClone(state.activeMenus),planner=vm.runInContext('menuPlanner',context),generate=planner.generate;
+  planner.generate=request=>generate({...request,rng:seededRandom(49)});
+  const result=context.adaptActiveMenuForGoalChange({...profile,goal:'muscle_gain'});
+  assert.equal(result.adapted,true);assert.ok(result.changed>0);
+  assert.deepEqual(state.activeMenus[0][0],before[0][0]);
+  assert.equal(state.activeMenus[0][1][0],before[0][1][0]);
+  assert.deepEqual(state.done['2026-10-23#0'].usage,{bread:2});
+});
+
+test('a goal change keeps the active menu if no complete replacement can be generated',()=>{
+  const {context,state}=harness();state.activeMenus=structuredClone(menus);
+  const before=structuredClone(state.activeMenus),planner=vm.runInContext('menuPlanner',context);
+  planner.generate=()=>({complete:false,menus:structuredClone(menus)});
+  const result=context.adaptActiveMenuForGoalChange({...profile,goal:'fat_loss'});
+  assert.equal(result.adapted,false);assert.equal(result.changed,0);assert.equal(result.reason,'incomplete');
+  assert.deepEqual(state.activeMenus,before);assert.deepEqual(context.MENUS,before);
 });
 
 test('the actual first-menu adapter uses the chosen date and routes confirmation into one active generated cycle',()=>{

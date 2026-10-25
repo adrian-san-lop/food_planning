@@ -19,6 +19,10 @@ export const PROFILE_DRAFT_FIELDS = Object.freeze(Object.keys(DEFAULT_PROFILE));
 const ABOUT_FIELDS = ['sex', 'age', 'height', 'weight', 'manualRmr'];
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 
+export function requiresManualRestingEnergy(sex) {
+  return sex === 'manual';
+}
+
 export function defaultProfile() {
   return { ...DEFAULT_PROFILE };
 }
@@ -78,7 +82,7 @@ export function validateProfileDraft(raw) {
   }
   for (const [field, [min, max]] of Object.entries(PROFILE_LIMITS)) {
     const value = profile[field];
-    if (field === 'manualRmr' && profile.sex !== 'manual' && value == null) continue;
+    if (field === 'manualRmr' && !requiresManualRestingEnergy(profile.sex) && value == null) continue;
     if (value == null) errors[field] = 'required';
     else if (typeof value !== 'number' || !Number.isFinite(value)) errors[field] = 'invalid_number';
     else if (value < min || value > max) errors[field] = 'out_of_range';

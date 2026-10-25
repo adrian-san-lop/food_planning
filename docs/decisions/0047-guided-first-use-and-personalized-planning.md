@@ -23,6 +23,7 @@ El propietario acepta las cinco decisiones de evolución del planificador y el r
 
 ## Consecuencias
 
+- Actualización aceptada el 24/10/2026: cambiar y guardar el objetivo principal del perfil adapta las recetas de las comidas pendientes del ciclo activo usando el objetivo nuevo. Las fechas pasadas y las comidas completadas conservan sus platos y cantidades registradas. Si el generador no consigue una propuesta completa, Menuki guarda el perfil, conserva el menú anterior y lo comunica. Los demás cambios del perfil recalculan objetivos y raciones según el comportamiento existente. Véase [ADR-0049](0049-profile-goal-change-adapts-active-menu.md).
 - Se conserva la base de ADR-0046: 21 días, cinco comidas, semana familiar repetida, repertorio reducido y renovación gradual de 2–3 preparaciones cuando encajen. La edición del paquete 5 sustituye la regla de cambio exclusivamente individual por alcance de tres semanas o una comida, respetando los otros bloqueos.
 - La configuración obligatoria del paquete 6 sustituye localmente el arranque de cuentas nuevas descrito en ADR-0011 y ADR-0025. La guía informativa seguirá disponible a demanda. Cerrar la guía no equivale a completar la configuración.
 - Crear cuenta, confirmar perfil y confirmar primer plan son estados distintos. La existencia de una sesión Auth, datos locales o `state_initialized_at` no demuestra que el perfil esté completo.

@@ -11,7 +11,7 @@ import { cycleHasEnded, confirmedCycleIsAvailable, canBuyNextCycle, shoppingDate
 import { loadCatalogs as fetchCatalogs } from './data/catalogs.js?v=20261022-practical-portions';
 import { createInventoryUnitService } from './domain/inventory-units.js?v=20261017-whole-bread-slices';
 import { ACTIVITY_FACTORS, createNutritionService } from './domain/nutrition.js?v=20261022-practical-portions';
-import { DEFAULT_PROFILE, defaultProfile, sanitizeProfile } from './domain/profile.js?v=20261022-planner-foundations';
+import { DEFAULT_PROFILE, defaultProfile, requiresManualRestingEnergy, sanitizeProfile } from './domain/profile.js?v=20261024-profile-save';
 import { consumeAvailableStock, normalizeLegacyDeduction, projectAvailableStock } from './domain/inventory-balance.js?v=20261018-no-meal-shortfalls';
 import { createInventoryLedger } from './domain/inventory-ledger.js?v=20261017-inventory-ledger';
 import { createRecipeProposalExport, serializeRecipeProposalExport } from './domain/recipe-proposal-export.js?v=20261013-admin-proposal-maintenance';
@@ -564,7 +564,8 @@ function profileSummaryMarkup(p=state.profile,weightOverride,pending=!state.prof
 function profileFormData(){
  const form=document.getElementById('profileForm');if(!form)return null;
  const data=new FormData(form);
- return sanitizeProfile({sex:String(data.get('sex')),age:Number(data.get('age')),height:Number(data.get('height')),weight:Number(data.get('weight')),activity:String(data.get('activity')),goal:String(data.get('goal')),manualRmr:Number(data.get('manualRmr')),injury:data.has('injury'),autoPortions:data.has('autoPortions'),followWeight:data.has('followWeight')});
+ const sex=String(data.get('sex')),manualRmrValue=String(data.get('manualRmr')??'').trim();
+ return sanitizeProfile({sex,age:Number(data.get('age')),height:Number(data.get('height')),weight:Number(data.get('weight')),activity:String(data.get('activity')),goal:String(data.get('goal')),manualRmr:manualRmrValue?Number(manualRmrValue):requiresManualRestingEnergy(sex)?0:state.profile?.manualRmr??defaultProfile().manualRmr,injury:data.has('injury'),autoPortions:data.has('autoPortions'),followWeight:data.has('followWeight')});
 }
 function updateProfilePreview(){
  const form=document.getElementById('profileForm');if(!form)return;
@@ -576,17 +577,18 @@ function updateProfilePreview(){
   preview.innerHTML=profileSummaryMarkup(p,effective,pending);
  }
  const description=document.getElementById('profileActivityDescription');if(description)description.textContent=profileActivityDescription(p.activity);
- const custom=document.getElementById('manualRmrField');if(custom)custom.hidden=form.elements.sex.value!=='manual';
+ const custom=document.getElementById('manualRmrField');if(custom)custom.hidden=!requiresManualRestingEnergy(form.elements.sex.value);
+ const manualRmr=form.elements.namedItem('manualRmr');if(manualRmr)manualRmr.required=requiresManualRestingEnergy(form.elements.sex.value);
  form.elements.weight.readOnly=profileUsesWeightRecords(p);
  const source=document.getElementById('profileWeightSource');if(source)source.innerHTML=profileWeightSourceMarkup(p);
  const status=document.getElementById('profileDirtyStatus');if(status){status.hidden=!pending;status.textContent=state.profileConfirmed?'Cambios sin guardar':'Pendiente de confirmar'}
- const submit=document.getElementById('profileSaveButton');if(submit)submit.disabled=!pending;
+ const submit=document.getElementById('profileSaveButton');if(submit){submit.disabled=!pending;submit.textContent=state.profileConfirmed&&p.goal!==state.profile.goal&&!state.noActiveCycle&&!cycleHasEnded(state.start)?'Guardar y adaptar menú':state.profileConfirmed?'Guardar cambios':'Confirmar y guardar'}
  document.querySelector('.profile-page')?.classList.toggle('profile-page--manual',p.sex==='manual');
 }
 function profileView(){
  const p=state.profile,last=[...state.weights].filter(entry=>{const date=dateFromISO(entry.date);return date&&date<=today()}).sort((a,b)=>b.date.localeCompare(a.date))[0];
  const select=(name,options)=>options.map(([key,label])=>'<option value="'+escapeAttribute(key)+'" '+(p[name]===key?'selected':'')+'>'+escapeHTML(label)+'</option>').join('');
- const num=(id,label,min,max,step,attributes='')=>'<label class="profile-field">'+escapeHTML(label)+'<input required type="number" name="'+escapeAttribute(id)+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+escapeAttribute(p[id])+'" '+attributes+'></label>';
+ const num=(id,label,min,max,step,attributes='',required=true)=>'<label class="profile-field">'+escapeHTML(label)+'<input '+(required?'required ':'')+'type="number" name="'+escapeAttribute(id)+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+escapeAttribute(p[id])+'" '+attributes+'></label>';
  const checked=id=>p[id]?'checked':'';
  const goals=[['maintain','🌿','Mantener peso','Energía estable'],['recomp','⚖️','Recomposición','Reducir grasa y conservar músculo'],['fat_loss','🍃','Bajar grasa','Déficit moderado'],['muscle_gain','💪','Ganar músculo','Superávit pequeño']].map(([id,icon,name,sub])=>'<label class="goal-option" title="'+escapeAttribute(sub)+'"><input type="radio" name="goal" value="'+escapeAttribute(id)+'" '+(p.goal===id?'checked':'')+'><span class="goal-option-content"><i aria-hidden="true">'+escapeHTML(icon)+'</i><b>'+escapeHTML(name)+'</b><small>'+escapeHTML(sub)+'</small></span></label>').join('');
  const review=state.profileConfirmed?'':'<aside class="profile-review-notice" role="status"><strong>Estás usando datos de ejemplo.</strong><span>Revisa el perfil y guárdalo para aplicar tus datos.</span></aside>';
@@ -598,7 +600,7 @@ function profileView(){
     <label class="profile-field profile-field--equation">Sexo de la ecuación<select name="sex">${select('sex',[['male','Hombre (+5)'],['female','Mujer (−161)'],['manual','Gasto en reposo manual']])}</select></label>
     ${num('age','Edad · años',18,95,1)}${num('height','Altura · cm',125,220,1)}${num('weight','Peso de referencia · kg',35,250,.1,'aria-describedby="profileWeightSource"'+(profileUsesWeightRecords(p)?' readonly':''))}
    </div>
-   <div class="profile-fields profile-fields--manual" id="manualRmrField" ${p.sex!=='manual'?'hidden':''}>${num('manualRmr','Metabolismo en reposo · kcal',800,3500,10)}</div>
+   <div class="profile-fields profile-fields--manual" id="manualRmrField" ${!requiresManualRestingEnergy(p.sex)?'hidden':''}>${num('manualRmr','Metabolismo en reposo · kcal',800,3500,10,'',requiresManualRestingEnergy(p.sex))}</div>
    <div class="profile-control-row"><label class="profile-toggle"><input type="checkbox" name="followWeight" ${checked('followWeight')}><span><b>Usar mis registros de peso</b><small id="profileWeightSource">${profileWeightSourceMarkup(p)}</small></span></label>${profileHelp('followWeight','Ayuda sobre el peso',weightHelp)}</div>
   </div>
  </section>`;
@@ -619,7 +621,7 @@ function profileView(){
   </form>
   <footer class="panel profile-actionbar">
    <button type="button" class="btn profile-guide-button" data-action="profile-guide-open">${ic('info')} Cómo calcula Menuki</button>
-   <div class="profile-actions"><span id="profileSaveNote" class="profile-save-note">Al guardar se actualizan las comidas pendientes y la compra.</span><span id="profileDirtyStatus" class="profile-dirty-status" role="status" aria-live="polite" aria-atomic="true" ${state.profileConfirmed?'hidden':''}>Pendiente de confirmar</span><button type="button" class="btn btn-quiet profile-restore-button" data-action="restore-profile">Valores iniciales</button><button id="profileSaveButton" form="profileForm" type="submit" class="btn btn-primary" aria-describedby="profileSaveNote profileDirtyStatus" ${state.profileConfirmed?'disabled':''}>${state.profileConfirmed?'Guardar cambios':'Confirmar y guardar'}</button></div>
+   <div class="profile-actions"><span id="profileSaveNote" class="profile-save-note">Al cambiar el objetivo, Menuki adapta los platos pendientes; conserva las comidas realizadas.</span><span id="profileDirtyStatus" class="profile-dirty-status" role="status" aria-live="polite" aria-atomic="true" ${state.profileConfirmed?'hidden':''}>Pendiente de confirmar</span><button type="button" class="btn btn-quiet profile-restore-button" data-action="restore-profile">Valores iniciales</button><button id="profileSaveButton" type="button" class="btn btn-primary" data-action="profile-save" aria-describedby="profileSaveNote profileDirtyStatus" ${state.profileConfirmed?'disabled':''}>${state.profileConfirmed?'Guardar cambios':'Confirmar y guardar'}</button></div>
   </footer>
  </div>`;
 }
@@ -669,6 +671,27 @@ function buildCycleProposal(previous,requestedStart){
  const start=requestedStart||(dateFromISO(previous?.start)&&dateFromISO(previous.start)>=today()?previous.start:nextCycleStart());
  const result=menuPlanner.generate({...plannerRequest(start),draft:previous});
  return {start,menus:result.menus,locked:result.locked,catalogVersion,recoveryFocus:!!state.profile.injury,generatedAt:new Date().toISOString(),confirmedAt:null};
+}
+function adaptActiveMenuForGoalChange(profile){
+ if(state.noActiveCycle||!validMenuSnapshot(MENUS))return {adapted:false,changed:0,reason:'no-active-cycle'};
+ const startDate=dateFromISO(state.start),asOf=isoDate(today());
+ if(!startDate||isoDate(addDays(startDate,20))<asOf)return {adapted:false,changed:0,reason:'cycle-ended'};
+ const original=cloneMenus(MENUS),locked=original.map((week,w)=>week.map((day,d)=>day.map((_,slot)=>{
+  const date=isoDate(addDays(startDate,w*7+d));
+  return date<asOf||!!state.done[date+'#'+slot];
+ })));
+ if(!locked.flat(2).some(value=>!value))return {adapted:false,changed:0,reason:'no-pending-meals'};
+ const result=menuPlanner.generate({...plannerRequest(state.start),profile,previousMenus:null,draft:{menus:original,locked}});
+ if(!result.complete||!validMenuSnapshot(result.menus))return {adapted:false,changed:0,reason:'incomplete'};
+ let changed=0;
+ result.menus.forEach((week,w)=>week.forEach((day,d)=>day.forEach((id,slot)=>{
+  if(!locked[w][d][slot]&&id!==original[w][d][slot])changed++;
+ })));
+ const generatedAt=new Date().toISOString();
+ MENUS=cloneMenus(result.menus);state.activeMenus=cloneMenus(result.menus);
+ state.activeMenuCatalogVersion=catalogVersion;state.activeMenuGeneratedAt=generatedAt;
+ state.activeMenuConfirmedAt=generatedAt;state.activeMenuRecoveryFocus=!!profile.injury;
+ return {adapted:true,changed};
 }
 function persistPlannerDraft(){if(!plannerProposal||!validMenuSnapshot(plannerProposal.menus))return false;state.plannerDraft={...plannerProposal,menus:cloneMenus(plannerProposal.menus),locked:plannerProposal.locked.map(week=>week.map(day=>day.slice()))};plannerPersistedDraftSignature=JSON.stringify(state.plannerDraft);save();return true}
 function plannerCounts(menus){return validMenuSnapshot(menus)?summarizeMenu(menus,RECIPES,state.noActiveCycle?null:MENUS):null}
@@ -1342,6 +1365,7 @@ function activateCycleFromSetup(requested){const date=dateFromISO(requested);if(
 function changeCycleStart(requested){if(state.noActiveCycle)return activateCycleFromSetup(requested);const d=dateFromISO(requested);if(!d){showToast('Fecha de inicio no válida');return}const next=isoDate(d);if(next===state.start){closeCycleStartDialog();return}const hadProgress=Object.keys(state.done).length||Object.keys(state.legacyStrengthDays).length;if(hadProgress&&!confirm('Cambiar la fecha archivará las comidas y marcas antiguas del ciclo. Si recuperas una fecha usada, las comidas de ese ciclo se desmarcarán y su consumo se devolverá a la despensa. ¿Continuar?')){cycleStartDraft=formatEuropeanDate(requested);document.getElementById('cycleStartMenu')?.focus();return}const reused=restoreArchivedCycle(next);archiveActiveCycle();if(reused)useArchivedCycle(reused.cycle);else{state.start=next;state.activeCycleId=newCycleInstanceId();state.noActiveCycle=false;state.done={};state.reversedDone={};state.legacyStrengthDays={};state.prep={}}if(state.nextMenu)state.nextMenu.start=isoDate(addDays(d,21));if(state.plannerDraft)state.plannerDraft.start=isoDate(addDays(d,21));closeCycleStartDialog();alignCurrentDay();save();render();showToast(cycleStartToast(next,reused?.reversedMeals||0,!!reused))}
 // Cambios de la interfaz (delegación compatible con páginas HTML locales).
 document.addEventListener('click',function(event){const btn=event.target.closest('[data-action]');if(!btn)return;const action=btn.dataset.action;
+ if(action==='profile-save'){saveProfileForm(document.getElementById('profileForm'));return}
  if(action==='profile-activity-open'){openProfileActivityDialog(btn);return}
  if(action==='profile-activity-close'){closeProfileActivityDialog();return}
  if(action==='profile-activity-select'){selectProfileActivity(btn.dataset.level);return}
@@ -1472,6 +1496,32 @@ document.addEventListener('input',function(event){
   updateCycleStartDateInput(input.value.length===10||input.getAttribute('aria-invalid')==='true');return;
  }
  if(event.target.closest('#recipeProposalEditForm')){captureAdminProposalDraft();return}if(event.target.closest('#recipeProposalForm')){captureRecipeProposalDraft();return}if(event.target.closest('#profileForm'))updateProfilePreview();if(event.target.id==='shoppingSearch'){shoppingSearch=event.target.value;applyShoppingSearch();return}if(event.target.id==='recipeSearch'){recipeSearch=event.target.value;const node=document.getElementById('recipeResults');if(node)node.innerHTML=recipesList()}if(event.target.id==='pantrySearch'){pantrySearch=event.target.value;const node=document.getElementById('pantryResults');if(node)node.innerHTML=pantryListHTML()}});
+function saveProfileForm(form){
+ if(!form||!form.reportValidity())return false;
+ const data=new FormData(form),p=profileFormData();
+ if(state.profileConfirmed&&!profileHasChanges(p))return false;
+ for(const [id,min,max] of [['age',18,95],['height',125,220],['weight',35,250],['manualRmr',800,3500]]){
+  if(id==='manualRmr'&&!requiresManualRestingEnergy(data.get('sex')))continue;
+  if(!Number.isFinite(Number(data.get(id)))||Number(data.get(id))<min||Number(data.get(id))>max){showToast('Revisa los datos: '+id);return false}
+ }
+ const goalChanged=state.profileConfirmed&&p.goal!==state.profile.goal,selected=Object.values(state.cart).some(c=>c.checked);
+ if(selected&&!confirm(goalChanged?'Al cambiar el menú y las raciones se reiniciará la selección para recalcular envases. ¿Continuar?':'Hay productos marcados en el carrito. Al cambiar raciones se reiniciará la selección para recalcular envases. ¿Continuar?'))return false;
+ let adaptation=null;
+ if(goalChanged&&!state.noActiveCycle&&!cycleHasEnded(state.start)){
+  try{adaptation=adaptActiveMenuForGoalChange(p)}catch(error){console.error('Menuki could not adapt the active menu to the new goal',error);adaptation={adapted:false,reason:'error'}}
+ }
+ const firstConfirmation=!state.profileConfirmed;state.profile=p;state.profileConfirmed=true;state.cart={};save();render();
+ if(firstConfirmation)showToast('Perfil revisado y guardado · ya puedes preparar tu menú');
+ else if(goalChanged&&adaptation?.adapted&&adaptation.changed>0)showToast('Objetivo guardado · menú adaptado: '+adaptation.changed+' '+(adaptation.changed===1?'plato pendiente cambiado':'platos pendientes cambiados'));
+ else if(goalChanged&&adaptation?.adapted)showToast('Objetivo guardado · se revisó el menú y se mantienen los platos compatibles; raciones actualizadas');
+ else if(goalChanged&&adaptation?.reason==='incomplete')showToast('Perfil guardado; no se pudo adaptar el menú con las preferencias actuales. Se conserva el menú anterior.');
+ else if(goalChanged&&adaptation?.reason==='error')showToast('Perfil guardado; no se pudo adaptar el menú. Se conserva el menú anterior.');
+ else if(goalChanged&&adaptation?.reason==='no-pending-meals')showToast('Objetivo actualizado · no quedan comidas pendientes que cambiar');
+ else if(goalChanged&&state.noActiveCycle)showToast('Objetivo actualizado · se aplicará al generar tu menú');
+ else if(goalChanged&&cycleHasEnded(state.start))showToast('Objetivo actualizado · se aplicará al preparar el próximo menú');
+ else showToast('Objetivos, raciones y compra recalculados');
+ return true;
+}
 document.addEventListener('submit',function(event){
  if(event.target.id==='setupForm'){event.preventDefault();onboardingController.submit(event.target);return}
  if(event.target.id==='planningPreferencesForm'){event.preventDefault();planningPreferencesController.submit(event.target);return}
@@ -1479,16 +1529,7 @@ document.addEventListener('submit',function(event){
  if(event.target.id==='recipeProposalEditForm'){return saveRecipeProposalEdit(event)}
  if(event.target.id==='recipeProposalForm'){return submitRecipeProposal(event)}
  if(event.target.id==='profileForm'){
-  event.preventDefault();const form=event.target;
-  if(!form.reportValidity())return;
-  const data=new FormData(form),p=profileFormData();
-  if(state.profileConfirmed&&!profileHasChanges(p))return;
-  for(const [id,min,max] of [['age',18,95],['height',125,220],['weight',35,250],['manualRmr',800,3500]]){
-    if(!Number.isFinite(Number(data.get(id)))||Number(data.get(id))<min||Number(data.get(id))>max){showToast('Revisa los datos: '+id);return}
-  }
-  const selected=Object.values(state.cart).some(c=>c.checked);
-  if(selected&&!confirm('Hay productos marcados en el carrito. Al cambiar raciones se reiniciará la selección para recalcular envases. ¿Continuar?'))return;
-    const firstConfirmation=!state.profileConfirmed;state.profile=p;state.profileConfirmed=true;state.cart={};save();render();showToast(firstConfirmation?'Perfil revisado y guardado · objetivos y compra recalculados':'Objetivos, raciones y compra recalculados');return;
+  event.preventDefault();saveProfileForm(event.target);return;
  }
  if(event.target.id==='activityForm'){event.preventDefault();saveActivitySession(event.target);return}
   if(event.target.id!=='weightForm')return;event.preventDefault();const date=document.getElementById('weightDate').value,kg=Number(document.getElementById('weightKg').value);if(!dateFromISO(date)||!Number.isFinite(kg)||kg<30||kg>250){showToast('Revisa fecha y peso');return}state.weights=state.weights.filter(w=>w.date!==date);state.weights.push({date,kg});state.weights.sort((a,b)=>a.date.localeCompare(b.date));state.deletedWeightDates=(state.deletedWeightDates||[]).filter(x=>x!==date);if(state.profile.followWeight)state.cart={};save();render();showToast('Peso guardado · '+(state.profile.followWeight?'objetivos y compra recalculados':'sin cambiar tu peso de referencia'))});

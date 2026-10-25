@@ -5,6 +5,7 @@ import './domain.test.js';
 import './inventory-ledger.test.js';
 import './nutrition.test.js';
 import './profile.test.js';
+import './profile-save.test.js';
 import './planning-preferences.test.js';
 import './onboarding.test.js';
 import './guided-setup.test.js';

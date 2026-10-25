@@ -21,7 +21,7 @@ Se revisaron los cinco PDF de `docs/nutritional-plan-example` como referencia or
 5. Favorecer ingredientes compartidos y despensa disponible. Simular con copias de saldo; nunca escribir movimientos por generar o prever compras. Generar también con despensa vacía.
 6. Según la ampliación de ADR-0047, implementada en el paquete 5, cambiar una receta afecta por defecto a esa posición en las tres semanas, preservando bloqueos de las otras; Solo esta comida afecta una posición. Las posiciones modificadas quedan bloqueadas y regenerar conserva todos los bloqueos. No se infieren gustos de los consumos; las preferencias son explícitas. El catálogo completo del tipo sigue disponible para elección manual.
 7. Mantener los cuatro objetivos, actividad registrada por fecha, snapshots, unidades, límites de porción y contabilidad de todos los ingredientes cuantificados. La recuperación ósea conserva su preferencia cualitativa.
-8. Aplicar solo al generar/regenerar propuestas futuras mediante los controles existentes. No reemplazar automáticamente menús activos, confirmados, borradores existentes ni comidas completadas. Sin migraciones ni cambios en Supabase.
+8. Aplicar solo al generar/regenerar propuestas futuras mediante los controles existentes; cambiar preferencias por sí solo no reemplaza un menú activo ni un borrador. Excepción posterior aceptada en [ADR-0049](0049-profile-goal-change-adapts-active-menu.md): al guardar un cambio de objetivo, adaptar las comidas pendientes del ciclo activo y preservar las pasadas y completadas. Sin migraciones ni cambios en Supabase.
 
 ## Implementación y límites
 
