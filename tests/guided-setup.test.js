@@ -24,6 +24,13 @@ test('a fresh guided account cannot use sample values or an unconfirmed profile 
   assert.equal(state.profile,null);assert.equal(state.activeMenus,null);
 });
 
+test('an existing guided account with an unusable saved cycle still opens the app',()=>{
+  const state={...ready(),noActiveCycle:true,activeMenus:null,activeMenuConfirmedAt:null,
+    cloudPlanIssue:{status:'active',start:'2026-10-23',filled:104,reason:'incomplete',missingRecipeIds:[]}};
+  assert.equal(accountSetupProgress(state).destination,'app');
+  assert.equal(accountSetupProgress(state).needsProfileReview,false);
+});
+
 test('one explicit first-plan confirmation is immutable, keeps stock and cannot create another cycle on double click',()=>{
   const state=ready(), before=structuredClone(state), plan=menu();
   const next=confirmFirstPlan(state,plan,confirmation);
@@ -129,6 +136,17 @@ test('setup markup has empty required personal fields, descriptions and optional
 
 const main=await readFile(new URL('../js/main.js',import.meta.url),'utf8');
 const initialization=main.slice(main.indexOf('async function initializeCloudState('),main.indexOf('function hasMeaningfulLocalState('));
+test('the cycle notice explains that account data loaded and offers a new cycle without a review prompt',()=>{
+  const start=main.indexOf('function renderCycleSetupNotice('),end=main.indexOf('\nfunction mealCard(',start),root={hidden:true,innerHTML:''};
+  assert.ok(start>=0&&end>start);
+  const context=vm.createContext({state:{noActiveCycle:true,cloudPlanIssue:{status:'active'}},cycleSetupDateDraft:'',
+    document:{getElementById:()=>root},ic:()=>'',escapeAttribute:value=>String(value)});
+  vm.runInContext(main.slice(start,end),context);context.renderCycleSetupNotice();
+  assert.match(root.innerHTML,/El menú guardado no está disponible/);
+  assert.match(root.innerHTML,/se han cargado desde Supabase/);
+  assert.match(root.innerHTML,/Crear ciclo nuevo/);
+  assert.doesNotMatch(root.innerHTML,/revisar/i);
+});
 test('the actual signup adapter initializes guided drafts without a sample profile or fixed menu, and gates unsupported schemas',async()=>{
   for(const available of [true,false]) {
     let writes=0;

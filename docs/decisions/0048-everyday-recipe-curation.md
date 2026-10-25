@@ -22,6 +22,8 @@ La selección inicial de 14 retiradas y la posterior de once eliminaciones queda
 
 El propietario acepta invalidar menús de prueba existentes. Eliminar físicamente las fichas descartadas; no introducir registros ocultos, aliases, estados de retirada ni migraciones solo para conservar esos menús. Los planes o bloqueos que apunten al ID eliminado pueden requerir regeneración o sustitución manual. No se modifican cuentas ni datos personales.
 
+Actualización (2026-10-25): una receta retirada o un ciclo incompleto ya no bloquea la carga de la cuenta. Menuki conserva el menú en Supabase y evita usarlo para mostrar comidas o calcular la compra; no inventa sustituciones ni solicita revisar el ciclo. La consulta de diagnóstico `supabase/diagnostics/menu_cycle_integrity.sql` comprueba las posiciones persistidas y detecta el ID retirado `hamburguesa_pavo`. Detalles de la carga aislada y del siguiente guardado en [ADR-0050](0050-account-load-independent-from-menu-integrity.md).
+
 La plantilla fija conserva las recetas confirmadas y tortitas_atun; solo reemplaza hamburguesa_pavo por pollo_boniato_ensalada para mantener referencias válidas. No se afirma equivalencia nutricional entre esas comidas. No se modifica el generador, el esquema de recetas ni el estado v12.
 
 ## Límites de evidencia

@@ -41,6 +41,32 @@ function createMapper(overrides = {}) {
   });
 }
 
+function cloudCycleData({ plannedMealCount = 105, recipeId = 'recipe', catalogVersion = 'catalog-test' } = {}) {
+  const cycleId = 'cycle-active', plannedMeals = [];
+  for (let offset = 0; offset < 21 && plannedMeals.length < plannedMealCount; offset += 1) {
+    for (let slot = 0; slot < 5 && plannedMeals.length < plannedMealCount; slot += 1) {
+      plannedMeals.push({
+        id: `meal-${offset}-${slot}`, cycle_id: cycleId,
+        meal_date: isoDate(addDays(dateFromISO('2026-10-13'), offset)), slot,
+        recipe_id: typeof recipeId === 'function' ? recipeId(offset, slot) : recipeId,
+        is_locked: false,
+      });
+    }
+  }
+  return {
+    profile: { sex: 'manual', age: 30, height_cm: 170, reference_weight_kg: 70, activity_level: 'low', goal: 'maintain', profile_confirmed: true },
+    cycles: [{ id: cycleId, start_date: '2026-10-13', status: 'active', catalog_version: catalogVersion }],
+    plannedMeals, prep: [], ingredients: [], movements: [], completions: [], weights: [],
+    activities: [], training: [], shoppingSessions: [], shoppingItems: [], settings: {},
+  };
+}
+
+function validTestMenu(snapshot) {
+  return Array.isArray(snapshot) && snapshot.length === 3
+    && snapshot.every(week => Array.isArray(week) && week.length === 7
+      && week.every(day => Array.isArray(day) && day.length === 5 && day.every(id => id === 'recipe')));
+}
+
 test('a confirmed first cycle serializes one active instance and stable meal IDs across synchronization retries',async()=>{
   const state={...initialPlanningState('guided'),profile:null,profileConfirmed:false,noActiveCycle:true,start:'2026-10-23'};
   state.setupDraft.profile=createProfileDraft({sex:'female',age:35,height:165,weight:65,activity:'sedentary',goal:'maintain'});
@@ -132,6 +158,54 @@ test('cloud mapper reconstructs account data without changing the relational row
   assert.equal(state.noActiveCycle, true);
   assert.equal(state.profileConfirmed, true);
   assert.deepEqual(state.stock, { apple: 1 });
+});
+
+test('a missing recipe in the active cycle does not block account hydration or create a replacement menu', async () => {
+  const mapper = createMapper({
+    getCatalogVersion: () => '0.10.1',
+    validMenuSnapshot: validTestMenu,
+  });
+  const data = cloudCycleData({ recipeId: (offset, slot) => offset === 0 && slot === 0 ? 'hamburguesa_pavo' : 'recipe', catalogVersion: '0.10.0' });
+  const state=mapper.stateFromCloud(data);
+  assert.equal(state.noActiveCycle,true);assert.equal(state.activeMenus,null);
+  assert.deepEqual(state.cloudPlanIssue,{status:'active',start:'2026-10-13',filled:105,reason:'missing_catalog_recipe',missingRecipeIds:['hamburguesa_pavo']});
+  assert.equal(state.profile.age,30);assert.deepEqual(state.stock,{apple:1});
+  const snapshot=await mapper.buildCloudSnapshot(state);
+  assert.deepEqual(snapshot.cycles,[]);assert.deepEqual(snapshot.planned_meals,[]);
+});
+
+test('an incomplete active cycle is isolated from account hydration without inventing the missing meal', () => {
+  const mapper = createMapper({ validMenuSnapshot: validTestMenu });
+  const state=mapper.stateFromCloud(cloudCycleData({ plannedMealCount: 104 }));
+  assert.equal(state.noActiveCycle,true);assert.equal(state.activeMenus,null);
+  assert.deepEqual(state.cloudPlanIssue,{status:'active',start:'2026-10-13',filled:104,reason:'incomplete',missingRecipeIds:[]});
+  assert.equal(state.profileConfirmed,true);assert.deepEqual(state.stock,{apple:1});
+});
+
+test('an invalid active-cycle start date does not block the rest of the account from loading', () => {
+  const mapper=createMapper({validMenuSnapshot:validTestMenu}),data=cloudCycleData();
+  data.cycles[0].start_date='infinity';
+  const state=mapper.stateFromCloud(data);
+  assert.equal(state.noActiveCycle,true);assert.equal(state.activeMenus,null);assert.equal(state.start,'2026-10-17');
+  assert.deepEqual(state.cloudPlanIssue,{status:'active',start:'2026-10-17',filled:0,reason:'incompatible',missingRecipeIds:[]});
+  assert.equal(state.profile.age,30);assert.deepEqual(state.stock,{apple:1});
+});
+
+test('an invalid planned-meal date isolates that cycle without blocking account hydration', () => {
+  const mapper=createMapper({validMenuSnapshot:validTestMenu}),data=cloudCycleData();
+  data.plannedMeals[0].meal_date='infinity';
+  const state=mapper.stateFromCloud(data);
+  assert.equal(state.noActiveCycle,true);assert.equal(state.activeMenus,null);
+  assert.deepEqual(state.cloudPlanIssue,{status:'active',start:'2026-10-13',filled:104,reason:'incompatible',missingRecipeIds:[]});
+  assert.equal(state.profile.age,30);assert.deepEqual(state.stock,{apple:1});
+});
+
+test('an invalid archived cycle does not prevent reading the current account', () => {
+  const mapper=createMapper({validMenuSnapshot:validTestMenu}),data=cloudCycleData({plannedMealCount:104});
+  data.cycles[0].status='archived';
+  const state=mapper.stateFromCloud(data);
+  assert.equal(state.noActiveCycle,true);assert.equal(state.cloudPlanIssue,null);
+  assert.equal(state.profile.age,30);assert.deepEqual(state.stock,{apple:1});
 });
 
 test('cloud mapper restores an active cycle, a completed meal and its ingredient snapshot', () => {

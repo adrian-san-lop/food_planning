@@ -62,6 +62,15 @@ test('v12 preserves partial setup, explicit preference resets and validates inva
   bad.planningPreferences=null;assert.equal(createNormalizer().cleanState(bad),null);
 });
 
+test('v12 browser working copies preserve a sanitized cloud menu issue without dropping account state', () => {
+  const raw={...baseState(12),...initialPlanningState('legacy'),profile:{sex:'manual',age:30,height:170,weight:70,activity:'sedentary',goal:'maintain'},
+    noActiveCycle:true,cloudPlanIssue:{status:'active',start:'2026-10-13',filled:104,reason:'incomplete',missingRecipeIds:['bad id','recipe_old','recipe_old']}};
+  const normalized=createNormalizer().cleanState(raw);
+  assert.deepEqual(normalized.cloudPlanIssue,{status:'active',start:'2026-10-13',filled:104,reason:'incomplete',missingRecipeIds:['recipe_old']});
+  const invalid={...raw,cloudPlanIssue:{status:'active',start:'2026-10-13',filled:105,reason:'unexpected',missingRecipeIds:[]}};
+  assert.equal(createNormalizer().cleanState(invalid).cloudPlanIssue,null);
+});
+
 test('local state normalizer accepts exactly v5-v12 and returns the current v12 shape', () => {
   const { cleanState } = createNormalizer();
   for (const version of [5, 6, 7, 8, 9, 10, 11, 12]) {

@@ -105,7 +105,7 @@ function app(stock) {
     portionsForRecipes: (recipes, activity = 0, current = state.profile, weight, fixed) => nutrition.portionsForRecipes(recipes, activity, current, weight, fixed),
     recipeToStockAmount: units.recipeToStockAmount, consumeAvailableStock, roundAmount,
     applyMovement: ledger.applyMovement, newOperationId: () => `meal:${++operation}`,
-    save: () => {}, showToast: () => {}, plannedDays: () => [dateFromISO(state.start)],
+    save: () => {}, showToast: () => {}, plannedDays: () => state.noActiveCycle ? [] : [dateFromISO(state.start)],
     dateFromISO, dateDiff, isoDate,
     shoppingCycle: () => ({ kind: 'current', start: state.start, menus }),
   });
@@ -160,4 +160,14 @@ test('real completion with empty pantry keeps full usage and shopping counts onl
   assert.deepEqual(state.stock, {});
   assert.equal(context.shoppingModel(1, 'current').remaining, 4);
   assert.deepEqual(structuredClone(context.planPortions(0, 0)[0]), structuredClone(saved.usage));
+});
+
+test('shopping does not report an empty complete list when the saved cycle cannot be used',()=>{
+  const {context,state}=app({rice:250});
+  state.noActiveCycle=true;
+  state.cloudPlanIssue={status:'active',start:state.start,filled:104,reason:'incomplete',missingRecipeIds:[]};
+  const shopping=context.shoppingModel(1,'current');
+  assert.equal(shopping.planUnavailable,true);
+  assert.equal(shopping.remaining,0);
+  assert.deepEqual(structuredClone(shopping.rows),[]);
 });

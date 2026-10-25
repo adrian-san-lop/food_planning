@@ -1,4 +1,4 @@
-import { accountSetupProgress, confirmSetupProfile, confirmFirstPlan, validateSetupDraft } from '../domain/onboarding.js?v=20261023-guided-setup';
+import { accountSetupProgress, confirmSetupProfile, confirmFirstPlan, validateSetupDraft } from '../domain/onboarding.js?v=20261025-cloud-account-load';
 import { createProfileDraft, validateProfileDraft } from '../domain/profile.js?v=20261022-planner-foundations';
 import { applyPlanningPreferencesPatch } from '../domain/planning-preferences.js?v=20261022-planner-foundations';
 import { dateFromISO } from '../domain/dates.js?v=20261015-european-date';

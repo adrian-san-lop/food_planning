@@ -192,6 +192,23 @@ export function createStateNormalizer({
     };
   }
 
+  function cleanCloudPlanIssue(raw) {
+    if (!raw || typeof raw !== 'object'
+      || !['active', 'scheduled', 'draft'].includes(raw.status)
+      || !dateFromISO(raw.start)
+      || !['incomplete', 'missing_catalog_recipe', 'incompatible'].includes(raw.reason)) return null;
+    const filled = Number(raw.filled);
+    return {
+      status: raw.status,
+      start: raw.start,
+      filled: Number.isInteger(filled) ? Math.max(0, Math.min(105, filled)) : 0,
+      reason: raw.reason,
+      missingRecipeIds: Array.isArray(raw.missingRecipeIds)
+        ? [...new Set(raw.missingRecipeIds.filter(id => typeof id === 'string' && /^[a-z][a-zA-Z0-9_]*$/.test(id)))].slice(0, 20)
+        : [],
+    };
+  }
+
   function cleanState(obj) {
     if (!obj || typeof obj !== 'object') return null;
     if (!SUPPORTED_STATE_VERSIONS.includes(obj.v) || !dateFromISO(obj.start)
@@ -281,6 +298,7 @@ export function createStateNormalizer({
     state.activeMenuGeneratedAt = typeof obj.activeMenuGeneratedAt === 'string' ? obj.activeMenuGeneratedAt : null;
     state.activeMenuConfirmedAt = typeof obj.activeMenuConfirmedAt === 'string' ? obj.activeMenuConfirmedAt : null;
     state.activeMenuRecoveryFocus = obj.activeMenuRecoveryFocus === true;
+    state.cloudPlanIssue = cleanCloudPlanIssue(obj.cloudPlanIssue);
     state.nextMenu = cleanCyclePlan(obj.nextMenu);
     state.plannerDraft = cleanCyclePlan(obj.plannerDraft);
     state.lastBackupAt = typeof obj.lastBackupAt === 'string' ? obj.lastBackupAt : null;

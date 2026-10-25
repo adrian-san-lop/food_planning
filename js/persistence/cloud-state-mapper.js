@@ -126,13 +126,31 @@ async function buildCloudSnapshot(source){
   function stateFromCloud(data){
  const planning=data.planningSupported?planningStateFromRows(data):planningStateFromRows({});
  if(!data.profile&&!(data.planningSupported&&planning.setupMode==='guided'))throw Error('La cuenta tiene sincronización iniciada pero no contiene su perfil. No he sustituido los datos de este navegador.');
- const s=emptyState(),mealRowsByCycle=new Map(),cycleInfo=new Map(),menuOf=new Map(),locksOf=new Map(),prepOf=new Map();
+ const s=emptyState(),mealRowsByCycle=new Map(),cycleInfo=new Map(),menuOf=new Map(),locksOf=new Map(),prepOf=new Map(),usableCycleIds=new Set(),cycleIssues=new Map();
  const visibleArchivedIds=new Set(data.cycles.filter(x=>x.status==='archived').sort((a,b)=>String(a.archived_at||a.created_at).localeCompare(String(b.archived_at||b.created_at))).slice(-6).map(x=>x.id));
  for(const row of data.plannedMeals){if(!mealRowsByCycle.has(row.cycle_id))mealRowsByCycle.set(row.cycle_id,[]);mealRowsByCycle.get(row.cycle_id).push(row)}
  for(const cycle of data.cycles){
   const menus=Array.from({length:3},()=>Array.from({length:7},()=>Array(5).fill(null))),locks=Array.from({length:3},()=>Array.from({length:7},()=>Array(5).fill(false))),start=dateFromISO(cycle.start_date);
-  for(const row of mealRowsByCycle.get(cycle.id)||[]){const offset=dateDiff(start,dateFromISO(row.meal_date));if(offset<0||offset>=21||row.slot<0||row.slot>4)continue;const week=Math.floor(offset/7),day=offset%7;menus[week][day][row.slot]=row.recipe_id;locks[week][day][row.slot]=!!row.is_locked}
-  if((cycle.status!=='archived'||visibleArchivedIds.has(cycle.id))&&!validMenuSnapshot(menus,true))throw Error('Hay un ciclo de Supabase incompleto o una receta que falta en el catálogo. No he sustituido los datos de este navegador.');
+  let invalidPosition=!start;
+  for(const row of mealRowsByCycle.get(cycle.id)||[]){
+   const mealDate=dateFromISO(row.meal_date);
+   if(!start||!mealDate||!Number.isInteger(row.slot)||row.slot<0||row.slot>4){invalidPosition=true;continue}
+   const offset=dateDiff(start,mealDate);if(offset<0||offset>=21)continue;
+   const week=Math.floor(offset/7),day=offset%7;menus[week][day][row.slot]=row.recipe_id;locks[week][day][row.slot]=!!row.is_locked
+  }
+  const shouldDisplay=cycle.status!=='archived'||visibleArchivedIds.has(cycle.id);
+  if(shouldDisplay){
+   const ids=menus.flat(2),filled=ids.filter(id=>typeof id==='string').length;
+   const missingRecipeIds=[...new Set(ids.filter(id=>typeof id==='string'&&!getRecipes()[id]))].sort();
+   let reason=null;
+   if(invalidPosition)reason='incompatible';
+   else if(filled<105)reason='incomplete';
+   else if(missingRecipeIds.length)reason='missing_catalog_recipe';
+   else if(!validMenuSnapshot(menus,true))reason='incompatible';
+   if(reason){
+    cycleIssues.set(cycle.id,{status:cycle.status,start:dateFromISO(cycle.start_date)?cycle.start_date:isoDate(today()),filled,reason,missingRecipeIds:missingRecipeIds.slice(0,20)});
+   }else usableCycleIds.add(cycle.id);
+  }
   cycleInfo.set(cycle.id,cycle);menuOf.set(cycle.id,menus);locksOf.set(cycle.id,locks);
  }
  const active=data.cycles.find(x=>x.status==='active');
@@ -152,8 +170,11 @@ async function buildCloudSnapshot(source){
  Object.assign(s,planning);
  s.profile=sProfile?(planning.setupMode==='guided'?createProfileDraft:sanitizeProfile)({sex:sProfile.sex,age:sProfile.age,height:sProfile.height_cm,weight:sProfile.reference_weight_kg,activity:sProfile.activity_level,goal:sProfile.goal,injury:sProfile.injury_recovery,autoPortions:sProfile.auto_portions,followWeight:sProfile.follow_weight,manualRmr:sProfile.manual_rmr_kcal}):null;
  s.profileConfirmed=sProfile?.profile_confirmed===true;
- if(active){s.noActiveCycle=false;s.activeCycleId=active.id;s.start=active.start_date;s.activeMenus=menuOf.get(active.id);s.activeMenuCatalogVersion=active.catalog_version;s.activeMenuGeneratedAt=active.generated_at;s.activeMenuConfirmedAt=active.confirmed_at;s.activeMenuRecoveryFocus=!!active.recovery_focus;s.done=doneByCycle.get(active.id)||{};s.reversedDone=reversedDoneByCycle.get(active.id)||{};s.prep=prepOf.get(active.id)||{}}
- else{s.noActiveCycle=true;s.activeCycleId=null;s.start=isoDate(today());s.activeMenus=null;s.activeMenuCatalogVersion=null;s.activeMenuGeneratedAt=null;s.activeMenuConfirmedAt=null;s.activeMenuRecoveryFocus=false;s.done={};s.prep={}}
+ if(active&&usableCycleIds.has(active.id)){s.noActiveCycle=false;s.activeCycleId=active.id;s.start=active.start_date;s.activeMenus=menuOf.get(active.id);s.activeMenuCatalogVersion=active.catalog_version;s.activeMenuGeneratedAt=active.generated_at;s.activeMenuConfirmedAt=active.confirmed_at;s.activeMenuRecoveryFocus=!!active.recovery_focus;s.done=doneByCycle.get(active.id)||{};s.reversedDone=reversedDoneByCycle.get(active.id)||{};s.prep=prepOf.get(active.id)||{}}
+ else{s.noActiveCycle=true;s.activeCycleId=null;s.start=dateFromISO(active?.start_date)?active.start_date:isoDate(today());s.activeMenus=null;s.activeMenuCatalogVersion=null;s.activeMenuGeneratedAt=null;s.activeMenuConfirmedAt=null;s.activeMenuRecoveryFocus=false;s.done={};s.reversedDone={};s.prep={}}
+ s.cloudPlanIssue=(active&&!usableCycleIds.has(active.id)?cycleIssues.get(active.id):null)
+  ||['scheduled','draft'].map(status=>data.cycles.find(c=>c.status===status&&!usableCycleIds.has(c.id))).filter(Boolean).map(c=>cycleIssues.get(c.id)).find(Boolean)
+  ||null;
  s.movements=allMovements;s.stock={};rebuildStock(s);
  s.purchases=allMovements.filter(x=>x.kind==='purchase'&&x.quantity>0).slice(-2500).map(x=>({id:x.foodId,amount:x.quantity,date:x.createdAt,operationId:x.operationId}));
  s.weights=data.weights.map(x=>({date:x.measured_on,kg:Number(x.weight_kg)})).sort((a,b)=>a.date.localeCompare(b.date));
@@ -162,7 +183,7 @@ async function buildCloudSnapshot(source){
  const allArchived=data.cycles.filter(x=>x.status==='archived').sort((a,b)=>String(a.archived_at||a.created_at).localeCompare(String(b.archived_at||b.created_at))),toArchiveState=c=>({cycleId:c.id,start:c.start_date,done:doneByCycle.get(c.id)||{},reversedDone:reversedDoneByCycle.get(c.id)||{},legacyStrengthDays:{},prep:prepOf.get(c.id)||{},menus:menuOf.get(c.id),catalogVersion:c.catalog_version,archivedAt:c.archived_at||c.created_at,generatedAt:c.generated_at,confirmedAt:c.confirmed_at,recoveryFocus:!!c.recovery_focus});
  const archiveCache=new Map();for(const cycle of allArchived){const cached=toArchiveState(cycle);if(isUuid(cycle.id)&&validMenuSnapshot(cached.menus,true))archiveCache.set(cycle.id,cached)}if(getUserId())archivedCyclesByUser.set(getUserId(),archiveCache);
  const archived=allArchived.slice(-6);s.archives=archived.map(toArchiveState);
- const toPlan=c=>c?({start:c.start_date,menus:menuOf.get(c.id),locked:locksOf.get(c.id),catalogVersion:c.catalog_version,generatedAt:c.generated_at,confirmedAt:c.confirmed_at,recoveryFocus:!!c.recovery_focus}):null;
+ const toPlan=c=>c&&usableCycleIds.has(c.id)?({start:c.start_date,menus:menuOf.get(c.id),locked:locksOf.get(c.id),catalogVersion:c.catalog_version,generatedAt:c.generated_at,confirmedAt:c.confirmed_at,recoveryFocus:!!c.recovery_focus}):null;
  s.nextMenu=toPlan(data.cycles.find(x=>x.status==='scheduled'));s.plannerDraft=toPlan(data.cycles.find(x=>x.status==='draft'));
  const shopping=data.shoppingSessions.find(x=>x.status==='open');
  if(shopping){for(const item of data.shoppingItems.filter(x=>x.session_id===shopping.id)){if(item.item_kind==='planned')s.cart[item.item_key]={count:Number(item.package_count),size:Number(item.package_size),checked:!!item.is_checked};else{const parts=String(item.item_key||'').split(':'),scope=parts.length===4?parts[1]:'current';s.cartExtras.push({id:item.food_id,count:Number(item.package_count),size:Number(item.package_size),...(scope==='current'?{}:{scope})})}}}

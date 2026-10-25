@@ -78,7 +78,8 @@ export function getSetupProgress({
 }
 
 export function hasConfirmedPlan(state) {
-  return Boolean((!state.noActiveCycle && state.activeMenuConfirmedAt)
+  return Boolean(state.cloudPlanIssue?.status === 'active'
+    || (!state.noActiveCycle && state.activeMenuConfirmedAt)
     || state.nextMenu?.confirmedAt || state.archives?.some(cycle => cycle.confirmedAt));
 }
 
