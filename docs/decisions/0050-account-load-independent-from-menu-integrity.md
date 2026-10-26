@@ -12,7 +12,7 @@ Supabase es la fuente canónica de datos personales. El cliente ya descarga las 
 
 1. La reconstrucción de cada ciclo se valida por separado. Un ciclo activo, programado o borrador con menos de 105 posiciones, una receta ausente, una fecha o posición inválida, o tipos incompatibles se excluye de las funciones que requieren un menú válido; no aborta la hidratación de perfil, despensa, actividad, peso, preferencias ni movimientos.
 2. El cliente no sustituye IDs, rellena posiciones ni usa la plantilla fija como si fuera el ciclo remoto. Si el ciclo activo no puede mostrarse, Inicio, Menú y Compra indican que el cálculo del plan no está disponible. Perfil, despensa, seguimiento y compra imprevista siguen accesibles. La interfaz no solicita revisar ni reimportar los datos.
-3. Actualización aceptada del 25/10/2026: [ADR-0051](0051-server-authoritative-account-state.md) sustituye el archivado por omisión. Las filas de un ciclo ilegible se conservan y no se interpretan como una orden de archivado; las acciones nuevas son acotadas. La evolución completa requiere la migración del contrato 2.
+3. Actualización aceptada del 25/10/2026: [ADR-0051](0051-server-authoritative-account-state.md) sustituye el archivado por omisión. Las filas de un ciclo ilegible se conservan y no se interpretan como una orden de archivado; las acciones nuevas son acotadas. La migración del contrato 2 y su funcionamiento en PC y móvil constan confirmados por el propietario el 25/10/2026; véase ADR-0051.
 4. Los errores de Auth, transporte, perfil realmente ausente o lectura inconsistente siguen siendo errores de sincronización y conservan la acción de reintento. Esta decisión aísla problemas de menú; no convierte fallos de conexión en lecturas correctas.
 
 ## Consecuencias

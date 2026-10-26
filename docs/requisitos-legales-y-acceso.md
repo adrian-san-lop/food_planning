@@ -123,7 +123,7 @@ La página puede usar lenguaje cotidiano, pero debe conservar los nombres y alca
 
 ## 10. Inventario técnico revisado en código
 
-La revisión es estática: no acredita cookies recibidas por red, duración efectiva de la sesión, comportamiento de una cuenta real ni configuración del entorno publicado. El inventario de almacenamiento se actualiza el 25/10/2026 para el contrato de cuenta 2, implementado localmente y pendiente de activación alojada; véase [contrato y despliegue](backend/account-contract.md). No cambia las conclusiones jurídicas pendientes de este borrador.
+La revisión es estática: no acredita cookies recibidas por red, duración efectiva de la sesión, comportamiento de una cuenta real ni configuración del entorno publicado. El inventario de almacenamiento se actualiza el 25/10/2026 para el contrato de cuenta 2, implementado, con activación en Supabase y funcionamiento en PC/móvil confirmados por el propietario; véase [contrato y despliegue](backend/account-contract.md). No cambia las conclusiones jurídicas pendientes de este borrador.
 
 | Mecanismo o servicio | Datos y finalidad comprobables | Duración y comprobaciones pendientes |
 | --- | --- | --- |

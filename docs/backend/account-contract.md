@@ -1,15 +1,25 @@
 # Cuenta canónica y sincronización entre dispositivos
 
-Estado: implementación local en `dev`, 25/10/2026. La migración alojada no consta aplicada. [ADR-0051](../decisions/0051-server-authoritative-account-state.md).
+Estado: implementación completada; migración aplicada y funcionamiento en PC y móvil confirmados por el propietario el 25/10/2026. [ADR-0051](../decisions/0051-server-authoritative-account-state.md).
 
 ## Activación en Supabase
+
+**Cerrada en el proyecto configurado, según confirmación del propietario (25/10/2026):**
+
+- Ejecutó `20261025120000_server_authoritative_accounts.sql` y obtuvo **Success**.
+- Ejecutó `account_authority.sql` y obtuvo las **ocho filas con `ready = true`**.
+- Probó la aplicación en **PC y móvil** y confirma que funciona correctamente.
+
+No quedan pasos de activación o aceptación pendientes para esta entrega. Esta evidencia alojada y de dispositivos procede del propietario; no se presenta como una inspección administrativa o una nueva prueba independiente del agente.
+
+La siguiente secuencia se conserva como referencia para otros entornos; **no es necesario repetirla en el proyecto ya validado**:
 
 1. Publicar el cliente de esta entrega cuando el propietario autorice el commit y publicación. Es compatible con el esquema previo mientras la migración siga pendiente. GitHub Pages publica `dev`; editar el checkout local no publica sus archivos.
 2. En **Supabase → SQL Editor**, ejecutar **todo** [20261025120000_server_authoritative_accounts.sql](../../supabase/migrations/20261025120000_server_authoritative_accounts.sql). Esperado: **Success**. La migración crea cinco tablas, amplía ajustes y define los RPC completos; no vacía cuentas ni inventario. No ejecutar de nuevo las migraciones anteriores después de esta, porque volverían a definir escritores antiguos.
 3. Ejecutar [account_authority.sql](../../supabase/diagnostics/account_authority.sql). Debe devolver **ocho filas con `ready = true`**. Son comprobaciones estructurales de solo lectura; no alteran una cuenta ni sustituyen una prueba funcional.
 4. Recargar Menuki en ambos dispositivos. La primera edición confirmada marca esa cuenta con contrato 2. Los navegadores que todavía ejecuten código anterior deben recargar la aplicación para guardar.
 
-Los archivos SQL del repositorio no se aplican automáticamente en Supabase. La clave pública del cliente no puede ejecutar esta migración; se requiere el acceso de propietario al SQL Editor. Al documentar su aplicación, distinguir la confirmación del propietario de una inspección independiente.
+Los archivos SQL del repositorio no se aplican automáticamente en Supabase. La clave pública del cliente no puede ejecutar esta migración; se requiere el acceso de propietario al SQL Editor. En este proyecto, la aplicación y los resultados del diagnóstico constan confirmados por el propietario.
 
 ## Lectura
 

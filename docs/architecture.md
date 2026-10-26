@@ -8,7 +8,7 @@ Estado documental actualizado: 23 de octubre de 2026. El [paquete 7](planner/pac
 
 ## Arquitectura actual
 
-Evolución aceptada del 25/10/2026: el contrato de cuenta 2 está implementado y probado localmente; su migración alojada está pendiente. [ADR-0051](decisions/0051-server-authoritative-account-state.md) y [activación](backend/account-contract.md) son la referencia vigente para lectura canónica, acciones acotadas, snapshots de recetas/raciones y memoria de sesión. La evidencia alojada de paquetes 1–7 que figura arriba es anterior a esta evolución.
+Evolución aceptada del 25/10/2026: el contrato de cuenta 2 está implementado y probado localmente. El propietario confirma la migración en Supabase con Success, las ocho comprobaciones con ready = true y el funcionamiento correcto en PC y móvil; la activación y aceptación de esta entrega quedan cerradas. [ADR-0051](decisions/0051-server-authoritative-account-state.md) y [activación](backend/account-contract.md) son la referencia vigente para lectura canónica, acciones acotadas, snapshots de recetas/raciones y memoria de sesión. La evidencia independiente de paquetes 1–7 que figura arriba es anterior a esta evolución; la confirmación alojada y de dispositivos del contrato 2 procede del propietario.
 
 ```text
 Navegador

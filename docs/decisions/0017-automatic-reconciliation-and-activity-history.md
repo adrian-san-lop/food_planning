@@ -4,7 +4,7 @@
 - **Estado:** Aceptada e implementada en el cliente local; publicación y validación real pendientes
 - **Alcance:** sincronización de estado personal, navegación móvil e historial de sesiones
 
-Actualización aceptada (25/10/2026): [ADR-0051](0051-server-authoritative-account-state.md) amplía este registro. El contrato 2 usa lectura única, acciones acotadas, snapshots reproducibles de plan y base completa en memoria de sesión. La copia personal persistida corresponde al contrato anterior y a la transición; la conciliación concurrente sigue siendo automática. Activación alojada pendiente según [instrucciones](../backend/account-contract.md).
+Actualización aceptada (25/10/2026): [ADR-0051](0051-server-authoritative-account-state.md) amplía este registro. El contrato 2 usa lectura única, acciones acotadas, snapshots reproducibles de plan y base completa en memoria de sesión. La copia personal persistida corresponde al contrato anterior y a la transición; la conciliación concurrente sigue siendo automática. Activación alojada confirmada por el propietario el 25/10/2026: Success, ocho ready = true y funcionamiento correcto en PC y móvil; véase [registro de confirmación](../backend/account-contract.md).
 
 ## Contexto
 

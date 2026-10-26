@@ -1,7 +1,7 @@
 # ADR-0051 — Estado de cuenta confirmado por Supabase
 
 - Fecha: 25 de octubre de 2026.
-- Estado: aceptada por el propietario; implementada y probada localmente. Activación alojada pendiente.
+- Estado: implementada y probada localmente; activación en Supabase y funcionamiento en PC y móvil confirmados por el propietario el 25/10/2026. Entrega cerrada.
 - Sustituye el archivado por omisión de ADR-0050 y amplía ADR-0010, ADR-0014 y ADR-0017.
 
 ## Decisión
@@ -24,4 +24,4 @@ La migración anuncia `account_contract: 2` sin cambiar `planning_contract: 1`. 
 
 Después de la primera acción nueva de una cuenta, el escritor antiguo exige el contexto interno de `apply_menuki_action`. Un navegador antiguo debe actualizar la aplicación para escribir. Esto evita que invalide las cantidades confirmadas omitiendo sus tablas. El reinicio confirmado sigue pasando por `reset_menuki_state` dentro de la acción idempotente.
 
-No se necesita cambiar de framework, servidor de alojamiento ni proyecto Supabase. La activación requiere ejecutar el SQL nuevo y publicar el cliente compatible. Instrucciones y límites de verificación: [contrato de cuenta](../backend/account-contract.md).
+No se necesita cambiar de framework, servidor de alojamiento ni proyecto Supabase. El propietario confirma el 25/10/2026 la ejecución de la migración con **Success**, las ocho comprobaciones con **ready = true** y el funcionamiento correcto en **PC y móvil**. La activación y aceptación de esta entrega quedan cerradas. Esta confirmación se distingue de las pruebas locales independientes del agente; no implica una inspección administrativa adicional. Registro y procedimiento de referencia: [contrato de cuenta](../backend/account-contract.md).
