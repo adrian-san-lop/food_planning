@@ -3,16 +3,19 @@ import { createPlanningPreferences } from '../domain/planning-preferences.js?v=2
 
 export const PREFERENCE_LABELS = { normal: 'Normal', favorite: 'Favorita', do_not_propose: 'No proponer' };
 
-export function recipePreferenceControls(recipeId, preferences = createPlanningPreferences(), available = true) {
-  const current = preferences.recipePreferences[recipeId] ?? 'normal';
-  return '<div class="recipe-preference"><span>En próximos menús</span><div class="recipe-preference-options" role="group" aria-label="Preferencia de esta receta">'
-    + Object.entries(PREFERENCE_LABELS).map(([value, label]) => `<button type="button" class="btn recipe-preference-button" data-action="recipe-preference" data-recipe="${a(recipeId)}" data-preference="${value}" aria-pressed="${current === value}" ${available ? '' : 'disabled'}>${value === 'favorite' ? '<span aria-hidden="true">☆</span> ' : ''}${label}</button>`).join('')
-    + '</div><small>Favorita le da prioridad; No proponer la retira de la selección automática. Tus menús guardados se conservan.</small></div>';
+export const FAVORITE_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.3.9-4.55 4.43 1.08 6.27L12 17.34l-5.63 2.96 1.08-6.27L2.9 9.6l6.3-.9L12 3Z"/></svg>';
+const moreIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></svg>';
+
+export function recipePreferenceControls(recipeId, preferences = createPlanningPreferences(), available = true, options = {}) {
+  const current = preferences.recipePreferences[recipeId] ?? 'normal', favorite = current === 'favorite';
+  const { label = true, more = true, badge = true, context = `sheet-${recipeId}`, name = '', disabledReason = 'Ahora no se pueden guardar preferencias.' } = options;
+  const description = available ? (favorite ? 'Quitar de favoritas' : current === 'do_not_propose' ? 'Marcar como favorita y permitir en próximos menús' : 'Dar prioridad en futuros menús') : disabledReason;
+  return `<div class="recipe-preference${label ? ' recipe-preference--labeled' : ''}" data-preference-context="${a(context)}" data-preference-recipe="${a(recipeId)}"><button type="button" class="btn recipe-favorite" data-action="recipe-preference" data-recipe="${a(recipeId)}" data-preference="${favorite ? 'normal' : 'favorite'}" data-preference-control="favorite" data-review-focus="${a(context)}-favorite" aria-pressed="${favorite}" aria-label="Favorita${name ? `: ${a(name)}` : ''}" title="${a(description)}" ${available ? '' : 'disabled'}>${FAVORITE_ICON}${label ? '<span>Favorita</span>' : ''}</button>${more ? `<button type="button" class="btn recipe-preference-more" data-action="recipe-preference-more" data-recipe="${a(recipeId)}" data-preference-control="more" data-review-focus="${a(context)}-more" aria-haspopup="menu" aria-controls="recipePreferenceMenu" aria-expanded="false" aria-label="Opciones de receta${name ? `: ${a(name)}` : ''}" title="Opciones para próximos menús" ${available ? '' : 'disabled'}>${moreIcon}</button>` : ''}${badge && current === 'do_not_propose' ? '<span class="recipe-excluded-badge">No proponer</span>' : ''}</div>`;
 }
 
 export function markedRecipesMarkup(preferences, recipes, available = true) {
   const marked = recipes.filter(recipe => ['favorite','do_not_propose'].includes(preferences.recipePreferences[recipe.id]));
-  return marked.length ? '<ul class="marked-recipes">' + marked.map(recipe => `<li><span><strong>${h(recipe.name)}</strong><small>${PREFERENCE_LABELS[preferences.recipePreferences[recipe.id]]}</small></span><button type="button" class="btn" data-action="recipe-preference" data-recipe="${a(recipe.id)}" data-preference="normal" ${available ? '' : 'disabled'} aria-label="Volver a Normal: ${a(recipe.name)}">Volver a Normal</button></li>`).join('') + '</ul>'
+  return marked.length ? '<ul class="marked-recipes">' + marked.map(recipe => { const reset = preferences.recipePreferences[recipe.id] === 'favorite' ? 'Quitar de favoritas' : 'Volver a permitir'; return `<li><span><strong>${h(recipe.name)}</strong><small>${PREFERENCE_LABELS[preferences.recipePreferences[recipe.id]]}</small></span><button type="button" class="btn" data-action="recipe-preference" data-recipe="${a(recipe.id)}" data-preference="normal" ${available ? '' : 'disabled'} aria-label="${reset}: ${a(recipe.name)}">${reset}</button></li>`; }).join('') + '</ul>'
     : '<p class="muted">Todavía no has marcado recetas. Puedes hacerlo desde cualquier ficha del recetario o del menú.</p>';
 }
 

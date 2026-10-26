@@ -21,7 +21,7 @@ function harness() {
   const root = {dataset: {}, innerHTML: '', contains: () => false, querySelector: selector => selector === '.recipe-more' ? more : content};
   const dialog = {open: false, showModal() { this.open = true; }};
   const context = vm.createContext({
-    plannerProposal: proposal, modalCtx: null, REC: recipes, visibleWeek: 0, state,
+    plannerProposal: proposal, modalCtx: null, REC: recipes, RECIPES:Object.values(recipes), visibleWeek: 0, state,
     document: {getElementById: id => id === 'recipeDialog' ? dialog : root},
     portionsForRecipes: (day, activity) => { calls.push({ids: day.map(recipe => recipe.id), activity}); return day.map((_, s) => ({rice: 100 + s})); },
     recipeUsage: () => ({rice: 999}), mealUsage: () => ({rice: 75}),

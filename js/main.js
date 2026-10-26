@@ -2,8 +2,8 @@ import { createAccountAction, accountActionIsEmpty } from './persistence/account
 import { materializePlan, savedPlanDay } from './domain/plan-details.js?v=20261025-account-contract';
 import { changeProposalRecipe } from './domain/menu-review.js?v=20261023-weekly-review';
 import { createPlannerReviewView } from './ui/planner-review.js?v=20261025-account-contract';
-import { recipePreferenceControls } from './ui/planning-preferences.js?v=20261024-planner-workspace';
-import { createPlanningPreferencesController } from './ui/planning-preferences-controller.js?v=20261024-planner-workspace';
+import { recipePreferenceControls, FAVORITE_ICON } from './ui/planning-preferences.js?v=20261026-favorites';
+import { createPlanningPreferencesController } from './ui/planning-preferences-controller.js?v=20261026-favorites';
 import { createOnboardingController } from './ui/onboarding-controller.js?v=20261025-cloud-account-load';
 import { summarizeMenu } from './domain/menu-generator.js?v=20261023-common-generator';
 import { createMenuPlanner } from './domain/menu-planner.js?v=20261023-weekly-review';
@@ -444,9 +444,11 @@ async function syncCloudNow(immediate=false){
 function newOperationId(){return globalThis.crypto?.randomUUID?globalThis.crypto.randomUUID():'op-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2)}
 let visibleWeek=0,selectedDay=0,view='inicio',shopStore='merc',shopRange='7',shopCycle='current',shoppingSearch='',recipeFilter='todos',recipeSearch='',pantryFilter='used',pantrySearch='',modalCtx=null,plannerProposal=null,toastTimer,mobileMoreOpen=false,mobileAccountOpen=false,cycleStartOpener=null,cycleStartDraft=null,cycleSetupDateDraft='',quickGuideStep=0,renewalPromptView=null;
 let plannerWeek=0,plannerDay=0,plannerChoice=null,plannerEditScope='cycle',plannerPreferencesNotice=false,plannerPreferencesSignature='',plannerPersistedDraftSignature='',plannerChangeMessage='',plannerIntent='renewal';
-const plannerReviewView=createPlannerReviewView({getRecipes:()=>[...new Map([...RECIPES,...Object.values(plannerProposal?.details?.recipes||{})].map(recipe=>[recipe.id,recipe])).values()],portionsForRecipes,getMacro:(usage,foods)=>foods?createNutritionService({getFood:()=>foods,getEffectiveWeight:()=>0}).getMacro(usage):plannerNutrition.getMacro(usage),getSavedDay:savedPlanDay,getTarget:()=>nutritionTarget(0),formatDate,icon:ic});
-const planningPreferencesController=createPlanningPreferencesController({document,getState:()=>state,getRecipes:()=>RECIPES,isAvailable:()=>planningPersistenceAvailable,save,notify:showToast,onChange:()=>{
+const plannerReviewView=createPlannerReviewView({getRecipes:()=>[...new Map([...RECIPES,...Object.values(plannerProposal?.details?.recipes||{})].map(recipe=>[recipe.id,recipe])).values()],portionsForRecipes,getMacro:(usage,foods)=>foods?createNutritionService({getFood:()=>foods,getEffectiveWeight:()=>0}).getMacro(usage):plannerNutrition.getMacro(usage),getSavedDay:savedPlanDay,getTarget:()=>nutritionTarget(0),formatDate,icon:ic,canSetRecipePreference:id=>RECIPES.some(recipe=>recipe.id===id)});
+let recipeFavoritesOnly=false;
+const planningPreferencesController=createPlanningPreferencesController({document,getState:()=>state,getRecipes:()=>RECIPES,isAvailable:()=>planningPersistenceAvailable,save,notify:showToast,savedFeedback:afterCloudSave,onChange:()=>{
  plannerPreferencesNotice=true;
+ if(view==='recetas')refreshRecipeResults();
  if(document.getElementById('plannerDialog').open)renderPlannerReview();
  if(document.getElementById('recipeDialog').open)renderRecipeModal();
 }});
@@ -837,7 +839,7 @@ function renderPlannerReview(options={}){
  try{
   const inspection=inspectPlannerProposal(plannerProposal);
   plannerReviewView.render(document.getElementById('plannerContent'),{proposal:plannerProposal,week:plannerWeek,day:plannerDay,scope:plannerEditScope,
-   preferences:state.planningPreferences,inspection,summary:plannerCounts(plannerProposal.menus),profile:state.profile,recoveryCoverage:plannerProposal.recoveryFocus&&validMenuSnapshot(plannerProposal.menus)?plannerRecoveryCoverage(plannerProposal.menus):null,
+   preferences:state.planningPreferences,preferencesAvailable:planningPersistenceAvailable,inspection,summary:plannerCounts(plannerProposal.menus),profile:state.profile,recoveryCoverage:plannerProposal.recoveryFocus&&validMenuSnapshot(plannerProposal.menus)?plannerRecoveryCoverage(plannerProposal.menus):null,
    firstPlan:plannerIntent==='first',hasSavedDraft:!!state.plannerDraft,preferencesChanged:plannerPreferencesNotice||Boolean(state.profile.injury)!==Boolean(plannerProposal.recoveryFocus),changeMessage:plannerChangeMessage},options);
   if(plannerChoice)renderPlannerChoices();
   return true;
@@ -871,7 +873,7 @@ function swapPlannerRecipe(el){
 }
 function renderPlannerChoices(reset=false){
  if(!plannerChoice||!plannerProposal)return;
- plannerReviewView.renderChoices(document.getElementById('plannerChoiceContent'),{proposal:plannerProposal,preferences:state.planningPreferences,scope:plannerEditScope},plannerChoice,{reset});
+ plannerReviewView.renderChoices(document.getElementById('plannerChoiceContent'),{proposal:plannerProposal,preferences:state.planningPreferences,preferencesAvailable:planningPersistenceAvailable,scope:plannerEditScope},plannerChoice,{reset});
 }
 function openPlannerChoices(button){
  if(!plannerProposal)return;
@@ -1126,9 +1128,23 @@ function weekView(){
   const offset=dateDiff(dateFromISO(state.start),today()),position=offset<0?'Comienza el '+formatDate(dateFromISO(state.start),{day:'numeric',month:'short'}):offset>=21?'Ciclo finalizado':'Día '+(offset+1)+' de 21';
   return '<div class="menu-dashboard"><header class="menu-header"><div><h1>Tu menú de 3 semanas</h1><div class="menu-cycle-meta"><span>'+ic('calendar')+escapeHTML(cycleDateLabel())+'</span><span class="menu-cycle-position">'+escapeHTML(position)+'</span></div></div><div class="menu-header-actions"><button type="button" class="btn" data-action="toggle-cycle-start" aria-haspopup="dialog" aria-controls="cycleStartDialog">'+ic('calendar')+' Cambiar fecha</button><button type="button" class="btn btn-quiet menu-quantities-help" data-action="menu-quantities-help" aria-haspopup="dialog" aria-controls="menuHelpDialog">'+ic('info')+' Cómo se calculan las cantidades</button></div></header>'+weekTabs()+dayTiles(visibleWeek)+'<div class="menu-detail-grid">'+planDayCard(day,visibleWeek,{menuDashboard:true})+'<aside class="menu-side" aria-label="Próximo ciclo y nutrición del día">'+plannerCard()+energyStatus(day,visibleWeek,null,true,{menuSummary:true})+'</aside></div></div>';
 }
-function recipeTile(r){const c=calc(r,false),typename=r.type==='media'?'Snack mañana':r.type==='tarde'?'Snack tarde':r.type==='desayuno'?'Desayuno':r.type==='comida'?'Comida':'Cena';return '<button type="button" class="recipe-tile" data-action="open" data-recipe="'+escapeAttribute(r.id)+'"><div class="tile-body"><span class="tile-tag">'+escapeHTML(typename)+'</span><h3>'+escapeHTML(r.name)+'</h3><div class="tile-meta"><span class="tile-time">'+ic('clock')+'<span>'+escapeHTML(r.time)+' min</span></span><span class="tile-nutrition"><span>'+nformat(c.k)+' kcal</span><span>'+nformat(c.p)+' g prot.</span></span></div></div></button>'}
-function recipesList(){let normalize=x=>x.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,'');let q=normalize(recipeSearch);let items=RECIPES.filter(r=>(recipeFilter==='todos'||r.type===recipeFilter||recipeFilter==='snack'&&['media','tarde'].includes(r.type))&&(normalize(r.name).includes(q)||r.ingredients.some(i=>normalize(FOOD[i.id][0]).includes(q))));return items.length?'<div class="recipe-grid">'+items.map(recipeTile).join('')+'</div>':'<div class="empty"><span>🥬</span>No hay recetas con esos filtros.</div>'}
-function recipesView(){return '<div class="page-intro"><div class="eyebrow">RECETARIO COMPLETO</div><h1>Ideas sin caer en la monotonía</h1><p>'+RECIPES.length+' recetas y combinaciones, con ingredientes y preparación explicada. Desayunos, opciones con yogur y comidas/cenas variadas de 20–30 minutos en general.</p></div><div class="recipe-tools"><label class="search-input">'+ic('search')+'<input type="search" id="recipeSearch" autocomplete="off" placeholder="Busca por plato o ingrediente…" value="'+escapeHTML(recipeSearch)+'" aria-label="Buscar recetas"></label><div class="chips">'+[['todos','Todas'],['desayuno','Desayunos'],['comida','Comidas'],['cena','Cenas'],['snack','Snacks']].map(x=>'<button class="chip '+(recipeFilter===x[0]?'active':'')+'" data-action="filter" data-filter="'+x[0]+'">'+x[1]+'</button>').join('')+'</div></div><div id="recipeResults">'+recipesList()+'</div><div class="footnote">Los datos nutricionales son orientativos y pueden variar según los productos.</div>'}
+function recipeTile(r){
+ const c=calc(r,false),typename=r.type==='media'?'Snack mañana':r.type==='tarde'?'Snack tarde':r.type==='desayuno'?'Desayuno':r.type==='comida'?'Comida':'Cena';
+ return '<article class="recipe-tile" data-tile-recipe="'+escapeAttribute(r.id)+'"><button type="button" class="recipe-tile-open" data-action="open" data-recipe="'+escapeAttribute(r.id)+'" aria-label="Ver receta: '+escapeAttribute(r.name)+'"><div class="tile-body"><div class="tile-heading"><span class="tile-tag">'+escapeHTML(typename)+'</span></div>'+(state.planningPreferences.recipePreferences[r.id]==='do_not_propose'?'<span class="recipe-excluded-badge tile-excluded">No proponer</span>':'')+'<h3>'+escapeHTML(r.name)+'</h3><div class="tile-meta"><span class="tile-time">'+ic('clock')+'<span>'+escapeHTML(r.time)+' min</span></span><span class="tile-nutrition"><span>'+nformat(c.k)+' kcal</span><span>'+nformat(c.p)+' g prot.</span></span></div></div></button><div class="tile-preference">'+recipePreferenceControls(r.id,state.planningPreferences,planningPersistenceAvailable,{label:false,more:false,badge:false,context:'tile-'+r.id,name:r.name})+'</div></article>';
+}
+function recipesList(){
+ const normalize=x=>x.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g,''),q=normalize(recipeSearch);
+ const items=RECIPES.filter(r=>(!recipeFavoritesOnly||state.planningPreferences.recipePreferences[r.id]==='favorite')&&(recipeFilter==='todos'||r.type===recipeFilter||recipeFilter==='snack'&&['media','tarde'].includes(r.type))&&(normalize(r.name).includes(q)||r.ingredients.some(i=>normalize(FOOD[i.id][0]).includes(q))));
+ return items.length?'<div class="recipe-grid">'+items.map(recipeTile).join('')+'</div>':'<div class="empty"><span>🥬</span>'+(recipeFavoritesOnly?'No hay favoritas con estos filtros. Marca la estrella de una receta para añadirla.':'No hay recetas con esos filtros.')+'</div>';
+}
+function refreshRecipeResults(){
+ const root=document.getElementById('recipeResults');if(!root)return;
+ const active=document.activeElement,inside=root.contains(active),context=active?.closest('[data-preference-context]')?.dataset.preferenceContext;
+ const cards=[...root.querySelectorAll('.recipe-tile')],index=cards.indexOf(active?.closest('.recipe-tile'));
+ root.innerHTML=recipesList();
+ if(inside){const next=context?root.querySelector('[data-preference-context="'+context+'"] [data-preference-control="favorite"]'):null;const remaining=[...root.querySelectorAll('.recipe-favorite')];(next||remaining[Math.min(Math.max(index,0),remaining.length-1)]||document.querySelector('[data-action="recipe-favorites-filter"]'))?.focus({preventScroll:true})}
+}
+function recipesView(){return '<div class="page-intro"><div class="eyebrow">RECETARIO COMPLETO</div><h1>Ideas sin caer en la monotonía</h1><p>'+RECIPES.length+' recetas y combinaciones, con ingredientes y preparación explicada. Desayunos, opciones con yogur y comidas/cenas variadas de 20–30 minutos en general.</p></div><div class="recipe-tools"><label class="search-input">'+ic('search')+'<input type="search" id="recipeSearch" autocomplete="off" placeholder="Busca por plato o ingrediente…" value="'+escapeHTML(recipeSearch)+'" aria-label="Buscar recetas"></label><div class="chips">'+[['todos','Todas'],['desayuno','Desayunos'],['comida','Comidas'],['cena','Cenas'],['snack','Snacks']].map(x=>'<button class="chip '+(recipeFilter===x[0]?'active':'')+'" data-action="filter" data-filter="'+x[0]+'">'+x[1]+'</button>').join('')+'<button type="button" class="chip recipe-favorites-filter '+(recipeFavoritesOnly?'active':'')+'" data-action="recipe-favorites-filter" aria-pressed="'+recipeFavoritesOnly+'">'+FAVORITE_ICON+' Favoritas</button></div></div><div id="recipeResults">'+recipesList()+'</div><div class="footnote">Los datos nutricionales son orientativos y pueden variar según los productos.</div>'}
 // Compra dinámica basada en comidas aún pendientes y el inventario declarado.
 function shoppingCycle(kind=shopCycle){
  const next=confirmedNextMenu();
@@ -1389,7 +1405,7 @@ function render(){
  function showRecipe(id,day,slot,week=visibleWeek){const r=REC[id];if(!r)return;modalCtx={id,week:week==null?visibleWeek:Number(week),day:day==null?null:Number(day),slot:slot==null?null:Number(slot)};renderRecipeModal();const dlg=document.getElementById('recipeDialog');if(!dlg.open)dlg.showModal()}
 function renderRecipeModal(){
  if(!modalCtx)return;
- const activePreference=document.activeElement?.dataset.action==='recipe-preference'?document.activeElement.dataset.preference:null;
+ const activePreference=document.activeElement?.dataset.preferenceControl;
  const root=document.getElementById('modalContent'),continuing=document.getElementById('recipeDialog').open&&root.dataset.recipeId===modalCtx.id,previousScroll=continuing?root.querySelector('.recipe-dialog-content')?.scrollTop||0:0,moreOpen=continuing&&!!root.querySelector('.recipe-more')?.open,restoreActionFocus=continuing&&root.contains(document.activeElement)&&document.activeElement?.dataset.action==='toggle-meal';
  root.dataset.recipeId=modalCtx.id;
  const ctx=modalCtx,r=ctx.recipe||REC[ctx.id],isPlanner=ctx.source==='planner',hasDay=!isPlanner&&ctx.day!==null&&ctx.slot!==null;
@@ -1411,13 +1427,13 @@ function renderRecipeModal(){
  const intro=r.intro?.trim()?'<p class="recipe-description">'+escapeHTML(r.intro)+'</p>':'';
  const tip=r.tip?.trim()?'<p><strong>Consejo:</strong> '+escapeHTML(r.tip)+'</p>':'';
  root.innerHTML=
-  '<header class="recipe-dialog-header"><div class="recipe-title-block"><div class="eyebrow">'+escapeHTML(recipeType)+' · '+escapeHTML(r.time)+' MIN · 1 PERSONA</div><h2 id="recipeDialogTitle">'+escapeHTML(r.name)+'</h2></div><dl class="recipe-metrics">'+metrics+'</dl><p class="recipe-metric-note">Valores nutricionales estimados por ración.</p>'+recipePreferenceControls(ctx.id,state.planningPreferences,planningPersistenceAvailable)+'</header>'+
+  '<header class="recipe-dialog-header"><div class="recipe-title-block"><div class="eyebrow">'+escapeHTML(recipeType)+' · '+escapeHTML(r.time)+' MIN · 1 PERSONA</div><div class="recipe-title-row"><h2 id="recipeDialogTitle">'+escapeHTML(r.name)+'</h2>'+recipePreferenceControls(ctx.id,state.planningPreferences,planningPersistenceAvailable&&RECIPES.some(item=>item.id===ctx.id),{name:r.name,disabledReason:RECIPES.some(item=>item.id===ctx.id)?undefined:'Esta receta guardada ya no está disponible para nuevos menús.'})+'</div></div><dl class="recipe-metrics">'+metrics+'</dl><p class="recipe-metric-note">Valores nutricionales estimados por ración.</p></header>'+
   '<div class="recipe-dialog-content" tabindex="0" role="region" aria-label="Ingredientes y preparación">'+intro+'<div class="recipe-sections"><section aria-labelledby="recipeIngredientsTitle"><h3 id="recipeIngredientsTitle">Ingredientes</h3>'+recipeIngredients(r,finalUsage)+'</section><section aria-labelledby="recipeStepsTitle"><h3 id="recipeStepsTitle">Preparación</h3><ol class="steps-list">'+r.steps.map((step,i)=>'<li><span class="step-n">'+(i+1)+'</span><span>'+escapeHTML(step)+'</span></li>').join('')+'</ol></section></div>'+
   '<details class="recipe-more"><summary>'+(tip?'Consejo y cantidades':'Sobre las cantidades')+'</summary><div>'+tip+'<p>'+escapeHTML(targetNote)+'</p></div></details></div>'+
   '<footer class="recipe-dialog-footer">'+(isPlanner&&ctx.candidate?'<button type="button" class="btn btn-primary" data-action="planner-choose-preview">Elegir esta receta</button>':'')+(hasDay?'<button type="button" class="btn btn-primary" data-action="toggle-meal" data-week="'+escapeAttribute(ctx.week)+'" data-day="'+escapeAttribute(ctx.day)+'" data-slot="'+escapeAttribute(ctx.slot)+'" data-modal="1" '+(future&&!done(ctx.day,ctx.slot,ctx.week)?'disabled aria-disabled="true"':'')+'>'+ic('check')+' '+escapeHTML(stateText)+'</button>':'<button type="button" class="btn" data-action="close-modal">'+(isPlanner?'Volver a la revisión':'Cerrar receta')+'</button>')+'</footer>';
  root.querySelector('.recipe-more').open=moreOpen;root.querySelector('.recipe-dialog-content').scrollTop=previousScroll;
  if(restoreActionFocus)root.querySelector('[data-action="toggle-meal"]')?.focus({preventScroll:true});
- if(continuing&&activePreference)root.querySelector('[data-preference="'+activePreference+'"]')?.focus({preventScroll:true});
+ if(continuing&&activePreference)root.querySelector('[data-preference-control="'+activePreference+'"]')?.focus({preventScroll:true});
 }
 function toggleMeal(day,slot,week=visibleWeek){
  if(state.noActiveCycle){showToast('Selecciona primero el día de inicio del ciclo');return}
@@ -1506,6 +1522,7 @@ document.addEventListener('click',function(event){const btn=event.target.closest
  if(action==='planning-preferences-open'){planningPreferencesController.open(btn);return}
  if(action==='planning-preferences-close'){planningPreferencesController.close();return}
  if(action==='recipe-preference'){planningPreferencesController.setRecipe(btn.dataset.recipe,btn.dataset.preference);return}
+ if(action==='recipe-preference-more'){planningPreferencesController.openRecipeMenu(btn);return}
  if(action==='planner-week'){plannerWeek=Math.max(0,Math.min(2,Number(btn.dataset.week)));plannerChangeMessage='';renderPlannerReview({resetScroll:true});return}
  if(action==='planner-day'){plannerDay=Math.max(0,Math.min(6,Number(btn.dataset.day)));plannerChangeMessage='';renderPlannerReview({resetScroll:true});return}
  if(action==='planner-issue'){plannerWeek=Number(btn.dataset.week);plannerDay=Number(btn.dataset.day);renderPlannerReview({resetScroll:true});openPlannerChoices(btn);return}
@@ -1569,6 +1586,7 @@ document.addEventListener('click',function(event){const btn=event.target.closest
  if(action==='close-modal'){document.getElementById('recipeDialog').close();return}
  if(action==='toggle-meal'){const w=btn.dataset.modal==='1'&&modalCtx?modalCtx.week:Number(btn.dataset.week??visibleWeek);toggleMeal(Number(btn.dataset.day),Number(btn.dataset.slot),w);if(btn.dataset.modal==='1')renderRecipeModal();render();return}
  if(action==='filter'){recipeFilter=btn.dataset.filter;render();return}
+ if(action==='recipe-favorites-filter'){recipeFavoritesOnly=!recipeFavoritesOnly;btn.setAttribute('aria-pressed',String(recipeFavoritesOnly));btn.classList.toggle('active',recipeFavoritesOnly);refreshRecipeResults();return}
  if(action==='shop-tab'){shopStore=btn.dataset.store;render();return}
  if(action==='shopping-cycle'){if(btn.dataset.cycle==='next'&&!canBuyNextCycle(confirmedNextMenu()))return;shopCycle=btn.dataset.cycle==='next'?'next':'current';shoppingSearch='';render();document.querySelector('[data-action="shopping-cycle"][data-cycle="'+shopCycle+'"]')?.focus();return}
  if(action==='pantry-filter'){pantryFilter=btn.dataset.filter;render();return}
@@ -1682,10 +1700,13 @@ document.getElementById('recordDeleteDialog').addEventListener('close',()=>{
 let lastSeenDate=isoDate(today());
 function updateOnDayChange(){if(!state)return;const date=isoDate(today());if(date===lastSeenDate)return;lastSeenDate=date;if(accountStateContract===2){refreshCloudState(true);return}const advanced=activateScheduledCycleIfDue();alignCurrentDay();render();if(advanced)showToast('Ha comenzado el menú de tu siguiente ciclo')}
 function renderCloudUpdates(){
+ planningPreferencesController.closeRecipeMenu(true);
+ const preferenceControl=document.activeElement?.dataset.preferenceControl,preferenceContext=document.activeElement?.closest('[data-preference-context]')?.dataset.preferenceContext;
  const form=document.getElementById('profileForm'),focused=form?.contains(document.activeElement)?{name:document.activeElement.name,value:document.activeElement.value}:null,draft=form?.dataset.userDraft==='true'?Array.from(form.elements).filter(el=>el.name).map(el=>({name:el.name,type:el.type,value:el.value,checked:el.checked})):null;
  render();
  if(draft){const next=document.getElementById('profileForm');if(next){for(const saved of draft){const field=Array.from(next.elements).find(el=>el.name===saved.name&&(saved.type!=='radio'||el.value===saved.value));if(field){field.value=saved.value;if(['checkbox','radio'].includes(saved.type))field.checked=saved.checked}}updateProfilePreview();if(focused)Array.from(next.elements).find(el=>el.name===focused.name&&(el.type!=='radio'||el.value===focused.value))?.focus({preventScroll:true})}}
  if(document.getElementById('plannerDialog').open)renderPlannerReview();if(document.getElementById('recipeDialog').open)renderRecipeModal();
+ if(preferenceContext&&preferenceControl)(document.querySelector('[data-preference-context="'+preferenceContext+'"] [data-preference-control="'+preferenceControl+'"]')||(view==='recetas'?document.querySelector('[data-action="recipe-favorites-filter"]'):null))?.focus({preventScroll:true});
 }
 async function refreshCloudState(force=false){
  if(!cloudReady||!currentUserId||!supabaseClient||document.hidden||cloudSyncInFlight||cloudRefreshInFlight)return false;

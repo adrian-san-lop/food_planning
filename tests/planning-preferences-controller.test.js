@@ -8,7 +8,7 @@ function harness(available=true) {
   const calls={save:0,change:0,notifications:[]};
   const dialog={open:false,addEventListener(){},showModal(){this.open=true},close(){this.open=false}};
   const content={innerHTML:''};
-  const document={getElementById:id=>id==='planningPreferencesDialog'?dialog:id==='planningPreferencesContent'?content:null};
+  const document={addEventListener(){},getElementById:id=>id==='planningPreferencesDialog'?dialog:id==='planningPreferencesContent'?content:null};
   const controller=createPlanningPreferencesController({document,getState:()=>state,getRecipes:()=>[{id:'recipe_one',name:'Plato uno'}],isAvailable:()=>available,
     save:()=>calls.save++,onChange:()=>calls.change++,notify:value=>calls.notifications.push(value)});
   return {state,calls,controller,dialog,content};

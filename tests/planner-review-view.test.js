@@ -28,20 +28,20 @@ test('manual exceptions stay explicit and incomplete reviews cannot confirm or c
   m.day=1;assert.match(view.markup(m),/Elección manual: Marcada como No proponer/);
 });
 
-test('recipe controls expose explicit Normal, Favorita and No proponer without guessing tastes',()=>{
+test('recipe controls expose a favorite toggle, secondary menu and explicit exclusion badge',()=>{
   const prefs=createPlanningPreferences();prefs.recipePreferences.r0_0='do_not_propose';
   const html=recipePreferenceControls('r0_0',prefs,true);
-  assert.match(html,/data-preference="do_not_propose" aria-pressed="true"/);
-  assert.match(html,/data-preference="normal" aria-pressed="false"/);
-  assert.match(html,/Tus menús guardados se conservan/);
-  assert.equal((recipePreferenceControls('r0_0',prefs,false).match(/disabled/g)||[]).length,3);
+  assert.match(html,/data-preference="favorite"/);assert.match(html,/aria-pressed="false"/);
+  assert.match(html,/data-action="recipe-preference-more"/);assert.match(html,/No proponer<\/span>/);
+  assert.doesNotMatch(html,/>Normal<\/button>/);
+  assert.equal((recipePreferenceControls('r0_0',prefs,false).match(/disabled/g)||[]).length,2);
 });
 
 test('preference dialog keeps optional separate limits and only patches edited values',()=>{
   const prefs=createPlanningPreferences();prefs.recipePreferences.r0_0='favorite';prefs.weekdayTimeLimits.comida=25;
   const html=planningPreferencesMarkup(prefs,recipes,true);
   assert.match(html,/id="planningPreferencesForm"/);assert.match(html,/name="comida"[^>]*value="25"/);
-  assert.match(html,/Volver a Normal/);assert.match(html,/Receta &lt;0&gt;/);
+  assert.match(html,/Quitar de favoritas/);assert.match(html,/Receta &lt;0&gt;/);
   assert.deepEqual(timeLimitsPatch({comida:'30',cena:''},prefs.weekdayTimeLimits),{weekdayTimeLimits:{comida:30}});
   assert.deepEqual(timeLimitsPatch({comida:'',cena:'20'},prefs.weekdayTimeLimits),{weekdayTimeLimits:{comida:null,cena:20}});
   for(const v of ['0','1.5','1441','bad'])assert.throws(()=>timeLimitsPatch({comida:v,cena:''},prefs.weekdayTimeLimits));
