@@ -1,7 +1,7 @@
 # ADR-0036: Detalle semanal y resumen del plan en Inicio
 
 - **Fecha:** 15 de octubre de 2026
-- **Actualización:** 26 de octubre de 2026, plan en la columna derecha, dashboard a toda altura y favoritas junto a las calorías
+- **Actualización:** 26 de octubre de 2026, plan en la columna derecha, dashboard a toda altura y grupo independiente de acciones por comida
 - **Estado:** Aceptada e implementada localmente
 - **Alcance:** Inicio en escritorio, tablet y móvil
 - **Relación:** amplía ADR-0035 y sustituye su distribución móvil; mantiene la navegación diaria de ADR-0019.
@@ -22,7 +22,7 @@ El propietario ha aprobado cuatro KPI con detalle diario de comidas. El 26 de oc
 6. Usar tres filas en el dashboard: cabecera, KPI y menú/nutrición/plan. En la tercera fila, el menú abarca las dos alturas de la columna derecha. Inicio aprovecha el ancho y alto disponibles sin los anteriores límites de 1700 y 876 px. Fuentes, gráficos, círculo, iconos y espacios se adaptan conjuntamente. Las comidas distribuyen el alto restante respetando el espacio que necesita su contenido. Los bordes de las columnas coinciden con los KPI; el objetivo es mostrar todo el panel sin scroll en escritorio, portátil y tablet apaisada habituales.
 7. Con poca altura, compactar separaciones y filas de comidas; en la variante de 640–699 px se ocultan las notas secundarias del plan, conservando sus etiquetas y valores. Los nombres largos pueden abreviarse visualmente en escritorio; el nombre completo sigue accesible en el botón y en su receta. Las acciones de registrar comidas y actividad se conservan.
 8. En móvil, usar dos columnas de KPI y apilar menú, nutrición y plan con scroll natural, sin alturas forzadas. La barra superior y la navegación inferior siguen disponibles. El modo de panel requiere al menos 1181 × 640 px, 1000 × 700 px o 851 × 768 px. Las ventanas menores pasan a flujo natural. Si falta un ciclo, el aviso y el selector de fecha conservan prioridad y la página puede crecer.
-9. Retirar «Tu día, organizado» y su cálculo de receta más rápida. En Inicio y Menú, una estrella compartida inmediatamente a la izquierda del número de calorías permite añadir o quitar favoritas. Conserva nombre accesible, estado pulsado, área táctil de 44 px y foco al actualizar; las apariciones de la misma receta reflejan el cambio. Usa las preferencias y confirmación del servidor existentes. No registra comidas, cambia raciones ni conserva posiciones del planificador. Las recetas retiradas se pueden consultar, con la preferencia deshabilitada.
+9. Retirar «Tu día, organizado» y su cálculo de receta más rápida. En Inicio y Menú, la estrella compartida de favoritas y el botón independiente de registrar la comida forman un grupo a la derecha. Las calorías se integran con tiempo y proteínas bajo el nombre; no hay una fila adicional para estrella y calorías. En teléfonos de hasta 480 px, ambas acciones se apilan para mantener el ancho del texto. Esta corrección responde a las capturas del propietario y sustituye la primera variante con estrella junto al número. Conserva nombre accesible, estado pulsado, área táctil de 44 px y foco al actualizar; las apariciones de la misma receta reflejan el cambio. Usa las preferencias y confirmación del servidor existentes. No registra comidas, cambia raciones ni conserva posiciones del planificador. Las recetas retiradas se pueden consultar, con la preferencia deshabilitada.
 
 ## Límites
 
@@ -44,7 +44,7 @@ Se renderizó la aplicación real por HTTP en Firefox con los catálogos y módu
 | 1366 × 640 | Variante de altura reducida sin desbordamiento de página; conserva comidas y acciones con notas secundarias del plan ocultas. |
 | 390 × 844 | KPI en dos columnas y menú, nutrición y plan apilados con scroll natural, sin desbordamiento horizontal. |
 
-La estrella precede al número de calorías y queda separada del registro de comida. Esta revisión visual no verifica el guardado autenticado, dispositivos físicos ni la versión publicada. No se añadieron ni ejecutaron pruebas automatizadas para este cambio.
+La primera revisión colocaba la estrella antes del número de calorías. Tras las capturas del propietario se sustituye por acciones independientes a la derecha y calorías dentro de los metadatos. Los renders posteriores de Inicio en 1920 × 1080, 1280 × 720 y 1024 × 768 mantienen el panel sin desbordamiento de página ni tarjetas. En 800 × 1024, 390 × 844, 360 × 800 y 320 × 568 se conserva flujo natural sin desbordamiento horizontal. Se revisa también Menú en 1024 × 768, 800 × 1024 y 390 × 844. Estas revisiones visuales no verifican el guardado autenticado, dispositivos físicos ni la versión publicada. No se añadieron ni ejecutaron pruebas automatizadas para este cambio.
 
 ## Revisión histórica: 15 de octubre de 2026
 
