@@ -449,6 +449,7 @@ let recipeFavoritesOnly=false;
 const planningPreferencesController=createPlanningPreferencesController({document,getState:()=>state,getRecipes:()=>RECIPES,isAvailable:()=>planningPersistenceAvailable,save,notify:showToast,savedFeedback:afterCloudSave,onChange:()=>{
  plannerPreferencesNotice=true;
  if(view==='recetas')refreshRecipeResults();
+ refreshMenuFavorites();
  if(document.getElementById('plannerDialog').open)renderPlannerReview();
  if(document.getElementById('recipeDialog').open)renderRecipeModal();
 }});
@@ -770,14 +771,6 @@ function dashboardPlanSummary(){
  const recovery=p.injury?item('bone','Recuperación ósea','<span class="plan-context-active">Activa</span>','Se tiene en cuenta al preparar nuevas propuestas.'):'';
  return '<section class="panel dashboard-plan" aria-labelledby="dashboardPlanTitle"><header class="dashboard-plan-heading"><div><h2 id="dashboardPlanTitle">Tu plan actual</h2>'+(state.profileConfirmed?'':'<p>Revisa tu perfil: estos ajustes son de ejemplo.</p>')+'</div><button type="button" class="btn btn-subtle" data-action="navigate" data-view="perfil">Mi Perfil</button></header><div class="plan-context-items" role="list">'+item('target','Tu objetivo',escapeHTML(GOAL_NAMES[p.goal]),descriptions[p.goal])+recovery+item('sliders','Raciones automáticas',p.autoPortions?'Activadas':'Desactivadas',p.autoPortions?'Según tu perfil y la actividad registrada hoy.':'Se mantienen las cantidades base de las recetas.')+'</div></section>';
 }
-function dashboardDaySummary(position){
- const recipes=position?MENUS[position.week][position.day].map(id=>REC[id]):[];
- const overview=recipes.length?'Para comer: '+recipes[2].name+'. Para cenar: '+recipes[4].name+'.':'El resumen de hoy aparecerá cuando haya un menú activo para esta fecha. Puedes consultar las fechas de tu ciclo en Menú.';
- const quickest=recipes.filter(recipe=>Number.isFinite(Number(recipe.time))&&Number(recipe.time)>0).reduce((best,recipe)=>!best||Number(recipe.time)<Number(best.time)?recipe:best,null);
- const quick=quickest?'<div class="dashboard-day-quickest">'+ic('clock')+'<div><span>La receta más rápida de hoy</span><strong title="'+escapeAttribute(quickest.name)+'">'+escapeHTML(quickest.name)+'</strong></div><span class="dashboard-day-minutes">'+escapeHTML(quickest.time)+' min</span></div>':'';
- const encouragement=recipes.length?'Una comida cada vez. El día ya está organizado.':'Revisa las fechas de tu plan para organizar los próximos días.';
- return '<section class="panel dashboard-day-summary" aria-labelledby="dashboardDayTitle"><header class="dashboard-day-heading"><h2 id="dashboardDayTitle">Tu día, organizado</h2>'+ic('spark')+'</header><p class="dashboard-day-overview" title="'+escapeAttribute(overview)+'">'+escapeHTML(overview)+'</p>'+quick+'<p class="dashboard-day-encouragement">'+encouragement+'</p></section>';
-}
 function dashboard(){
  const position=todayMenuPosition(),date=isoDate(today()),week=weeklyMealSummary(state.done,today());
  const sessions=activitySessionsThisWeek(),sessionMinutes=sessions.reduce((sum,session)=>sum+Math.max(0,Number(session.durationMinutes)||0),0),shopping=shoppingModel('7','current'),needed=shopping.planUnavailable?'—':shopping.rows.length,used=Object.keys(usedTotals()).length;
@@ -786,8 +779,8 @@ function dashboard(){
  const stats='<section class="stat-grid dashboard-stats" aria-label="Indicadores de esta semana">'+kpi('Comidas esta semana',week.total,'/ 35','utensils','',weeklyMealChart(week.days))+kpi('Sesiones esta semana',sessions.length,'','activity',sessions.length?durationLabel+' de actividad':'Aún sin actividad','',true)+kpi('Días activos',week.activeDays,'/ 7 días','check','Con comidas registradas','<progress class="stat-progress" value="'+activeProgress.toFixed(1)+'" max="100" aria-label="Días de esta semana con comidas registradas"></progress>')+kpi('Ingredientes por reponer',needed,'','cart',used+' productos distintos consumidos','',true)+'</section>';
  const dateAction=state.noActiveCycle?'':'<button type="button" class="btn" data-action="edit-cycle-start">'+ic('calendar')+' Cambiar fecha</button>',profileAction=state.profileConfirmed?'':'<button type="button" class="btn btn-quiet" data-action="quick-guide-profile">Revisar perfil</button>';
  const heading='<header class="dashboard-heading"><div><div class="eyebrow">'+escapeHTML(formatDate(today(),{weekday:'long',day:'numeric',month:'short'}).toLocaleUpperCase('es-ES'))+'</div><h1>RESUMEN DIARIO</h1>'+dashboardCycleStatus()+'</div><div class="dashboard-heading-actions">'+profileAction+'<button type="button" class="btn" data-action="quick-guide-open">Ver guía rápida</button>'+dateAction+'<button type="button" class="btn btn-primary" data-action="navigate" data-view="semana">Menú completo</button></div></header>';
- const lower='<div class="dashboard-lower">'+dashboardMenu(position)+energyStatus(position?.day??null,position?.week??null,date,!!position)+dashboardDaySummary(position)+'</div>';
- return '<div class="dashboard-page dashboard-page--overview">'+heading+stats+lower+dashboardPlanSummary()+'</div>';
+ const lower='<div class="dashboard-lower">'+dashboardMenu(position)+energyStatus(position?.day??null,position?.week??null,date,!!position)+dashboardPlanSummary()+'</div>';
+ return '<div class="dashboard-page dashboard-page--overview">'+heading+stats+lower+'</div>';
 }
 function nextCycleStart(){if(state.noActiveCycle)return isoDate(today());const current=dateFromISO(state.start),scheduled=addDays(current,21),now=today();return isoDate(scheduled<now?now:scheduled)}
 function plannerRequest(start){const asOf=isoDate(today());return {start,asOf,profile:state.profile,profileConfirmed:state.profileConfirmed,preferences:state.planningPreferences,previousMenus:state.noActiveCycle?null:MENUS,stock:state.stock,currentCycle:state.noActiveCycle?null:{start:state.start,menus:MENUS,done:state.done},activityKcalToday:activityEnergyForDate(asOf)}}
@@ -1105,11 +1098,23 @@ function updateCycleStartDateInput(showError=false){
  const picker=document.getElementById('cycleStartPicker');if(picker&&iso)picker.value=iso;
  return iso;
 }
+function menuMealFavorite(recipe,week,day,slot){
+ const published=RECIPES.some(item=>item.id===recipe.id);
+ return recipePreferenceControls(recipe.id,state.planningPreferences,planningPersistenceAvailable&&published,{label:false,more:false,badge:false,context:'meal-energy-'+week+'-'+day+'-'+slot,name:recipe.name,disabledReason:published?undefined:'Esta receta guardada ya no está disponible para nuevos menús.'});
+}
+function refreshMenuFavorites(){
+ for(const group of document.querySelectorAll('.meal-energy [data-preference-context]')){
+  const context=group.dataset.preferenceContext,recipe=REC[group.dataset.preferenceRecipe];if(!recipe)continue;
+  const focused=group.contains(document.activeElement),position=context.slice('meal-energy-'.length).split('-').map(Number);
+  group.outerHTML=menuMealFavorite(recipe,...position);
+  if(focused)document.querySelector('[data-preference-context="'+context+'"] [data-preference-control="favorite"]')?.focus({preventScroll:true});
+ }
+}
 function planDayCard(day,week=visibleWeek,{highlightPending=false,menuDashboard=false}={}){
   const meals=MENUS[week][day],firstPending=highlightPending&&!mealIsFuture(day,week)?meals.findIndex((_,slot)=>!done(day,slot,week)):-1,mealRows=meals.map((id,slot)=>{
    const recipe=REC[id],macro=getMacro(recipeUsage(day,slot,week)),isDone=done(day,slot,week),future=mealIsFuture(day,week);
    const next=slot===firstPending,openAttributes=' title="'+escapeAttribute(recipe.name)+'" data-action="open" data-recipe="'+escapeAttribute(recipe.id)+'" data-week="'+week+'" data-day="'+day+'" data-slot="'+slot+'"';
-   return '<div class="meal-table-row'+(next?' meal-table-row--next':'')+'"><span class="cat" title="'+escapeAttribute(SLOTS[slot])+'">'+ic(SLOT_ICONS[slot])+'<span>'+escapeHTML(SLOTS[slot])+'</span></span><div class="meal-copy">'+(next?'<span class="next-meal-label">Primera comida pendiente</span>':'')+'<button type="button" class="name"'+openAttributes+'>'+escapeHTML(recipe.name)+'</button><div class="sub">'+escapeHTML(recipe.time)+' min · '+nformat(macro.p)+' g proteína'+(menuDashboard?'':' · '+(isDone?'Realizada':future?'Planificada':'Pendiente'))+'</div></div><span class="kcal">'+nformat(macro.k)+' kcal</span><button type="button" class="meal-check '+(isDone?'checked':'')+'"'+(future&&!isDone?' disabled':'')+' data-action="toggle-meal" data-week="'+week+'" data-day="'+day+'" data-slot="'+slot+'"'+(menuDashboard?' aria-pressed="'+isDone+'"':'')+' title="'+(future&&!isDone?'Podrás registrarla cuando llegue el día':isDone?'Desmarcar comida realizada':'Registrar comida como realizada')+'" aria-label="'+(isDone?'Desmarcar comida realizada':future?'Comida planificada':'Registrar comida como realizada')+(menuDashboard?': '+escapeAttribute(recipe.name):'')+'">'+ic('check')+'</button></div>';
+   return '<div class="meal-table-row'+(next?' meal-table-row--next':'')+'"><span class="cat" title="'+escapeAttribute(SLOTS[slot])+'">'+ic(SLOT_ICONS[slot])+'<span>'+escapeHTML(SLOTS[slot])+'</span></span><div class="meal-copy">'+(next?'<span class="next-meal-label">Primera comida pendiente</span>':'')+'<button type="button" class="name"'+openAttributes+'>'+escapeHTML(recipe.name)+'</button><div class="sub">'+escapeHTML(recipe.time)+' min · '+nformat(macro.p)+' g proteína'+(menuDashboard?'':' · '+(isDone?'Realizada':future?'Planificada':'Pendiente'))+'</div></div><div class="meal-energy">'+menuMealFavorite(recipe,week,day,slot)+'<span class="kcal"><strong>'+nformat(macro.k)+'</strong> <span>kcal</span></span></div><button type="button" class="meal-check '+(isDone?'checked':'')+'"'+(future&&!isDone?' disabled':'')+' data-action="toggle-meal" data-week="'+week+'" data-day="'+day+'" data-slot="'+slot+'"'+(menuDashboard?' aria-pressed="'+isDone+'"':'')+' title="'+(future&&!isDone?'Podrás registrarla cuando llegue el día':isDone?'Desmarcar comida realizada':'Registrar comida como realizada')+'" aria-label="'+(isDone?'Desmarcar comida realizada':future?'Comida planificada':'Registrar comida como realizada')+(menuDashboard?': '+escapeAttribute(recipe.name):'')+'">'+ic('check')+'</button></div>';
   }).join('');
   if(menuDashboard){
    const sessions=activitySessionsForDay(day,week),extra=activityEnergyForDate(dateISOAt(week,day)),completed=meals.filter((_,slot)=>done(day,slot,week)).length,dateLabel=dayNameAt(day,week)+', '+formatDate(dateAt(week,day),{day:'numeric',month:'long'}),activityNote=sessions.length?sessions.length+' sesión'+(sessions.length===1?'':'es')+' · +'+nformat(extra)+' kcal estimadas':'Sin sesiones registradas';

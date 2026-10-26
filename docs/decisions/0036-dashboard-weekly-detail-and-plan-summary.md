@@ -1,28 +1,28 @@
 # ADR-0036: Detalle semanal y resumen del plan en Inicio
 
 - **Fecha:** 15 de octubre de 2026
-- **Actualización:** 16 de octubre de 2026, redistribución del menú y resumen práctico del día
+- **Actualización:** 26 de octubre de 2026, plan en la columna derecha, dashboard a toda altura y favoritas junto a las calorías
 - **Estado:** Aceptada e implementada localmente
 - **Alcance:** Inicio en escritorio, tablet y móvil
 - **Relación:** amplía ADR-0035 y sustituye su distribución móvil; mantiene la navegación diaria de ADR-0019.
 
-El estilo visual se actualiza el 16 de octubre con Roboto, superficies blancas, fondo neutro y verde esmeralda según [ADR-0016](0016-css-sections-and-template-presentation.md). La distribución y los datos de este panel siguen definidos aquí; el nuevo aspecto requiere revisión visual en navegador.
+El estilo visual mantiene Roboto, superficies blancas, fondo neutro y verde esmeralda según [ADR-0016](0016-css-sections-and-template-presentation.md). La distribución vigente y los datos de este panel se definen aquí; la revisión visual local del 26 de octubre se detalla más abajo.
 
 ## Contexto
 
-El propietario ha aprobado el boceto de cuatro KPI con detalle diario de comidas y ha pedido reducir el tamaño de las tarjetas inferiores. El espacio disponible debe mostrar también los objetivos y ajustes personales, evitando estirar las filas para llenar pantallas grandes.
+El propietario ha aprobado cuatro KPI con detalle diario de comidas. El 26 de octubre pide retirar «Tu día, organizado», trasladar Tu plan actual a ese espacio y aprovechar todo el ancho y alto como dashboard. La información y las acciones deben conservarse con tipografía y separaciones proporcionadas a la pantalla.
 
 ## Decisión
 
 1. Compartir cuatro KPI entre escritorio y móvil: comidas de lunes a domingo sobre 35, sesiones ya realizadas esta semana con su duración, días distintos con comidas registradas sobre 7 e ingredientes por reponer. Siete barras dentro del primer KPI muestran entre cero y cinco comidas por fecha; se destaca hoy y se distinguen los días futuros. No se suman claves inválidas ni comidas de fechas futuras. La racha móvil anterior se sustituye por estos KPI.
 2. Mostrar bajo el título la posición del ciclo y sus fechas. Si el inicio es futuro, indicar «Comienza el…»; si terminó, mostrarlo explícitamente. La fecha civil y la aritmética siguen usando `Europe/Madrid` mediante los módulos existentes. `js/domain/dashboard.js` contiene únicamente los cálculos de semana y ciclo, sin DOM, almacenamiento ni Supabase.
-3. El Menú de hoy completo ocupa las columnas de los KPI 1–2. A la derecha, alineado con los KPI 3–4, Objetivo nutricional de hoy ocupa la parte superior y «Tu día, organizado» la inferior. La nutrición mantiene el círculo y las barras en una tarjeta más compacta, cuenta solo comidas registradas y conserva los objetivos actuales, incluido el ajuste energético de actividad ya realizada hoy.
+3. El Menú de hoy completo ocupa las columnas de los KPI 1–2 y abarca toda la altura del contenido inferior. A la derecha, alineado con los KPI 3–4, Objetivo nutricional de hoy ocupa la parte superior y Tu plan actual la inferior. Nutrición conserva el círculo y las barras, cuenta solo comidas registradas y mantiene los objetivos actuales, incluido el ajuste energético de actividad ya realizada hoy.
 4. Destacar la primera comida pendiente de hoy. El nombre del plato abre su receta; no se muestra un botón adicional «Ver receta» ni su flecha. El destacado avanza al registrar la comida; desaparece si se han completado las cinco. No implica una hora de ingesta ni modifica la fecha seleccionada en Menú. Actualización del 16 de octubre: Menú reutiliza la plantilla nutricional de Inicio para su Resumen del día seleccionado, con las reglas de presentación de ADR-0019 y sin cambiar este dashboard.
-5. Añadir debajo «Tu plan actual», derivado del perfil: objetivo, ajuste automático de raciones y recuperación ósea solo cuando está activa. Mantener un acceso al perfil y advertir si aún contiene los datos de ejemplo. La recuperación se presenta como un ajuste cualitativo para nuevas propuestas, sin inventar cantidades de micronutrientes ni resultados clínicos.
-6. Usar cuatro filas en el dashboard: cabecera, KPI, menú/nutrición/resumen del día y resumen del plan. En la tercera fila, el menú abarca las dos alturas de la columna derecha. Inicio aprovecha el ancho y el alto disponibles sin los anteriores límites de 1700 y 876 px. Las fuentes, gráficos e iconos crecen con la pantalla, pero nutrición adapta también su círculo y sus espacios al alto reducido de su tarjeta. Los bordes de las columnas coinciden con los KPI; el objetivo de diseño es mostrar todo el panel sin scroll en escritorio, portátil y tablet habituales.
-7. Con poca altura, presentar el resumen del plan en una franja horizontal y simplificar las filas de comidas. Los nombres largos se abrevian visualmente en escritorio; el nombre completo sigue accesible en el botón y en su receta. Las acciones de registrar comidas y actividad se conservan.
-8. En móvil, usar dos columnas de KPI y apilar menú, nutrición, resumen del día y resumen del plan con scroll natural, sin banner adicional ni alturas forzadas. La barra superior y la navegación inferior siguen disponibles. Las ventanas demasiado bajas o estrechas también pasan a flujo natural para no recortar contenido. El modo de panel requiere al menos 851 × 700 px, o 700 px de ancho y 900 px de alto para tablet vertical. Si falta un ciclo, el aviso y el selector de fecha conservan prioridad y la página puede crecer.
-9. «Tu día, organizado» utiliza los nombres reales de comida y cena y el menor tiempo positivo de las cinco recetas del día. En caso de empate conserva la primera del orden de comidas. Acompaña el resumen con «Una comida cada vez. El día ya está organizado.». No genera recomendaciones clínicas ni instrucciones culinarias. Sin menú para hoy, muestra un estado explicativo sin tomar recetas de otra fecha. Los textos extensos se limitan visualmente en el panel compacto, manteniendo el texto completo en el contenido accesible y en el atributo de título; en móvil se muestran completos.
+5. Tu plan actual, derivado del perfil, muestra objetivo, ajuste automático de raciones y recuperación ósea solo cuando está activa. Se presenta como lista vertical bajo nutrición, con acceso al perfil y aviso si aún contiene los datos de ejemplo. Se retira su anterior franja a todo el ancho. La recuperación sigue siendo un ajuste cualitativo para nuevas propuestas, sin inventar cantidades de micronutrientes ni resultados clínicos.
+6. Usar tres filas en el dashboard: cabecera, KPI y menú/nutrición/plan. En la tercera fila, el menú abarca las dos alturas de la columna derecha. Inicio aprovecha el ancho y alto disponibles sin los anteriores límites de 1700 y 876 px. Fuentes, gráficos, círculo, iconos y espacios se adaptan conjuntamente. Las comidas distribuyen el alto restante respetando el espacio que necesita su contenido. Los bordes de las columnas coinciden con los KPI; el objetivo es mostrar todo el panel sin scroll en escritorio, portátil y tablet apaisada habituales.
+7. Con poca altura, compactar separaciones y filas de comidas; en la variante de 640–699 px se ocultan las notas secundarias del plan, conservando sus etiquetas y valores. Los nombres largos pueden abreviarse visualmente en escritorio; el nombre completo sigue accesible en el botón y en su receta. Las acciones de registrar comidas y actividad se conservan.
+8. En móvil, usar dos columnas de KPI y apilar menú, nutrición y plan con scroll natural, sin alturas forzadas. La barra superior y la navegación inferior siguen disponibles. El modo de panel requiere al menos 1181 × 640 px, 1000 × 700 px o 851 × 768 px. Las ventanas menores pasan a flujo natural. Si falta un ciclo, el aviso y el selector de fecha conservan prioridad y la página puede crecer.
+9. Retirar «Tu día, organizado» y su cálculo de receta más rápida. En Inicio y Menú, una estrella compartida inmediatamente a la izquierda del número de calorías permite añadir o quitar favoritas. Conserva nombre accesible, estado pulsado, área táctil de 44 px y foco al actualizar; las apariciones de la misma receta reflejan el cambio. Usa las preferencias y confirmación del servidor existentes. No registra comidas, cambia raciones ni conserva posiciones del planificador. Las recetas retiradas se pueden consultar, con la preferencia deshabilitada.
 
 ## Límites
 
@@ -32,9 +32,23 @@ El propietario ha aprobado el boceto de cuatro KPI con detalle diario de comidas
 - Las métricas semanales se derivan de los registros del estado actual, igual que en ADR-0035; no incorporan un agregado nuevo de ciclos archivados.
 - La revisión visual local usa un estado ficticio y las plantillas y catálogos reales, sin sesión ni escrituras en Supabase. No sustituye la revisión de la versión publicada ni el uso en dispositivos físicos.
 
-## Revisión local anterior: 15 de octubre de 2026
+## Revisión local: 26 de octubre de 2026
 
-Los resultados siguientes corresponden a la distribución anterior con dos tarjetas de igual altura. La redistribución del 16 de octubre queda pendiente de revisión visual en navegador; no se han añadido ni ejecutado pruebas automatizadas para esta modificación.
+Se renderizó la aplicación real por HTTP en Firefox con los catálogos y módulos actuales y datos sintéticos en memoria, sin autenticación ni escrituras personales. Se revisaron Inicio y la colocación de la estrella en Menú.
+
+| Tamaño | Resultado observado |
+| --- | --- |
+| 2560 × 1440 y 1920 × 1080 | Cabecera, KPI y contenido ocupan el alto disponible; menú a la izquierda y nutrición/plan a la derecha, sin desbordamiento de página. |
+| 1366 × 768 y 1280 × 720 | Cinco comidas visibles, textos compactados y plan alineado con el final del menú, sin desbordamiento de página ni de tarjetas. |
+| 1194 × 834, 1024 × 768 y 1133 × 744 | Distribución de tablet apaisada con lateral compacto según anchura y controles contenidos. El destacado de la primera comida no se solapa con la siguiente fila. |
+| 1366 × 640 | Variante de altura reducida sin desbordamiento de página; conserva comidas y acciones con notas secundarias del plan ocultas. |
+| 390 × 844 | KPI en dos columnas y menú, nutrición y plan apilados con scroll natural, sin desbordamiento horizontal. |
+
+La estrella precede al número de calorías y queda separada del registro de comida. Esta revisión visual no verifica el guardado autenticado, dispositivos físicos ni la versión publicada. No se añadieron ni ejecutaron pruebas automatizadas para este cambio.
+
+## Revisión histórica: 15 de octubre de 2026
+
+Los resultados siguientes corresponden a la distribución anterior con dos tarjetas de igual altura. Se conservan como evidencia histórica; no describen la distribución vigente del 26 de octubre.
 
 Se inspeccionó el diseño en navegador con tamaños de escritorio, portátil, tablet y móvil:
 
