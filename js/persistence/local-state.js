@@ -1,4 +1,4 @@
-import { CURRENT_STATE_VERSION } from './state-normalization.js?v=20261023-planning-persistence';
+import { CURRENT_STATE_VERSION } from './state-normalization.js?v=20261102-culinary-quality';
 
 export function loadLocalState({ key, cleanState, emptyState, getStorage = () => globalThis.localStorage, onError = () => {} }) {
   try {

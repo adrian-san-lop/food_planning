@@ -1,5 +1,5 @@
 import { addDays, dateFromISO, isoDate } from './dates.js?v=20261015-european-date';
-import { validMenuCycle } from './menu-generator.js?v=20261023-common-generator';
+import { validMenuCycle } from './menu-generator.js?v=20261102-culinary-quality';
 
 /** Project only uncompleted meals from the reference date up to cycle start.
  * evaluateDay receives fixed completed usages and actual reference-day activity.

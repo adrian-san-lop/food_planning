@@ -1,3 +1,4 @@
+import { spaceWeekMains } from './menu-quality.js?v=20261102-culinary-quality';
 // Selection only: no persistence, dates, inventory movements or portion formulas.
 export const MENU_SLOT_TYPES = ['desayuno', 'media', 'comida', 'tarde', 'cena'];
 export const REPERTOIRE_TARGETS = [3, 2, 4, 2, 4];
@@ -203,7 +204,8 @@ export function generateMenuCycle({
       novel.add(best.newKey);
     }
   }
-  const menus = Array.from({length: 3}, (_, w) => week.map((day, d) => day.map((recipe, s) =>
+  const spaced = spaceWeekMains(week, {canMove: day => !locked.some(weekLocks => weekLocks[day].some(Boolean)), isEligible});
+  const menus = Array.from({length: 3}, (_, w) => spaced.map((day, d) => day.map((recipe, s) =>
     locked[w][d][s] ? draft.menus[w][d][s] : recipe.id)));
   return {menus, locked};
 }

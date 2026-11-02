@@ -1,5 +1,5 @@
 import { addDays, dateFromISO } from '../domain/dates.js?v=20261015-european-date';
-import { proposalAlternatives } from '../domain/menu-review.js?v=20261023-weekly-review';
+import { proposalAlternatives } from '../domain/menu-review.js?v=20261102-culinary-quality';
 import { escapeHTML as h, escapeAttribute as a } from './html.js?v=20261013-ux-repair';
 import { recipePreferenceControls } from './planning-preferences.js?v=20261026-favorites';
 

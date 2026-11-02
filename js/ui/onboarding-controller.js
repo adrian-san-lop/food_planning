@@ -1,8 +1,8 @@
-import { accountSetupProgress, confirmSetupProfile, confirmFirstPlan, validateSetupDraft } from '../domain/onboarding.js?v=20261025-cloud-account-load';
-import { createProfileDraft, validateProfileDraft } from '../domain/profile.js?v=20261022-planner-foundations';
+import { accountSetupProgress, confirmSetupProfile, confirmFirstPlan, validateSetupDraft } from '../domain/onboarding.js?v=20261102-culinary-quality';
+import { createProfileDraft, validateProfileDraft } from '../domain/profile.js?v=20261102-culinary-quality';
 import { applyPlanningPreferencesPatch } from '../domain/planning-preferences.js?v=20261022-planner-foundations';
 import { dateFromISO } from '../domain/dates.js?v=20261015-european-date';
-import { onboardingMarkup, SETUP_STEPS } from './onboarding-view.js?v=20261023-guided-setup';
+import { onboardingMarkup, SETUP_STEPS } from './onboarding-view.js?v=20261102-culinary-quality';
 
 /** UI orchestration; account state, sync and the common planner are injected. */
 export function createOnboardingController({ document, getState, setState, authenticated, available,

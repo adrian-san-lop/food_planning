@@ -39,7 +39,8 @@
       "properties": {
         "foodId": { "type": "string", "pattern": "^[a-z][a-zA-Z0-9_]*$" },
         "amount": { "type": "number", "exclusiveMinimum": 0 },
-        "unit": { "enum": ["g", "ml", "ud"], "description": "Recipe measurement unit; must match the referenced food's recipeUnit." }
+        "unit": { "enum": ["g", "ml", "ud"], "description": "Recipe measurement unit; must match the referenced food's recipeUnit." },
+        "keepBaseAmount": { "const": true, "description": "Conservar la cantidad base de este ingrediente estructural al ajustar la receta." }
       }
     }
   }

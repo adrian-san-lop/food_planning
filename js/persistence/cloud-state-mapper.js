@@ -1,6 +1,6 @@
-import { materializePlan, detailsFromRows } from '../domain/plan-details.js?v=20261025-account-contract';
-import { planningRows, planningStateFromRows } from './planning-state.js?v=20261023-planning-persistence';
-import { createProfileDraft } from '../domain/profile.js?v=20261022-planner-foundations';
+import { materializePlan, detailsFromRows } from '../domain/plan-details.js?v=20261102-culinary-quality';
+import { planningRows, planningStateFromRows } from './planning-state.js?v=20261102-culinary-quality';
+import { createProfileDraft } from '../domain/profile.js?v=20261102-culinary-quality';
 
 /** Maps Menuki's in-memory state to and from the relational Supabase snapshot contract. */
 export function createCloudStateMapper({
@@ -60,7 +60,7 @@ async function buildCloudSnapshot(source,{materialize=true}={}){
    else if(def.kind==='draft')source.plannerDraft.details=details;
    for(const recipe of Object.values(details.recipes)){
     planRecipes.push({cycle_id:cycleId,recipe_id:recipe.id,name:recipe.name,meal_type:recipe.type,time_minutes:recipe.time,description:recipe.intro||'',tip:recipe.tip||'',steps:recipe.steps});
-    recipe.ingredients.forEach((ingredient,index)=>planIngredients.push({cycle_id:cycleId,recipe_id:recipe.id,ingredient_index:index,food_id:ingredient.id,base_quantity:ingredient.rest,recipe_unit:details.foods[ingredient.id][1],food_snapshot:{food:details.foods[ingredient.id],meta:details.foodMeta[ingredient.id],purchase:details.catalog[ingredient.id]}}));
+    recipe.ingredients.forEach((ingredient,index)=>planIngredients.push({cycle_id:cycleId,recipe_id:recipe.id,ingredient_index:index,food_id:ingredient.id,base_quantity:ingredient.rest,recipe_unit:details.foods[ingredient.id][1],food_snapshot:{food:details.foods[ingredient.id],meta:details.foodMeta[ingredient.id],purchase:details.catalog[ingredient.id],...(ingredient.keepBaseAmount ? {portion_policy:'base'} : {})}}));
    }
    for(const [key,usage] of Object.entries(details.portions)){const meal=mealByKey.get(def.key+'|'+key);if(meal)for(const [foodId,quantity] of Object.entries(usage))mealPortions.push({planned_meal_id:meal.id,food_id:foodId,quantity})}
    for(const [date,target] of Object.entries(details.targets))dayTargets.push({cycle_id:cycleId,meal_date:date,event_signature:details.events?.[date]||'',calculation_version:details.versions?.[date]||details.calculationVersion,input_signature:details.signatures[date],target});

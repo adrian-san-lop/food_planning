@@ -1,7 +1,7 @@
-import { createNutritionService } from './nutrition.js?v=20261022-practical-portions';
+import { createNutritionService } from './nutrition.js?v=20261102-culinary-quality';
 import { addDays, dateFromISO, isoDate } from './dates.js?v=20261015-european-date';
 
-export const PLAN_CALCULATION_VERSION = '2026-10-25.1';
+export const PLAN_CALCULATION_VERSION = '2026-11-02.1';
 const copy = value => JSON.parse(JSON.stringify(value));
 
 /** Materialize a plan only on an explicit edit. Reading it never regenerates it. */
@@ -56,7 +56,8 @@ export function cleanPlanDetails(raw) {
   if (recipes.some(([id,row]) => !idPattern.test(id) || row.id !== id || typeof row.name !== 'string'
     || !['desayuno','media','comida','tarde','cena'].includes(row.type) || !Array.isArray(row.steps)
     || row.steps.some(step => typeof step !== 'string') || !Array.isArray(row.ingredients)
-    || row.ingredients.some(item => !raw.foods[item.id] || !Number.isFinite(item.rest) || item.rest <= 0))) return null;
+    || row.ingredients.some(item => !raw.foods[item.id] || !Number.isFinite(item.rest) || item.rest <= 0
+      || item.keepBaseAmount !== undefined && item.keepBaseAmount !== true))) return null;
   if(Object.keys(raw.portions||{}).length!==105||Object.keys(raw.targets||{}).length!==21)return null;
   for(const [date,target] of Object.entries(raw.targets||{}))if(!dateFromISO(date)||['calories','protein','carb','fat'].some(key=>!Number.isFinite(target?.[key])||target[key]<0))return null;
   for (const [key,usage] of Object.entries(raw.portions || {})) {
@@ -73,7 +74,8 @@ export function detailsFromRows(data, cycleId) {
   for (const row of rows) details.recipes[row.recipe_id] = { id: row.recipe_id, name: row.name, type: row.meal_type, time: Number(row.time_minutes), intro: row.description || '', tip: row.tip || '', steps: row.steps, ingredients: [] };
   for (const row of (data.planIngredients || []).filter(row => row.cycle_id === cycleId).sort((a,b) => a.ingredient_index-b.ingredient_index)) {
     const recipe = details.recipes[row.recipe_id]; if (!recipe) continue;
-    recipe.ingredients.push({id:row.food_id,rest:Number(row.base_quantity)});
+    recipe.ingredients.push({id:row.food_id,rest:Number(row.base_quantity),
+      ...(row.food_snapshot.portion_policy === 'base' ? {keepBaseAmount: true} : {})});
     details.foods[row.food_id] = row.food_snapshot.food;
     details.foodMeta[row.food_id] = row.food_snapshot.meta;
     details.catalog[row.food_id] = row.food_snapshot.purchase;

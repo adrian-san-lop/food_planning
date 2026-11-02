@@ -1,6 +1,6 @@
-import { cleanPlanDetails } from '../domain/plan-details.js?v=20261025-account-contract';
-import { readPlanningState } from './planning-state.js?v=20261023-planning-persistence';
-import { createProfileDraft, validateProfileDraft } from '../domain/profile.js?v=20261022-planner-foundations';
+import { cleanPlanDetails } from '../domain/plan-details.js?v=20261102-culinary-quality';
+import { readPlanningState } from './planning-state.js?v=20261102-culinary-quality';
+import { createProfileDraft, validateProfileDraft } from '../domain/profile.js?v=20261102-culinary-quality';
 
 const CURRENT_STATE_VERSION = 12;
 const SUPPORTED_STATE_VERSIONS = [5, 6, 7, 8, 9, 10, 11, 12];

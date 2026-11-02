@@ -1,4 +1,4 @@
-import { ACTIVITY_FACTORS, normalizeActivityLevel } from './nutrition.js?v=20261018-activity-levels';
+import { ACTIVITY_FACTORS, normalizeActivityLevel } from './nutrition.js?v=20261102-culinary-quality';
 
 // Compatibility values for the current v5-v11 runtime, never a new user's draft.
 export const DEFAULT_PROFILE = Object.freeze({

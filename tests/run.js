@@ -10,6 +10,7 @@ import './planning-preferences.test.js';
 import './onboarding.test.js';
 import './guided-setup.test.js';
 import './menu-generator.test.js';
+import './menu-quality.test.js';
 import './menu-planner.test.js';
 import './menu-review.test.js';
 import './planner-review-view.test.js';

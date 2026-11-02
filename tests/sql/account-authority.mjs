@@ -99,7 +99,7 @@ try{
  });
  let catalog;const originalFetch=globalThis.fetch;
  try{globalThis.fetch=async url=>({ok:true,json:async()=>JSON.parse(await readFile(url,'utf8'))});catalog=await loadCatalogs({slotTypes:['desayuno','media','comida','tarde','cena'],recoveryTags:['calcium','vitamin_d','vitamin_c']})}finally{globalThis.fetch=originalFetch}
- const realMenus=Array.from({length:3},()=>Array.from({length:7},()=>['yogur_platano','tostada_queso','arroz_pollo','yogur_nueces','merluza_patatas']));
+ const realMenus=Array.from({length:3},()=>Array.from({length:7},()=>['yogur_platano','bocadillo_pavo','arroz_pollo','yogur_nueces','wrap_pavo']));
  const empty=()=>({v:12,...initialPlanningState('guided'),start:'2026-10-25',profile:null,profileConfirmed:false,noActiveCycle:true,
   done:{},reversedDone:{},movements:[],stock:{},purchases:[],weights:[],activitySessions:[],legacyStrengthDays:{},archives:[],cart:{},cartExtras:[],deletedWeightDates:[],deletedActivitySessionIds:[]});
  function device(published){
@@ -127,6 +127,9 @@ try{
   const full=await laptop.buildCloudSnapshot(source),result=await laptop.transport.submitAction(createAccountAction({},full),0,randomUUID());
   assert.equal(result.error,undefined);latest=result.data;baseState=laptop.stateFromCloud(latest);
   assert.equal(baseState.noActiveCycle,false);assert.equal(Object.keys(baseState.activePlanDetails.portions).length,105);
+  assert.equal(baseState.activePlanDetails.recipes.bocadillo_pavo.ingredients.find(item=>item.id==='bread').keepBaseAmount,true);
+  assert.equal(baseState.activePlanDetails.recipes.wrap_pavo.ingredients.find(item=>item.id==='tortilla').keepBaseAmount,true);
+  assert.ok(latest.planIngredients.some(row=>row.food_snapshot.portion_policy==='base'));
  });
  const older=structuredClone(catalog);delete older.recipeById.arroz_pollo;older.foods.rice[2]=999;
  const mobile=device(older);

@@ -1850,11 +1850,14 @@
         "fat_g": 0
       }
     },
-    "pending": [
+    "pending": [],
+    "resolved": [
       {
         "id": "ensalada_templada_gulas",
-        "status": "requires_cooking_review",
-        "detail": "Se mantienen los 180 g de cebolla cruda aportados por el propietario. Su intensidad y el volumen total son una decisión culinaria que no se puede validar solo con el JSON; no se reduce la cantidad por intuición ni se declara probada la receta."
+        "status": "reviewed_without_change_owner_confirmed",
+        "detail": "Se mantienen los 180 g de cebolla cruda aportados por el propietario. Su intensidad y el volumen total son una decisión culinaria que no se puede validar solo con el JSON; no se reduce la cantidad por intuición ni se declara probada la receta.",
+        "confirmedOn": "2026-11-02",
+        "ownerDecision": "Sí, mantener los 180 g"
       }
     ]
   }

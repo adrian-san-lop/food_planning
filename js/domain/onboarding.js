@@ -1,5 +1,5 @@
 import { dateFromISO } from './dates.js?v=20261015-european-date';
-import { createProfileDraft, PROFILE_DRAFT_FIELDS, validateProfileDraft } from './profile.js?v=20261022-planner-foundations';
+import { createProfileDraft, PROFILE_DRAFT_FIELDS, validateProfileDraft } from './profile.js?v=20261102-culinary-quality';
 
 export const SETUP_DRAFT_VERSION = 1;
 const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);

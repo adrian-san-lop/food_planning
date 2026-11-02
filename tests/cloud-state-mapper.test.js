@@ -5,6 +5,9 @@ import { addDays, dateFromISO, dateDiff, isoDate, today } from '../js/domain/dat
 import { initialPlanningState, planningRows } from '../js/persistence/planning-state.js';
 import { confirmFirstPlan, confirmSetupProfile } from '../js/domain/onboarding.js';
 import { createProfileDraft } from '../js/domain/profile.js';
+import { loadCatalogs } from '../js/data/catalogs.js';
+import { readFile } from 'node:fs/promises';
+import { detailsFromRows } from '../js/domain/plan-details.js';
 
 const menus = Array.from({ length: 3 }, () => Array.from({ length: 7 }, () => Array(5).fill('recipe')));
 
@@ -40,6 +43,31 @@ function createMapper(overrides = {}) {
     ...overrides,
   });
 }
+
+test('structural ingredient policy survives snapshot serialization and relational row reconstruction', async () => {
+  let catalog; const original = globalThis.fetch;
+  try {
+    globalThis.fetch = async url => ({ok: true, json: async () => JSON.parse(await readFile(url, 'utf8'))});
+    catalog = await loadCatalogs({slotTypes: ['desayuno', 'media', 'comida', 'tarde', 'cena'], recoveryTags: ['calcium', 'vitamin_d', 'vitamin_c']});
+  } finally { globalThis.fetch = original; }
+  const week = Array.from({length: 7}, (_, index) => ['yogur_platano', ['bocadillo_pavo', 'bocadillo_pavo_peq', 'mini_pavo_tomate'][index % 3],
+    'arroz_pollo', 'yogur_nueces', ['fajitas_pollo', 'wrap_pavo', 'tortitas_atun'][index % 3]]);
+  const realMenus = Array.from({length: 3}, () => structuredClone(week));
+  const mapper = createMapper({getCatalog: () => catalog, getFood: () => catalog.foods, getRecipes: () => catalog.recipeById,
+    getCatalogVersion: () => catalog.catalogVersion, foodRecipeUnit: id => catalog.foodMeta[id].recipeUnit,
+    foodStockUnit: id => catalog.foodMeta[id].unit, today: () => dateFromISO('2026-11-02')});
+  const snapshot = await mapper.buildCloudSnapshot({noActiveCycle: false, start: '2026-11-02', activeMenus: realMenus,
+    profileConfirmed: true, profile: {sex: 'manual', manualRmr: 1600, weight: 70, age: 30, height: 170, activity: 'sedentary',
+      goal: 'maintain', injury: false, autoPortions: true, followWeight: false}, cart: {}, cartExtras: []});
+  const flagged = snapshot.plan_ingredients.filter(row => row.food_snapshot.portion_policy === 'base');
+  assert.equal(flagged.length, 6);
+  const details = detailsFromRows({planRecipes: snapshot.plan_recipes, planIngredients: snapshot.plan_ingredients,
+    plannedMeals: snapshot.planned_meals, mealPortions: snapshot.meal_portions, dayTargets: snapshot.day_targets}, snapshot.cycles[0].id);
+  assert.ok(details);
+  for (const row of flagged) {
+    assert.equal(details.recipes[row.recipe_id].ingredients.find(item => item.id === row.food_id).keepBaseAmount, true);
+  }
+});
 
 function cloudCycleData({ plannedMealCount = 105, recipeId = 'recipe', catalogVersion = 'catalog-test' } = {}) {
   const cycleId = 'cycle-active', plannedMeals = [];

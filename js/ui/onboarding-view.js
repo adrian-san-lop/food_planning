@@ -1,5 +1,5 @@
 import { escapeHTML as h, escapeAttribute as a } from './html.js?v=20261013-ux-repair';
-import { PROFILE_LIMITS } from '../domain/profile.js?v=20261022-planner-foundations';
+import { PROFILE_LIMITS } from '../domain/profile.js?v=20261102-culinary-quality';
 
 export const SETUP_STEPS = ['about', 'goal', 'preferences', 'menu'];
 const TITLES = ['Sobre ti', 'Tu objetivo y tu día a día', 'Tus preferencias', 'Tu primer menú'];

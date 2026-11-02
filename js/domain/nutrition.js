@@ -69,7 +69,8 @@ export function createNutritionService({ getFood, getEffectiveWeight, getFoodMet
       : Object.entries(recipe.ingredients.reduce((usage, ingredient) => {
         usage[ingredient.id] = (usage[ingredient.id] || 0) + ingredient.rest;
         return usage;
-      }, {})).map(([id, amount]) => ({ id, amount, fixed: false })));
+      }, {})).map(([id, amount]) => ({ id, amount, fixed: false,
+        keepBaseAmount: recipe.ingredients.some(item => item.id === id && item.keepBaseAmount === true) })));
     if (!profile.autoPortions) return portions.map((items) => Object.fromEntries(items.map((item) => [item.id, item.amount])));
 
     const target = nutritionTarget(activityKcal, profile, previewWeight);
@@ -84,7 +85,7 @@ export function createNutritionService({ getFood, getEffectiveWeight, getFoodMet
     const all = portions.flat();
     const fixed = all.filter((item) => item.fixed);
     const adjustable = all.filter((item) => !item.fixed);
-    const group = item => getFoodMeta()[item.id]?.portion?.group || 'fixed';
+    const group = item => item.keepBaseAmount ? 'fixed' : getFoodMeta()[item.id]?.portion?.group || 'fixed';
     const fixedProtein = macro([...fixed, ...adjustable.filter((item) => group(item) !== 'protein')]).p;
     const variableProtein = macro(adjustable.filter((item) => group(item) === 'protein')).p;
     const proteinMultiplier = limit(variableProtein > 0 ? (target.protein - fixedProtein) / variableProtein : 1, 0.60, 1.65);

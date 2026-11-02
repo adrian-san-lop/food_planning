@@ -112,7 +112,8 @@ export function validateCatalogDocuments(foodDoc, recipeDoc, { slotTypes, recove
     const perServing = {};
     for (const ingredient of recipe.ingredients) {
       const food = foodRows[ingredient.foodId];
-      if (!food || ingredient.unit !== food.recipeUnit || !Number.isFinite(Number(ingredient.amount)) || Number(ingredient.amount) <= 0) {
+      if (!food || ingredient.unit !== food.recipeUnit || !Number.isFinite(Number(ingredient.amount)) || Number(ingredient.amount) <= 0
+        || ingredient.keepBaseAmount !== undefined && ingredient.keepBaseAmount !== true) {
         throw new Error(`La receta «${recipe.name}» contiene un ingrediente incompatible con el catálogo.`);
       }
       perServing[food.id] = (perServing[food.id] || 0) + Number(ingredient.amount) / recipe.baseServings;
@@ -168,6 +169,7 @@ export async function loadCatalogs({ slotTypes, recoveryTags }) {
     ingredients: recipe.ingredients.map((ingredient) => ({
       id: ingredient.foodId,
       rest: Number(ingredient.amount) / Number(recipe.baseServings || 1),
+      ...(ingredient.keepBaseAmount === true ? {keepBaseAmount: true} : {}),
     })),
     steps: recipe.steps.slice(),
     tip: recipe.tip || '',

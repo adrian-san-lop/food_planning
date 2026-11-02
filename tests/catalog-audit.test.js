@@ -57,7 +57,7 @@ test('retained audited recipes preserve IDs, units, weights, quantities and othe
       for (const key of Object.keys(baseReview.before)) assert.deepEqual(expected[key], baseReview.before[key], recipe.id + '/' + key);
       Object.assign(expected, baseReview.after);
     }
-    assert.deepEqual(recipe, expected, recipe.id);
+    assert.deepEqual({...recipe, ingredients: recipe.ingredients.map(({keepBaseAmount, ...item}) => item)}, expected, recipe.id);
   }
 });
 
@@ -161,7 +161,7 @@ test('eight similar recipes retain quantities and nutrition while descriptions d
     assert.equal(new Set(group.map((recipe) => recipe.description)).size, group.length, signature);
     for (const recipe of group) {
       const old = previous.recipes.recipes.find((item) => item.id === recipe.id);
-      assert.deepEqual(recipe.ingredients, old.ingredients, recipe.id);
+      assert.deepEqual(recipe.ingredients.map(({keepBaseAmount, ...item}) => item), old.ingredients, recipe.id);
       assert.equal(recipe.baseServings, old.baseServings, recipe.id);
       assert.deepEqual(recipeNutrition(recipe, foodDoc.foods), recipeNutrition(old, previous.foods.foods), recipe.id);
       const describedAmounts = recipe.description.match(/\d+(?:[.,]\d+)?/g).map((value) => Number(value.replace(',', '.')));

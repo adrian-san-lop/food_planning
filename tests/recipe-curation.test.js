@@ -75,7 +75,7 @@ test('culinary clarification is traceable and preserves every recovered ingredie
   for (const row of culinary.reviewed.filter(row => row.decision === 'recover')) {
     const recipe = doc.recipes.find(recipe => recipe.id === row.id);
     const old = baseline.recipes.recipes.find(recipe => recipe.id === row.id);
-    assert.deepEqual(recipe.ingredients, old.ingredients, row.id);
+    assert.deepEqual(recipe.ingredients.map(({keepBaseAmount, ...item}) => item), old.ingredients, row.id);
     assert.equal(recipe.baseServings, old.baseServings, row.id);
     assert.equal(recipe.mealType, old.mealType, row.id);
     assert.equal(recipe.timeMinutes, old.timeMinutes, row.id);
@@ -123,7 +123,7 @@ test('base-recipe improvements leave all four nutritional totals unchanged for a
   const delta = Object.fromEntries(nutrientKeys.map(key => [key, 0]));
   for (const recipe of doc.recipes) {
     const old = baseline.recipes.recipes.find(row => row.id === recipe.id);
-    assert.deepEqual(recipe.ingredients, old.ingredients, recipe.id);
+    assert.deepEqual(recipe.ingredients.map(({keepBaseAmount, ...item}) => item), old.ingredients, recipe.id);
     const current = recipeNutrition(recipe, foodDoc.foods);
     const before = recipeNutrition(old, foodDoc.foods);
     for (const key of nutrientKeys) {

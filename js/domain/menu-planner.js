@@ -1,8 +1,9 @@
 import { addDays, dateFromISO, isoDate } from './dates.js?v=20261015-european-date';
-import { validateProfileDraft } from './profile.js?v=20261022-planner-foundations';
+import { validateProfileDraft } from './profile.js?v=20261102-culinary-quality';
 import { createPlanningPreferences, validatePlanningPreferences } from './planning-preferences.js?v=20261022-planner-foundations';
-import { generateMenuCycle, MENU_SLOT_TYPES, nutritionDeviation, preparationFamily, summarizeMenu } from './menu-generator.js?v=20261023-common-generator';
-import { projectPlanningStock } from './planning-stock.js?v=20261023-common-generator';
+import { generateMenuCycle, MENU_SLOT_TYPES, nutritionDeviation, preparationFamily, summarizeMenu } from './menu-generator.js?v=20261102-culinary-quality';
+import { projectPlanningStock } from './planning-stock.js?v=20261102-culinary-quality';
+import { mainMealSimilarity } from './menu-quality.js?v=20261102-culinary-quality';
 
 // Search weights, not accepted calorie tolerances or clinical thresholds.
 export const WEEK_CANDIDATES = 3;
@@ -108,9 +109,11 @@ export function createMenuPlanner({ getRecipes, nutrition, toStockAmount, recipe
       repetition: adjacent / 40, preparation: knownMinutes / (42 * 60) + unknownTimes / 42,
       knownPreparationMinutes: knownMinutes, unknownTimes, ingredients: ingredients.size, coverage,
       preference: mean(days.map(day => day.preference)),
+      mainMealSimilarity: mean(plan.menus.flat().map(ids => mainMealSimilarity(ids.map(id => byId.get(id))))),
     };
     const score = metrics.nutrition * 8 + metrics.distribution * 2 + metrics.repetition * .2
-      + metrics.preparation * .15 + metrics.ingredients / 90 * .1 - metrics.coverage * .15 - metrics.preference * .15;
+      + metrics.preparation * .15 + metrics.ingredients / 90 * .1 - metrics.coverage * .15 - metrics.preference * .15
+      + metrics.mainMealSimilarity * .6;
     return { score, metrics, days, summary: summarizeMenu(plan.menus, recipes, request.previousMenus),
       weeks: Array.from({length: 3}, (_, week) => ({ week, meanDeviation: mean(days.slice(week * 7, week * 7 + 7).map(day => day.deviation)) })) };
   }
@@ -139,7 +142,7 @@ export function createMenuPlanner({ getRecipes, nutrition, toStockAmount, recipe
         target: nutrition.nutritionTarget(0, request.profile, request.previewWeight), toStockAmount,
         isEligible: (recipe, d) => !eligibility(recipe, d, startDate, preferences),
         recipePreference: recipe => recipeBias(recipe, request.profile, preferences),
-        dayPreference: day => dayPreference(day, request.profile), rng: request.rng });
+        dayPreference: day => dayPreference(day, request.profile) - mainMealSimilarity(day) * .6, rng: request.rng });
       const analysis = evaluate(request, plan, projection.stock);
       candidates.push({ ...plan, analysis, index: attempt });
     }

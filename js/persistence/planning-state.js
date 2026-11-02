@@ -1,5 +1,5 @@
 import { createPlanningPreferences, validatePlanningPreferences } from '../domain/planning-preferences.js?v=20261022-planner-foundations';
-import { createSetupDraft, validateSetupDraft } from '../domain/onboarding.js?v=20261023-planning-persistence';
+import { createSetupDraft, validateSetupDraft } from '../domain/onboarding.js?v=20261102-culinary-quality';
 
 export const PLANNING_CONTRACT_VERSION = 1;
 

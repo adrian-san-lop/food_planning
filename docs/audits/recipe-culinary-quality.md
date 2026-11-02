@@ -119,9 +119,9 @@ El manifiesto conserva las siete correcciones anteriores y añade una fase separ
 | `tarde_skyr_chia_pasass` | tip | El consejo añadía leche ajena a la lista; resolver la textura sin incorporar ingredientes calóricos nuevos. |
 | `desayuno_tostada_aguacate_pavo_huevo` | name, steps, tip | No se puede fijar una equivalencia universal de gramos de pavo a dos lonchas. |
 
-### Comprobación culinaria pendiente
+### Decisión de cantidad confirmada el 02/11/2026
 
-La ensalada templada de gulas conserva los **180 g de cebolla cruda** aportados originalmente. Su intensidad y el volumen total requieren probar el plato o una decisión del propietario; no se reduce la cantidad por intuición. Se ha aclarado el corte fino y el reparto del aceite, sin presentar eso como validación de sabor o aceptación de la ración. Esta observación no bloquea las correcciones documentales realizadas.
+El propietario confirma el 02/11/2026: «Sí, mantener los 180 g». Se conserva la cantidad de cebolla cruda de la ensalada de gulas y se cierra esta decisión como revisada sin cambio. No se alteran ingredientes ni nutrición y no se afirma que el agente haya cocinado o probado el plato.
 
 ## Validación actual
 

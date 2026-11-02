@@ -1,5 +1,5 @@
-import { MENU_SLOT_TYPES } from './menu-generator.js?v=20261023-common-generator';
-import { recipePlanningIssue } from './menu-planner.js?v=20261023-weekly-review';
+import { MENU_SLOT_TYPES } from './menu-generator.js?v=20261102-culinary-quality';
+import { recipePlanningIssue } from './menu-planner.js?v=20261102-culinary-quality';
 import { createPlanningPreferences } from './planning-preferences.js?v=20261022-planner-foundations';
 import { addDays, dateFromISO } from './dates.js?v=20261015-european-date';
 

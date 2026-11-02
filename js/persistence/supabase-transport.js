@@ -1,4 +1,4 @@
-import { hasPlanningChanges, planningStateFromRows } from './planning-state.js?v=20261023-planning-persistence';
+import { hasPlanningChanges, planningStateFromRows } from './planning-state.js?v=20261102-culinary-quality';
 
 const TABLES = [
   'plan_cycles',

@@ -149,6 +149,7 @@ test('remote refresh preserves a real in-progress profile draft and replaces a m
  for(const dirty of [false,true]){
   let form={dataset:{userDraft:String(dirty)},elements:[{name:'age',type:'number',value:'99'}],contains:()=>false};
   const ctx=vm.createContext({document:{activeElement:null,getElementById:id=>id==='profileForm'?form:{open:false}},
+   planningPreferencesController:{closeRecipeMenu(){}},
    render(){form={dataset:{userDraft:'false'},elements:[{name:'age',type:'number',value:'42'}]}},updateProfilePreview(){},renderPlannerReview(){},renderRecipeModal(){}});
   vm.runInContext(main.slice(main.indexOf('function renderCloudUpdates('),main.indexOf('async function refreshCloudState(')),ctx);ctx.renderCloudUpdates();
   assert.equal(form.elements[0].value,dirty?'99':'42');
