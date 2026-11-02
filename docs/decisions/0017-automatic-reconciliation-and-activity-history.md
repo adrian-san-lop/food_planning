@@ -4,6 +4,8 @@
 - **Estado:** Aceptada e implementada en el cliente local; publicación y validación real pendientes
 - **Alcance:** sincronización de estado personal, navegación móvil e historial de sesiones
 
+Actualización aceptada (25/10/2026): [ADR-0051](0051-server-authoritative-account-state.md) amplía este registro. El contrato 2 usa lectura única, acciones acotadas, snapshots reproducibles de plan y base completa en memoria de sesión. La copia personal persistida corresponde al contrato anterior y a la transición; la conciliación concurrente sigue siendo automática. Activación alojada confirmada por el propietario el 25/10/2026: Success, ocho ready = true y funcionamiento correcto en PC y móvil; véase [registro de confirmación](../backend/account-contract.md).
+
 ## Contexto
 
 La sincronización transaccional ya rechazaba escrituras con una revisión antigua, pero el cliente convertía ese control en una pantalla que pedía elegir entre la copia local y Supabase. Al pasar del móvil al ordenador, un usuario podía encontrarse con esa decisión aunque solo quisiera seguir usando la cuenta. Además, la página de seguimiento mezclaba actividad y peso, quedaba bajo **Más** en móvil y ofrecía un botón de borrado solo con icono.
@@ -22,7 +24,7 @@ La sincronización transaccional ya rechazaba escrituras con una revisión antig
 - Cambios locales independientes se conservan al reconciliarse con cambios remotos. Para cambios simultáneos sobre el mismo valor, la revisión remota aceptada más reciente determina el valor conservado.
 - El borrado de una sesión continúa usando su ID estable y la lista `deleted_activity_ids` del RPC; no requiere cambios de esquema.
 - El reinicio total puede reemplazar los datos personales porque el usuario confirma explícitamente esa acción. No forma parte del cambio normal de dispositivo; la restauración JSON ya no se ofrece (ADR-0029).
-- No se ha cambiado ninguna migración de Supabase. La prueba PC/móvil publicada, la concurrencia real, los errores de red, el reinicio total y RLS con dos cuentas quedan pendientes de validar en navegador.
+- Este cambio no modificó migraciones. El [paquete 7](../planner/package-7-integration.md) comprueba después HTTP 409, aislamiento personal con dos cuentas, recuperación/actualización automática en dos orígenes de navegador y el RPC de reinicio en cuentas de prueba. El propietario confirma que la versión actual funciona en PC y móvil; los escenarios excepcionales de red y el recorrido del reinicio desde la interfaz no formaron parte de esa comprobación.
 
 ## Decisiones sustituidas
 

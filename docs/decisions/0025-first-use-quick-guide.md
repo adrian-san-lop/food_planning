@@ -4,7 +4,7 @@
 - **Estado:** Aceptada e implementada
 - **Alcance:** primera orientación dentro de Inicio y acceso a ayuda breve desde Guía
 
-Actualización de diseño (22/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) acepta una configuración inicial obligatoria para validar el perfil de cuentas nuevas y confirmar el primer menú, con preferencias omitibles y progreso remoto. Está pendiente de implementación. Sustituirá el arranque descrito aquí; la guía informativa seguirá siendo opcional y cerrarla no equivaldrá a completar la configuración.
+Actualización de vigencia (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) y el [paquete 6](../planner/package-6-guided-first-setup.md) implementan y prueban localmente cuatro pasos obligatorios para cuentas nuevas, perfil válido y primer menú generado. Sustituye el arranque de ejemplo para cuentas nuevas; las cuentas existentes conservan sus datos. La guía informativa sigue opcional, cerrarla no completa la configuración y la restricción de comidas futuras se conserva. Publicación y pruebas funcionales alojadas siguen pendientes.
 
 ## Decisión
 

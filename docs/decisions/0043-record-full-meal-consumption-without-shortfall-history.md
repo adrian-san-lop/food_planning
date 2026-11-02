@@ -1,6 +1,6 @@
 # ADR-0043: registrar el consumo completo sin guardar faltantes históricos
 
-- Estado: Aceptada e implementada localmente. La migración de limpieza está aplicada en Supabase según la comprobación del propietario del 22/10/2026.
+- Estado: Aceptada e implementada. El propietario reaplicó la migración de limpieza el 23/10/2026 con Success, y el paquete 7 comprobó cero filas tras nuevos consumos reales.
 - Fecha: 2026-10-18
 - Alcance: registro de comidas, despensa, compras, reversos y sincronización.
 - Sustituye la parte de ADR-0040 que guardaba los faltantes por separado.
@@ -23,7 +23,7 @@ Menuki es un seguimiento de menú de uso personal y sencillo. Marcar una receta 
 - Despensa muestra saldos, compras anotadas y consumo acumulado, sin cifras históricas de faltantes.
 - La vista de receta informa del stock actual, sin comparar el stock con una comida ya completada. La lista de Compra puede seguir mostrando cuánto falta para cubrir comidas futuras.
 - Si un saldo estaba mal anotado, registrar la comida no exige corregirlo: el saldo llega a cero y el consumo completo permanece en el registro de la comida. Los ajustes manuales posteriores reflejan compras o correcciones reales.
-- La limpieza de Supabase es una migración de datos global y debe ejecutarse por el propietario. La confirmación de ejecución se documentará solo después de recibirla.
+- La limpieza de Supabase es una migración de datos global y debe ejecutarse por el propietario. El propietario comunicó la aplicación y comprobaciones estructurales el 22/10/2026. La primera prueba alojada del paquete 7 detectó dos filas nuevas de la cuenta de prueba; tras reaplicar el propietario la migración con Success el 23/10/2026, consumos desde interfaz y RPC dejaron cero filas. Véase [el registro de integración](../planner/package-7-integration.md). No se infiere qué cambio remoto causó la discrepancia inicial.
 
 ## Decisión sustituida
 

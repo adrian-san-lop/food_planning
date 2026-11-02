@@ -1,7 +1,7 @@
 # Plan integrado: primera visita y generación personal de menús
 
 - Fecha: 22/10/2026.
-- Estado: **Aceptado; desarrollo por paquetes en curso.** Los paquetes [1](package-1-foundations.md) y [2](package-2-practical-portions.md) están implementados y probados localmente; el primero ya se ha incorporado a `dev`. Los nuevos flujos de usuario y la persistencia siguen pendientes; este plan distingue el resultado previsto de lo ya disponible.
+- Estado (23/10/2026): **Paquetes 1–7 completados e incorporados a `dev`.** Pasan 184 pruebas Node, 18 comprobaciones PostgreSQL local y 14 alojadas; dos sesiones de navegador recuperaron progreso y plan automáticamente. El propietario confirma que guardó el trabajo en una rama `dev` limpia, eliminó las cuentas de prueba y que la versión actual funciona en PC y móvil; el estado limpio se observó antes de esta actualización documental. No queda SQL ni trabajo de aceptación pendiente para esta entrega. Véanse [6](package-6-guided-first-setup.md) y [7](package-7-integration.md).
 - Decisión: [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md).
 - Comportamiento actualmente implementado: [especificación](specification.md), [ADR-0046](../decisions/0046-familiar-weekly-menu.md) y [arquitectura](../architecture.md).
 
@@ -13,15 +13,15 @@ Se mantiene el contrato de 21 días y cinco comidas diarias: 105 posiciones. Una
 
 ## Punto de partida comprobado en el código
 
-- `js/main.js` coordina Auth, primer arranque y revisión. `emptyState()` incluye valores de ejemplo y el arranque de una cuenta sin inicializar puede sincronizarlos junto al menú fijo.
-- Ya existe `profiles.profile_confirmed`, pero la guía de ADR-0025 es opcional y no guarda progreso de configuración.
-- `js/domain/menu-generator.js` construye propuestas futuras con familiaridad y bloqueos. Actualmente recibe `state.stock`, aunque la propuesta empiece más adelante.
-- `js/domain/nutrition.js` calcula objetivos y adapta cantidades. La revisión actual muestra las tres semanas completas y cada sustitución afecta a una sola posición.
-- Supabase guarda el estado personal en tablas relacionales mediante `sync_menuki_state` y `sync_revision`; `localStorage` es la copia de trabajo. Estado local vigente: v11.
+- El paquete 6 activa configuración guiada en cuentas nuevas sin datos reales previos: campos personales vacíos y sin ciclo automático. `emptyState()` conserva valores de compatibilidad para instalaciones anteriores; no se envían como perfil de una cuenta guiada.
+- `profiles.profile_confirmed` confirma el perfil. El progreso válido guiado se conserva en `profile_setup_drafts`; la guía de ADR-0025 queda opcional y no sustituye la configuración.
+- Desde el paquete 3, `js/domain/menu-planner.js` coordina la generación común y compara tres candidatos; `menu-generator.js` conserva familiaridad y bloqueos. La renovación recibe una despensa prevista a la fecha de inicio, calculada desde el saldo actual y las comidas pendientes anteriores.
+- `js/domain/nutrition.js` calcula objetivos y adapta cantidades. El paquete 5 extrae la revisión a `js/ui/planner-review.js`: muestra una semana cada vez y permite cambiar tres semanas o una posición, respetando los demás bloqueos.
+- Supabase guarda el estado personal en tablas relacionales mediante `sync_menuki_state` y `sync_revision`; `localStorage` es la copia de trabajo. Estado local vigente: v12; se conservan las migraciones v5-v11 y se añaden los campos nuevos.
 
 ## 1. Recorrido de primera visita
 
-La configuración será una vista dedicada después de Auth, con marca, progreso **Paso N de 4**, Anterior y Continuar. En móvil mantendrá campos y acciones accesibles con desplazamiento natural. Los datos personales usarán campos vacíos y ayudas de formato, no valores de ejemplo preseleccionados como si fueran reales.
+La configuración es una vista dedicada después de Auth, implementada localmente en el paquete 6, con marca, progreso **Paso N de 4**, Anterior y Continuar. En móvil mantendrá campos y acciones accesibles con desplazamiento natural. Los datos personales usan campos vacíos y ayudas de formato, no valores de ejemplo preseleccionados como si fueran reales.
 
 | Paso | Contenido | Condición para continuar |
 | --- | --- | --- |
@@ -76,11 +76,11 @@ Un número de paso puede orientar la interfaz, pero no sustituye la validación 
 
 ### Supabase y copia de trabajo
 
-Crear cuenta Auth no debe exigir una fila de perfil completa ni crear un ciclo de ejemplo. Los campos incompletos se guardarán como borrador privado con columnas tipadas. La forma final del borrador se concretará antes de preparar SQL; no se relajarán las validaciones del perfil confirmado para aceptar datos inventados.
+Crear cuenta Auth no exige una fila de perfil completa ni crea un ciclo de ejemplo. Los campos incompletos se guardan en `profile_setup_drafts` con columnas tipadas, implementadas en el paquete 4. El paquete 6 activa ese contrato sin relajar las validaciones del perfil confirmado ni introducir SQL adicional.
 
-Guardar preferencias por receta y ajustes personales en tablas relacionales vinculadas a `auth.uid()`. No escribir preferencias en los catálogos ni almacenar el estado personal completo como JSON. Ampliar `sync_menuki_state` para borradores, preferencias y confirmación inicial manteniendo transacciones, idempotencia y control de revisión.
+Las preferencias y ajustes se guardan en tablas relacionales vinculadas a `auth.uid()`, mediante `sync_menuki_state`, manteniendo transacciones, idempotencia y control de revisión. No se escriben en catálogos ni se almacena el estado personal completo como JSON.
 
-Adaptar conjuntamente inicialización, lecturas, mapeo, normalización y conciliación: actualmente esperan un perfil completo. Las omisiones de un cliente antiguo no deben borrar preferencias nuevas. El backend validará el perfil antes de aceptar un primer plan confirmado en el flujo nuevo. Guardar, desmarcar y borrar preferencias deberán conciliarse entre dispositivos.
+Inicialización, lecturas, mapeo, normalización y conciliación admiten un perfil ausente durante la configuración guiada. Las omisiones de clientes antiguos no borran preferencias nuevas; las cuentas guiadas requieren el contrato nuevo. El backend valida perfil y confirmación antes del primer plan. El paquete 7 valida Auth/PostgREST con dos cuentas y recuperación/actualización automática desde dos orígenes de navegador independientes. El propietario confirma posteriormente que la versión actual funciona en PC y móvil.
 
 Conservar las migraciones locales v5-v11. Si cambia el contrato persistido, añadir la siguiente versión y su migración, sin reintroducir v1-v4 ni restauración JSON. Guardar borrador local ante fallos no equivale a guardado remoto; el estado y el reintento deben ser claros. No añadir cola offline.
 
@@ -100,11 +100,11 @@ El acuerdo queda registrado en este plan y ADR-0047. El desarrollo se divide en 
 
 1. **Estados y compatibilidad — implementado localmente:** separar perfil válido confirmado de borrador incompleto; definir preferencias, progreso y transición de cuentas existentes. Extraer la normalización del perfil conservando el comportamiento vigente. Los modelos nuevos no activan todavía otro arranque ni cambian el contrato persistido v11. Véase [resultado y comprobaciones](package-1-foundations.md).
 2. **Raciones prácticas — implementado localmente:** límites y pasos por alimento en catálogo 0.10.0, validación y evaluación común de cantidades/totales/diferencias. Nutrición, compra y despensa usan las mismas cantidades. Se conservan fórmulas, bases y consumos ya registrados. Véase [resultado y comprobaciones](package-2-practical-portions.md).
-3. **Generador común — siguiente paquete:** servir primer ciclo y renovación con perfil confirmado, preferencias, tiempos, evaluación semanal y previsión de despensa. Conservar familiaridad y bloqueos, con pruebas reproducibles sin datos personales.
-4. **Persistencia Supabase y compatibilidad:** preparar migraciones aditivas; actualizar RPC, mapeo, normalización, conciliación e inicialización para borradores y preferencias. Validar la confirmación del perfil también en el servidor. Revisar el SQL y sus diagnósticos antes de aplicarlo.
-5. **Preferencias y revisión semanal:** extraer la revisión de `main.js`, añadir preferencias en perfil y fichas, y aplicar cambios a tres semanas o una comida conservando bloqueos. Comprobar por HTTP escritorio y móvil con estados sintéticos.
-6. **Configuración inicial guiada:** conectar los cuatro pasos, el guardado y reanudación y el primer menú revisable, utilizando los modelos, motor y persistencia anteriores. Conservar el acceso y los datos de las cuentas existentes.
-7. **Integración real y publicación:** aplicar y comprobar las migraciones en Supabase antes de activar el cliente que las necesita; probar cuentas, RLS y dispositivos; publicar cuando el propietario lo autorice. No considerar aplicada una migración porque su archivo esté en Git.
+3. **Generador común — incorporado a dev:** entrada con perfil confirmado y fecha explícita, preferencias, tiempos, comparación de tres candidatos y previsión de despensa. La renovación ya lo usa; el primer menú queda preparado para el nuevo recorrido. Se conservan familiaridad, raciones y bloqueos; persistencia e interfaz se incorporan en los paquetes 4 y 5. Véase [resultado y comprobaciones](package-3-common-generator.md).
+4. **Persistencia Supabase y compatibilidad — implementado y probado localmente; SQL aplicado según el propietario:** migración aditiva aplicada, RPC completos, mapeo, estado v12, conciliación, capacidades e inicialización compatibles. Se valida perfil y confirmación del plan en el servidor. El propietario confirma ejecución del SQL con Success y los siete diagnósticos en true el 23/10/2026; el paquete 7 añade comprobaciones funcionales alojadas, sin inspección administrativa del esquema; véase [resultado del paquete 4](package-4-persistence.md).
+5. **Preferencias y revisión semanal — implementado y probado localmente:** revisión extraída de `main.js`, preferencias en perfil y fichas, alternativas consultables y cambios a tres semanas o una comida conservando bloqueos. Incluye 162 pruebas Node y recorridos sintéticos por HTTP con revisión visual de escritorio, tablet y móvil; sin SQL nuevo ni publicación. Véase [resultado y límites](package-5-preferences-and-weekly-review.md).
+6. **Configuración inicial guiada — implementado y probado localmente:** cuatro pasos con campos vacíos, validación, progreso, Anterior y preferencias omitibles; primer menú revisable con el motor común y confirmación única. Conserva cuentas existentes y ciclos terminados. 175 pruebas Node y recorridos HTTP sintéticos; no requiere SQL nuevo. Véase [resultado y límites](package-6-guided-first-setup.md).
+7. **Integración y aceptación completadas:** 14 comprobaciones Auth/PostgREST con dos cuentas reales, recorrido del primer plan y actualización automática desde dos orígenes de navegador, correcciones de conciliación/sesión y retirada de faltantes verificada después de su reaplicación por el propietario. El propietario confirma funcionamiento de la versión actual en PC y móvil y eliminación de las cuentas de prueba. Sin SQL nuevo pendiente. Véase [resultado](package-7-integration.md).
 
 La activación debe contemplar clientes anteriores y capacidades del esquema. Un componente pendiente no debe provocar una caída de toda la cuenta como ocurrió con dependencias de tablas nuevas; limitar el mensaje y el bloqueo al flujo que necesite esa capacidad.
 

@@ -1,0 +1,1312 @@
+{
+  "date": "2026-11-02",
+  "baselineCommit": "1f8401f",
+  "scope": "Datos genéricos y perfiles sintéticos; sin cuentas ni escritura remota.",
+  "policies": [
+    {
+      "recipeId": "bocadillo_pavo",
+      "foodId": "bread",
+      "baseAmount": 2,
+      "reason": "Dos rebanadas para cerrar el sándwich."
+    },
+    {
+      "recipeId": "bocadillo_pavo_peq",
+      "foodId": "bread",
+      "baseAmount": 2,
+      "reason": "Dos rebanadas para cerrar el sándwich."
+    },
+    {
+      "recipeId": "mini_pavo_tomate",
+      "foodId": "bread",
+      "baseAmount": 2,
+      "reason": "Dos rebanadas para cerrar el sándwich."
+    },
+    {
+      "recipeId": "fajitas_pollo",
+      "foodId": "tortilla",
+      "baseAmount": 70,
+      "reason": "Mantener la cobertura de la ración base mientras las verduras no se reducen."
+    },
+    {
+      "recipeId": "wrap_pavo",
+      "foodId": "tortilla",
+      "baseAmount": 70,
+      "reason": "Mantener la cobertura de la ración base mientras las verduras no se reducen."
+    },
+    {
+      "recipeId": "tortitas_atun",
+      "foodId": "oats",
+      "baseAmount": 25,
+      "reason": "Conservar el ligante de avena de la receta con la cantidad fija de huevo."
+    }
+  ],
+  "before": {
+    "catalogVersion": "0.10.1",
+    "scaled": {
+      "days": 10656,
+      "structuralChecks": 576,
+      "structuralChanges": 171,
+      "nonfinite": 0,
+      "examples": [
+        {
+          "recipeId": "bocadillo_pavo",
+          "foodId": "bread",
+          "base": 2,
+          "adjusted": 1,
+          "profile": {
+            "injury": false,
+            "autoPortions": true,
+            "followWeight": false,
+            "activity": "very_sedentary",
+            "goal": "maintain",
+            "sex": "female",
+            "age": 60,
+            "height": 150,
+            "weight": 45
+          },
+          "session": 0
+        },
+        {
+          "recipeId": "bocadillo_pavo_peq",
+          "foodId": "bread",
+          "base": 2,
+          "adjusted": 1,
+          "profile": {
+            "injury": false,
+            "autoPortions": true,
+            "followWeight": false,
+            "activity": "very_sedentary",
+            "goal": "maintain",
+            "sex": "female",
+            "age": 60,
+            "height": 150,
+            "weight": 45
+          },
+          "session": 0
+        },
+        {
+          "recipeId": "fajitas_pollo",
+          "foodId": "tortilla",
+          "base": 70,
+          "adjusted": 35,
+          "profile": {
+            "injury": false,
+            "autoPortions": true,
+            "followWeight": false,
+            "activity": "very_sedentary",
+            "goal": "maintain",
+            "sex": "female",
+            "age": 60,
+            "height": 150,
+            "weight": 45
+          },
+          "session": 0
+        },
+        {
+          "recipeId": "wrap_pavo",
+          "foodId": "tortilla",
+          "base": 70,
+          "adjusted": 35,
+          "profile": {
+            "injury": false,
+            "autoPortions": true,
+            "followWeight": false,
+            "activity": "very_sedentary",
+            "goal": "maintain",
+            "sex": "female",
+            "age": 60,
+            "height": 150,
+            "weight": 45
+          },
+          "session": 0
+        },
+        {
+          "recipeId": "tortitas_atun",
+          "foodId": "oats",
+          "base": 25,
+          "adjusted": 15,
+          "profile": {
+            "injury": false,
+            "autoPortions": true,
+            "followWeight": false,
+            "activity": "very_sedentary",
+            "goal": "maintain",
+            "sex": "female",
+            "age": 60,
+            "height": 150,
+            "weight": 45
+          },
+          "session": 0
+        },
+        {
+          "recipeId": "mini_pavo_tomate",
+          "foodId": "bread",
+          "base": 2,
+          "adjusted": 1,
+          "profile": {
+            "injury": false,
+            "autoPortions": true,
+            "followWeight": false,
+            "activity": "very_sedentary",
+            "goal": "maintain",
+            "sex": "female",
+            "age": 60,
+            "height": 150,
+            "weight": 45
+          },
+          "session": 0
+        }
+      ]
+    },
+    "weeks": {
+      "cycles": 64,
+      "complete": 64,
+      "repeatedBase": 64,
+      "adjacentMainRepeats": 71,
+      "meanMainSimilarity": 0.1633904414038343,
+      "meanIngredients": 29.65625,
+      "meanPreparations": 13.46875,
+      "maxNewFamilies": 3,
+      "examples": [
+        {
+          "goal": "maintain",
+          "weight": 45,
+          "menus": [
+            [
+              "yogur_avena_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "comida_soja_berenjena_arroz",
+              "pera_nueces_ligero",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "cena_solomillo_lombarda_boniato"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "tortilla_patata_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "sardinas_tostas"
+            ]
+          ],
+          "ingredients": 32
+        },
+        {
+          "goal": "maintain",
+          "weight": 115,
+          "menus": [
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "yogur_pera",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_kiwi",
+              "yogur_pera",
+              "arroz_gambas_guisantes",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "pavo_curry_arroz",
+              "pera_nueces_ligero",
+              "pasta_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_kiwi",
+              "snack_skyr_nueces",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "yogur_pera",
+              "arroz_gambas_guisantes",
+              "yogur_nueces",
+              "pollo_boniato"
+            ]
+          ],
+          "ingredients": 23
+        },
+        {
+          "goal": "fat_loss",
+          "weight": 45,
+          "menus": [
+            [
+              "yogur_avena_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "cena_solomillo_lombarda_boniato"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "cena_pavo_plancha_verduras"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "cena_pavo_plancha_verduras"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "tortilla_patata_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ]
+          ],
+          "ingredients": 37
+        },
+        {
+          "goal": "fat_loss",
+          "weight": 115,
+          "menus": [
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "yogur_pera",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_kiwi",
+              "yogur_pera",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "arroz_gambas_guisantes",
+              "pera_nueces_ligero",
+              "pasta_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "pavo_arroz_tomate",
+              "yogur_nueces",
+              "pasta_pavo"
+            ]
+          ],
+          "ingredients": 23
+        },
+        {
+          "goal": "muscle_gain",
+          "weight": 45,
+          "menus": [
+            [
+              "yogur_avena_manzana",
+              "yogur_kiwi_ligero",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "tortilla_atun"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "tortilla_patata_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_quinoa_alubias_maiz",
+              "yogur_nueces",
+              "huevos_alubias"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "pollo_esparragos"
+            ],
+            [
+              "skyr_chia_manzana",
+              "snack_skyr_nueces",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "cena_solomillo_lombarda_boniato"
+            ]
+          ],
+          "ingredients": 37
+        },
+        {
+          "goal": "muscle_gain",
+          "weight": 115,
+          "menus": [
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "yogur_pera",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_kiwi",
+              "yogur_pera",
+              "arroz_gambas_guisantes",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "pavo_curry_arroz",
+              "pera_nueces_ligero",
+              "pasta_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_kiwi",
+              "snack_skyr_nueces",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "yogur_pera",
+              "arroz_gambas_guisantes",
+              "yogur_nueces",
+              "pollo_boniato"
+            ]
+          ],
+          "ingredients": 23
+        },
+        {
+          "goal": "recomp",
+          "weight": 45,
+          "menus": [
+            [
+              "yogur_avena_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "cena_pavo_plancha_verduras"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "tortilla_patata_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "cena_pavo_plancha_verduras"
+            ]
+          ],
+          "ingredients": 35
+        },
+        {
+          "goal": "recomp",
+          "weight": 115,
+          "menus": [
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_pera_nueces",
+              "yogur_pera",
+              "arroz_pollo",
+              "pera_nueces_ligero",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_kiwi",
+              "yogur_pera",
+              "pavo_arroz_tomate",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "arroz_gambas_guisantes",
+              "pera_nueces_ligero",
+              "pasta_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "pavo_arroz_tomate",
+              "yogur_nueces",
+              "pollo_boniato"
+            ]
+          ],
+          "ingredients": 23
+        }
+      ]
+    }
+  },
+  "after": {
+    "catalogVersion": "0.11.0",
+    "scaled": {
+      "days": 10656,
+      "structuralChecks": 576,
+      "structuralChanges": 0,
+      "nonfinite": 0,
+      "examples": []
+    },
+    "weeks": {
+      "cycles": 64,
+      "complete": 64,
+      "repeatedBase": 64,
+      "adjacentMainRepeats": 37,
+      "meanMainSimilarity": 0.14257490401463613,
+      "meanIngredients": 30.296875,
+      "meanPreparations": 13.5625,
+      "maxNewFamilies": 3,
+      "examples": [
+        {
+          "goal": "maintain",
+          "weight": 45,
+          "menus": [
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "cena_solomillo_lombarda_boniato"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "comida_soja_berenjena_arroz",
+              "pera_nueces_ligero",
+              "tortilla_atun"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "tortilla_patata_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "sardinas_tostas"
+            ]
+          ],
+          "ingredients": 32
+        },
+        {
+          "goal": "maintain",
+          "weight": 115,
+          "menus": [
+            [
+              "yogur_pera_nueces",
+              "yogur_pera",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_kiwi",
+              "yogur_pera",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "arroz_gambas_guisantes",
+              "pera_nueces_ligero",
+              "pasta_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "pavo_arroz_tomate",
+              "yogur_nueces",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_gambas_guisantes",
+              "yogur_nueces",
+              "wrap_pavo"
+            ]
+          ],
+          "ingredients": 23
+        },
+        {
+          "goal": "fat_loss",
+          "weight": 45,
+          "menus": [
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "cena_pavo_plancha_verduras"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "tortilla_atun"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "cena_solomillo_lombarda_boniato"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "cena_pavo_plancha_verduras"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "tortilla_patata_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ]
+          ],
+          "ingredients": 37
+        },
+        {
+          "goal": "fat_loss",
+          "weight": 115,
+          "menus": [
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "yogur_pera",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_kiwi",
+              "yogur_pera",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "arroz_gambas_guisantes",
+              "pera_nueces_ligero",
+              "pasta_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "pavo_arroz_tomate",
+              "yogur_nueces",
+              "pasta_pavo"
+            ]
+          ],
+          "ingredients": 23
+        },
+        {
+          "goal": "muscle_gain",
+          "weight": 45,
+          "menus": [
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "pollo_esparragos"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "tortilla_patata_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_quinoa_alubias_maiz",
+              "yogur_nueces",
+              "huevos_alubias"
+            ],
+            [
+              "yogur_avena_manzana",
+              "yogur_kiwi_ligero",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "snack_skyr_nueces",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "cena_solomillo_lombarda_boniato"
+            ]
+          ],
+          "ingredients": 37
+        },
+        {
+          "goal": "muscle_gain",
+          "weight": 115,
+          "menus": [
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "yogur_pera",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_kiwi",
+              "yogur_pera",
+              "pavo_curry_arroz",
+              "pera_nueces_ligero",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "arroz_gambas_guisantes",
+              "yogur_nueces",
+              "pasta_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_kiwi",
+              "snack_skyr_nueces",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "yogur_pera",
+              "arroz_gambas_guisantes",
+              "yogur_nueces",
+              "pollo_boniato"
+            ]
+          ],
+          "ingredients": 23
+        },
+        {
+          "goal": "recomp",
+          "weight": 45,
+          "menus": [
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "tortilla_atun"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "cena_pavo_plancha_verduras"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "tortilla_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_manzana_cafe_leche",
+              "pasta_atun_ensalada",
+              "pera_nueces_ligero",
+              "tortilla_patata_atun"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "comida_soja_berenjena_arroz",
+              "yogur_nueces",
+              "cena_pavo_plancha_verduras"
+            ],
+            [
+              "yogur_avena_manzana",
+              "media_edamame_soja",
+              "pasta_atun_ensalada",
+              "yogur_nueces",
+              "sardinas_tostas"
+            ],
+            [
+              "skyr_chia_manzana",
+              "media_edamame_soja",
+              "pollo_boniato_ensalada",
+              "pera_nueces_ligero",
+              "cena_pavo_plancha_verduras"
+            ]
+          ],
+          "ingredients": 35
+        },
+        {
+          "goal": "recomp",
+          "weight": 115,
+          "menus": [
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "yogur_pera",
+              "pavo_arroz_tomate",
+              "pera_nueces_ligero",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_kiwi",
+              "yogur_pera",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "pollo_boniato"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "arroz_gambas_guisantes",
+              "pera_nueces_ligero",
+              "pasta_pavo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "arroz_pollo",
+              "yogur_nueces",
+              "fajitas_pollo"
+            ],
+            [
+              "yogur_rojos_nueces",
+              "snack_skyr_nueces",
+              "pavo_curry_arroz",
+              "yogur_nueces",
+              "wrap_pavo"
+            ],
+            [
+              "yogur_pera_nueces",
+              "snack_skyr_nueces",
+              "pavo_arroz_tomate",
+              "yogur_nueces",
+              "pollo_boniato"
+            ]
+          ],
+          "ingredients": 23
+        }
+      ]
+    },
+    "portionImpact": [
+      {
+        "recipeId": "bocadillo_pavo",
+        "foodId": "bread",
+        "syntheticProfile": {
+          "injury": false,
+          "autoPortions": true,
+          "followWeight": false,
+          "activity": "sedentary",
+          "goal": "fat_loss",
+          "sex": "female",
+          "age": 60,
+          "height": 150,
+          "weight": 45
+        },
+        "beforeQuantity": 1,
+        "afterQuantity": 2,
+        "beforeDay": {
+          "k": 1233.8,
+          "p": 96.82000000000001,
+          "c": 135.59,
+          "f": 32.9
+        },
+        "afterDay": {
+          "k": 1296.3,
+          "p": 99.07000000000001,
+          "c": 146.84,
+          "f": 33.9
+        },
+        "deltaDay": {
+          "k": 62.5,
+          "p": 2.25,
+          "c": 11.25,
+          "f": 1
+        }
+      },
+      {
+        "recipeId": "bocadillo_pavo_peq",
+        "foodId": "bread",
+        "syntheticProfile": {
+          "injury": false,
+          "autoPortions": true,
+          "followWeight": false,
+          "activity": "sedentary",
+          "goal": "fat_loss",
+          "sex": "female",
+          "age": 60,
+          "height": 150,
+          "weight": 45
+        },
+        "beforeQuantity": 1,
+        "afterQuantity": 2,
+        "beforeDay": {
+          "k": 1230.2,
+          "p": 96.62,
+          "c": 134.89000000000001,
+          "f": 32.86
+        },
+        "afterDay": {
+          "k": 1292.6999999999998,
+          "p": 98.87,
+          "c": 146.14000000000001,
+          "f": 33.86
+        },
+        "deltaDay": {
+          "k": 62.49999999999977,
+          "p": 2.25,
+          "c": 11.25,
+          "f": 1
+        }
+      },
+      {
+        "recipeId": "mini_pavo_tomate",
+        "foodId": "bread",
+        "syntheticProfile": {
+          "injury": false,
+          "autoPortions": true,
+          "followWeight": false,
+          "activity": "sedentary",
+          "goal": "fat_loss",
+          "sex": "female",
+          "age": 60,
+          "height": 150,
+          "weight": 45
+        },
+        "beforeQuantity": 1,
+        "afterQuantity": 2,
+        "beforeDay": {
+          "k": 1213.2,
+          "p": 93.22,
+          "c": 135.09,
+          "f": 32.5
+        },
+        "afterDay": {
+          "k": 1275.7,
+          "p": 95.47,
+          "c": 146.34,
+          "f": 33.5
+        },
+        "deltaDay": {
+          "k": 62.5,
+          "p": 2.25,
+          "c": 11.25,
+          "f": 1
+        }
+      },
+      {
+        "recipeId": "fajitas_pollo",
+        "foodId": "tortilla",
+        "syntheticProfile": {
+          "injury": false,
+          "autoPortions": true,
+          "followWeight": false,
+          "activity": "sedentary",
+          "goal": "fat_loss",
+          "sex": "female",
+          "age": 60,
+          "height": 150,
+          "weight": 45
+        },
+        "beforeQuantity": 35,
+        "afterQuantity": 70,
+        "beforeDay": {
+          "k": 1377.95,
+          "p": 95.53999999999999,
+          "c": 155.19,
+          "f": 42.11
+        },
+        "afterDay": {
+          "k": 1481.2,
+          "p": 98.34,
+          "c": 172.69,
+          "f": 44.21
+        },
+        "deltaDay": {
+          "k": 103.25,
+          "p": 2.8000000000000114,
+          "c": 17.5,
+          "f": 2.1000000000000014
+        }
+      },
+      {
+        "recipeId": "wrap_pavo",
+        "foodId": "tortilla",
+        "syntheticProfile": {
+          "injury": false,
+          "autoPortions": true,
+          "followWeight": false,
+          "activity": "sedentary",
+          "goal": "fat_loss",
+          "sex": "female",
+          "age": 60,
+          "height": 150,
+          "weight": 45
+        },
+        "beforeQuantity": 35,
+        "afterQuantity": 70,
+        "beforeDay": {
+          "k": 1369.25,
+          "p": 105.38,
+          "c": 152.19,
+          "f": 38.010000000000005
+        },
+        "afterDay": {
+          "k": 1472.5,
+          "p": 108.17999999999999,
+          "c": 169.69,
+          "f": 40.11
+        },
+        "deltaDay": {
+          "k": 103.25,
+          "p": 2.799999999999997,
+          "c": 17.5,
+          "f": 2.0999999999999943
+        }
+      },
+      {
+        "recipeId": "tortitas_atun",
+        "foodId": "oats",
+        "syntheticProfile": {
+          "injury": false,
+          "autoPortions": true,
+          "followWeight": false,
+          "activity": "sedentary",
+          "goal": "fat_loss",
+          "sex": "female",
+          "age": 60,
+          "height": 150,
+          "weight": 45
+        },
+        "beforeQuantity": 15,
+        "afterQuantity": 25,
+        "beforeDay": {
+          "k": 1536.9,
+          "p": 110.97,
+          "c": 164.7,
+          "f": 47.260000000000005
+        },
+        "afterDay": {
+          "k": 1573.9,
+          "p": 112.27,
+          "c": 170.6,
+          "f": 47.96
+        },
+        "deltaDay": {
+          "k": 37,
+          "p": 1.2999999999999972,
+          "c": 5.900000000000006,
+          "f": 0.6999999999999957
+        }
+      }
+    ]
+  },
+  "onion": {
+    "recipeId": "ensalada_templada_gulas",
+    "currentAmount_g": 180,
+    "status": "reviewed_without_change_owner_confirmed",
+    "reason": "El propietario confirma mantener los 180 g. Se cierra sin modificar la receta ni afirmar una prueba sensorial independiente del agente.",
+    "confirmedOn": "2026-11-02",
+    "ownerDecision": "Sí, mantener los 180 g"
+  }
+}

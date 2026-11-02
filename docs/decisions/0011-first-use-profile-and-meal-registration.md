@@ -6,7 +6,7 @@
 
 Actualización de vigencia (17/10/2026): la secuencia inicial de cinco pasos se conserva abajo como antecedente. ADR-0025 y ADR-0029 definen la guía rápida actual de tres pasos desde Inicio/Guía y el recorrido completo en Guía. La confirmación del perfil y la restricción de comidas futuras siguen vigentes.
 
-Actualización de diseño (22/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) acepta una configuración guiada de cuatro pasos para cuentas nuevas, con perfil obligatorio, preferencias opcionales y primer menú generado. Está pendiente de implementación. Se reutilizará la confirmación del perfil y se conservará la restricción de comidas futuras; la existencia de una cuenta Auth o una sincronización inicial no equivaldrá a completar la configuración.
+Actualización de vigencia (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) y el [paquete 6](../planner/package-6-guided-first-setup.md) implementan y prueban localmente cuatro pasos obligatorios para cuentas nuevas, perfil válido y primer menú generado. Sustituye el arranque de ejemplo para cuentas nuevas; las cuentas existentes conservan sus datos. La guía informativa sigue opcional, cerrarla no completa la configuración y la restricción de comidas futuras se conserva. Publicación y pruebas funcionales alojadas siguen pendientes.
 
 ## Decisión
 

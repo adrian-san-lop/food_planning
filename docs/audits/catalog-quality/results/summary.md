@@ -823,3 +823,13 @@ primary recipe states {'SIN_EVIDENCIA': 84, 'CANDIDATO': 12, 'CONFIRMADO': 16}
 ~~~
 
 También comprobados: 112 vectores de cantidades únicos, 109 recetas con fuente heredada y 111 tips no vacíos. Revisión final de CSV sin columnas extra, IDs únicos y porcentajes/deltas coherentes. Solo se han creado los cinco archivos solicitados dentro de results/; ningún archivo seguido cambia. Catálogos idénticos byte a byte a dev. Sin commits ni publicación.
+
+## Selección culinaria posterior — 23/10/2026
+
+La revisión [de las 112 recetas](../../recipe-culinary-quality.md) conserva finalmente 111 recetas y 537 referencias. Después de confirmar fajitas, tostas de sardinas y wrap de pavo, el propietario acepta reconsiderar las otras once eliminaciones: diez se recuperan por su coherencia culinaria y solo permanece eliminado hamburguesa_pavo. No se descarta por origen o formato ni se utilizan utensilios como criterio. Siete fichas reciben aclaraciones de nombre, pasos o consejo, trazadas en [el manifiesto](../../recipe-culinary-changes.json). No cambian ingredientes, cantidades, tiempos, unidades ni nutrientes.
+
+Los resultados nutricionales de 112 recetas siguen siendo evidencia histórica: no se regeneran sus CSV o informes ni se afirman nuevas verificaciones. Se comparan por ID las cifras de las 111 fichas aún presentes, manteniendo los nombres históricos de los informes; el cambio editorial de nombre se comprueba por separado. Las 16 recetas con huevo vuelven a estar presentes. Los pendientes por falta de evidencia no se cierran. El propietario acepta invalidar menús de prueba; no hay fichas ocultas ni mecanismos de retirada, y no se toca Supabase.
+
+### Revisión posterior de recetas base — misma iteración
+
+Se revisan las 111 fichas y se mejoran documentalmente 52 adicionales: 33 comidas/cenas y 19 desayunos/tentempiés. La fase baseRecipeReview del manifiesto conserva las decisiones y cambios previos. No se tocan nutrientes, ingredientes, cantidades, raciones, unidades, tiempos o tipos. El cálculo independiente antes/después de las 111 fichas da cero diferencias en kcal, proteína, hidratos y grasa. Los informes nutricionales históricos no se regeneran ni se validan fuentes nuevas. Se conserva pendiente la valoración culinaria de 180 g de cebolla cruda en la ensalada de gulas, sin sustituir esa cantidad por intuición. La revisión de porciones escaladas y semana completa se hará después; no forma parte de esta modificación de recetas base. La validación actual se recoge en el inventario (194 tests y ambos esquemas).

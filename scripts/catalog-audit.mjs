@@ -61,8 +61,12 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
   if (process.argv.includes('--write')) {
     await writeFile(output, JSON.stringify(impact, null, 2) + '\n');
   } else {
-    const saved = await readJson(output);
-    if (JSON.stringify(saved) !== JSON.stringify(impact)) throw new Error('Impact report is stale; run with --write after reviewing changes');
+    // Prior reports retain deleted recipes as historical audit evidence.
+    const currentIds = new Set(impact.map(row => row.recipe_id));
+    const saved = (await readJson(output)).filter(row => currentIds.has(row.recipe_id));
+    // Keep historical labels intact; compare IDs, bases and every nutritional value.
+    const numerical = rows => rows.map(({name, ...row}) => row);
+    if (JSON.stringify(numerical(saved)) !== JSON.stringify(numerical(impact))) throw new Error('Impact report is stale; run with --write after reviewing changes');
   }
   const affected = impact.filter((row) => nutrientKeys.some((key) => Math.abs(row.delta[key]) > 1e-9));
   console.log(`${impact.length} recipes recalculated; ${affected.length} with nutritional changes. ${process.argv.includes('--write') ? 'Report written.' : 'Report current.'}`);

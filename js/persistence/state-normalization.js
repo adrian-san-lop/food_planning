@@ -1,10 +1,14 @@
-const CURRENT_STATE_VERSION = 11;
-const SUPPORTED_STATE_VERSIONS = [5, 6, 7, 8, 9, 10, 11];
+import { cleanPlanDetails } from '../domain/plan-details.js?v=20261102-culinary-quality';
+import { readPlanningState } from './planning-state.js?v=20261102-culinary-quality';
+import { createProfileDraft, validateProfileDraft } from '../domain/profile.js?v=20261102-culinary-quality';
+
+const CURRENT_STATE_VERSION = 12;
+const SUPPORTED_STATE_VERSIONS = [5, 6, 7, 8, 9, 10, 11, 12];
 const RECIPE_GRAMS_TO_PIECES = new Set(['banana', 'apple', 'kiwi', 'mandarin', 'orange', 'pear', 'seasonFruit', 'bread']);
 
 /**
  * Builds the normalizer for Menuki's browser working copy. Conversion rules are
- * injected so this module can be tested against the supported v5-v11 migration path.
+ * injected so this module can be tested against the supported v5-v12 migration path.
  */
 export function createStateNormalizer({
   emptyState,
@@ -179,6 +183,7 @@ export function createStateNormalizer({
       }
     }
     return {
+      details: cleanPlanDetails(raw.details),
       start: raw.start,
       menus: cloneMenus(raw.menus),
       locked,
@@ -189,13 +194,36 @@ export function createStateNormalizer({
     };
   }
 
+  function cleanCloudPlanIssue(raw) {
+    if (!raw || typeof raw !== 'object'
+      || !['active', 'scheduled', 'draft'].includes(raw.status)
+      || !dateFromISO(raw.start)
+      || !['incomplete', 'missing_catalog_recipe', 'incompatible'].includes(raw.reason)) return null;
+    const filled = Number(raw.filled);
+    return {
+      status: raw.status,
+      start: raw.start,
+      filled: Number.isInteger(filled) ? Math.max(0, Math.min(105, filled)) : 0,
+      reason: raw.reason,
+      missingRecipeIds: Array.isArray(raw.missingRecipeIds)
+        ? [...new Set(raw.missingRecipeIds.filter(id => typeof id === 'string' && /^[a-z][a-zA-Z0-9_]*$/.test(id)))].slice(0, 20)
+        : [],
+    };
+  }
+
   function cleanState(obj) {
     if (!obj || typeof obj !== 'object') return null;
     if (!SUPPORTED_STATE_VERSIONS.includes(obj.v) || !dateFromISO(obj.start)
       || !obj.done || typeof obj.done !== 'object' || !obj.stock || typeof obj.stock !== 'object'
       || Object.keys(obj.done).length > 3000) return null;
     const state = emptyState();
-    state.profile = sanitizeProfile(obj.profile);
+    state.v = CURRENT_STATE_VERSION;
+    try { Object.assign(state, readPlanningState(obj.v < 12 ? {} : obj)); }
+    catch { return null; }
+    if (state.setupMode === 'guided') {
+      if (obj.profile != null && !validateProfileDraft(obj.profile).valid) return null;
+      state.profile = obj.profile == null ? null : createProfileDraft(obj.profile);
+    } else state.profile = sanitizeProfile(obj.profile);
     state.profileConfirmed = obj.profileConfirmed === true;
     state.start = obj.start;
     state.noActiveCycle = obj.noActiveCycle === true;
@@ -272,6 +300,9 @@ export function createStateNormalizer({
     state.activeMenuGeneratedAt = typeof obj.activeMenuGeneratedAt === 'string' ? obj.activeMenuGeneratedAt : null;
     state.activeMenuConfirmedAt = typeof obj.activeMenuConfirmedAt === 'string' ? obj.activeMenuConfirmedAt : null;
     state.activeMenuRecoveryFocus = obj.activeMenuRecoveryFocus === true;
+    state.unavailablePlanRows = obj.unavailablePlanRows && Array.isArray(obj.unavailablePlanRows.cycles) && Array.isArray(obj.unavailablePlanRows.plannedMeals) ? JSON.parse(JSON.stringify(obj.unavailablePlanRows)) : null;
+    state.activePlanDetails = cleanPlanDetails(obj.activePlanDetails);
+    state.cloudPlanIssue = cleanCloudPlanIssue(obj.cloudPlanIssue);
     state.nextMenu = cleanCyclePlan(obj.nextMenu);
     state.plannerDraft = cleanCyclePlan(obj.plannerDraft);
     state.lastBackupAt = typeof obj.lastBackupAt === 'string' ? obj.lastBackupAt : null;

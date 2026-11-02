@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createProfileDraft, defaultProfile, sanitizeProfile, validateProfileDraft } from '../js/domain/profile.js';
+import { createProfileDraft, defaultProfile, requiresManualRestingEnergy, sanitizeProfile, validateProfileDraft } from '../js/domain/profile.js';
 
 test('new profile drafts contain no example personal data and do not share mutable values', () => {
   const draft = createProfileDraft();
@@ -42,6 +42,16 @@ test('strict profile confirmation validates numeric types, integer fields, choic
     assert.equal(validateProfileDraft(input).errors[field], error);
     assert.equal(input[field], value);
   }
+});
+
+test('manual resting energy is required only when its equation is selected', () => {
+  const formulaProfile = createProfileDraft({ sex: 'female', age: 30, height: 165, weight: 60,
+    activity: 'light', goal: 'maintain', manualRmr: null });
+  assert.equal(requiresManualRestingEnergy(formulaProfile.sex), false);
+  assert.equal(validateProfileDraft(formulaProfile).valid, true);
+  const manualProfile = { ...formulaProfile, sex: 'manual' };
+  assert.equal(requiresManualRestingEnergy(manualProfile.sex), true);
+  assert.equal(validateProfileDraft(manualProfile).errors.manualRmr, 'required');
 });
 
 test('legacy profile conversion keeps existing movement mappings, fallbacks and boolean semantics', () => {
