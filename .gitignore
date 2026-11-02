@@ -1,0 +1,4 @@
+# Temporary local test tools and synthetic execution logs.
+/tmp/pglite-runtime/
+/tmp/account-*.log
+/tmp/account-smoke*

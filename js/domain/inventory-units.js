@@ -13,16 +13,33 @@ export function createInventoryUnitService({ getFoodMeta, getFood, roundAmount }
 
   function recipeToStockAmount(id, amount) {
     const value = Number(amount) || 0;
-    if (foodStockUnit(id) === 'ud' && foodRecipeUnit(id) === 'g') {
-      const weight = foodPieceWeight(id);
-      return weight > 0 ? value / weight : value;
-    }
+    const stockUnit = foodStockUnit(id);
+    const recipeUnit = foodRecipeUnit(id);
+    const weight = foodPieceWeight(id);
+    if (stockUnit === recipeUnit || weight <= 0) return value;
+    if (stockUnit === 'ud' && recipeUnit === 'g') return value / weight;
+    if (stockUnit === 'g' && recipeUnit === 'ud') return value * weight;
     return value;
   }
 
   function stockToRecipeAmount(id, amount) {
     const value = Number(amount) || 0;
-    if (foodStockUnit(id) === 'ud' && foodRecipeUnit(id) === 'g') return value * foodPieceWeight(id);
+    const stockUnit = foodStockUnit(id);
+    const recipeUnit = foodRecipeUnit(id);
+    const weight = foodPieceWeight(id);
+    if (stockUnit === recipeUnit || weight <= 0) return value;
+    if (stockUnit === 'ud' && recipeUnit === 'g') return value * weight;
+    if (stockUnit === 'g' && recipeUnit === 'ud') return value / weight;
+    return value;
+  }
+
+  function storedRecipeToCurrentAmount(id, amount, storedUnit) {
+    const value = Number(amount) || 0;
+    const currentUnit = foodRecipeUnit(id);
+    const weight = foodPieceWeight(id);
+    if (!weight || storedUnit === currentUnit) return value;
+    if (storedUnit === 'g' && currentUnit === 'ud') return value / weight;
+    if (storedUnit === 'ud' && currentUnit === 'g') return value * weight;
     return value;
   }
 
@@ -38,7 +55,7 @@ export function createInventoryUnitService({ getFoodMeta, getFood, roundAmount }
   function convertLegacyPack(id, count, size) {
     const amount = Number(count) * Number(size);
     const weight = foodPieceWeight(id);
-    if (foodStockUnit(id) === 'ud' && foodRecipeUnit(id) === 'g' && weight > 0 && Number.isFinite(amount)) {
+    if (foodStockUnit(id) === 'ud' && weight > 0 && Number.isFinite(amount)) {
       return { count: Math.max(1, Math.ceil(amount / weight)), size: 1 };
     }
     return { count: Number(count), size: Number(size) };
@@ -50,6 +67,7 @@ export function createInventoryUnitService({ getFoodMeta, getFood, roundAmount }
     foodPieceWeight,
     recipeToStockAmount,
     stockToRecipeAmount,
+    storedRecipeToCurrentAmount,
     normalizeQuantityMap,
     convertLegacyPack,
   };

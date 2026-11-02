@@ -1,0 +1,800 @@
+{
+  "phase": "L3-L4",
+  "date": "2026-10-19",
+  "authority": "Solicitud expresa del propietario: finalizar y mejorar catálogos con evidencia equivalente; no aprobación global de D-01 a D-08. L4: confirmaciones explícitas del propietario sobre genéricos, crudo, L, escurrido, hueso, café, tiempos, condimentos y variantes.",
+  "foods": [
+    {
+      "food_id": "tempeh",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 192,
+        "protein_g": 20.3,
+        "carbohydrates_g": 7.6,
+        "fat_g": 10.8
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 192,
+        "protein_g": 20.3,
+        "carbohydrates_g": 7.6,
+        "fat_g": 10.8
+      },
+      "before_source": "USDA FoodData Central, tempeh genérico, valores aproximados por 100 g. https://fdc.nal.usda.gov/food-search/?query=tempeh",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 174272, NDB 16114; Tempeh; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=20.29 g; carbohydrates_g=7.64 g; kcal=192.0 kcal; fat_g=10.8 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 174272,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "edamame",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 121,
+        "protein_g": 12.1,
+        "carbohydrates_g": 8.9,
+        "fat_g": 5.2
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 121,
+        "protein_g": 11.91,
+        "carbohydrates_g": 8.9,
+        "fat_g": 5.2
+      },
+      "before_source": "USDA FoodData Central, edamame congelado preparado, referencia genérica por 100 g. https://fdc.nal.usda.gov/food-search/?query=edamame+frozen+prepared",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 168411, NDB 11212; Edamame, frozen, prepared; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=5.2 g; carbohydrates_g=8.91 g; kcal=121.0 kcal; protein_g=11.91 g. Corrección documentada L3: Preparado congelado sin vaina; proteína 12,1 no coincide con 11,91 ni su redondeo a un decimal. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 168411,
+      "reason": "Preparado congelado sin vaina; proteína 12,1 no coincide con 11,91 ni su redondeo a un decimal."
+    },
+    {
+      "food_id": "redLentilsDry",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 352,
+        "protein_g": 24.6,
+        "carbohydrates_g": 63.1,
+        "fat_g": 1.1
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 358.0,
+        "protein_g": 23.91,
+        "carbohydrates_g": 63.1,
+        "fat_g": 2.17
+      },
+      "before_source": "USDA FoodData Central, lentejas secas genéricas, referencia aproximada por 100 g en seco. https://fdc.nal.usda.gov/food-search/?query=lentils+dry",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 174284, NDB 16144; Lentils, pink or red, raw; por 100 g comestibles. Registro consultado el 2026-10-19: carbohydrates_g=63.1 g; kcal=358.0 kcal; protein_g=23.91 g; fat_g=2.17 g. Corrección documentada L3: Lenteja roja seca: tabla previa combina aproximaciones de lenteja genérica con hidratos del registro rojo. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 174284,
+      "reason": "Lenteja roja seca: tabla previa combina aproximaciones de lenteja genérica con hidratos del registro rojo."
+    },
+    {
+      "food_id": "porkTenderloin",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 120,
+        "protein_g": 22.2,
+        "carbohydrates_g": 0,
+        "fat_g": 3.5
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 120,
+        "protein_g": 20.65,
+        "carbohydrates_g": 0,
+        "fat_g": 3.5
+      },
+      "before_source": "USDA FoodData Central, solomillo de cerdo deshuesado crudo, valores aproximados por 100 g. https://fdc.nal.usda.gov/food-search/?query=pork+loin+tenderloin+boneless+raw",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 168312, NDB 10218; Pork, fresh, loin, tenderloin, separable lean and fat, raw; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=20.65 g; fat_g=3.53 g; carbohydrates_g=0.0 g; kcal=120.0 kcal. Corrección documentada L3: Misma preparación y energía/grasa de 168312; proteína previa 22,2 no reproducible frente a 20,65. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 168312,
+      "reason": "Misma preparación y energía/grasa de 168312; proteína previa 22,2 no reproducible frente a 20,65."
+    },
+    {
+      "food_id": "turkeyMince",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 150,
+        "protein_g": 19.7,
+        "carbohydrates_g": 0,
+        "fat_g": 7.7
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 150,
+        "protein_g": 18.73,
+        "carbohydrates_g": 0,
+        "fat_g": 8.34
+      },
+      "before_source": "USDA FoodData Central, pavo picado crudo 93 % magro, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=ground+turkey+93+lean+raw",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 172850, NDB 5665; Turkey, ground, 93% lean, 7% fat, raw; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=18.73 g; fat_g=8.34 g; carbohydrates_g=0.0 g; kcal=150.0 kcal. Corrección documentada L3: Fuente declarada 93% magro; proteína/grasa previas reproducen otro registro (171505), no el 172850 declarado. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 172850,
+      "reason": "Fuente declarada 93% magro; proteína/grasa previas reproducen otro registro (171505), no el 172850 declarado."
+    },
+    {
+      "food_id": "eggplant",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 25,
+        "protein_g": 1,
+        "carbohydrates_g": 5.9,
+        "fat_g": 0.2
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 25,
+        "protein_g": 1,
+        "carbohydrates_g": 5.9,
+        "fat_g": 0.2
+      },
+      "before_source": "USDA FoodData Central, berenjena cruda, valores aproximados por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=eggplant+raw",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 169228, NDB 11209; Eggplant, raw; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=0.18 g; carbohydrates_g=5.88 g; kcal=25.0 kcal; protein_g=0.98 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 169228,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "cauliflower",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 25,
+        "protein_g": 1.9,
+        "carbohydrates_g": 5,
+        "fat_g": 0.3
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 25,
+        "protein_g": 1.9,
+        "carbohydrates_g": 5,
+        "fat_g": 0.3
+      },
+      "before_source": "USDA FoodData Central, coliflor cruda, valores aproximados por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=cauliflower+raw",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 169986, NDB 11135; Cauliflower, raw; por 100 g comestibles. Registro consultado el 2026-10-19: carbohydrates_g=4.97 g; kcal=25.0 kcal; protein_g=1.92 g; fat_g=0.28 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 169986,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "redCabbage",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 31,
+        "protein_g": 1.4,
+        "carbohydrates_g": 7.4,
+        "fat_g": 0.2
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 31,
+        "protein_g": 1.4,
+        "carbohydrates_g": 7.4,
+        "fat_g": 0.2
+      },
+      "before_source": "USDA FoodData Central, col lombarda cruda, valores aproximados por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=red+cabbage+raw",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 169977, NDB 11112; Cabbage, red, raw; por 100 g comestibles. Registro consultado el 2026-10-19: carbohydrates_g=7.37 g; kcal=31.0 kcal; fat_g=0.16 g; protein_g=1.43 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 169977,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "leek",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 61,
+        "protein_g": 1.5,
+        "carbohydrates_g": 14.2,
+        "fat_g": 0.3
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 61,
+        "protein_g": 1.5,
+        "carbohydrates_g": 14.2,
+        "fat_g": 0.3
+      },
+      "before_source": "USDA FoodData Central, puerro crudo, referencia aproximada por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=leeks+raw",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 169246, NDB 11246; Leeks, (bulb and lower leaf-portion), raw; por 100 g comestibles. Registro consultado el 2026-10-19: kcal=61.0 kcal; fat_g=0.3 g; protein_g=1.5 g; carbohydrates_g=14.15 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 169246,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "celery",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 14,
+        "protein_g": 0.7,
+        "carbohydrates_g": 3,
+        "fat_g": 0.2
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 14,
+        "protein_g": 0.7,
+        "carbohydrates_g": 3,
+        "fat_g": 0.2
+      },
+      "before_source": "USDA FoodData Central, apio crudo, valores aproximados por 100 g comestibles. https://fdc.nal.usda.gov/food-search/?query=celery+raw",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 169988, NDB 11143; Celery, raw; por 100 g comestibles. Registro consultado el 2026-10-19: kcal=14.0 kcal; carbohydrates_g=2.97 g; fat_g=0.17 g; protein_g=0.69 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 169988,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "cornCanned",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 86,
+        "protein_g": 3.2,
+        "carbohydrates_g": 19,
+        "fat_g": 1.2
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 67.0,
+        "protein_g": 2.29,
+        "carbohydrates_g": 14.34,
+        "fat_g": 1.22
+      },
+      "before_source": "USDA FoodData Central, maíz dulce en conserva escurrido, valores genéricos aproximados por 100 g. https://fdc.nal.usda.gov/food-search/?query=sweet+corn+canned+drained",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 169214, NDB 11172; Corn, sweet, yellow, canned, whole kernel, drained solids; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=1.22 g; carbohydrates_g=14.34 g; kcal=67.0 kcal; protein_g=2.29 g. Corrección documentada L3: Forma explícita conserva escurrida; 86 kcal/19 g no corresponden al registro de sólidos escurridos. Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 169214,
+      "reason": "Forma explícita conserva escurrida; 86 kcal/19 g no corresponden al registro de sólidos escurridos."
+    },
+    {
+      "food_id": "chiaSeeds",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 486,
+        "protein_g": 16.5,
+        "carbohydrates_g": 42.1,
+        "fat_g": 30.7
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 486,
+        "protein_g": 16.5,
+        "carbohydrates_g": 42.1,
+        "fat_g": 30.7
+      },
+      "before_source": "USDA FoodData Central, semillas de chía secas, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=chia+seeds+dry",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 170554, NDB 12006; Seeds, chia seeds, dried; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=16.54 g; fat_g=30.74 g; carbohydrates_g=42.12 g; kcal=486.0 kcal. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 170554,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "pumpkinSeeds",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 559,
+        "protein_g": 30.2,
+        "carbohydrates_g": 10.7,
+        "fat_g": 49
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 559,
+        "protein_g": 30.2,
+        "carbohydrates_g": 10.7,
+        "fat_g": 49
+      },
+      "before_source": "USDA FoodData Central, semillas de calabaza peladas, referencia genérica aproximada por 100 g. https://fdc.nal.usda.gov/food-search/?query=pumpkin+seeds+raw",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 170556, NDB 12014; Seeds, pumpkin and squash seed kernels, dried; por 100 g comestibles. Registro consultado el 2026-10-19: carbohydrates_g=10.71 g; kcal=559.0 kcal; protein_g=30.23 g; fat_g=49.05 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 170556,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "cottageCheese",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 84,
+        "protein_g": 11,
+        "carbohydrates_g": 4.3,
+        "fat_g": 2.3
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 84,
+        "protein_g": 11,
+        "carbohydrates_g": 4.3,
+        "fat_g": 2.3
+      },
+      "before_source": "USDA FoodData Central, queso cottage bajo en grasa, valor genérico aproximado por 100 g; puede variar según marca. https://fdc.nal.usda.gov/food-search/?query=cottage+cheese+low+fat",
+      "after_source": "USDA FoodData Central, Foundation, FDC 328841; Cheese, cottage, lowfat, 2% milkfat; por 100 g comestibles. Registro consultado el 2026-10-19: fat_g=2.3 g; carbohydrates_g=4.31 g; kcal=84.0 kcal; protein_g=11.0 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_json_2026-04-30.zip",
+      "fdc_id": 328841,
+      "reason": "Foundation identificable; escurrido/enjuagado o grasa 2% explícitos. Genérico de catálogo no define todos estos atributos; conservar. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "garlic",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 149,
+        "protein_g": 6.36,
+        "carbohydrates_g": 33.06,
+        "fat_g": 0.5
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 149,
+        "protein_g": 6.36,
+        "carbohydrates_g": 33.06,
+        "fat_g": 0.5
+      },
+      "before_source": "USDA FoodData Central, ajo crudo (SR Legacy, NDB 11215); valores genéricos por 100 g: 149 kcal, 6,36 g de proteína, 33,06 g de carbohidratos y 0,5 g de grasa. https://fdc.nal.usda.gov/food-search/?query=garlic",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 169230, NDB 11215; Garlic, raw; por 100 g comestibles. Registro consultado el 2026-10-19: carbohydrates_g=33.06 g; kcal=149.0 kcal; protein_g=6.36 g; fat_g=0.5 g. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 169230,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "beetroot",
+      "before": {
+        "basis": "per_100g",
+        "kcal": 44,
+        "protein_g": 1.68,
+        "carbohydrates_g": 9.96,
+        "fat_g": 0.18
+      },
+      "after": {
+        "basis": "per_100g",
+        "kcal": 44,
+        "protein_g": 1.68,
+        "carbohydrates_g": 9.96,
+        "fat_g": 0.18
+      },
+      "before_source": "USDA FoodData Central, SR Legacy, remolacha cocida, hervida y escurrida (FDC 169146), por 100 g; se usa como referencia genérica para remolacha cocida en tiras, cuyo envase puede variar. https://fdc.nal.usda.gov/fdc-app.html#/food-details/169146/nutrients",
+      "after_source": "USDA FoodData Central, SR Legacy, FDC 169146, NDB 11081; Beets, cooked, boiled, drained; por 100 g comestibles. Registro consultado el 2026-10-19: protein_g=1.68 g; fat_g=0.18 g; carbohydrates_g=9.96 g; kcal=44.0 kcal. Valores del catálogo conservados como redondeos aproximados del registro genérico.  Hidratos USDA por diferencia, sin conversión a hidratos disponibles UE. Lectura verificada del archivo oficial, no de la página web de la ficha: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "fdc_id": 169146,
+      "reason": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+    },
+    {
+      "food_id": "eggs",
+      "before": {
+        "basis": "per_unit",
+        "kcal": 72,
+        "protein_g": 6.3,
+        "carbohydrates_g": 0.4,
+        "fat_g": 5
+      },
+      "after": {
+        "basis": "per_unit",
+        "kcal": 85.8,
+        "protein_g": 7.54,
+        "carbohydrates_g": 0.43,
+        "fat_g": 5.71
+      },
+      "before_source": "Estimación heredada del catálogo actual de la aplicación; revisar frente a etiquetas de productos reales.",
+      "after_source": "Referencia genérica de huevo entero crudo: USDA FoodData Central SR Legacy, FDC 171287, NDB 01123. Por unidad L se estiman 60 g comestibles, según Instituto de Estudios del Huevo, Manejo del huevo y los ovoproductos en la cocina, p. 16 impresa (PDF p. 16). Valores por 100 g multiplicados por 0,6 y redondeados a dos decimales. Es una ración estándar aproximada, no un peso medido de cada huevo. Tamaño L confirmado por el propietario el 2026-10-19; unidades de compra y receta intactas. Fuentes consultadas el 2026-10-19: https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip ; https://www.institutohuevo.com/wp-content/uploads/2021/10/Manejo-del-huevo-y-los-ovoproductos-en-la-cocina.pdf",
+      "before_name": "Huevos",
+      "after_name": "Huevos L",
+      "fdc_id": 171287,
+      "reason": "L confirmado por propietario; estimación estándar de 60 g comestibles del Instituto del Huevo, aplicada al registro genérico crudo USDA. No equiparar L europeo a large USDA de 50 g.",
+      "phase": "L4"
+    }
+  ],
+  "recipes": [
+    {
+      "recipe_id": "crema_tortilla",
+      "before_steps": [
+        "Hierve calabacín, patata y cebolla troceados durante 15–20 minutos.",
+        "Tritura con parte del agua de cocción y ajusta la textura.",
+        "Cuaja una tortilla francesa de dos huevos.",
+        "Sirve la crema con la tortilla, el queso fresco y pan integral."
+      ],
+      "after_steps": [
+        "Hierve calabacín, patata y cebolla troceados durante 15–20 minutos.",
+        "Tritura con parte del agua de cocción y todo el aceite de oliva indicado; ajusta la textura.",
+        "Cuaja una tortilla francesa de dos huevos.",
+        "Sirve la crema con la tortilla, el queso fresco y pan integral."
+      ],
+      "before_tip": "Puedes preparar dos raciones de crema y congelar la sobrante.",
+      "after_tip": "Puedes preparar dos raciones de crema y congelar la sobrante.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "pavo_arroz_tomate",
+      "before_steps": [
+        "Cuece el arroz.",
+        "Saltea pavo troceado con pimiento y cebolla.",
+        "Añade tomate triturado y cocina unos 6 minutos.",
+        "Sirve encima del arroz con orégano."
+      ],
+      "after_steps": [
+        "Cuece el arroz.",
+        "Saltea el pavo troceado, el pimiento y la cebolla con todo el aceite de oliva indicado.",
+        "Añade tomate triturado y cocina unos 6 minutos.",
+        "Sirve encima del arroz con orégano."
+      ],
+      "before_tip": "Puedes hacer el sofrito para dos comidas, pero guarda el arroz cocido de forma segura.",
+      "after_tip": "Puedes hacer el sofrito para dos comidas, pero guarda el arroz cocido de forma segura.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "wok_pollo_fideos",
+      "before_steps": [
+        "Cuece los fideos integrales según el paquete.",
+        "Saltea zanahoria, pimiento y calabacín cortados finos.",
+        "Añade tiras de pollo y cocínalas por completo.",
+        "Mezcla con los fideos y condimenta con un chorrito opcional de soja baja en sal."
+      ],
+      "after_steps": [
+        "Cuece los fideos integrales según el paquete.",
+        "Saltea la zanahoria, el pimiento y el calabacín cortados finos con todo el aceite de oliva indicado.",
+        "Añade tiras de pollo y cocínalas por completo.",
+        "Mezcla con los fideos y condimenta con un chorrito opcional de soja baja en sal."
+      ],
+      "before_tip": "Para ahorrar tiempo, usa verdura ya lavada y cortada.",
+      "after_tip": "Para ahorrar tiempo, usa verdura ya lavada y cortada.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "pollo_esparragos",
+      "before_steps": [
+        "Corta el boniato en cubos y precocínalo en microondas.",
+        "Cocínalo después en la freidora de aire hasta que quede dorado.",
+        "Cocina el pollo con ajo y limón hasta que esté completamente hecho.",
+        "Saltea los espárragos y sirve todo junto."
+      ],
+      "after_steps": [
+        "Reserva el aceite de oliva indicado para repartirlo entre el boniato, el pollo y los espárragos, sin añadir aceite extra. Corta el boniato en cubos y precocínalo en microondas.",
+        "Cocínalo después en la freidora de aire hasta que quede dorado.",
+        "Cocina el pollo con ajo y limón hasta que esté completamente hecho.",
+        "Saltea los espárragos con la parte reservada del aceite y sirve todo junto."
+      ],
+      "before_tip": "La misma freidora sirve para el boniato y el pollo en tandas.",
+      "after_tip": "La misma freidora sirve para el boniato y el pollo en tandas.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "arroz_gambas_guisantes",
+      "before_steps": [
+        "Cuece arroz en una olla.",
+        "Sofríe cebolla y pimiento; incorpora tomate y guisantes.",
+        "Añade las gambas descongeladas y cocina hasta que estén hechas.",
+        "Mezcla con el arroz y condimenta con pimentón suave."
+      ],
+      "after_steps": [
+        "Cuece arroz en una olla.",
+        "Sofríe la cebolla y el pimiento con todo el aceite de oliva indicado; incorpora el tomate y los guisantes.",
+        "Añade las gambas descongeladas y cocina hasta que estén hechas.",
+        "Mezcla con el arroz y condimenta con pimentón suave."
+      ],
+      "before_tip": "Si empleas gambas congeladas, descongela antes en nevera.",
+      "after_tip": "Si empleas gambas congeladas, descongela antes en nevera.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "crema_calabaza_pavo",
+      "before_steps": [
+        "Hierve calabaza, patata y cebolla picadas unos 15–20 minutos.",
+        "Tritura con parte del agua de cocción.",
+        "Prepara una tortilla con los huevos y el pavo loncheado.",
+        "Sirve con pan integral."
+      ],
+      "after_steps": [
+        "Hierve calabaza, patata y cebolla picadas unos 15–20 minutos.",
+        "Tritura con parte del agua de cocción y todo el aceite de oliva indicado.",
+        "Prepara una tortilla con los huevos y el pavo loncheado.",
+        "Sirve con pan integral."
+      ],
+      "before_tip": "La crema queda bien congelada en raciones.",
+      "after_tip": "La crema queda bien congelada en raciones.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "cuscus_pollo",
+      "before_steps": [
+        "Hidrata el cuscús con agua caliente.",
+        "Saltea verduras en tiras finas.",
+        "Añade el pollo y cocínalo completamente.",
+        "Mezcla con cuscús y termina con comino y limón."
+      ],
+      "after_steps": [
+        "Hidrata el cuscús con agua caliente.",
+        "Saltea las verduras en tiras finas con todo el aceite de oliva indicado.",
+        "Añade el pollo y cocínalo completamente.",
+        "Mezcla con cuscús y termina con comino y limón."
+      ],
+      "before_tip": "Puedes preparar dos raciones de verduras para otra comida.",
+      "after_tip": "Puedes preparar dos raciones de verduras para otra comida.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "huevos_alubias",
+      "before_steps": [
+        "Calienta tomate triturado y espinacas en una sartén.",
+        "Añade las alubias escurridas.",
+        "Haz dos huecos, casca los huevos, tapa y cocina hasta que cuajen.",
+        "Acompaña con pan integral."
+      ],
+      "after_steps": [
+        "Calienta el tomate triturado y las espinacas en una sartén con todo el aceite de oliva indicado.",
+        "Añade las alubias escurridas.",
+        "Haz dos huecos, casca los huevos, tapa y cocina hasta que cuajen.",
+        "Acompaña con pan integral."
+      ],
+      "before_tip": "Una cena de cuchara sin complicaciones.",
+      "after_tip": "Una cena de cuchara sin complicaciones.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "trucha_patatas",
+      "before_steps": [
+        "Cocina las patatas en dados al microondas.",
+        "Haz la trucha en freidora de aire u horno hasta que esté bien hecha.",
+        "Cocina judías verdes al vapor.",
+        "Sirve con limón y el aceite indicado."
+      ],
+      "after_steps": [
+        "Cocina las patatas en dados al microondas.",
+        "Haz la trucha en freidora de aire u horno hasta que esté bien hecha.",
+        "Cocina judías verdes al vapor.",
+        "Sirve con limón y el aceite indicado."
+      ],
+      "before_tip": "La trucha se puede reemplazar por dorada o merluza, ajustando las calorías.",
+      "after_tip": "Las estimaciones corresponden al alimento trucha / dorada del catálogo. Si utilizas merluza u otro pescado, su composición y su cocción pueden diferir; la sustitución requiere recalcular los valores.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "wrap_pavo",
+      "before_steps": [
+        "Corta y saltea pavo, pimiento y cebolla.",
+        "Mezcla yogur natural con limón, ajo y pimienta para una salsa rápida.",
+        "Calienta la tortilla, añade lechuga y relleno.",
+        "Termina con la salsa de yogur."
+      ],
+      "after_steps": [
+        "Corta el pavo, el pimiento y la cebolla y saltéalos con todo el aceite de oliva indicado.",
+        "Mezcla yogur natural con limón, ajo y pimienta para una salsa rápida.",
+        "Calienta la tortilla, añade lechuga y relleno.",
+        "Termina con la salsa de yogur."
+      ],
+      "before_tip": "Puedes preparar el relleno y montar justo antes de comer.",
+      "after_tip": "Puedes preparar el relleno y montar justo antes de comer.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "hamburguesa_pavo",
+      "before_steps": [
+        "Forma hamburguesas con pavo picado o usa filetes de pavo como alternativa.",
+        "Precocina las patatas cortadas y termina en freidora de aire.",
+        "Cocina la hamburguesa completamente en sartén.",
+        "Monta con pan, tomate y lechuga y acompaña con patatas."
+      ],
+      "after_steps": [
+        "Para esta versión, utiliza los filetes de pavo fresco indicados en los ingredientes como relleno del pan.",
+        "Precocina las patatas cortadas y termina en freidora de aire.",
+        "Cocina los filetes de pavo completamente en sartén con todo el aceite de oliva indicado en los ingredientes.",
+        "Monta con pan, tomate y lechuga y acompaña con patatas."
+      ],
+      "before_tip": "Si compras filetes, simplemente hazlos a la plancha y evita buscar carne picada.",
+      "after_tip": "Esta versión lleva filetes de pavo fresco. Una versión con pavo picado necesita su propia referencia nutricional; no se considera equivalente automáticamente.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades. Nombre ajustado al filete del ingrediente canónico; ID conservado.",
+      "before_name": "Hamburguesa de pavo con patata y ensalada",
+      "after_name": "Bocadillo de pavo con patatas"
+    },
+    {
+      "recipe_id": "alubias_revuelto",
+      "before_steps": [
+        "Saltea champiñones y espinacas en sartén.",
+        "Añade las alubias escurridas y calienta.",
+        "Cuaja dos huevos revueltos y sirve junto a las alubias.",
+        "Acompaña con pan integral."
+      ],
+      "after_steps": [
+        "Saltea los champiñones y las espinacas en sartén con todo el aceite de oliva indicado.",
+        "Añade las alubias escurridas y calienta.",
+        "Cuaja dos huevos revueltos y sirve junto a las alubias.",
+        "Acompaña con pan integral."
+      ],
+      "before_tip": "Cena sencilla con legumbres, verduras y proteína.",
+      "after_tip": "Cena sencilla con legumbres, verduras y proteína.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "snack_pavo_tostada",
+      "before_steps": [
+        "Tuesta el pan.",
+        "Añade tomate en rodajas y pavo loncheado."
+      ],
+      "after_steps": [
+        "Tuesta el pan.",
+        "Añade tomate en rodajas y pavo loncheado."
+      ],
+      "before_tip": "Puedes usar restos de pavo fresco hecho a la plancha.",
+      "after_tip": "La receta y sus estimaciones utilizan el pavo loncheado indicado. Sustituirlo por pavo fresco cocinado cambia la referencia nutricional y requiere recalcularla.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades.",
+      "before_description": "",
+      "after_description": "2 rebanadas de pan integral con 85 g de pavo loncheado y 80 g de tomate fresco."
+    },
+    {
+      "recipe_id": "comida_soja_berenjena_arroz",
+      "before_steps": [
+        "Hidrata la soja texturizada según las instrucciones del envase y escúrrela.",
+        "Cuece el arroz por separado.",
+        "Saltea la berenjena en dados; añade la soja y el tomate triturado y cocina hasta que esté tierno.",
+        "Sirve la mezcla sobre el arroz."
+      ],
+      "after_steps": [
+        "Hidrata la soja texturizada según las instrucciones del envase y escúrrela.",
+        "Cuece el arroz por separado.",
+        "Saltea la berenjena en dados con todo el aceite de oliva indicado; añade la soja y el tomate triturado y cocina hasta que esté tierno.",
+        "Sirve la mezcla sobre el arroz."
+      ],
+      "before_tip": "La cantidad de soja indicada es en seco, antes de hidratarla.",
+      "after_tip": "La cantidad de soja indicada es en seco, antes de hidratarla.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "comida_guiso_lenteja_roja",
+      "before_steps": [
+        "Lava las lentejas y corta el puerro, el apio y la zanahoria.",
+        "Pon las verduras y las lentejas en una cazuela con agua; cuece hasta que estén tiernas.",
+        "Añade el tomate triturado al final y sirve con el pan."
+      ],
+      "after_steps": [
+        "Lava las lentejas y corta el puerro, el apio y la zanahoria.",
+        "Pon las verduras y las lentejas en una cazuela con agua; cuece hasta que estén tiernas.",
+        "Añade el tomate triturado y todo el aceite de oliva indicado al final de la cocción; mezcla y sirve con el pan."
+      ],
+      "before_tip": "Las lentejas rojas suelen cocerse más rápido que las lentejas enteras habituales.",
+      "after_tip": "Las lentejas rojas suelen cocerse más rápido que las lentejas enteras habituales.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "cena_berenjena_rellena_ternera",
+      "before_steps": [
+        "Parte la berenjena a lo largo y ásala hasta que la pulpa se ablande.",
+        "Cuece el arroz y corta la ternera en trozos pequeños.",
+        "Saltea la ternera, incorpora la pulpa de berenjena y el tomate, y cocina hasta que esté hecha.",
+        "Rellena la berenjena y sirve con el arroz."
+      ],
+      "after_steps": [
+        "Parte la berenjena a lo largo y ásala hasta que la pulpa se ablande.",
+        "Cuece el arroz y corta la ternera en trozos pequeños.",
+        "Saltea la ternera con todo el aceite de oliva indicado, incorpora la pulpa de berenjena y el tomate, y cocina hasta que esté hecha.",
+        "Rellena la berenjena y sirve con el arroz."
+      ],
+      "before_tip": "La cantidad de ternera corresponde al peso en crudo.",
+      "after_tip": "La cantidad de ternera corresponde al peso en crudo.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "cena_crema_coliflor_lenteja",
+      "before_steps": [
+        "Lava las lentejas y corta la coliflor, el puerro y el apio.",
+        "Cuece todo en agua hasta que las lentejas y la coliflor estén tiernas.",
+        "Tritura hasta obtener una crema y acompaña con el pan."
+      ],
+      "after_steps": [
+        "Lava las lentejas y corta la coliflor, el puerro y el apio.",
+        "Cuece todo en agua hasta que las lentejas y la coliflor estén tiernas.",
+        "Tritura con todo el aceite de oliva indicado hasta obtener una crema y acompaña con el pan."
+      ],
+      "before_tip": "Ajusta la cantidad de agua al espesor que prefieras.",
+      "after_tip": "Ajusta la cantidad de agua al espesor que prefieras.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "cena_pavo_alubias_lombarda",
+      "before_steps": [
+        "Cuece el arroz y enjuaga las alubias y el maíz escurridos.",
+        "Cocina el pavo picado en una sartén con el aceite hasta que esté hecho.",
+        "Añade la lombarda en tiras, las alubias y el maíz; saltea unos minutos y sirve con el arroz."
+      ],
+      "after_steps": [
+        "Cuece el arroz y enjuaga las alubias y el maíz escurridos.",
+        "Cocina el pavo picado en una sartén con el aceite hasta que esté hecho.",
+        "Añade la lombarda en tiras, las alubias, el maíz y la cantidad indicada de salsa de soja; saltea unos minutos y sirve con el arroz."
+      ],
+      "before_tip": "La cantidad de alubias y maíz es peso escurrido.",
+      "after_tip": "La cantidad de alubias y maíz es peso escurrido.",
+      "reason": "Explicitar uso de ingredientes cuantificados y distinguir alternativas sin cambiar cantidades."
+    },
+    {
+      "recipe_id": "bocadillo_pavo",
+      "before_steps": [
+        "Abre el pan integral y coloca el tomate cortado.",
+        "Rellena con pavo loncheado."
+      ],
+      "after_steps": [
+        "Abre el pan integral y coloca el tomate cortado.",
+        "Rellena con pavo loncheado."
+      ],
+      "before_tip": "Puedes sustituir el pavo loncheado por restos de pechuga de pavo cocinada.",
+      "after_tip": "Puedes sustituir el pavo loncheado por restos de pechuga de pavo cocinada.",
+      "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
+      "phase": "L4",
+      "before_description": "",
+      "after_description": "2 rebanadas de pan integral con 80 g de pavo loncheado y 80 g de tomate fresco."
+    },
+    {
+      "recipe_id": "bocadillo_pavo_peq",
+      "before_steps": [
+        "Tuesta ligeramente el pan.",
+        "Rellénalo con tomate y pavo loncheado."
+      ],
+      "after_steps": [
+        "Tuesta ligeramente el pan.",
+        "Rellénalo con tomate y pavo loncheado."
+      ],
+      "before_tip": "Ideal si trabajas desde casa y necesitas algo rápido.",
+      "after_tip": "Ideal si trabajas desde casa y necesitas algo rápido.",
+      "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
+      "phase": "L4",
+      "before_description": "",
+      "after_description": "2 rebanadas de pan integral con 80 g de pavo loncheado y 60 g de tomate fresco."
+    },
+    {
+      "recipe_id": "mini_pavo_tomate",
+      "before_steps": [
+        "Tuesta un poco de pan integral.",
+        "Rellena con pavo loncheado y tomate."
+      ],
+      "after_steps": [
+        "Tuesta un poco de pan integral.",
+        "Rellena con pavo loncheado y tomate."
+      ],
+      "before_tip": "Para el apetito de media mañana sin una ración de pan muy grande.",
+      "after_tip": "Para el apetito de media mañana sin una ración de pan muy grande.",
+      "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
+      "phase": "L4",
+      "before_description": "",
+      "after_description": "2 rebanadas de pan integral con 50 g de pavo loncheado y 80 g de tomate fresco."
+    },
+    {
+      "recipe_id": "yogur_fruta",
+      "before_steps": [
+        "Elige una pieza de fruta de temporada de tamaño medio.",
+        "Córtala y tómala con el yogur."
+      ],
+      "after_steps": [
+        "Elige una pieza de fruta de temporada de tamaño medio.",
+        "Córtala y tómala con el yogur."
+      ],
+      "before_tip": "Varía según lo que encuentres fresco en tu frutería.",
+      "after_tip": "Varía según lo que encuentres fresco en tu frutería.",
+      "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
+      "phase": "L4",
+      "before_description": "",
+      "after_description": "170 g de yogur natural alto en proteínas con 1 pieza de fruta de temporada."
+    },
+    {
+      "recipe_id": "yogur_fruta_ligero",
+      "before_steps": [
+        "Sirve yogur con fruta cortada."
+      ],
+      "after_steps": [
+        "Sirve yogur con fruta cortada."
+      ],
+      "before_tip": "Varía la fruta según tu frutería.",
+      "after_tip": "Varía la fruta según tu frutería.",
+      "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
+      "phase": "L4",
+      "before_description": "",
+      "after_description": "140 g de yogur natural alto en proteínas con 1 pieza de fruta de temporada."
+    },
+    {
+      "recipe_id": "yogur_platano_simple",
+      "before_steps": [
+        "Sirve el yogur y acompaña con un plátano en rodajas."
+      ],
+      "after_steps": [
+        "Sirve el yogur y acompaña con un plátano en rodajas."
+      ],
+      "before_tip": "Sencillo para una mañana ocupada.",
+      "after_tip": "Sencillo para una mañana ocupada.",
+      "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
+      "phase": "L4",
+      "before_description": "",
+      "after_description": "170 g de yogur natural alto en proteínas con 1 plátano."
+    },
+    {
+      "recipe_id": "snack_yogur_platano",
+      "before_steps": [
+        "Mezcla yogur con plátano en rodajas."
+      ],
+      "after_steps": [
+        "Mezcla yogur con plátano en rodajas."
+      ],
+      "before_tip": "Sin azúcar adicional.",
+      "after_tip": "Sin azúcar adicional.",
+      "reason": "L4: misma preparación por conjunto de ingredientes; conservar IDs y cantidades.",
+      "phase": "L4",
+      "before_description": "",
+      "after_description": "190 g de yogur natural alto en proteínas con 1 plátano."
+    }
+  ]
+}

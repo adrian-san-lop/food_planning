@@ -1,12 +1,34 @@
 # Modelo de datos de Supabase
 
-Última revisión: 13 de octubre de 2026. El proyecto tiene trece tablas personales existentes y cuatro tablas compartidas del buzón. El propietario informa que la migración `20261013160000_recipe_proposal_inbox.sql` ya se aplicó; la octava migración de conflictos sigue pendiente. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
+Última revisión documental: 25 de octubre de 2026. El modelo previo de diecisiete tablas personales y cuatro tablas compartidas del buzón se amplía con las cinco tablas del contrato de cuenta 2, confirmado aplicado por el propietario el 25/10/2026; las tres tablas del paquete 4 constan aplicadas y comprobadas estructuralmente según el propietario el 23/10/2026. El propietario confirma que `20261017100000_nonnegative_inventory_shortfalls.sql` y la corrección `20261017110000_fix_zero_quantity_meal_constraint.sql` se aplicaron en Supabase el 17/10/2026; esta última resolvió el error `23514` al eliminar la regla obsoleta que rechazaba movimientos meal con cantidad cero. La tabla `meal_completion_shortfalls` queda retirada por ADR-0043; el propietario confirmó el 22/10/2026 que `20261018120000_retire_meal_shortfalls.sql` se aplicó y que las comprobaciones en SQL Editor mostraron cero filas, el disparador activo que descarta escrituras antiguas y ausencia de permisos directos de escritura para `authenticated`. También informa que `20261013160000_recipe_proposal_inbox.sql` se aplicó; la corrección HTTP 409 está aplicada y resuelta según confirmación del administrador del 17/10/2026. Las migraciones SQL son la fuente de verdad si hubiera diferencias con esta documentación.
 
-El HTML y Supabase Auth están integrados en el repositorio; las siete migraciones iniciales están aplicadas al proyecto. La novena y la asignación admin se consideran aplicadas según el propietario; la octava, `20261013120000_menuki_sync_conflict_http_409.sql`, sigue pendiente. La app sincroniza mediante una función transaccional con las tablas normalizadas. Aún falta aplicar la octava, publicar este HTML y probar el flujo real entre dispositivos, el buzón y el aislamiento con dos cuentas autenticadas.
+El HTML y Supabase Auth están integrados. Las migraciones iniciales, el buzón y la asignación admin constan aplicados según el propietario. El [paquete 7](planner/package-7-integration.md) verifica independientemente el comportamiento de planificación, aislamiento de las 16 tablas personales activas con dos cuentas, rechazo de escritura directa en las siete tablas protegidas por planificación y HTTP 409. Tras reaplicar el propietario la retirada de faltantes el 23/10/2026 con Success, se comprobaron cero filas ante nuevos consumos desde la interfaz y RPC. El propietario confirma el funcionamiento de la versión actual en PC y móvil y la eliminación de las cuentas de prueba. No se han inspeccionado definiciones administrativas ni todo el historial del esquema; las migraciones del repositorio describen el contrato previsto. La validación del buzón admin y la confirmación de la purga global siguen separadas de esta entrega.
+
+## Contrato de cuenta 2: aplicado según el propietario (25/10/2026)
+
+La migración [20261025120000_server_authoritative_accounts.sql](../supabase/migrations/20261025120000_server_authoritative_accounts.sql) añade cuatro tablas personales de snapshots (`plan_recipe_snapshots`, `plan_recipe_ingredients`, `planned_meal_portions`, `plan_day_targets`) y una tabla interna de idempotencia (`menuki_account_operations`), todas con RLS. Amplía `user_settings.account_contract`, añade el lector consistente `get_menuki_state()` y la acción transaccional `apply_menuki_action`. Los escritores completos existentes se conservan internamente; una cuenta que acepta el contrato 2 rechaza escrituras de clientes anteriores.
+
+El propietario confirma el 25/10/2026 que ejecutó esta migración en Supabase con **Success**, que las ocho comprobaciones de [account_authority.sql](../supabase/diagnostics/account_authority.sql) devolvieron **ready = true** y que la aplicación funciona correctamente en **PC y móvil**. La activación y aceptación de esta entrega quedan cerradas. Las cinco tablas nuevas amplían el modelo previo de diecisiete tablas personales descrito debajo. Esta confirmación procede del propietario; no se presenta como una nueva inspección administrativa independiente del agente. Estructura, lectura efectiva del ciclo, transición por fecha, permisos y procedimiento de referencia: [contrato de cuenta](backend/account-contract.md).
+
+## Ampliación del paquete 4: aplicada según el propietario (23/10/2026)
+
+La migración [20261023120000_planning_preferences_and_setup.sql](../supabase/migrations/20261023120000_planning_preferences_and_setup.sql) añade **tres tablas personales** al modelo previo de catorce. El propietario confirma que la ejecutó en Supabase SQL Editor con **Success** y que las siete comprobaciones de `planning_persistence.sql` dieron **ready = true** el 23/10/2026. También está probada en PostgreSQL local. La confirmación alojada procede del propietario; el paquete 7 añade pruebas funcionales independientes mediante Auth/PostgREST, sin inspección administrativa del esquema. El diagrama SVG siguiente conserva las catorce tablas previas; las tres nuevas se describen en esta sección y forman parte del esquema actual confirmado.
+
+| Tabla/campo | Columnas y contrato nuevo |
+| --- | --- |
+| `profile_setup_drafts` | `user_id` PK/FK a Auth con borrado en cascada; `draft_version` 1; `sex`, `age`, `height_cm`, `reference_weight_kg`, `activity_level`, `goal`, `manual_rmr_kcal` nulables con los rangos y opciones del perfil; `injury_recovery`, `auto_portions`, `follow_weight`, `preferences_reviewed` booleanos obligatorios; `start_date` date nulable; `updated_at` timestamptz. No equivale a perfil confirmado. |
+| `menu_preferences` | `user_id` PK/FK a Auth con cascada; `weekday_lunch_max_minutes` y `weekday_dinner_max_minutes` smallint nulables, entre 1 y 1440; `updated_at`. NULL retira un límite. |
+| `recipe_preferences` | PK `(user_id, recipe_id)`, FK de `user_id` a Auth con cascada; `recipe_id` ID del catálogo; `preference` normal/favorite/do_not_propose; `updated_at`. Normal explícito conserva la intención de retirar otra preferencia. |
+| `user_settings.setup_mode` | text obligatorio legacy/guided. Una sincronización ordinaria no degrada guided a legacy. |
+| `profiles.manual_rmr_kcal` | Se hace nulable si el modo de cálculo no es manual. Al confirmar un perfil manual el RPC sigue exigiendo un valor válido; no se relajan los demás datos personales obligatorios. |
+
+Las tablas nuevas tienen RLS de lectura propia y SELECT para authenticated, sin escrituras directas del navegador. La misma transacción `sync_menuki_state` guarda borrador, preferencias y datos personales con `auth.uid()` y revisión PT409. Las omisiones de clientes anteriores no borran estas filas. Se retiran además las escrituras directas de `profiles`, `plan_cycles`, `planned_meals` y `user_settings` para impedir saltarse la validación del servidor. El reinicio confirmado también limpia las tablas nuevas de esa cuenta; la sincronización normal no las purga.
+
+La capacidad `menuki_state_capabilities()` devuelve `planning_contract: 1`. Si el RPC no existe, el cliente mantiene el contrato anterior y evita leer tablas nuevas. No declara guardadas preferencias que el esquema no admite. Comprobaciones estructurales: [planning_persistence.sql](../supabase/diagnostics/planning_persistence.sql). Detalle, compatibilidad y pruebas: [paquete 4](planner/package-4-persistence.md).
 
 ## Diagrama entidad-relación
 
-El diagrama muestra las trece tablas personales y, con borde discontinuo, las cuatro tablas compartidas del buzón creadas por la novena migración (aplicada según el propietario). `auth.users` pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
+El diagrama muestra las catorce tablas personales anteriores al paquete 4 (las tres adicionales ya aplicadas se detallan arriba), incluida la tabla heredada `meal_completion_shortfalls` (retirada; limpieza aplicada y comprobada según el propietario el 22/10/2026), y, con borde discontinuo, las cuatro tablas compartidas del buzón creadas por la novena migración (aplicada según el propietario). `auth.users` pertenece a Supabase Auth. El detalle completo de columnas aparece debajo.
 
 ![Diagrama entidad-relación de la base de datos de Supabase](images/supabase_db_model.svg)
 
@@ -19,7 +41,7 @@ PK significa clave primaria y FK significa clave foránea. Las tablas de la apli
 - TIMESTAMPTZ almacena marcas temporales con zona horaria. Los campos DATE representan fechas de calendario sin hora.
 - Los campos updated_at tienen DEFAULT now() al insertar. No hay triggers que los actualicen automáticamente en cada modificación.
 - Los IDs food_id y recipe_id son identificadores de los catálogos JSON. No tienen FK SQL porque esos catálogos no se duplican en PostgreSQL.
-- Las cantidades de inventario y compra usan la unidad `unit` del alimento (g, ml o ud); las recetas usan `recipeUnit`. En el inventario, quantity lleva signo: entradas positivas y consumos/salidas negativas. Para frutas y verduras enteras, los movimientos y compras usan `ud`, aunque las cantidades de receta estén en gramos.
+- Las cantidades de inventario y compra usan la unidad `unit` del alimento (g, ml o ud); las recetas usan `recipeUnit`. En el inventario, quantity lleva signo: entradas positivas y consumos/salidas negativas. Las porciones de fruta entera usan `ud` en receta e inventario. El pan de molde usa rebanadas en receta y gramos en movimientos/compra, con conversión aproximada de 25 g por rebanada. Las verduras que se trocean siguen en gramos de receta y pueden comprarse/guardarse por unidad.
 - La tabla de movimientos es append-only para el rol de la aplicación: puede leer e insertar, pero no actualizar ni borrar.
 - `training_logs` y `profiles.training_bonus_kcal` son heredados; el cálculo actual usa `activity_sessions`.
 
@@ -45,13 +67,13 @@ Una fila opcional por usuario con los parámetros usados por el cálculo nutrici
 | age | smallint | No | Entre 18 y 95. |
 | height_cm | numeric(5,1) | No | Entre 125 y 220 cm. |
 | reference_weight_kg | numeric(5,1) | No | Entre 35 y 250 kg. |
-| activity_level | text | No | DEFAULT 'low'; very_low, low, medium o high. |
+| activity_level | text | No | DEFAULT 'sedentary'; very_sedentary, sedentary, light, moderate, intense o very_intense. |
 | training_bonus_kcal | smallint | No | DEFAULT 0; entre 0 y 400. Campo heredado, ya no usado por el cálculo local. |
 | goal | text | No | DEFAULT 'maintain'; maintain, recomp, fat_loss o muscle_gain. |
 | injury_recovery | boolean | No | DEFAULT false. |
 | auto_portions | boolean | No | DEFAULT true. |
 | follow_weight | boolean | No | DEFAULT false. |
-| manual_rmr_kcal | smallint | No | DEFAULT 1600; entre 800 y 3500. |
+| manual_rmr_kcal | smallint | Sí | DEFAULT 1600; entre 800 y 3500 si se informa. El RPC exige un valor válido para confirmar un perfil en modo manual; nulabilidad añadida por el paquete 4 aplicado según el propietario. |
 | created_at | timestamptz | No | DEFAULT now(). |
 | updated_at | timestamptz | No | DEFAULT now(); la base no lo actualiza automáticamente. |
 | profile_confirmed | boolean | No | DEFAULT false; el usuario revisó y guardó el perfil usado para los cálculos. |
@@ -128,9 +150,21 @@ Guarda una fila inmutable por ingrediente de una comida completada. Conserva la 
 
 La tabla permite varias líneas para un mismo food_id, porque conserva el índice de línea original. RLS permite SELECT e INSERT de filas propias; el rol de la aplicación no recibe UPDATE ni DELETE. La reversión de la comida conserva estos snapshots y crea movimientos inversos; no los modifica. No hay caducidad temporal ni tarea de purga; se conservan mientras exista la comida completada y la cuenta. El tamaño total y por tabla se revisará conforme se incorporen usuarios, con una revisión al acercarse a 350 MB.
 
+### meal_completion_shortfalls
+
+Tabla heredada, fuera del modelo activo de la aplicación. ADR-0043 elimina la necesidad de registrar cuánto supuestamente faltaba al completar una comida. El cliente ya no la consulta ni la envía. El propietario confirmó el 22/10/2026 que `20261018120000_retire_meal_shortfalls.sql` se aplicó: las filas históricas se eliminaron y un disparador `BEFORE INSERT OR UPDATE` devuelve `NULL` para descartar las escrituras de versiones antiguas del RPC. La tabla permanece vacía por compatibilidad. Las consultas del propietario también confirmaron que `authenticated` no tiene permisos directos de inserción, actualización ni borrado; esas comprobaciones estructurales proceden del propietario. La primera prueba funcional del paquete 7 detectó dos filas nuevas en una cuenta de prueba; tras reaplicar el propietario la retirada con Success el 23/10/2026, nuevos consumos desde interfaz y RPC dejaron cero filas, verificados independientemente mediante PostgREST. No se atribuye una causa a la discrepancia remota inicial.
+
+| Columna | Tipo | Nulable | Clave o regla |
+| --- | --- | --- | --- |
+| completion_id | uuid | No | PK compuesta; FK compuesta a meal_completions (id, user_id), ON DELETE CASCADE. |
+| user_id | uuid | No | FK → auth.users.id; ON DELETE CASCADE. |
+| food_id | text | No | ID del catálogo JSON; no es una FK SQL. |
+| quantity | numeric(14,4) | No | Cantidad positiva de una fila histórica; no se generarán nuevas filas tras aplicar la migración de retirada. |
+| unit | text | No | g, ml o ud. |
+| created_at | timestamptz | No | DEFAULT now(). |
 ### inventory_movements
 
-Libro de entradas y salidas. El saldo de cada alimento se calcula sumando quantity; no existe una segunda columna de saldo autoritativo.
+Libro de entradas y salidas. El saldo de cada alimento se calcula sumando quantity y nunca puede ser negativo. Los movimientos de comida descuentan solo el saldo disponible; el cliente conserva el consumo total en la comida, sin guardar ni mostrar diferencias por falta de saldo.
 
 No hay una tabla purchases separada: cada línea comprada se representa como un movimiento con movement_kind = purchase y quantity positiva.
 
@@ -146,11 +180,11 @@ No hay una tabla purchases separada: cada línea comprada se representa como un 
 | operation_group_id | text | Sí | Agrupa líneas de una misma operación. |
 | source_completion_id | uuid | Sí | Junto con user_id, FK → meal_completions (id, user_id); ON DELETE RESTRICT. |
 | reverses_movement_id | uuid | Sí | Junto con user_id, FK → inventory_movements (id, user_id); ON DELETE RESTRICT. |
-| shortfall_quantity | numeric(14,4) | No | DEFAULT 0; entre 0 y abs(quantity). Solo se permite para consumos meal. |
+| shortfall_quantity | numeric(14,4) | No | DEFAULT 0; campo heredado. Los valores históricos se conservan para calcular correctamente las reversiones antiguas; los movimientos nuevos usan cero. |
 | note | text | Sí | Nota opcional. |
 | created_at | timestamptz | No | DEFAULT now(). |
 
-Reglas principales: meal exige quantity negativa y source_completion_id; purchase y opening requieren quantity positiva; waste requiere quantity negativa; reversal debe tener reverses_movement_id y los demás tipos no. Un movimiento solo puede tener un reverso enlazado. La aplicación puede insertar el consumo completo y registrar el faltante aunque el saldo previo no alcance.
+Reglas principales: meal admite quantity negativa o cero y exige source_completion_id; un movimiento meal de cero es un marcador idempotente que no cambia el saldo. Purchase y opening requieren quantity positiva; waste requiere quantity negativa; reversal debe tener reverses_movement_id y los demás tipos no. Un movimiento solo puede tener un reverso enlazado. Los movimientos meal registran solo la salida cubierta por el saldo; no se registra una cantidad faltante.
 
 ### weight_logs
 
@@ -246,6 +280,7 @@ Guarda la selección, envase y estado marcado de cada artículo de la compra. La
 | state_initialized_at | timestamptz | Sí | Se fija tras la primera sincronización completa para impedir que un dispositivo vacío importe sobre datos existentes. |
 | last_synced_at | timestamptz | Sí | Última confirmación de sincronización. |
 | sync_revision | bigint | No | DEFAULT 0; contador de control de concurrencia que rechaza escrituras con revisión desactualizada. |
+| setup_mode | text | No | DEFAULT legacy; legacy o guided. Paquete 4 aplicado según el propietario el 23/10/2026; no se degrada guided en sincronización ordinaria. |
 | updated_at | timestamptz | No | DEFAULT now(); no se actualiza automáticamente. |
 
 ### menuki_admins — migración aplicada según el propietario
@@ -295,6 +330,8 @@ Pasos de preparación en texto libre y en el orden enviado. El límite de 30 fil
 | Tabla origen | Tabla destino | Cardinalidad | Clave y significado |
 | --- | --- | --- | --- |
 | auth.users | profiles | 1 a 0..1 | profiles.user_id es PK y FK a auth.users.id. |
+| auth.users | profile_setup_drafts, menu_preferences | 1 a 0..1 por tabla | PK/FK user_id con ON DELETE CASCADE; paquete 4 aplicado según el propietario el 23/10/2026. |
+| auth.users | recipe_preferences | 1 a N | PK (user_id, recipe_id), FK user_id con ON DELETE CASCADE; paquete 4 aplicado según el propietario el 23/10/2026. |
 | auth.users | user_settings | 1 a 0..1 | user_settings.user_id es PK y FK a auth.users.id. |
 | auth.users | menuki_admins | 1 a 0..1 | menuki_admins.user_id es PK y FK; solo el propietario de Supabase concede el rol. Novena migración aplicada según el propietario. |
 | auth.users | recipe_proposals | 1 a N | recipe_proposals.submitter_id referencia a la cuenta que envió la idea. Novena migración aplicada según el propietario. |
@@ -306,7 +343,8 @@ Pasos de preparación en texto libre y en el orden enviado. El límite de 30 fil
 | plan_cycles | plan_cycles | 0..1 ciclo anterior a 0..N ciclos sucesores | FK compuesta (supersedes_cycle_id, user_id); el enlace es opcional. |
 | planned_meals | meal_completions | 1 a N registros históricos | FK compuesta meal_completions (planned_meal_id, user_id); solo uno puede quedar sin revertir. |
 | meal_completions | meal_completion_ingredients | 1 a N líneas | FK compuesta (completion_id, user_id); aplicada en la cuarta migración; cada línea conserva cantidad y unidad de receta. |
-| meal_completions | inventory_movements | 1 a N movimientos | FK compuesta inventory_movements (source_completion_id, user_id); se usa para los consumos de la comida. |
+| meal_completions | meal_completion_shortfalls | 1 a N filas heredadas (tabla retirada y purgada) | FK compuesta (completion_id, user_id); la tabla permanece vacía por compatibilidad tras la migración aplicada. |
+| meal_completions | inventory_movements | 1 a N movimientos | FK compuesta inventory_movements (source_completion_id, user_id); se usa para las salidas realmente descontadas. |
 | inventory_movements | inventory_movements | 1 a 0..1 reverso | FK compuesta (reverses_movement_id, user_id) y un índice único por movimiento revertido. |
 | shopping_sessions | shopping_session_items | 1 a N | FK compuesta shopping_session_items (session_id, user_id). |
 | recipe_proposals | recipe_proposal_ingredients | 1 a N | FK recipe_proposal_ingredients.proposal_id con ON DELETE CASCADE; posiciones 1..30. Novena migración aplicada según el propietario. |
@@ -316,13 +354,17 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 
 ## Seguridad y estado de validación
 
-- RLS está habilitado en las trece tablas personales existentes y sus políticas filtran por `auth.uid() = user_id`. La novena migración, aplicada según el propietario, habilita RLS en las otras cuatro y restringe el buzón por rol admin.
+La aplicación de `20261023120000_planning_preferences_and_setup.sql` y sus siete diagnósticos estructurales están confirmados por el propietario el 23/10/2026. El paquete 7 añade recorridos funcionales con sesiones reales; el propietario confirma que la versión actual funciona en PC y móvil. No se ha realizado inspección administrativa independiente del proyecto remoto. Véase el [registro de resultados](planner/package-4-persistence.md#aplicación-en-supabase-confirmada-el-23102026) y el [registro de integración](planner/package-7-integration.md).
+
+La ampliación de `activity_level` está definida en `20261018140000_activity_movement_factors.sql`, incluida en el repositorio. El paquete 7 comprueba el guardado y lectura de los seis niveles mediante RPC en el proyecto configurado; no es una acción pendiente en él. La migración transforma los valores existentes y el test estructural comprueba la nueva restricción y el nivel predeterminado.
+
+- RLS está habilitado en las diecisiete tablas personales según las confirmaciones del propietario: catorce previas y tres nuevas del paquete 4, con sus siete comprobaciones estructurales correctas el 23/10/2026; sus políticas filtran por `auth.uid() = user_id`. La tabla heredada de faltantes conserva su política de lectura propia. El propietario comprobó el 22/10/2026 que su disparador está habilitado y suprime las escrituras antiguas, y que `authenticated` no tiene permisos directos de inserción, actualización ni borrado. El paquete 7 verifica lecturas entre propietarios en las 16 tablas personales activas con dos sesiones Auth reales y escritura directa rechazada en las siete tablas protegidas por el contrato de planificación, incluso para el propio propietario; no es una auditoría exhaustiva de todas las políticas ni del buzón admin. La novena migración, aplicada según el propietario, habilita RLS en las cuatro tablas compartidas y restringe el buzón por rol admin.
 - El rol anon no tiene permisos de lectura, inserción, actualización ni borrado en estas tablas.
-- El rol authenticated recibe solo los permisos de tabla previstos; inventory_movements permite lectura e inserción, sin actualización ni borrado.
-- Las siete migraciones iniciales se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el RPC transaccional utilizado por el reinicio total; la séptima añadió `profiles.profile_confirmed`. La octava migración, pendiente, cambia los conflictos de revisión a `PT409`. La novena creó las cuatro tablas de propuestas y las funciones `is_menuki_admin`, `submit_recipe_proposal` y `clear_recipe_proposals`; el propietario informa que ya la ejecutó.
+- El rol authenticated recibe solo los permisos de tabla previstos; `inventory_movements` es de solo lectura directa y los movimientos se escriben mediante `sync_menuki_state`. `meal_completion_shortfalls` mantiene permisos de lectura por compatibilidad, aunque el cliente actual no la consulta; el propietario confirmó que el trigger de retirada suprime altas y cambios.
+- El propietario confirma que las migraciones de faltantes `20261017100000_nonnegative_inventory_shortfalls.sql`, `20261017110000_fix_zero_quantity_meal_constraint.sql` y `20261018120000_retire_meal_shortfalls.sql` están aplicadas en Supabase. La última se comprobó en SQL Editor el 22/10/2026 según el propietario. Tras detectar el paquete 7 nuevas filas de prueba, el propietario la reaplicó con Success el 23/10/2026 y la repetición funcional verificó cero filas ante nuevos consumos. La segunda retira la antigua regla que provocaba el error `23514` y conserva `inventory_movements_check2`, que protege las referencias de reverso. Las siete migraciones iniciales se aplicaron desde SQL Editor. La quinta añadió columnas de sincronización y `sync_menuki_state(jsonb, bigint)`; la sexta añadió el RPC transaccional utilizado por el reinicio total; la séptima añadió `profiles.profile_confirmed`. La corrección de la octava migración cambia los conflictos de revisión a `PT409` y está aplicada y resuelta según confirmación del administrador del 17/10/2026. La novena creó las cuatro tablas de propuestas y las funciones `is_menuki_admin`, `submit_recipe_proposal` y `clear_recipe_proposals`; el propietario informa que ya la ejecutó.
 - La novena migración no concede permisos directos de escritura en las tablas del buzón. Las cuentas autenticadas pueden consultar esas tablas solo si `is_menuki_admin()` confirma el rol; las cuentas normales envían mediante `submit_recipe_proposal`. `menuki_admins` no tiene políticas ni permisos de tabla para el navegador. `clear_recipe_proposals` comprueba el rol, bloquea altas concurrentes, valida el recuento confirmado y borra el padre dentro de una transacción, con cascada a ingredientes y pasos. La migración décima añade `update_recipe_proposal` y `delete_recipe_proposal`; las dos vuelven a comprobar el rol, comparan la versión del contenido revisado y actualizan o eliminan una sola propuesta transaccionalmente. El propietario informa que la décima migración ya se aplicó y que el borrado individual funciona. Supabase rechazó la purga porque el DELETE no tenía WHERE; la migración undécima `20261013180000_recipe_proposal_purge_where_clause.sql` añade `id IS NOT NULL` y sigue pendiente.
-- Consultas previas confirmaron que `activity_sessions` y `meal_completion_ingredients` tienen RLS y permisos mínimos; los snapshots no conceden UPDATE ni DELETE a `authenticated`. La aplicación del SQL de sincronización devolvió éxito; no se ha probado todavía con dos sesiones autenticadas ni desde GitHub Pages.
-- El HTML ya contiene inicio de sesión y sincronización; la publicación, el primer traspaso de datos local a remoto y la prueba entre PC/móvil siguen pendientes.
+- Consultas previas confirmaron que `activity_sessions` y `meal_completion_ingredients` tienen RLS y permisos mínimos; los snapshots no conceden UPDATE ni DELETE a `authenticated`. El paquete 7 probó dos sesiones autenticadas y el propietario confirma el funcionamiento actual en PC y móvil. La inspección administrativa independiente del esquema remoto no se realizó.
+- El HTML contiene inicio de sesión y sincronización. La integración con sesiones reales se comprobó en el paquete 7 y el propietario confirma el uso actual en PC y móvil. La migración de planificación está aplicada según el propietario; no se inspeccionó de forma administrativa el historial de SQL Editor.
 - SQL Editor no registra por sí solo el historial de archivos de migración. Los archivos locales describen el orden aplicado, pero aún no existe una operación de Supabase CLI que los registre en su tabla de versiones.
 
 ## Fuente de verdad
@@ -337,5 +379,7 @@ Todas las FKs directas a auth.users usan ON DELETE CASCADE. Las relaciones de pl
 - Buzón de propuestas y rol admin (aplicada según el propietario): [20261013160000_recipe_proposal_inbox.sql](../supabase/migrations/20261013160000_recipe_proposal_inbox.sql).
 - Edición y borrado admin de propuestas (aplicada según el propietario): [20261013170000_recipe_proposal_admin_maintenance.sql](../supabase/migrations/20261013170000_recipe_proposal_admin_maintenance.sql).
 - Corrección de la purga global (pendiente de aplicar): [20261013180000_recipe_proposal_purge_where_clause.sql](../supabase/migrations/20261013180000_recipe_proposal_purge_where_clause.sql).
-- Comprobación estructural: [001_schema_check.sql](../supabase/tests/001_schema_check.sql).
+- Planificación, borradores y preferencias (aplicada según el propietario el 23/10/2026): [20261023120000_planning_preferences_and_setup.sql](../supabase/migrations/20261023120000_planning_preferences_and_setup.sql).
+- Diagnósticos del paquete 4 (siete resultados true según el propietario el 23/10/2026): [planning_persistence.sql](../supabase/diagnostics/planning_persistence.sql).
+- Comprobación estructural del esquema previo: [001_schema_check.sql](../supabase/tests/001_schema_check.sql).
 - Guía de Supabase: [supabase/README.md](../supabase/README.md).

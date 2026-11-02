@@ -4,6 +4,8 @@
 - **Estado:** Aceptada e implementada
 - **Alcance:** primera orientación dentro de Inicio y acceso a ayuda breve desde Guía
 
+Actualización de vigencia (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) y el [paquete 6](../planner/package-6-guided-first-setup.md) implementan y prueban localmente cuatro pasos obligatorios para cuentas nuevas, perfil válido y primer menú generado. Sustituye el arranque de ejemplo para cuentas nuevas; las cuentas existentes conservan sus datos. La guía informativa sigue opcional, cerrarla no completa la configuración y la restricción de comidas futuras se conserva. Publicación y pruebas funcionales alojadas siguen pendientes.
+
 ## Decisión
 
 1. Inicio ofrece **Revisar perfil** mientras el perfil no se haya confirmado y muestra siempre **Ver guía rápida** en el banner.

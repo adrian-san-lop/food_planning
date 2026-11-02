@@ -1,0 +1,4152 @@
+{
+  "accessed_at": "2026-10-19T18:00:24.206631+00:00",
+  "license": "USDA public domain / CC0",
+  "carbohydrate_method": "USDA carbohydrate by difference; not harmonized with EU available carbohydrate",
+  "archives": [
+    {
+      "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "sha256": "b80817294b8850530aaedf2e515c02593b1824f763a0ff356e5c2081643e6fd0",
+      "bytes": 6074592
+    },
+    {
+      "url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_json_2026-04-30.zip",
+      "sha256": "186e988ec542e913f51ef62b86a47758e8cdd0d1dc3889e7b055581f3c09c77a",
+      "bytes": 469303
+    }
+  ],
+  "records": {
+    "168153": {
+      "fdc_id": "168153",
+      "data_type": "sr_legacy_food",
+      "description": "Kiwifruit, green, raw",
+      "food_category_id": "9",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 1.14,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "20",
+          "food_nutrient_id": "1334387"
+        },
+        "fiber_g": {
+          "amount": 3.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "8",
+          "food_nutrient_id": "1334393"
+        },
+        "fat_g": {
+          "amount": 0.52,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "20",
+          "food_nutrient_id": "1334428"
+        },
+        "carbohydrates_g": {
+          "amount": 14.66,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1334470"
+        },
+        "kcal": {
+          "amount": 61.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1334471"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "9148",
+      "url": "https://fdc.nal.usda.gov/food-details/168153/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168165": {
+      "fdc_id": "168165",
+      "data_type": "sr_legacy_food",
+      "description": "Raisins, dark, seedless (Includes foods for USDA's Food Distribution Program)",
+      "food_category_id": "9",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 4.5,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "12",
+          "food_nutrient_id": "1335319"
+        },
+        "protein_g": {
+          "amount": 3.3,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "12",
+          "food_nutrient_id": "1335326"
+        },
+        "fat_g": {
+          "amount": 0.25,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "51",
+          "data_points": "0",
+          "food_nutrient_id": "1335352"
+        },
+        "carbohydrates_g": {
+          "amount": 79.32,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1335353"
+        },
+        "kcal": {
+          "amount": 299.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1335361"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "9298",
+      "url": "https://fdc.nal.usda.gov/food-details/168165/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168249": {
+      "fdc_id": "168249",
+      "data_type": "sr_legacy_food",
+      "description": "Pork, fresh, loin, tenderloin, separable lean only, raw",
+      "food_category_id": "10",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 2.17,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "12",
+          "food_nutrient_id": "1342467"
+        },
+        "protein_g": {
+          "amount": 20.95,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "12",
+          "food_nutrient_id": "1342515"
+        },
+        "kcal": {
+          "amount": 109.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1342518"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1342528"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1342529"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "10060",
+      "url": "https://fdc.nal.usda.gov/food-details/168249/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168312": {
+      "fdc_id": "168312",
+      "data_type": "sr_legacy_food",
+      "description": "Pork, fresh, loin, tenderloin, separable lean and fat, raw",
+      "food_category_id": "10",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 20.65,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "54",
+          "data_points": "0",
+          "food_nutrient_id": "1348424"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "56",
+          "data_points": "0",
+          "food_nutrient_id": "1348430"
+        },
+        "fat_g": {
+          "amount": 3.53,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "54",
+          "data_points": "0",
+          "food_nutrient_id": "1348478"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "56",
+          "data_points": "0",
+          "food_nutrient_id": "1348479"
+        },
+        "kcal": {
+          "amount": 120.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "56",
+          "data_points": "0",
+          "food_nutrient_id": "1348480"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "10218",
+      "url": "https://fdc.nal.usda.gov/food-details/168312/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168389": {
+      "fdc_id": "168389",
+      "data_type": "sr_legacy_food",
+      "description": "Asparagus, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 2.2,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1356712"
+        },
+        "carbohydrates_g": {
+          "amount": 3.88,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1356753"
+        },
+        "kcal": {
+          "amount": 20.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1356754"
+        },
+        "fiber_g": {
+          "amount": 2.1,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "4",
+          "food_nutrient_id": "1356770"
+        },
+        "fat_g": {
+          "amount": 0.12,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "6",
+          "food_nutrient_id": "1356781"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11011",
+      "url": "https://fdc.nal.usda.gov/food-details/168389/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168409": {
+      "fdc_id": "168409",
+      "data_type": "sr_legacy_food",
+      "description": "Cucumber, with peel, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 3.63,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1358223"
+        },
+        "kcal": {
+          "amount": 15.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1358224"
+        },
+        "fat_g": {
+          "amount": 0.11,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "9",
+          "food_nutrient_id": "1358295"
+        },
+        "fiber_g": {
+          "amount": 0.5,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "1",
+          "food_nutrient_id": "1358328"
+        },
+        "protein_g": {
+          "amount": 0.65,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1358332"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11205",
+      "url": "https://fdc.nal.usda.gov/food-details/168409/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168411": {
+      "fdc_id": "168411",
+      "data_type": "sr_legacy_food",
+      "description": "Edamame, frozen, prepared",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 5.2,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "2",
+          "food_nutrient_id": "1358427"
+        },
+        "fiber_g": {
+          "amount": 5.2,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "2",
+          "food_nutrient_id": "1358438"
+        },
+        "carbohydrates_g": {
+          "amount": 8.91,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1358517"
+        },
+        "kcal": {
+          "amount": 121.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1358518"
+        },
+        "protein_g": {
+          "amount": 11.91,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "2",
+          "food_nutrient_id": "1358522"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11212",
+      "url": "https://fdc.nal.usda.gov/food-details/168411/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168448": {
+      "fdc_id": "168448",
+      "data_type": "sr_legacy_food",
+      "description": "Pumpkin, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 6.5,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1361300"
+        },
+        "fiber_g": {
+          "amount": 0.5,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1361306"
+        },
+        "kcal": {
+          "amount": 26.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1361321"
+        },
+        "fat_g": {
+          "amount": 0.1,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1361332"
+        },
+        "protein_g": {
+          "amount": 1.0,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1361356"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11422",
+      "url": "https://fdc.nal.usda.gov/food-details/168448/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168462": {
+      "fdc_id": "168462",
+      "data_type": "sr_legacy_food",
+      "description": "Spinach, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 2.86,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "9",
+          "food_nutrient_id": "1362463"
+        },
+        "fiber_g": {
+          "amount": 2.2,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "1",
+          "food_nutrient_id": "1362494"
+        },
+        "fat_g": {
+          "amount": 0.39,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "7",
+          "food_nutrient_id": "1362527"
+        },
+        "carbohydrates_g": {
+          "amount": 3.63,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1362528"
+        },
+        "kcal": {
+          "amount": 23.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1362529"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11457",
+      "url": "https://fdc.nal.usda.gov/food-details/168462/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168482": {
+      "fdc_id": "168482",
+      "data_type": "sr_legacy_food",
+      "description": "Sweet potato, raw, unprepared (Includes foods for USDA's Food Distribution Program)",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 3.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "1",
+          "food_nutrient_id": "1364113"
+        },
+        "carbohydrates_g": {
+          "amount": 20.12,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1364141"
+        },
+        "kcal": {
+          "amount": 86.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1364142"
+        },
+        "fat_g": {
+          "amount": 0.05,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1364199"
+        },
+        "protein_g": {
+          "amount": 1.57,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1364224"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11507",
+      "url": "https://fdc.nal.usda.gov/food-details/168482/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168604": {
+      "fdc_id": "168604",
+      "data_type": "sr_legacy_food",
+      "description": "Seeds, sesame butter, tahini, type of kernels unspecified",
+      "food_category_id": "12",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 53.01,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1373521"
+        },
+        "protein_g": {
+          "amount": 17.4,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1373542"
+        },
+        "fiber_g": {
+          "amount": 4.7,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1373548"
+        },
+        "carbohydrates_g": {
+          "amount": 21.5,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1373560"
+        },
+        "kcal": {
+          "amount": 592.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1373561"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "12698",
+      "url": "https://fdc.nal.usda.gov/food-details/168604/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168874": {
+      "fdc_id": "168874",
+      "data_type": "sr_legacy_food",
+      "description": "Quinoa, uncooked",
+      "food_category_id": "20",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 7.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1395385"
+        },
+        "protein_g": {
+          "amount": 14.12,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1395404"
+        },
+        "fat_g": {
+          "amount": 6.07,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1395407"
+        },
+        "carbohydrates_g": {
+          "amount": 64.16,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1395446"
+        },
+        "kcal": {
+          "amount": 368.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1395447"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "20035",
+      "url": "https://fdc.nal.usda.gov/food-details/168874/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "168877": {
+      "fdc_id": "168877",
+      "data_type": "sr_legacy_food",
+      "description": "Rice, white, long-grain, regular, raw, enriched",
+      "food_category_id": "20",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.66,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "23",
+          "food_nutrient_id": "1395695"
+        },
+        "carbohydrates_g": {
+          "amount": 79.95,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1395696"
+        },
+        "kcal": {
+          "amount": 365.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1395697"
+        },
+        "protein_g": {
+          "amount": 7.13,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "70",
+          "food_nutrient_id": "1395721"
+        },
+        "fiber_g": {
+          "amount": 1.3,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1395726"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "20044",
+      "url": "https://fdc.nal.usda.gov/food-details/168877/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169097": {
+      "fdc_id": "169097",
+      "data_type": "sr_legacy_food",
+      "description": "Oranges, raw, all commercial varieties",
+      "food_category_id": "9",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.12,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "4",
+          "food_nutrient_id": "1413017"
+        },
+        "carbohydrates_g": {
+          "amount": 11.75,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1413018"
+        },
+        "kcal": {
+          "amount": 47.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1413019"
+        },
+        "fiber_g": {
+          "amount": 2.4,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1413038"
+        },
+        "protein_g": {
+          "amount": 0.94,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "69",
+          "food_nutrient_id": "1413045"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "9200",
+      "url": "https://fdc.nal.usda.gov/food-details/169097/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169105": {
+      "fdc_id": "169105",
+      "data_type": "sr_legacy_food",
+      "description": "Tangerines, (mandarin oranges), raw",
+      "food_category_id": "9",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.31,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "7",
+          "food_nutrient_id": "1413645"
+        },
+        "carbohydrates_g": {
+          "amount": 13.34,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1413651"
+        },
+        "kcal": {
+          "amount": 53.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1413652"
+        },
+        "protein_g": {
+          "amount": 0.81,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "9",
+          "food_nutrient_id": "1413735"
+        },
+        "fiber_g": {
+          "amount": 1.8,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "9",
+          "food_nutrient_id": "1413743"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "9218",
+      "url": "https://fdc.nal.usda.gov/food-details/169105/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169118": {
+      "fdc_id": "169118",
+      "data_type": "sr_legacy_food",
+      "description": "Pears, raw",
+      "food_category_id": "9",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.14,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "24",
+          "food_nutrient_id": "1414744"
+        },
+        "carbohydrates_g": {
+          "amount": 15.23,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1414745"
+        },
+        "kcal": {
+          "amount": 57.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1414746"
+        },
+        "protein_g": {
+          "amount": 0.36,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "29",
+          "food_nutrient_id": "1414761"
+        },
+        "fiber_g": {
+          "amount": 3.1,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "24",
+          "food_nutrient_id": "1414825"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "9252",
+      "url": "https://fdc.nal.usda.gov/food-details/169118/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169146": {
+      "fdc_id": "169146",
+      "data_type": "sr_legacy_food",
+      "description": "Beets, cooked, boiled, drained",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 1.68,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1417081"
+        },
+        "fat_g": {
+          "amount": 0.18,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1417105"
+        },
+        "carbohydrates_g": {
+          "amount": 9.96,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1417106"
+        },
+        "kcal": {
+          "amount": 44.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1417110"
+        },
+        "fiber_g": {
+          "amount": 2.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "0",
+          "food_nutrient_id": "1417131"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11081",
+      "url": "https://fdc.nal.usda.gov/food-details/169146/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169214": {
+      "fdc_id": "169214",
+      "data_type": "sr_legacy_food",
+      "description": "Corn, sweet, yellow, canned, whole kernel, drained solids",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 1.22,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "22",
+          "food_nutrient_id": "1424378"
+        },
+        "carbohydrates_g": {
+          "amount": 14.34,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1424379"
+        },
+        "kcal": {
+          "amount": 67.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1424380"
+        },
+        "fiber_g": {
+          "amount": 2.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "10",
+          "food_nutrient_id": "1424439"
+        },
+        "protein_g": {
+          "amount": 2.29,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "22",
+          "food_nutrient_id": "1424448"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11172",
+      "url": "https://fdc.nal.usda.gov/food-details/169214/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169228": {
+      "fdc_id": "169228",
+      "data_type": "sr_legacy_food",
+      "description": "Eggplant, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.18,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "42",
+          "data_points": "6",
+          "food_nutrient_id": "1425485"
+        },
+        "carbohydrates_g": {
+          "amount": 5.88,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1425486"
+        },
+        "kcal": {
+          "amount": 25.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1425487"
+        },
+        "fiber_g": {
+          "amount": 3.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "42",
+          "data_points": "6",
+          "food_nutrient_id": "1425494"
+        },
+        "protein_g": {
+          "amount": 0.98,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "43",
+          "data_points": "7",
+          "food_nutrient_id": "1425504"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11209",
+      "url": "https://fdc.nal.usda.gov/food-details/169228/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169230": {
+      "fdc_id": "169230",
+      "data_type": "sr_legacy_food",
+      "description": "Garlic, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 33.06,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1425625"
+        },
+        "kcal": {
+          "amount": 149.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1425626"
+        },
+        "fiber_g": {
+          "amount": 2.1,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1425656"
+        },
+        "protein_g": {
+          "amount": 6.36,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "8",
+          "food_nutrient_id": "1425663"
+        },
+        "fat_g": {
+          "amount": 0.5,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "1",
+          "food_nutrient_id": "1425672"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11215",
+      "url": "https://fdc.nal.usda.gov/food-details/169230/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169246": {
+      "fdc_id": "169246",
+      "data_type": "sr_legacy_food",
+      "description": "Leeks, (bulb and lower leaf-portion), raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "kcal": {
+          "amount": 61.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1426872"
+        },
+        "fat_g": {
+          "amount": 0.3,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "1",
+          "food_nutrient_id": "1426900"
+        },
+        "fiber_g": {
+          "amount": 1.8,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1426917"
+        },
+        "protein_g": {
+          "amount": 1.5,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "1",
+          "food_nutrient_id": "1426924"
+        },
+        "carbohydrates_g": {
+          "amount": 14.15,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1426930"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11246",
+      "url": "https://fdc.nal.usda.gov/food-details/169246/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169249": {
+      "fdc_id": "169249",
+      "data_type": "sr_legacy_food",
+      "description": "Lettuce, green leaf, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 1.3,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1427165"
+        },
+        "carbohydrates_g": {
+          "amount": 2.87,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1427172"
+        },
+        "kcal": {
+          "amount": 15.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1427214"
+        },
+        "protein_g": {
+          "amount": 1.36,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "8",
+          "food_nutrient_id": "1427220"
+        },
+        "fat_g": {
+          "amount": 0.15,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "8",
+          "food_nutrient_id": "1427243"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11253",
+      "url": "https://fdc.nal.usda.gov/food-details/169249/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169251": {
+      "fdc_id": "169251",
+      "data_type": "sr_legacy_food",
+      "description": "Mushrooms, white, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 1.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "43",
+          "data_points": "3",
+          "food_nutrient_id": "1427376"
+        },
+        "fat_g": {
+          "amount": 0.34,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "33",
+          "food_nutrient_id": "1427381"
+        },
+        "protein_g": {
+          "amount": 3.09,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "43",
+          "data_points": "33",
+          "food_nutrient_id": "1427409"
+        },
+        "carbohydrates_g": {
+          "amount": 3.26,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1427428"
+        },
+        "kcal": {
+          "amount": 22.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1427429"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11260",
+      "url": "https://fdc.nal.usda.gov/food-details/169251/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169291": {
+      "fdc_id": "169291",
+      "data_type": "sr_legacy_food",
+      "description": "Squash, summer, zucchini, includes skin, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.32,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "42",
+          "data_points": "7",
+          "food_nutrient_id": "1430544"
+        },
+        "carbohydrates_g": {
+          "amount": 3.11,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1430545"
+        },
+        "kcal": {
+          "amount": 17.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1430546"
+        },
+        "fiber_g": {
+          "amount": 1.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "42",
+          "data_points": "12",
+          "food_nutrient_id": "1430588"
+        },
+        "protein_g": {
+          "amount": 1.21,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "43",
+          "data_points": "10",
+          "food_nutrient_id": "1430596"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11477",
+      "url": "https://fdc.nal.usda.gov/food-details/169291/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169593": {
+      "fdc_id": "169593",
+      "data_type": "sr_legacy_food",
+      "description": "Cocoa, dry powder, unsweetened",
+      "food_category_id": "19",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 57.9,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1455414"
+        },
+        "kcal": {
+          "amount": 228.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1455415"
+        },
+        "fiber_g": {
+          "amount": 37.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "44",
+          "data_points": "0",
+          "food_nutrient_id": "1455418"
+        },
+        "protein_g": {
+          "amount": 19.6,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "8",
+          "food_nutrient_id": "1455433"
+        },
+        "fat_g": {
+          "amount": 13.7,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "8",
+          "food_nutrient_id": "1455451"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "19165",
+      "url": "https://fdc.nal.usda.gov/food-details/169593/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169699": {
+      "fdc_id": "169699",
+      "data_type": "sr_legacy_food",
+      "description": "Couscous, dry",
+      "food_category_id": "20",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 5.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1462380"
+        },
+        "protein_g": {
+          "amount": 12.76,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "6",
+          "food_nutrient_id": "1462407"
+        },
+        "fat_g": {
+          "amount": 0.64,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "6",
+          "food_nutrient_id": "1462408"
+        },
+        "carbohydrates_g": {
+          "amount": 77.43,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1462409"
+        },
+        "kcal": {
+          "amount": 376.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1462410"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "20028",
+      "url": "https://fdc.nal.usda.gov/food-details/169699/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169738": {
+      "fdc_id": "169738",
+      "data_type": "sr_legacy_food",
+      "description": "Pasta, whole-wheat, dry (Includes foods for USDA's Food Distribution Program)",
+      "food_category_id": "20",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 13.87,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "10",
+          "food_nutrient_id": "1465712"
+        },
+        "fiber_g": {
+          "amount": 9.2,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1465719"
+        },
+        "fat_g": {
+          "amount": 2.93,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "10",
+          "food_nutrient_id": "1465758"
+        },
+        "carbohydrates_g": {
+          "amount": 73.37,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1465759"
+        },
+        "kcal": {
+          "amount": 352.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1465760"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "20124",
+      "url": "https://fdc.nal.usda.gov/food-details/169738/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169961": {
+      "fdc_id": "169961",
+      "data_type": "sr_legacy_food",
+      "description": "Beans, snap, green, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.22,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "42",
+          "data_points": "14",
+          "food_nutrient_id": "1483230"
+        },
+        "protein_g": {
+          "amount": 1.83,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "42",
+          "data_points": "104",
+          "food_nutrient_id": "1483244"
+        },
+        "fiber_g": {
+          "amount": 2.7,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "42",
+          "data_points": "4",
+          "food_nutrient_id": "1483248"
+        },
+        "carbohydrates_g": {
+          "amount": 6.97,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1483256"
+        },
+        "kcal": {
+          "amount": 31.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1483257"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11052",
+      "url": "https://fdc.nal.usda.gov/food-details/169961/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169977": {
+      "fdc_id": "169977",
+      "data_type": "sr_legacy_food",
+      "description": "Cabbage, red, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 7.37,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1484681"
+        },
+        "kcal": {
+          "amount": 31.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1484682"
+        },
+        "fiber_g": {
+          "amount": 2.1,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1484709"
+        },
+        "fat_g": {
+          "amount": 0.16,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1484755"
+        },
+        "protein_g": {
+          "amount": 1.43,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1484758"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11112",
+      "url": "https://fdc.nal.usda.gov/food-details/169977/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169986": {
+      "fdc_id": "169986",
+      "data_type": "sr_legacy_food",
+      "description": "Cauliflower, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 4.97,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1485411"
+        },
+        "kcal": {
+          "amount": 25.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1485412"
+        },
+        "protein_g": {
+          "amount": 1.92,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1485459"
+        },
+        "fiber_g": {
+          "amount": 2.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "42",
+          "data_points": "4",
+          "food_nutrient_id": "1485460"
+        },
+        "fat_g": {
+          "amount": 0.28,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "21",
+          "food_nutrient_id": "1485505"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11135",
+      "url": "https://fdc.nal.usda.gov/food-details/169986/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "169988": {
+      "fdc_id": "169988",
+      "data_type": "sr_legacy_food",
+      "description": "Celery, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "kcal": {
+          "amount": 14.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1485573"
+        },
+        "carbohydrates_g": {
+          "amount": 2.97,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1485620"
+        },
+        "fat_g": {
+          "amount": 0.17,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "15",
+          "food_nutrient_id": "1485638"
+        },
+        "fiber_g": {
+          "amount": 1.6,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "8",
+          "food_nutrient_id": "1485666"
+        },
+        "protein_g": {
+          "amount": 0.69,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "8",
+          "food_nutrient_id": "1485668"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11143",
+      "url": "https://fdc.nal.usda.gov/food-details/169988/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170000": {
+      "fdc_id": "170000",
+      "data_type": "sr_legacy_food",
+      "description": "Onions, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.1,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "22",
+          "food_nutrient_id": "1486613"
+        },
+        "carbohydrates_g": {
+          "amount": 9.34,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1486614"
+        },
+        "kcal": {
+          "amount": 40.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1486615"
+        },
+        "protein_g": {
+          "amount": 1.1,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "43",
+          "data_points": "25",
+          "food_nutrient_id": "1486656"
+        },
+        "fiber_g": {
+          "amount": 1.7,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "10",
+          "food_nutrient_id": "1486664"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11282",
+      "url": "https://fdc.nal.usda.gov/food-details/170000/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170016": {
+      "fdc_id": "170016",
+      "data_type": "sr_legacy_food",
+      "description": "Peas, green, frozen, unprepared (Includes foods for USDA's Food Distribution Program)",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.4,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "101",
+          "food_nutrient_id": "1487978"
+        },
+        "carbohydrates_g": {
+          "amount": 13.62,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1487979"
+        },
+        "kcal": {
+          "amount": 77.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1487980"
+        },
+        "protein_g": {
+          "amount": 5.22,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "42",
+          "data_points": "95",
+          "food_nutrient_id": "1487985"
+        },
+        "fiber_g": {
+          "amount": 4.5,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "42",
+          "data_points": "7",
+          "food_nutrient_id": "1487992"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11312",
+      "url": "https://fdc.nal.usda.gov/food-details/170016/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170026": {
+      "fdc_id": "170026",
+      "data_type": "sr_legacy_food",
+      "description": "Potatoes, flesh and skin, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.09,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "11",
+          "food_nutrient_id": "1488784"
+        },
+        "kcal": {
+          "amount": 77.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1488814"
+        },
+        "protein_g": {
+          "amount": 2.05,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "11",
+          "food_nutrient_id": "1488836"
+        },
+        "fiber_g": {
+          "amount": 2.1,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "5",
+          "food_nutrient_id": "1488841"
+        },
+        "carbohydrates_g": {
+          "amount": 17.49,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1488857"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11352",
+      "url": "https://fdc.nal.usda.gov/food-details/170026/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170108": {
+      "fdc_id": "170108",
+      "data_type": "sr_legacy_food",
+      "description": "Peppers, sweet, red, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 2.1,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "16",
+          "data_points": "0",
+          "food_nutrient_id": "1495478"
+        },
+        "kcal": {
+          "amount": 26.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1495485"
+        },
+        "carbohydrates_g": {
+          "amount": 6.03,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1495551"
+        },
+        "protein_g": {
+          "amount": 0.99,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1495577"
+        },
+        "fat_g": {
+          "amount": 0.3,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1495591"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11821",
+      "url": "https://fdc.nal.usda.gov/food-details/170108/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170187": {
+      "fdc_id": "170187",
+      "data_type": "sr_legacy_food",
+      "description": "Nuts, walnuts, english",
+      "food_category_id": "12",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 13.71,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1501868"
+        },
+        "kcal": {
+          "amount": 654.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1501869"
+        },
+        "protein_g": {
+          "amount": 15.23,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "7",
+          "food_nutrient_id": "1501908"
+        },
+        "fiber_g": {
+          "amount": 6.7,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "7",
+          "food_nutrient_id": "1501915"
+        },
+        "fat_g": {
+          "amount": 65.21,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "7",
+          "food_nutrient_id": "1501955"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "12155",
+      "url": "https://fdc.nal.usda.gov/food-details/170187/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170379": {
+      "fdc_id": "170379",
+      "data_type": "sr_legacy_food",
+      "description": "Broccoli, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 6.64,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1518808"
+        },
+        "kcal": {
+          "amount": 34.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1518809"
+        },
+        "fat_g": {
+          "amount": 0.37,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "29",
+          "food_nutrient_id": "1518830"
+        },
+        "protein_g": {
+          "amount": 2.82,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "43",
+          "data_points": "23",
+          "food_nutrient_id": "1518850"
+        },
+        "fiber_g": {
+          "amount": 2.6,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "42",
+          "data_points": "13",
+          "food_nutrient_id": "1518854"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11090",
+      "url": "https://fdc.nal.usda.gov/food-details/170379/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170393": {
+      "fdc_id": "170393",
+      "data_type": "sr_legacy_food",
+      "description": "Carrots, raw",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 0.93,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "43",
+          "data_points": "19",
+          "food_nutrient_id": "1519940"
+        },
+        "fat_g": {
+          "amount": 0.24,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "26",
+          "food_nutrient_id": "1519947"
+        },
+        "carbohydrates_g": {
+          "amount": 9.58,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1519995"
+        },
+        "kcal": {
+          "amount": 41.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1519996"
+        },
+        "fiber_g": {
+          "amount": 2.8,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1520031"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11124",
+      "url": "https://fdc.nal.usda.gov/food-details/170393/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170457": {
+      "fdc_id": "170457",
+      "data_type": "sr_legacy_food",
+      "description": "Tomatoes, red, ripe, raw, year round average",
+      "food_category_id": "11",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 3.89,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1525333"
+        },
+        "kcal": {
+          "amount": 18.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1525334"
+        },
+        "fat_g": {
+          "amount": 0.2,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "43",
+          "data_points": "26",
+          "food_nutrient_id": "1525365"
+        },
+        "fiber_g": {
+          "amount": 1.2,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "42",
+          "data_points": "5",
+          "food_nutrient_id": "1525369"
+        },
+        "protein_g": {
+          "amount": 0.88,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "43",
+          "data_points": "19",
+          "food_nutrient_id": "1525376"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "11529",
+      "url": "https://fdc.nal.usda.gov/food-details/170457/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170554": {
+      "fdc_id": "170554",
+      "data_type": "sr_legacy_food",
+      "description": "Seeds, chia seeds, dried",
+      "food_category_id": "12",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 16.54,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "21",
+          "food_nutrient_id": "1532707"
+        },
+        "fiber_g": {
+          "amount": 34.4,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "2",
+          "data_points": "2",
+          "food_nutrient_id": "1532710"
+        },
+        "fat_g": {
+          "amount": 30.74,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "24",
+          "food_nutrient_id": "1532737"
+        },
+        "carbohydrates_g": {
+          "amount": 42.12,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1532738"
+        },
+        "kcal": {
+          "amount": 486.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1532739"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "12006",
+      "url": "https://fdc.nal.usda.gov/food-details/170554/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170556": {
+      "fdc_id": "170556",
+      "data_type": "sr_legacy_food",
+      "description": "Seeds, pumpkin and squash seed kernels, dried",
+      "food_category_id": "12",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 10.71,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1532853"
+        },
+        "kcal": {
+          "amount": 559.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1532854"
+        },
+        "protein_g": {
+          "amount": 30.23,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1532894"
+        },
+        "fiber_g": {
+          "amount": 6.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1532903"
+        },
+        "fat_g": {
+          "amount": 49.05,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1532981"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "12014",
+      "url": "https://fdc.nal.usda.gov/food-details/170556/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170567": {
+      "fdc_id": "170567",
+      "data_type": "sr_legacy_food",
+      "description": "Nuts, almonds",
+      "food_category_id": "12",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 21.15,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "91",
+          "food_nutrient_id": "1533832"
+        },
+        "fiber_g": {
+          "amount": 12.5,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "89",
+          "food_nutrient_id": "1533838"
+        },
+        "fat_g": {
+          "amount": 49.93,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "90",
+          "food_nutrient_id": "1533883"
+        },
+        "carbohydrates_g": {
+          "amount": 21.55,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1533884"
+        },
+        "kcal": {
+          "amount": 579.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1533885"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "12061",
+      "url": "https://fdc.nal.usda.gov/food-details/170567/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "170932": {
+      "fdc_id": "170932",
+      "data_type": "sr_legacy_food",
+      "description": "Spices, pepper, red or cayenne",
+      "food_category_id": "2",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 17.27,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "171",
+          "food_nutrient_id": "1566662"
+        },
+        "carbohydrates_g": {
+          "amount": 56.63,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1566663"
+        },
+        "kcal": {
+          "amount": 318.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1566664"
+        },
+        "protein_g": {
+          "amount": 12.01,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "77",
+          "food_nutrient_id": "1566677"
+        },
+        "fiber_g": {
+          "amount": 27.2,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1566700"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "2031",
+      "url": "https://fdc.nal.usda.gov/food-details/170932/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "171077": {
+      "fdc_id": "171077",
+      "data_type": "sr_legacy_food",
+      "description": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",
+      "food_category_id": "5",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 2.62,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1578065"
+        },
+        "kcal": {
+          "amount": 120.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1578066"
+        },
+        "protein_g": {
+          "amount": 22.5,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1578105"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1578117"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1578118"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "5062",
+      "url": "https://fdc.nal.usda.gov/food-details/171077/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "171287": {
+      "fdc_id": "171287",
+      "data_type": "sr_legacy_food",
+      "description": "Egg, whole, raw, fresh",
+      "food_category_id": "1",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "kcal": {
+          "amount": 143.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1597626"
+        },
+        "protein_g": {
+          "amount": 12.56,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "12",
+          "food_nutrient_id": "1597683"
+        },
+        "fat_g": {
+          "amount": 9.51,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "12",
+          "food_nutrient_id": "1597714"
+        },
+        "carbohydrates_g": {
+          "amount": 0.72,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1597748"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "1",
+          "food_nutrient_id": "1597756"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "1123",
+      "url": "https://fdc.nal.usda.gov/food-details/171287/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "171304": {
+      "fdc_id": "171304",
+      "data_type": "sr_legacy_food",
+      "description": "Yogurt, Greek, plain, whole milk",
+      "food_category_id": "1",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 9.0,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1599352"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1599366"
+        },
+        "fat_g": {
+          "amount": 5.0,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1599411"
+        },
+        "carbohydrates_g": {
+          "amount": 3.98,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1599430"
+        },
+        "kcal": {
+          "amount": 97.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1599431"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "1293",
+      "url": "https://fdc.nal.usda.gov/food-details/171304/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "171413": {
+      "fdc_id": "171413",
+      "data_type": "sr_legacy_food",
+      "description": "Oil, olive, salad or cooking",
+      "food_category_id": "4",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 100.0,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "52",
+          "data_points": "0",
+          "food_nutrient_id": "1607766"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1607767"
+        },
+        "kcal": {
+          "amount": 884.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1607768"
+        },
+        "protein_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1607794"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1607828"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "4053",
+      "url": "https://fdc.nal.usda.gov/food-details/171413/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "171505": {
+      "fdc_id": "171505",
+      "data_type": "sr_legacy_food",
+      "description": "Turkey, Ground, raw",
+      "food_category_id": "5",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 7.66,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "29",
+          "food_nutrient_id": "1615957"
+        },
+        "protein_g": {
+          "amount": 19.66,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "29",
+          "food_nutrient_id": "1616059"
+        },
+        "kcal": {
+          "amount": 148.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1616068"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1616069"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1616070"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "5305",
+      "url": "https://fdc.nal.usda.gov/food-details/171505/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "171688": {
+      "fdc_id": "171688",
+      "data_type": "sr_legacy_food",
+      "description": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+      "food_category_id": "9",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 13.81,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1631309"
+        },
+        "kcal": {
+          "amount": 52.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1631310"
+        },
+        "fat_g": {
+          "amount": 0.17,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "35",
+          "food_nutrient_id": "1631338"
+        },
+        "fiber_g": {
+          "amount": 2.4,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "29",
+          "food_nutrient_id": "1631357"
+        },
+        "protein_g": {
+          "amount": 0.26,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "29",
+          "food_nutrient_id": "1631368"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "9003",
+      "url": "https://fdc.nal.usda.gov/food-details/171688/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "171705": {
+      "fdc_id": "171705",
+      "data_type": "sr_legacy_food",
+      "description": "Avocados, raw, all commercial varieties",
+      "food_category_id": "9",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 2.0,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "34",
+          "food_nutrient_id": "1632735"
+        },
+        "fiber_g": {
+          "amount": 6.7,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "27",
+          "food_nutrient_id": "1632738"
+        },
+        "fat_g": {
+          "amount": 14.66,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "35",
+          "food_nutrient_id": "1632765"
+        },
+        "carbohydrates_g": {
+          "amount": 8.53,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1632813"
+        },
+        "kcal": {
+          "amount": 160.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1632814"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "9037",
+      "url": "https://fdc.nal.usda.gov/food-details/171705/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "171890": {
+      "fdc_id": "171890",
+      "data_type": "sr_legacy_food",
+      "description": "Beverages, coffee, brewed, prepared with tap water",
+      "food_category_id": "14",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "kcal": {
+          "amount": 1.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1649242"
+        },
+        "protein_g": {
+          "amount": 0.12,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "10",
+          "food_nutrient_id": "1649249"
+        },
+        "fat_g": {
+          "amount": 0.02,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1649284"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "51",
+          "data_points": "0",
+          "food_nutrient_id": "1649285"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1649321"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "14209",
+      "url": "https://fdc.nal.usda.gov/food-details/171890/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "172240": {
+      "fdc_id": "172240",
+      "data_type": "sr_legacy_food",
+      "description": "Vinegar, red wine",
+      "food_category_id": "2",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "5",
+          "food_nutrient_id": "1679484"
+        },
+        "carbohydrates_g": {
+          "amount": 0.27,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1679485"
+        },
+        "kcal": {
+          "amount": 19.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1679486"
+        },
+        "protein_g": {
+          "amount": 0.04,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "42",
+          "data_points": "5",
+          "food_nutrient_id": "1679492"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "46",
+          "data_points": "1",
+          "food_nutrient_id": "1679495"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "2068",
+      "url": "https://fdc.nal.usda.gov/food-details/172240/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "172420": {
+      "fdc_id": "172420",
+      "data_type": "sr_legacy_food",
+      "description": "Lentils, raw",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 1.06,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "9",
+          "food_nutrient_id": "1693696"
+        },
+        "fiber_g": {
+          "amount": 10.7,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "16",
+          "data_points": "0",
+          "food_nutrient_id": "1693723"
+        },
+        "protein_g": {
+          "amount": 24.63,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "56",
+          "food_nutrient_id": "1693727"
+        },
+        "carbohydrates_g": {
+          "amount": 63.35,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1693748"
+        },
+        "kcal": {
+          "amount": 352.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1693749"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16069",
+      "url": "https://fdc.nal.usda.gov/food-details/172420/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "172421": {
+      "fdc_id": "172421",
+      "data_type": "sr_legacy_food",
+      "description": "Lentils, mature seeds, cooked, boiled, without salt",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 20.13,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1693799"
+        },
+        "kcal": {
+          "amount": 116.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1693800"
+        },
+        "protein_g": {
+          "amount": 9.02,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "23",
+          "food_nutrient_id": "1693807"
+        },
+        "fiber_g": {
+          "amount": 7.9,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1693809"
+        },
+        "fat_g": {
+          "amount": 0.38,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "22",
+          "food_nutrient_id": "1693834"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16070",
+      "url": "https://fdc.nal.usda.gov/food-details/172421/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "172470": {
+      "fdc_id": "172470",
+      "data_type": "sr_legacy_food",
+      "description": "Peanut butter, smooth style, without salt",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 22.21,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "18",
+          "food_nutrient_id": "1697629"
+        },
+        "fiber_g": {
+          "amount": 5.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "9",
+          "food_nutrient_id": "1697635"
+        },
+        "fat_g": {
+          "amount": 51.36,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "18",
+          "food_nutrient_id": "1697676"
+        },
+        "carbohydrates_g": {
+          "amount": 22.31,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1697677"
+        },
+        "kcal": {
+          "amount": 598.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1697678"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16398",
+      "url": "https://fdc.nal.usda.gov/food-details/172470/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "172475": {
+      "fdc_id": "172475",
+      "data_type": "sr_legacy_food",
+      "description": "Tofu, raw, firm, prepared with calcium sulfate",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 2.3,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "20",
+          "data_points": "0",
+          "food_nutrient_id": "1698046"
+        },
+        "carbohydrates_g": {
+          "amount": 2.78,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1698050"
+        },
+        "kcal": {
+          "amount": 144.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1698051"
+        },
+        "protein_g": {
+          "amount": 17.27,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "6",
+          "food_nutrient_id": "1698062"
+        },
+        "fat_g": {
+          "amount": 8.72,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "6",
+          "food_nutrient_id": "1698091"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16426",
+      "url": "https://fdc.nal.usda.gov/food-details/172475/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "172850": {
+      "fdc_id": "172850",
+      "data_type": "sr_legacy_food",
+      "description": "Turkey, ground, 93% lean, 7% fat, raw",
+      "food_category_id": "5",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1729324"
+        },
+        "protein_g": {
+          "amount": 18.73,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "11",
+          "food_nutrient_id": "1729385"
+        },
+        "fat_g": {
+          "amount": 8.34,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "11",
+          "food_nutrient_id": "1729424"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1729448"
+        },
+        "kcal": {
+          "amount": 150.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1729449"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "5665",
+      "url": "https://fdc.nal.usda.gov/food-details/172850/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "173053": {
+      "fdc_id": "173053",
+      "data_type": "sr_legacy_food",
+      "description": "Beef, loin, top sirloin petite roast/filet, boneless, separable lean only, trimmed to 0\" fat, all grades, raw",
+      "food_category_id": "13",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1745327"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1745364"
+        },
+        "protein_g": {
+          "amount": 23.04,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "3",
+          "data_points": "24",
+          "food_nutrient_id": "1745389"
+        },
+        "fat_g": {
+          "amount": 3.98,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "3",
+          "data_points": "24",
+          "food_nutrient_id": "1745392"
+        },
+        "kcal": {
+          "amount": 128.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1745393"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "23261",
+      "url": "https://fdc.nal.usda.gov/food-details/173053/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "173630": {
+      "fdc_id": "173630",
+      "data_type": "sr_legacy_food",
+      "description": "Chicken, broilers or fryers, wing, meat and skin, cooked, roasted",
+      "food_category_id": "5",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 16.87,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1794134"
+        },
+        "kcal": {
+          "amount": 254.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1794135"
+        },
+        "protein_g": {
+          "amount": 23.79,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1794185"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1794241"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1794244"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "5103",
+      "url": "https://fdc.nal.usda.gov/food-details/173630/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "173709": {
+      "fdc_id": "173709",
+      "data_type": "sr_legacy_food",
+      "description": "Fish, tuna, light, canned in water, drained solids (Includes foods for USDA's Food Distribution Program)",
+      "food_category_id": "15",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.96,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "24",
+          "food_nutrient_id": "1800248"
+        },
+        "kcal": {
+          "amount": 86.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1800249"
+        },
+        "protein_g": {
+          "amount": 19.44,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "24",
+          "food_nutrient_id": "1800306"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1800318"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1800319"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "15121",
+      "url": "https://fdc.nal.usda.gov/food-details/173709/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "173800": {
+      "fdc_id": "173800",
+      "data_type": "sr_legacy_food",
+      "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, canned, drained solids",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 7.05,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1806055"
+        },
+        "fat_g": {
+          "amount": 2.77,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1806131"
+        },
+        "carbohydrates_g": {
+          "amount": 22.53,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1806132"
+        },
+        "kcal": {
+          "amount": 139.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1806133"
+        },
+        "fiber_g": {
+          "amount": 6.4,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "16",
+          "data_points": "0",
+          "food_nutrient_id": "1806134"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16358",
+      "url": "https://fdc.nal.usda.gov/food-details/173800/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "173904": {
+      "fdc_id": "173904",
+      "data_type": "sr_legacy_food",
+      "description": "Cereals, oats, regular and quick, not fortified, dry",
+      "food_category_id": "8",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fiber_g": {
+          "amount": 10.1,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1814987"
+        },
+        "fat_g": {
+          "amount": 6.52,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1815027"
+        },
+        "carbohydrates_g": {
+          "amount": 67.7,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1815028"
+        },
+        "kcal": {
+          "amount": 379.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1815029"
+        },
+        "protein_g": {
+          "amount": 13.15,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1815039"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "8120",
+      "url": "https://fdc.nal.usda.gov/food-details/173904/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "173944": {
+      "fdc_id": "173944",
+      "data_type": "sr_legacy_food",
+      "description": "Bananas, raw",
+      "food_category_id": "9",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 22.84,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1817899"
+        },
+        "kcal": {
+          "amount": 89.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1817900"
+        },
+        "fiber_g": {
+          "amount": 2.6,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "13",
+          "food_nutrient_id": "1817936"
+        },
+        "protein_g": {
+          "amount": 1.09,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "12",
+          "food_nutrient_id": "1817943"
+        },
+        "fat_g": {
+          "amount": 0.33,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "19",
+          "food_nutrient_id": "1817956"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "9040",
+      "url": "https://fdc.nal.usda.gov/food-details/173944/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "174272": {
+      "fdc_id": "174272",
+      "data_type": "sr_legacy_food",
+      "description": "Tempeh",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 20.29,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "1",
+          "food_nutrient_id": "1845305"
+        },
+        "carbohydrates_g": {
+          "amount": 7.64,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1845312"
+        },
+        "kcal": {
+          "amount": 192.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1845313"
+        },
+        "fat_g": {
+          "amount": 10.8,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "1",
+          "food_nutrient_id": "1845352"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16114",
+      "url": "https://fdc.nal.usda.gov/food-details/174272/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "174277": {
+      "fdc_id": "174277",
+      "data_type": "sr_legacy_food",
+      "description": "Soy sauce made from soy and wheat (shoyu)",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.57,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1845748"
+        },
+        "carbohydrates_g": {
+          "amount": 4.93,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1845749"
+        },
+        "protein_g": {
+          "amount": 8.14,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1845776"
+        },
+        "kcal": {
+          "amount": 53.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1845801"
+        },
+        "fiber_g": {
+          "amount": 0.8,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "2",
+          "food_nutrient_id": "1845828"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16123",
+      "url": "https://fdc.nal.usda.gov/food-details/174277/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "174284": {
+      "fdc_id": "174284",
+      "data_type": "sr_legacy_food",
+      "description": "Lentils, pink or red, raw",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 63.1,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1846304"
+        },
+        "kcal": {
+          "amount": 358.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1846305"
+        },
+        "protein_g": {
+          "amount": 23.91,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "13",
+          "food_nutrient_id": "1846314"
+        },
+        "fat_g": {
+          "amount": 2.17,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "2",
+          "food_nutrient_id": "1846328"
+        },
+        "fiber_g": {
+          "amount": 10.8,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "2",
+          "food_nutrient_id": "1846332"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16144",
+      "url": "https://fdc.nal.usda.gov/food-details/174284/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "174289": {
+      "fdc_id": "174289",
+      "data_type": "sr_legacy_food",
+      "description": "Hummus, commercial",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 7.78,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "11",
+          "food_nutrient_id": "1846733"
+        },
+        "fiber_g": {
+          "amount": 5.5,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "1",
+          "data_points": "6",
+          "food_nutrient_id": "1846741"
+        },
+        "fat_g": {
+          "amount": 17.82,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "11",
+          "food_nutrient_id": "1846790"
+        },
+        "carbohydrates_g": {
+          "amount": 15.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1846791"
+        },
+        "kcal": {
+          "amount": 237.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1846792"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16158",
+      "url": "https://fdc.nal.usda.gov/food-details/174289/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "174515": {
+      "fdc_id": "174515",
+      "data_type": "sr_legacy_food",
+      "description": "Turkey, retail parts, breast, meat only, raw",
+      "food_category_id": "5",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 2.33,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1865217"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1865218"
+        },
+        "kcal": {
+          "amount": 114.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1865219"
+        },
+        "protein_g": {
+          "amount": 23.34,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1865270"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1865274"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "5710",
+      "url": "https://fdc.nal.usda.gov/food-details/174515/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "175121": {
+      "fdc_id": "175121",
+      "data_type": "sr_legacy_food",
+      "description": "Fish, mackerel, jack, canned, drained solids",
+      "food_category_id": "15",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 6.3,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "2",
+          "food_nutrient_id": "1914100"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1914101"
+        },
+        "kcal": {
+          "amount": 156.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1914102"
+        },
+        "protein_g": {
+          "amount": 23.19,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "2",
+          "food_nutrient_id": "1914130"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1914132"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "15048",
+      "url": "https://fdc.nal.usda.gov/food-details/175121/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "175139": {
+      "fdc_id": "175139",
+      "data_type": "sr_legacy_food",
+      "description": "Fish, sardine, Atlantic, canned in oil, drained solids with bone",
+      "food_category_id": "15",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 11.45,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "13",
+          "food_nutrient_id": "1915800"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1915801"
+        },
+        "kcal": {
+          "amount": 208.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1915802"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1915822"
+        },
+        "protein_g": {
+          "amount": 24.62,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "13",
+          "food_nutrient_id": "1915826"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "15088",
+      "url": "https://fdc.nal.usda.gov/food-details/175139/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "175153": {
+      "fdc_id": "175153",
+      "data_type": "sr_legacy_food",
+      "description": "Fish, trout, mixed species, raw",
+      "food_category_id": "15",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "protein_g": {
+          "amount": 20.77,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "58",
+          "food_nutrient_id": "1916893"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1916895"
+        },
+        "fat_g": {
+          "amount": 6.61,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "111",
+          "food_nutrient_id": "1916922"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1916923"
+        },
+        "kcal": {
+          "amount": 148.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1916924"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "15114",
+      "url": "https://fdc.nal.usda.gov/food-details/175153/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "175167": {
+      "fdc_id": "175167",
+      "data_type": "sr_legacy_food",
+      "description": "Fish, salmon, Atlantic, farmed, raw",
+      "food_category_id": "15",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "kcal": {
+          "amount": 208.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1918084"
+        },
+        "fat_g": {
+          "amount": 13.42,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1918098"
+        },
+        "protein_g": {
+          "amount": 20.42,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "4",
+          "food_nutrient_id": "1918132"
+        },
+        "fiber_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1918162"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "68",
+          "data_points": "0",
+          "food_nutrient_id": "1918165"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "15236",
+      "url": "https://fdc.nal.usda.gov/food-details/175167/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "175179": {
+      "fdc_id": "175179",
+      "data_type": "sr_legacy_food",
+      "description": "Crustaceans, shrimp, raw",
+      "food_category_id": "15",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "fat_g": {
+          "amount": 0.51,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1919167"
+        },
+        "carbohydrates_g": {
+          "amount": 0.0,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1919168"
+        },
+        "kcal": {
+          "amount": 85.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1919169"
+        },
+        "protein_g": {
+          "amount": 20.1,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "1",
+          "data_points": "3",
+          "food_nutrient_id": "1919200"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "15270",
+      "url": "https://fdc.nal.usda.gov/food-details/175179/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "175204": {
+      "fdc_id": "175204",
+      "data_type": "sr_legacy_food",
+      "description": "Beans, white, mature seeds, canned",
+      "food_category_id": "16",
+      "publication_date": "2019-04-01",
+      "nutrients": {
+        "carbohydrates_g": {
+          "amount": 21.2,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1921281"
+        },
+        "kcal": {
+          "amount": 114.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "derivation_id": "49",
+          "data_points": "0",
+          "food_nutrient_id": "1921282"
+        },
+        "fat_g": {
+          "amount": 0.29,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1921296"
+        },
+        "fiber_g": {
+          "amount": 4.8,
+          "unit": "g",
+          "nutrient_id": 1079,
+          "derivation_id": "",
+          "data_points": "0",
+          "food_nutrient_id": "1921315"
+        },
+        "protein_g": {
+          "amount": 7.26,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "derivation_id": "",
+          "data_points": "1",
+          "food_nutrient_id": "1921319"
+        }
+      },
+      "basis": "per_100g",
+      "type": "SR Legacy",
+      "ndb_number": "16051",
+      "url": "https://fdc.nal.usda.gov/food-details/175204/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "328841": {
+      "fdc_id": "328841",
+      "description": "Cheese, cottage, lowfat, 2% milkfat",
+      "type": "Foundation",
+      "basis": "per_100g",
+      "publication_date": "4/1/2019",
+      "nutrients": {
+        "fat_g": {
+          "amount": 2.3,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "food_nutrient_id": 2248901
+        },
+        "carbohydrates_g": {
+          "amount": 4.31,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "food_nutrient_id": 2248902
+        },
+        "kcal": {
+          "amount": 84.0,
+          "unit": "kcal",
+          "nutrient_id": 1008,
+          "food_nutrient_id": 2248903
+        },
+        "protein_g": {
+          "amount": 11.0,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "food_nutrient_id": 2248933
+        }
+      },
+      "url": "https://fdc.nal.usda.gov/food-details/328841/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_json_2026-04-30.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    },
+    "2644285": {
+      "fdc_id": "2644285",
+      "description": "Beans, black, canned, sodium added, drained and rinsed",
+      "type": "Foundation",
+      "basis": "per_100g",
+      "publication_date": "10/26/2023",
+      "nutrients": {
+        "fat_g": {
+          "amount": 1.27,
+          "unit": "g",
+          "nutrient_id": 1004,
+          "food_nutrient_id": 33293948
+        },
+        "kcal": {
+          "amount": 115,
+          "unit": "kcal",
+          "nutrient_id": 2048,
+          "food_nutrient_id": 33294004
+        },
+        "protein_g": {
+          "amount": 6.91,
+          "unit": "g",
+          "nutrient_id": 1003,
+          "food_nutrient_id": 33294001
+        },
+        "carbohydrates_g": {
+          "amount": 19.8,
+          "unit": "g",
+          "nutrient_id": 1005,
+          "food_nutrient_id": 33294002
+        }
+      },
+      "url": "https://fdc.nal.usda.gov/food-details/2644285/nutrients",
+      "archive_url": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_foundation_food_json_2026-04-30.zip",
+      "access_method": "Official downloadable archive read directly; web detail page not used as evidence"
+    }
+  },
+  "web_detail_limitations": {
+    "2026-10-19": [
+      "https://fdc.nal.usda.gov/food-details/168411/nutrients",
+      "https://fdc.nal.usda.gov/food-details/174284/nutrients"
+    ],
+    "result": "not accessible via web tool; values verified in official CSV download, not in web page"
+  }
+}

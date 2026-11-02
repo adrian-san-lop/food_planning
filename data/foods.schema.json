@@ -25,14 +25,17 @@
         "name": { "type": "string", "minLength": 1 },
         "unit": { "enum": ["g", "ml", "ud"], "description": "Unit used for pantry balances, stock movements, and purchase package contents." },
         "recipeUnit": { "enum": ["g", "ml", "ud"], "description": "Unit used to measure this food in recipe ingredients." },
+        "recipeUnitLabel": { "type": "string", "minLength": 1, "description": "Optional singular display label when the recipe unit is ud, for example rebanada." },
+        "recipeUnitLabelPlural": { "type": "string", "minLength": 1, "description": "Optional plural display label for recipeUnitLabel." },
         "nutrition": { "$ref": "#/$defs/nutrition" },
+        "portion": { "$ref": "#/$defs/portion", "description": "Optional practical portion policy in recipe units per person and meal. Unclassified ingredients keep their base amount." },
         "recoveryTags": {
           "type": "array",
           "description": "Qualitative markers for food sources relevant to bone recovery; not measured nutrient amounts or medical targets.",
           "items": { "enum": ["calcium", "vitamin_d", "vitamin_c"] },
           "uniqueItems": true
         },
-        "approximateEdibleWeight_g_per_unit": { "type": "number", "exclusiveMinimum": 0, "description": "Approximate edible grams per piece, used to convert between recipe grams and pantry units." },
+        "approximateEdibleWeight_g_per_unit": { "type": "number", "exclusiveMinimum": 0, "description": "Approximate edible grams per piece or slice, used to convert recipe portions, inventory amounts, and nutrition estimates." },
         "purchase": { "$ref": "#/$defs/purchase" },
         "nutritionSource": { "type": "string", "minLength": 1 }
       },
@@ -40,9 +43,17 @@
         { "properties": { "unit": { "const": "g" }, "recipeUnit": { "const": "g" } }, "required": ["unit", "recipeUnit"] },
         { "properties": { "unit": { "const": "ml" }, "recipeUnit": { "const": "ml" } }, "required": ["unit", "recipeUnit"] },
         { "properties": { "unit": { "const": "ud" }, "recipeUnit": { "const": "ud" } }, "required": ["unit", "recipeUnit"] },
-        { "properties": { "unit": { "const": "ud" }, "recipeUnit": { "const": "g" } }, "required": ["unit", "recipeUnit", "approximateEdibleWeight_g_per_unit"] }
+        { "properties": { "unit": { "const": "ud" }, "recipeUnit": { "const": "g" } }, "required": ["unit", "recipeUnit", "approximateEdibleWeight_g_per_unit"] },
+        { "properties": { "unit": { "const": "g" }, "recipeUnit": { "const": "ud" } }, "required": ["unit", "recipeUnit", "approximateEdibleWeight_g_per_unit"] }
       ],
       "allOf": [
+        {
+          "if": { "properties": { "recipeUnit": { "const": "ud" } }, "required": ["recipeUnit"] },
+          "then": {
+            "required": ["portion"],
+            "properties": { "portion": { "properties": { "step": { "enum": [0.5, 1] } } } }
+          }
+        },
         {
           "if": { "properties": { "recipeUnit": { "const": "g" } }, "required": ["recipeUnit"] },
           "then": { "properties": { "nutrition": { "properties": { "basis": { "const": "per_100g" } }, "required": ["basis"] } } }
@@ -61,6 +72,18 @@
           }
         }
       ]
+    },
+    "portion": {
+      "type": "object",
+      "required": ["group", "min", "max", "step"],
+      "additionalProperties": false,
+      "properties": {
+        "group": { "enum": ["fixed", "protein", "carb", "fat"] },
+        "min": { "type": "number", "exclusiveMinimum": 0 },
+        "max": { "type": "number", "exclusiveMinimum": 0 },
+        "step": { "type": "number", "exclusiveMinimum": 0 }
+      },
+      "description": "The runtime additionally checks min <= max, step alignment, piece/slice rules, and recipe base quantities per serving. These are product limits, not medical recommendations."
     },
     "nutrition": {
       "type": "object",

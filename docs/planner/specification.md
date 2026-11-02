@@ -1,67 +1,89 @@
 # Especificación del catálogo y del planificador
 
-Estado: carga de catálogos y primera versión del planificador implementadas. Las reglas no aceptadas se identifican como propuestas; los umbrales exactos siguen abiertos.
+Estado: familiaridad y raciones prácticas implementadas; los paquetes 1–7 de la evolución del planificador están completados. Reglas aceptadas en ADR-0046 y ADR-0047; ponderaciones y límites son ajustes del producto, no garantías nutricionales.
+
+Evolución aceptada el 22/10/2026 según [ADR-0047](../decisions/0047-guided-first-use-and-personalized-planning.md). Los paquetes 1–7 están incorporados a `dev`; la integración Auth/PostgREST se comprobó con dos cuentas y dos orígenes de navegador independientes. El propietario confirma que la versión actual funciona en PC y móvil y que se eliminaron las cuentas de prueba. El primer menú usa el motor común y perfil confirmado, sin datos de ejemplo; se conservan cuentas existentes y estado v12. No hay SQL ni trabajo de aceptación pendiente para esta entrega; véase el [plan integrado](implementation-plan.md).
 
 ## Objetivo del ciclo
 
 Proponer un menú para los siguientes 21 días, con cinco espacios por día: desayuno, media mañana, comida, media tarde y cena. Son 105 comidas planificadas. La generación ocurre al preparar el siguiente ciclo; la instalación del mecanismo se hace una vez y la propuesta se repite en cada renovación. La persona revisa el resultado antes de confirmarlo.
 
-La biblioteca puede incluir recetas ya utilizadas y recetas que no aparecieron en el menú activo. En la implementación, “no usada” se refiere al menú activo, no a la fecha de alta en el catálogo. Se permiten repeticiones; no hay un número mínimo garantizado.
+Se construye una semana base de siete días y cinco comidas, y se repiten sus recetas en las semanas segunda y tercera. La repetición facilita cocinar y comprar. Los cambios manuales y bloqueos pueden crear excepciones individuales. Se conserva un repertorio familiar entre ciclos; la biblioteca completa sigue disponible para sustituciones manuales.
 
 ## Catálogos actuales
 
 Los catálogos son JSON genéricos e independientes de los datos personales:
 
 - [`foods.json`](../../data/foods.json): 90 alimentos.
-- [`recipes.json`](../../data/recipes.json): 112 recetas y 543 referencias de ingredientes.
+- [`recipes.json`](../../data/recipes.json): 111 recetas y 537 referencias de ingredientes.
 
-Ambos catálogos usan actualmente `catalogVersion` `0.8.0`. Esta versión incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
+Ambos catálogos usan actualmente **catalogVersion 0.11.0**, que añade una política opcional de cantidad estructural en seis recetas sin cambiar sus cantidades base ni nutrientes. Ver [ADR-0052](../decisions/0052-culinary-portions-and-week-spacing.md). La revisión 0.10.1: tras reconsiderar las once eliminaciones, recupera diez fichas y conserva 111; solo elimina hamburguesa_pavo. Siete recuperadas tienen aclaraciones documentales, sin cambios de ingredientes, cantidades o nutrición. La revisión posterior de las 111 recetas base añade 52 mejoras de nombre, pasos o consejo; mantiene tiempos y cantidades y produce cero diferencias nutricionales. No modifica el escalado ni acredita calidad culinaria de todas las porciones ajustadas. No se descartan por origen, formato o ingredientes como tofu o tahini, ni se valoran utensilios como criterio. No hay fichas ocultas ni metadatos de retirada. Ver [ADR-0048](../decisions/0048-everyday-recipe-curation.md). La versión 0.10.0 añadió políticas opcionales de ración sin cambiar cantidades base ni nutrición. La versión `0.9.3` fijó el huevo L y las descripciones de familias; `0.9.0` actualizó frutas enteras a piezas y pan de molde a rebanadas; `0.9.1` limita el pan a rebanadas enteras, máximo dos por comida. La versión `0.8.0` incorpora Ensalada templada de gulas y los alimentos `beetroot`, `cayenne`, `curedCheese`, `freshMozzarella` y `vinegar`; también actualiza la referencia genérica de `gulas` con la etiqueta del fabricante. La versión `0.7.0` añadió cuatro recetas revisadas desde la primera exportación del buzón, `garlic` y `chickenWings`.
 
 Distribución actual de recetas por tipo:
 
 | Tipo | Recetas actuales | Espacios por ciclo |
 | --- | ---: | ---: |
-| Desayuno | 18 | 21 |
-| Media mañana (`media`) | 18 | 21 |
-| Comida | 25 | 21 |
+| Desayuno | 19 | 21 |
+| Media mañana (`media`) | 19 | 21 |
+| Comida | 24 | 21 |
 | Media tarde (`tarde`) | 20 | 21 |
-| Cena | 26 | 21 |
+| Cena | 29 | 21 |
 
-La biblioteca permite variedad dentro de cada semana, pero no una receta diferente para cada espacio del ciclo completo en todos los tipos. Como se aceptan repeticiones, esto no bloquea el planificador. Las preferencias personales reducirán el conjunto elegible; por eso conviene ampliar la biblioteca según las carencias reales y no perseguir un número arbitrario.
+La biblioteca ofrece alternativas manuales y renovación gradual. Su tamaño no obliga a utilizar el mayor número posible de recetas: el repertorio automático es deliberadamente reducido.
 
 ## Contrato vigente de los ficheros
 
 ### Alimentos
 
-Cada alimento usa un `id` estable, nombre, unidad de inventario (`unit`), unidad de receta (`recipeUnit`), datos nutricionales con base explícita, formato orientativo de compra y, si se compra por pieza pero se cocina por peso, peso comestible aproximado por pieza. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
+Cada alimento usa un `id` estable, nombre, unidad de inventario (`unit`), unidad de receta (`recipeUnit`), datos nutricionales con base explícita, formato orientativo de compra y, si la receta y el inventario usan unidades distintas, peso comestible aproximado por pieza o rebanada. Bases existentes: `per_100g`, `per_100ml` y `per_unit`. Las cifras heredadas del HTML son aproximadas. Las incorporaciones nutricionales de la versión 0.2.0 incluyen referencias genéricas de USDA FoodData Central; no representan marcas concretas y deben cotejarse con las etiquetas de los productos comprados. Los formatos de compra son también orientativos.
 
 Algunos alimentos llevan `recoveryTags` (`calcium`, `vitamin_d`, `vitamin_c`) para marcar fuentes alimentarias relevantes cuando está activa la recuperación ósea. Son etiquetas cualitativas de selección: el catálogo no contiene cantidades de esos micronutrientes y la app no calcula objetivos ni ingestas de calcio o vitaminas.
 
-El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades de receta en `ud`; los alimentos que se cocinan por peso usan `per_100g`. Para piezas compradas por unidad, la receta se convierte a inventario usando su peso comestible aproximado, y la conversión inversa se usa para la compra planificada.
+La política `portion` define grupo de ajuste, mínimo, máximo y paso en unidades de receta por persona y comida. Es opcional salvo en recetas por piezas (`ud`), que deben declarar sus reglas. El validador comprueba su coherencia y las cantidades base por ración; los alimentos sin política mantienen su cantidad. Los 52 registros, límites concretos y criterios están en el [paquete 2](package-2-practical-portions.md). Las cantidades base en gramos no se reescriben por no coincidir con el paso; el redondeo solo se aplica al ajuste automático.
 
-Unidades admitidas: `g`, `ml` y `ud`. Las frutas y verduras enteras de [requisitos](../product/requirements.md) usan `recipeUnit: g` y `unit: ud`; los huevos usan `ud` en ambas medidas; los líquidos usan `ml`. La leche se compra como 1 L; café molido se mide en gramos.
+El cálculo aplica los valores `per_100g` y `per_100ml` a cantidades en gramos y mililitros, respectivamente. Los valores `per_unit` se aplican directamente a cantidades de receta en `ud`; los alimentos que se cocinan por peso usan `per_100g`. Para frutas con receta e inventario en `ud`, no hace falta conversión de saldo; la base por 100 g y el peso comestible aproximado estiman nutrientes por pieza. El pan de molde usa rebanadas enteras en receta, con máximo dos por comida, y convierte a gramos de inventario usando aproximadamente 25 g por rebanada.
+
+Unidades admitidas: `g`, `ml` y `ud`. Las porciones de fruta entera de [requisitos](../product/requirements.md) usan `recipeUnit: ud` y `unit: ud`; las verduras troceadas mantienen `recipeUnit: g` y pueden usar `unit: ud`; el pan de molde usa `recipeUnit: ud` (rebanadas) y `unit: g`; los huevos usan `ud` en ambas medidas y los líquidos `ml`. La leche se compra como 1 L; café molido se mide en gramos.
 
 ### Recetas
 
-Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, ingredientes, pasos y notas. No contiene fotografía: la interfaz presenta platos e ingredientes sin imágenes de comida. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra el peso de receta, pero informa el stock y los faltantes en unidad de inventario. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
+Cada receta incluye `id` estable, nombre, `mealType`, `baseServings` (actualmente 1), tiempo, ingredientes, pasos y notas. No contiene fotografía: la interfaz presenta platos e ingredientes sin imágenes de comida. Cada ingrediente referencia un `foodId` existente e incluye su cantidad base en la unidad `recipeUnit` del alimento. La app muestra la cantidad en la unidad de receta, con la etiqueta «rebanada(s)» para el pan, e informa del stock actual en unidad de inventario. No registra déficits de una comida ya realizada. No se guardan alternativas por tipo de entrenamiento: el ajuste se calcula para el día completo desde las cantidades base. Los contratos estructurales están en [`foods.schema.json`](../../data/foods.schema.json) y [`recipes.schema.json`](../../data/recipes.schema.json); la app comprueba también las unidades entre ambos ficheros.
 
 Tipos actuales: `desayuno`, `media`, `comida`, `tarde` y `cena`. Al ampliar el contrato, mantener los IDs existentes o documentar una migración explícita; no renombrar IDs a la ligera.
 
 ## Reglas aceptadas para selección
 
-1. Usar el cálculo nutricional y de raciones actual como punto de partida; optimizar hacia objetivos, aceptando pequeñas desviaciones.
-2. Favorecer recetas que aprovechen existencias, pero no excluir una receta solo porque falte stock. La app debe poder mostrar lo que falta en la compra.
-3. Buscar variedad y evitar repeticiones cercanas. Permitir repeticiones cuando el catálogo o las restricciones lo requieran.
-4. Entregar una propuesta editable: revisar, sustituir una comida y bloquear comidas frente a una regeneración.
-5. En ciclos nuevos, procurar introducir recetas que no estuvieron en el menú reciente; la cantidad y el período de referencia están pendientes.
+1. Mantener los servicios actuales de objetivos y raciones para los cuatro objetivos. Las cantidades completadas, sesiones y límites de porción conservan su comportamiento.
+2. Favorecer existencias e ingredientes compartidos en la semana, sin excluir por falta de stock ni escribir movimientos de previsión.
+3. Usar un repertorio orientativo de 2–3 desayunos, 2 medias mañanas, 4 comidas, 2 meriendas y 4 cenas. Son preferencias suaves: bloqueos, disponibilidad y ajuste razonable de raciones tienen prioridad. Repetir desayunos y tentempiés es normal; se espacian preferentemente comidas y cenas dentro de la semana.
+4. Repetir las selecciones de la semana base tres veces. Un cambio manual afecta solo al espacio elegido y lo bloquea; regenerar conserva todos los bloqueos, aunque difieran entre semanas o excedan el repertorio. No se deducen gustos permanentes.
+5. Con un ciclo anterior válido, conservar una parte mayoritaria del repertorio y buscar 2–3 preparaciones nuevas en todo el ciclo. Puede haber menos si no encajan; los cambios manuales no están limitados por ese presupuesto. Sin ciclo previo válido no se aplica una cuota de novedad.
+6. Agrupar familias por el conjunto ordenado de `foodId`, ignorando cantidades y orden original. No se cambian IDs ni tipos: las variantes de ración siguen seleccionables y no cuentan como nuevas preparaciones. Familias y contadores son derivados, sin campos persistidos.
 
-Las cuatro primeras reglas fueron aceptadas explícitamente. La quinta recoge la intención de incluir recetas que no aparecieron en el menú activo; se favorecen, sin imponer un mínimo.
+Estas reglas sustituyen la preferencia general por recetas ausentes del ciclo anterior de ADR-0002 y ADR-0004. Véase [ADR-0046](../decisions/0046-familiar-weekly-menu.md).
 
 ## Recuperación ósea
 
 La casilla **Recuperación ósea activa** conserva el ajuste prudente de energía ya existente y cambia la puntuación de los menús que se generen o regeneren: favorece recetas que incorporen alimentos etiquetados como fuentes de calcio, vitamina D y vitamina C. La proteína sigue tratándose con el objetivo de macronutrientes ya existente. La revisión de la propuesta muestra en cuántos de los 21 días hay ingredientes etiquetados de cada tipo; esto indica presencia, no cantidades nutricionales ni cumplimiento de una recomendación diaria.
 
 La estrategia se basa en orientación del NHS para fracturas y huesos sanos, y en las fichas de calcio y vitamina D de NIH ODS. Estas fuentes respaldan una dieta equilibrada con proteína, calcio y vitamina D, pero no permiten afirmar que un menú concreto acelere la consolidación de una fractura. La etiqueta de vitamina C añade variedad de frutas y verduras; no expresa una dosis ni un objetivo específico para la fractura. Obtener vitamina D solo de los alimentos puede ser difícil; la app no prescribe suplementos ni fija micronutrientes sin evaluación individual. El ciclo activo y las comidas ya registradas no se sustituyen al cambiar esta casilla. Véase [ADR-0007](../decisions/0007-bone-recovery-menu-preference.md).
+
+## Gasto en reposo y movimiento habitual
+
+El gasto en reposo se estima con la versión redondeada de [Mifflin–St Jeor](https://pubmed.ncbi.nlm.nih.gov/2305711/): `10 × peso_kg + 6,25 × altura_cm − 5 × edad + 5` para hombre o el mismo cálculo con `−161` para mujer. El perfil también permite introducir manualmente el gasto en reposo. El mantenimiento multiplica ese resultado por un factor de movimiento diario; después se aplica el objetivo elegido. La base del día tiene un mínimo de `1,10 × gasto en reposo`.
+
+| Nivel | Factor | Referencia cotidiana para elegir |
+| --- | ---: | --- |
+| Muy sedentario | 1,10 | Casi todo el día sentado o tumbado, con muy pocos desplazamientos cotidianos. |
+| Sedentario | 1,20 | Trabajo normalmente sentado, con recados y tareas habituales. |
+| Ligera | 1,37 | Ratos frecuentes de pie o caminando durante el día. |
+| Moderada | 1,55 | Gran parte del día en movimiento o trabajo físico moderado. |
+| Intensa | 1,72 | Muchas horas de trabajo físico exigente, caminatas o cargas. |
+| Muy intensa | 1,90 | Trabajo físico muy exigente durante casi toda la jornada. |
+
+Estas descripciones se refieren a la jornada y las tareas habituales; no se cuentan las sesiones registradas en Menuki, que se añaden solo a su fecha según ADR-0005. Son multiplicadores orientativos usados por la aplicación, no categorías clínicas equivalentes a los intervalos PAL del [informe FAO/OMS/UNU](https://www.fao.org/4/y5686e/y5686e07.htm). Los ejemplos de gasto de la tabla de factores original no se usan para calcular el perfil: Menuki conserva Mifflin–St Jeor.
+
+Los perfiles heredados se convierten en el nivel cuyo factor nuevo queda más cerca de su factor previo: `very_low` a `sedentary`, `low` y `medium` a `light`, y `high` a `moderate`. La migración `20261018140000_activity_movement_factors.sql` actualiza los perfiles existentes y amplía la restricción de Supabase; en un proyecto nuevo se aplica antes de sincronizar esos valores. El paquete 7 comprueba que el proyecto configurado guarda y recupera los seis IDs actuales, por lo que ya no es una acción pendiente en él. Véase [ADR-0044](../decisions/0044-activity-movement-factors.md).
 
 ## Ajuste nutricional por sesiones realizadas
 
@@ -76,38 +98,54 @@ El usuario registra la sesión después de realizarla, con fecha, actividad/esfu
 
 Los MET de las actividades incluidas son estimaciones de categorías del [2024 Adult Compendium of Physical Activities](https://pacompendium.com/adult-compendium/), incluida su [herramienta de consulta](https://pacompendium.com/compendium-calculator/). El compendio se dirige a adultos de 19–59 años y no calcula el gasto individual exacto; para edades fuera de ese rango y para sesiones concretas, los valores son orientativos. El resultado no es una medición clínica.
 
+## Raciones prácticas implementadas
+
+`portionsForRecipes` toma los grupos del catálogo y aplica los márgenes relativos existentes junto con mínimos, máximos y pasos por alimento. Suma ingredientes repetidos antes de ajustar para limitar el total por comida. Los ingredientes fijos y sin política conservan sus cantidades; no se pierde ningún ingrediente cuantificado. Desactivar el ajuste conserva las bases exactas y las comidas completadas siempre conservan su snapshot.
+
+`evaluateRecipePortions` reúne cantidades, totales, objetivo y diferencias firmadas (total menos objetivo) sin volver a escalar para cerrar el desfase. El planificador usa esta evaluación. La elección entre candidatos está implementada en el paquete 3; el paquete 5 muestra las diferencias y alternativas en la revisión local. No se introduce una nueva tolerancia aceptable de kcal.
+
 ## Flujo implementado de generación
 
-1. Cargar por HTTP(S) los dos JSON, comprobar versiones, IDs, unidades, referencias y tipos, y usar `catalogVersion` en la propuesta.
-2. Generar los 105 espacios desde recetas del mismo tipo que cada espacio. Todas las categorías actuales tienen candidatos.
-3. No se aplican filtros de gustos, alergias ni restricciones personales; ese modelo sigue pendiente.
-4. Muestrear combinaciones y puntuarlas con la lógica nutricional/raciones actual, variedad, menor repetición reciente, recetas no usadas en el menú actual y cobertura del stock. Si Recuperación ósea está activa, la puntuación también favorece las etiquetas cualitativas descritas arriba. El stock solo aporta preferencia; no elimina candidatos. Las ponderaciones son detalles iniciales de implementación, no umbrales aprobados.
-5. Completar los cinco tipos de comida para 21 días. Se permiten repeticiones si la biblioteca lo requiere.
-6. Revisar la propuesta, cambiar cada receta por otra del mismo tipo, bloquearla o desbloquearla y regenerar el resto. Una receta seleccionada manualmente queda bloqueada inicialmente.
-7. Al confirmar, guardar el menú siguiente, fecha y versión del catálogo en el estado local v8; el sincronizador lo persiste en `plan_cycles` y `planned_meals`. Se activa al llegar la fecha y archiva el ciclo anterior. Las comidas completadas conservan las cantidades registradas al consumirlas.
+1. Cargar y validar catálogos. `createMenuPlanner` recibe perfil confirmado, inicio explícito, preferencias opcionales, historial/bloqueos, saldo y fecha de referencia. La entrada común sirve también sin historial. Los adaptadores la usan para el primer ciclo guiado y la renovación, conservando los errores dentro de cada flujo.
+2. Proyectar la despensa al inicio descontando solo comidas pendientes anteriores desde la fecha de referencia. Las completadas permanecen fijas; solo se incorpora actividad real de la fecha de referencia, sin prever sesiones futuras ni escribir movimientos.
+3. Aplicar No proponer y máximos opcionales de comida/cena de lunes a viernes según las fechas reales. Conservar elecciones manuales y señalar sus excepciones. Si faltan alternativas, devolver posiciones incompletas y causas sin permitir confirmarlas. Las preferencias se editan en las fichas y el perfil y se guardan por la sincronización habitual.
+4. Para cada candidato, derivar familias y repertorios pequeños, favoreciendo continuidad, ingredientes compartidos, saldo previsto, favoritas y recuperación cualitativa. Evaluar siete días con raciones reales y permitir alternativas familiares si mejoran el ajuste. No forzar cantidades para cerrar kcal.
+5. Introducir dos o tres familias nuevas voluntarias cuando encajen, o menos. Las condiciones explícitas y los bloqueos pueden requerir más cambios; se señalan como renovación ampliada. No se eluden exclusiones por mantener una cuota.
+6. Repetir la semana tres veces y aplicar todos los bloqueos. Una receta manual excluida en la primera semana no se convierte en elección automática de las demás. Comparar tres candidatos completos, incluidos sus bloqueos, por nutrición, distribución, repetición, preparación, ingredientes, preferencias y stock; elegir la menor puntuación sin declararla clínicamente adecuada.
+7. Revisar una semana cada vez, cambiar tres semanas o una comida y conservar los demás bloqueos. Confirmar comprueba perfil confirmado y compatibilidad; conserva 3 × 7 × 5, fechas y versión del catálogo en el estado v12. Un resultado con huecos queda temporalmente en la revisión y no sustituye el último borrador completo ni se envía al RPC. No se guardan los análisis temporales. El ciclo activo y sus comidas completadas se conservan.
 
-El menú fijo actual no cambia hasta que comience el ciclo confirmado. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
+### Parámetros de ajuste, no garantías
+
+El tamaño inicial usa 3/2/4/2/4 familias por tipo; el uso efectivo puede ser menor o mayor. Cada candidato prueba 28 combinaciones por día. La comparación común usa las raciones reales de sus 21 días; los pesos y métricas están en el [paquete 3](package-3-common-generator.md). La salida es heurística: no garantiza óptimo global, coste mínimo ni equivalencia nutricional exacta. La proyección interna del stock es una copia local no negativa.
+
+El error de selección conserva la ponderación relativa de calorías/proteína/hidratos/grasa y utiliza las raciones reales del servicio. Una mejora de más de 0,20 en ese error permite salir del repertorio inicial. Para renovación voluntaria, una sustitución se acepta si aumenta el error medio como mucho 0,08 y ningún día más de 0,18. Estos valores son puntuaciones adimensionales de implementación, **no tolerancias clínicas ni porcentajes de calorías**. El objetivo aleatorio de novedad es dos o tres familias; condiciones y bloqueos prevalecen. El azar se inyecta en pruebas; no se guarda una semilla en datos personales.
+
+Los menús existentes se conservan. Las cuentas nuevas confirman el perfil y revisan un primer menú generado; Empezar mi plan activa una única instancia para la fecha elegida. La plantilla fija solo se utiliza para compatibilidad. El menú confirmado se conserva en el estado local y se sincroniza con `plan_cycles` y `planned_meals` cuando la cuenta está conectada.
 
 ### Presentación de la revisión
 
-La cabecera mantiene «Revisa el siguiente ciclo» y, a su derecha, **Cambiar platos** y **Guardar**. Solo la lista central se desplaza; las acciones y la X siguen visibles. Se retira el botón inferior Cerrar. «Cambiar platos» conserva la regeneración de comidas no bloqueadas y explica esa acción con «Renueva únicamente los desbloqueados» al pasar el ratón o recibir foco de teclado.
+La revisión muestra siete días con cinco comidas por semana y pestañas para consultar las tres semanas. **Cambiar platos** conserva la regeneración de comidas no bloqueadas y **Confirmar menú** confirma solo una propuesta completa y compatible. La X permite cerrar; el contenido largo se desplaza dentro del diálogo. Los controles se compactan en móvil.
 
-El resumen muestra fecha de inicio, 21 días, 105 comidas y los indicadores de variedad. Las tarjetas laterales presentan el objetivo y el ajuste de raciones del perfil actual, que utiliza la vista previa de cantidades. La recuperación destacada corresponde a `recoveryFocus`, conservado al generar la propuesta; no se deduce retrospectivamente del perfil. Si ambas preferencias de recuperación difieren, un aviso visible pide usar «Cambiar platos» para aplicar el cambio conservando los bloqueos. No se añade ningún campo persistido.
+El resumen y la ayuda muestran fecha, duración, preparaciones, variantes y novedades. Cada día muestra energía estimada, objetivo y diferencia con las raciones prácticas del perfil actual, sin actividad futura prevista. Se señalan excepciones entre semanas, causas de posiciones incompletas y elecciones manuales fuera de las preferencias. Los cambios detectados de preferencias piden regenerar sin reemplazar silenciosamente el menú. La recuperación usada al generar se conserva en `recoveryFocus`; no se añaden campos persistidos.
 
-«Cómo se prepara este menú» agrupa las explicaciones sobre stock, cálculo base sin sesiones previstas, bloqueo manual, ausencia de filtros personales y la presencia cualitativa de calcio/vitaminas. Esas cifras siguen contando días con ingredientes etiquetados; no expresan cantidades ni objetivos de ingesta. Los cambios de selector, bloqueo y regeneración conservan el desplazamiento y el foco del control. En móvil, las acciones se distribuyen debajo del título y el resumen se apila para mantener accesibles los controles.
+«Cómo se prepara este menú» explica repetición, continuidad, familias, stock opcional, preferencias, cálculo y bloqueos. Conserva la cobertura cualitativa cuando se generó con recuperación ósea: días con ingredientes etiquetados, sin expresar cantidades ni objetivos de ingesta. El alcance inicial **Las tres semanas** cambia la misma posición de las tres semanas, preservando los bloqueos de las otras; **Solo esta comida** afecta una posición. Las posiciones modificadas quedan bloqueadas. Navegación, cambios y cierre de fichas conservan foco y desplazamiento cuando corresponde.
+
+El nombre del plato abre su ficha. **Cambiar plato** ofrece hasta tres alternativas compatibles y el catálogo completo del tipo para una elección manual. **Ver receta** consulta una alternativa sin cambiar el plan; **Elegir esta receta** realiza la sustitución. La ficha calcula cantidades con el resto del día de la propuesta; si está incompleto, muestra cantidades base y lo explica. No ofrece registrar comidas. **Volver a la revisión**, la X y Escape cierran solo la ficha y restauran el foco. Todas las fichas incluyen **Normal / Favorita / No proponer**. Véanse los detalles y límites del [paquete 5](package-5-preferences-and-weekly-review.md).
 
 ### Renovación y compra anticipada
 
-- La generación se puede iniciar antes de terminar el ciclo actual. Un borrador sigue pendiente de revisión; solo **Guardar** confirma el próximo ciclo.
+- La generación se puede iniciar antes de terminar el ciclo actual. Un borrador sigue pendiente de revisión; solo **Confirmar menú** confirma el próximo ciclo.
 - Si el ciclo termina y no existe otro menú confirmado disponible, Inicio y Menú muestran un contenido bloqueado y un diálogo que abre el planificador o permite continuar el borrador. El resto de las páginas sigue disponible. Se retira el antiguo encargo para ChatGPT.
 - Al recuperar un borrador cuya fecha ya pasó después de terminar el ciclo, la revisión propone comenzar hoy y exige confirmar de nuevo. No se activa un menú confirmado que ya haya terminado también.
 - Compra ofrece **Ciclo actual / Próximo ciclo** únicamente con un próximo menú confirmado y entre uno y tres días antes de su inicio. El día de inicio se activa automáticamente y pasa a ser el actual. Los períodos de 3, 7, 14 días o resto del ciclo se calculan dentro del ciclo seleccionado, sin cruzar a otro.
 - Para el próximo ciclo, estimar las existencias al inicio descontando solo las comidas pendientes del ciclo actual anteriores a esa fecha. Las comidas ya realizadas no se descuentan de nuevo. Esta previsión no escribe movimientos; las compras finalizadas sí aumentan el inventario real.
 - Los carritos y extras de cada ciclo quedan separados. Al activarse el siguiente, su selección pendiente pasa a la lista actual. La confirmación de una compra no borra la selección del otro ciclo.
 
-## Gustos y restricciones: propuesta pendiente
+## Preferencias aceptadas y restricciones fuera de alcance
 
-**No es una regla aceptada todavía.** Para personalizar sin modificar el catálogo compartido, guardar por persona sus gustos. Una posible escala es “me gusta”, “indiferente” y “prefiero evitar”. Las alergias/intolerancias podrían representarse por separado como exclusiones estrictas, nunca como una preferencia con una puntuación baja. Si no quedan recetas adecuadas, solicitar una decisión o ampliar el catálogo; no reintroducir en silencio un alimento excluido.
+Según ADR-0047, se aceptan preferencias personales por receta **normal**, **favorita** y **No proponer**. El paquete 3 las aplica en el motor y el [paquete 4](package-4-persistence.md) incorpora su persistencia relacional, aplicada y comprobada estructuralmente según el propietario el 23/10/2026. El paquete 5 añade los controles en las fichas y **Mi perfil → Preferencias del menú**, con máximos opcionales y separados de comida y cena entre semana; vacío significa sin límite. Favorita favorece sin obligar a aparecer; No proponer excluye la selección automática pero permite una elección manual. Registrar una comida no es una valoración. Si no quedan alternativas se muestran causas; no se relajan las condiciones ni se confirma un ciclo incompleto. La integración funcional alojada está documentada en el [paquete 7](package-7-integration.md).
+
+Las preferencias son privadas y no modifican el catálogo compartido ni reemplazan menús confirmados automáticamente. Las exclusiones de ingredientes y las alergias/intolerancias quedan fuera de esta entrega y requieren un diseño independiente; No proponer no es un filtro de alergias.
 
 Al sustituir un plato, la opción inicial más fiable es escoger otra receta del mismo tipo. Sustituir ingredientes dentro de la receta requeriría equivalencias explícitas, comprobadas en unidades y nutrición.
 
@@ -115,4 +153,17 @@ Si se incorpora un menú compartido por varias personas, falta decidir cómo com
 
 ## Datos y privacidad
 
-El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v8 conserva una copia local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+El catálogo de recetas no contiene perfiles ni preferencias individuales. Los votos de gusto, menús generados, bloqueos, actividad, peso, consumo y despensa pertenecen al estado privado. El estado v12 conserva una copia de trabajo local y se sincroniza con Supabase mediante tablas relacionales cuando la sesión está conectada. Véase [arquitectura](../architecture.md) y [preguntas abiertas](../open-questions.md).
+
+
+## Convenciones del catálogo confirmadas el 19/10/2026
+
+Según [ADR-0045](../decisions/0045-generic-catalog-and-measurement-conventions.md), los alimentos representan genéricos, sin exigir marca. Las cantidades corresponden al peso en crudo antes de cocinar; conservas escurridas y alitas con hueso. Los alimentos ya comprados preparados conservan esa forma declarada. El huevo L se mide en unidades y su nutrición usa una estimación estándar de 60 g comestibles por unidad. Café y tiempos actuales permanecen. La instrucción final de cierre mantiene contabilizados todos los ingredientes cuantificados, incluidos aceite, cayena, salsa de soja y vinagre. Las especias opcionales sin cantidad definida quedan fuera del cálculo. No se omiten ingredientes cuantificados ni se ponen sus tablas a cero. Estas convenciones no modifican los IDs, cantidades ni pesos por pieza existentes.
+
+## Coherencia culinaria del escalado y espaciado (02/11/2026)
+
+El ingrediente de receta puede declarar keepBaseAmount: true (solo se admite true, no valores falsos o convertidos). El cargador lo conserva por ingrediente y el servicio nutricional fija su cantidad base por ración antes de ajustar el resto. Si aparece repetido el mismo alimento, la política afecta a su cantidad total en esa comida. No cambia su unidad de compra ni de receta. Se aplica al pan de bocadillo_pavo, bocadillo_pavo_peq y mini_pavo_tomate, a tortilla de fajitas_pollo y wrap_pavo y a oats de tortitas_atun. El pan de acompañamiento sigue ajustándose; cantidades completadas y ajuste desactivado conservan sus contratos previos. Las recetas base y sus cuatro totales no cambian, pero las nuevas raciones ajustadas pueden variar. No se garantiza alcanzar el objetivo exacto.
+
+La semejanza comida/cena se mide con la intersección/unión de ingredientes, omitiendo aceite, ajo, cayena, vinagre y salsa de soja en esa comparación de selección (siguen contabilizados nutricionalmente). Su coeficiente 0,6 es un ajuste suave: no impone una prohibición ni una frecuencia médica. El espaciado prueba hasta siete mejoras por intercambio de días completos compatibles y reduce estrictamente un coste de repetición: tres veces las repeticiones internas y dos veces el enlace domingo/lunes, correspondiente a tres semanas. Conserva platos, frecuencias e ingredientes de la semana ya elegida. Un bloqueo en cualquier semana protege el día base completo, y se valida la elegibilidad en los dos destinos. No sustituye un plan guardado al leerlo ni permite ignorar preferencias o tiempos.
+
+La política se conserva en food_snapshot.portion_policy dentro de las filas existentes; se prueba la reconstrucción entre dispositivos y la inmutabilidad de cantidades guardadas. No se modifican tablas o RPC. Cálculo 2026-11-02.1 y catálogo 0.11.0. Detalle de casos, impacto y límites en [la revisión](../audits/planner-quality-review.md). No se presentan simulaciones como pruebas de cocina.

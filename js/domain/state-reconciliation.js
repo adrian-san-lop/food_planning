@@ -196,7 +196,7 @@ function mergeArchives(baseRows, localRows, remoteRows) {
 
 function mergeableState(state = {}) {
   return {
-    profile: state.profile || {},
+    profile: Object.hasOwn(state, 'profile') ? state.profile : {},
     profileConfirmed: state.profileConfirmed === true,
     noActiveCycle: state.noActiveCycle === true,
     activeCycleId: state.activeCycleId || null,
@@ -206,6 +206,9 @@ function mergeableState(state = {}) {
     activeMenuGeneratedAt: state.activeMenuGeneratedAt || null,
     activeMenuConfirmedAt: state.activeMenuConfirmedAt || null,
     activeMenuRecoveryFocus: state.activeMenuRecoveryFocus === true,
+    activePlanDetails: state.activePlanDetails || null,
+    unavailablePlanRows: state.unavailablePlanRows || null,
+    cloudPlanIssue: state.cloudPlanIssue || null,
     done: state.done || {},
     reversedDone: state.reversedDone || {},
     legacyStrengthDays: state.legacyStrengthDays || {},
@@ -216,6 +219,10 @@ function mergeableState(state = {}) {
     cart: state.cart || {},
     cartExtras: state.cartExtras || [],
     lastBackupAt: state.lastBackupAt || null,
+    // Keep omission distinguishable from an explicit normal/null reset. Old
+    // reconciliation bases have no knowledge of these values.
+    ...Object.fromEntries(['setupMode', 'setupDraft', 'planningPreferences']
+      .filter(key => Object.hasOwn(state, key)).map(key => [key, state[key]])),
   };
 }
 
@@ -254,20 +261,28 @@ export function reconcileStates(baseState, localState, remoteState, options = {}
   const remote = mergeableState(remoteState);
   const result = JSON.parse(JSON.stringify(remoteState));
   const activePlan = mergePlan(
-    { active: !base.noActiveCycle, cycleId: base.activeCycleId, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus, reversedDone: base.reversedDone },
-    { active: !local.noActiveCycle, cycleId: local.activeCycleId, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus, reversedDone: local.reversedDone },
-    { active: !remote.noActiveCycle, cycleId: remote.activeCycleId, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus, reversedDone: remote.reversedDone },
+    { active: !base.noActiveCycle, cycleId: base.activeCycleId, start: base.start, catalogVersion: base.activeMenuCatalogVersion, generatedAt: base.activeMenuGeneratedAt, confirmedAt: base.activeMenuConfirmedAt, details:base.activePlanDetails,recoveryFocus: base.activeMenuRecoveryFocus, menus: base.activeMenus, reversedDone: base.reversedDone },
+    { active: !local.noActiveCycle, cycleId: local.activeCycleId, start: local.start, catalogVersion: local.activeMenuCatalogVersion, generatedAt: local.activeMenuGeneratedAt, confirmedAt: local.activeMenuConfirmedAt, details:local.activePlanDetails,recoveryFocus: local.activeMenuRecoveryFocus, menus: local.activeMenus, reversedDone: local.reversedDone },
+    { active: !remote.noActiveCycle, cycleId: remote.activeCycleId, start: remote.start, catalogVersion: remote.activeMenuCatalogVersion, generatedAt: remote.activeMenuGeneratedAt, confirmedAt: remote.activeMenuConfirmedAt, details:remote.activePlanDetails,recoveryFocus: remote.activeMenuRecoveryFocus, menus: remote.activeMenus, reversedDone: remote.reversedDone },
   );
   result.start = activePlan?.start ?? remote.start;
   result.activeCycleId = activePlan?.cycleId ?? null;
+  result.activePlanDetails = activePlan?.details || null;
   result.activeMenus = activePlan?.menus ?? null;
   result.activeMenuCatalogVersion = activePlan?.catalogVersion ?? null;
   result.activeMenuGeneratedAt = activePlan?.generatedAt ?? null;
   result.activeMenuConfirmedAt = activePlan?.confirmedAt ?? null;
   result.activeMenuRecoveryFocus = activePlan?.recoveryFocus === true;
+  result.cloudPlanIssue = mergeValue(base.cloudPlanIssue, local.cloudPlanIssue, remote.cloudPlanIssue);
   result.reversedDone = activePlan?.reversedDone || {};
   result.profile = mergeValue(base.profile, local.profile, remote.profile);
   result.profileConfirmed = mergeValue(base.profileConfirmed, local.profileConfirmed, remote.profileConfirmed);
+  for (const key of ['setupMode', 'setupDraft', 'planningPreferences']) {
+    const baseline = valueAt(base, key), localValue = valueAt(local, key), remoteValue = valueAt(remote, key);
+    const value = mergeValue(baseline, localValue === MISSING ? baseline : localValue,
+      remoteValue === MISSING ? baseline : remoteValue);
+    if (value !== MISSING && value !== undefined) result[key] = value;
+  }
   // Cycle existence must follow the same winning value as its date and menu.
   // Merging this flag separately can produce an active plan marked as missing
   // (or vice versa), which may submit a snapshot without the selected cycle.

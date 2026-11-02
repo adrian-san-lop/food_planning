@@ -4,6 +4,10 @@
 - **Fecha:** 11 de octubre de 2026
 - **Contexto:** Auditoría UX/UI de Menuki, mejoras de prioridad alta
 
+Actualización de vigencia (17/10/2026): la secuencia inicial de cinco pasos se conserva abajo como antecedente. ADR-0025 y ADR-0029 definen la guía rápida actual de tres pasos desde Inicio/Guía y el recorrido completo en Guía. La confirmación del perfil y la restricción de comidas futuras siguen vigentes.
+
+Actualización de vigencia (23/10/2026): [ADR-0047](0047-guided-first-use-and-personalized-planning.md) y el [paquete 6](../planner/package-6-guided-first-setup.md) implementan y prueban localmente cuatro pasos obligatorios para cuentas nuevas, perfil válido y primer menú generado. Sustituye el arranque de ejemplo para cuentas nuevas; las cuentas existentes conservan sus datos. La guía informativa sigue opcional, cerrarla no completa la configuración y la restricción de comidas futuras se conserva. Publicación y pruebas funcionales alojadas siguen pendientes.
+
 ## Decisión
 
 1. **Orientar a quien entra por primera vez.** Inicio muestra una secuencia breve de cinco pasos y recomienda empezar por el perfil. Los datos genéricos de ejemplo se identifican como tales. La app no los considera revisados hasta que el usuario guarda explícitamente el formulario.

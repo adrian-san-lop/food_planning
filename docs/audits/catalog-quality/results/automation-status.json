@@ -1,0 +1,13 @@
+{
+  "food_count": 90,
+  "recipe_count": 112,
+  "primary_records": 76,
+  "comparable_foods": 73,
+  "not_comparable": 5,
+  "pending_source": 12,
+  "nutrition_changed": 6,
+  "source_text_improved": 17,
+  "recipe_text_improved": 25,
+  "recipes_nutrition_changed": 26,
+  "recipes_with_uncompared_energy": 53
+}

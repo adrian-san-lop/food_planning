@@ -1,0 +1,672 @@
+{
+  "skyr": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Se conserva comparación de fabricante Danone L1; genérico sin marca."
+  },
+  "greek": {
+    "fdc_id": 171304,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Forma genérica cercana; variedad/formulación/corte o base original no documentados. Conservar valores y contraste L1/L2 en archivos de historial."
+  },
+  "milk": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Se conserva comparación CLA L1 por 100 ml; genérico sin marca."
+  },
+  "cheese": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Queso fresco europeo no equivale a queso fresco mexicano USDA; grasa/formulación sin fijar."
+  },
+  "granola": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Composición de mezcla sin azúcar añadido y marca no definidas; no hay fórmula genérica única."
+  },
+  "oats": {
+    "fdc_id": 173904,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "bread": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Se conserva Bimbo L1; rebanada 30 g distinta de 25 g Menuki."
+  },
+  "rice": {
+    "fdc_id": 168877,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Forma genérica cercana; variedad/formulación/corte o base original no documentados. Conservar valores y contraste L1/L2 en archivos de historial."
+  },
+  "pasta": {
+    "fdc_id": 169738,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "tortilla": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Tortilla integral envasada sin marca ni formulación; no usar tortilla blanca o maíz."
+  },
+  "eggs": {
+    "fdc_id": 171287,
+    "type": "SR Legacy",
+    "comparison": "equivalent_generic",
+    "decision": "correct",
+    "note": "L confirmado por propietario; estimación estándar de 60 g comestibles del Instituto del Huevo, aplicada al registro genérico crudo USDA. No equiparar L europeo a large USDA de 50 g.",
+    "fields": [
+      "kcal",
+      "protein_g",
+      "carbohydrates_g",
+      "fat_g"
+    ],
+    "catalog_basis": "per_unit",
+    "reference_factor": 0.6,
+    "round_decimals": 2
+  },
+  "chicken": {
+    "fdc_id": 171077,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "turkey": {
+    "fdc_id": 174515,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "turkeySlice": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Fiambre sin porcentaje cárnico, marca o receta; no equivale a pechuga cruda."
+  },
+  "hake": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Especie y crudo/cocido no fijados; no se ha identificado registro primario equivalente en los archivos."
+  },
+  "salmon": {
+    "fdc_id": 175167,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Origen/especie de cultivo no fijados."
+  },
+  "shrimp": {
+    "fdc_id": 175179,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Forma genérica cercana; variedad/formulación/corte o base original no documentados. Conservar valores y contraste L1/L2 en archivos de historial."
+  },
+  "tuna": {
+    "fdc_id": 173709,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "sardines": {
+    "fdc_id": 175139,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "lentils": {
+    "fdc_id": 172421,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "chickpeas": {
+    "fdc_id": 173800,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "hummus": {
+    "fdc_id": 174289,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "tomato": {
+    "fdc_id": 170457,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "tomatoSauce": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Tomate triturado sin especificación de concentración/formulación; no sustituir por salsa cocinada."
+  },
+  "pepper": {
+    "fdc_id": 170108,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Color no fijado."
+  },
+  "zucchini": {
+    "fdc_id": 169291,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "onion": {
+    "fdc_id": 170000,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "carrot": {
+    "fdc_id": 170393,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "broccoli": {
+    "fdc_id": 170379,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "greenbeans": {
+    "fdc_id": 169961,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "mushroom": {
+    "fdc_id": 169251,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "spinach": {
+    "fdc_id": 168462,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "lettuce": {
+    "fdc_id": 169249,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Mezcla/variedad no fijada."
+  },
+  "cucumber": {
+    "fdc_id": 168409,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "potato": {
+    "fdc_id": 170026,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "sweetpotato": {
+    "fdc_id": 168482,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "banana": {
+    "fdc_id": 173944,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "apple": {
+    "fdc_id": 171688,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Forma genérica cercana; variedad/formulación/corte o base original no documentados. Conservar valores y contraste L1/L2 en archivos de historial."
+  },
+  "kiwi": {
+    "fdc_id": 168153,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "mandarin": {
+    "fdc_id": 169105,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "orange": {
+    "fdc_id": 169097,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "pear": {
+    "fdc_id": 169118,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "berries": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Mezcla de frutos rojos sin proporciones; no imputar una baya única."
+  },
+  "seasonFruit": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Fruta variable sin composición; no hay un registro único equivalente."
+  },
+  "walnuts": {
+    "fdc_id": 170187,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "almonds": {
+    "fdc_id": 170567,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "oliveoil": {
+    "fdc_id": 171413,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "coffee": {
+    "fdc_id": 171890,
+    "type": "SR Legacy",
+    "comparison": "not_comparable",
+    "decision": "retain",
+    "note": "Infusión no equivale a café seco comprado; D-05 pendiente."
+  },
+  "cod": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Desalado/pescado blanco no equivale a bacalao crudo sin salar."
+  },
+  "beans": {
+    "fdc_id": 175204,
+    "type": "SR Legacy",
+    "comparison": "not_comparable",
+    "decision": "retain",
+    "note": "Registro canned sin denominador drained; conservar bloqueo L2."
+  },
+  "quinoa": {
+    "fdc_id": 168874,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "couscous": {
+    "fdc_id": 169699,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "noodles": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Fideo integral sin cereal/formulación; no usar noodles de huevo/soba como equivalentes."
+  },
+  "gulas": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Tabla oficial La Gula del Norte al natural consultada; coincide numéricamente, genérico no identifica marca."
+  },
+  "mackerel": {
+    "fdc_id": 175121,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "trout": {
+    "fdc_id": 175153,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Catálogo agrupa trucha/dorada; especie no fijada."
+  },
+  "pumpkin": {
+    "fdc_id": 168448,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "avocado": {
+    "fdc_id": 171705,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "peas": {
+    "fdc_id": 170016,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "asparagus": {
+    "fdc_id": 168389,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "cocoa": {
+    "fdc_id": 169593,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "raisins": {
+    "fdc_id": 168165,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "peanuts": {
+    "fdc_id": 172470,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "tofuFirm": {
+    "fdc_id": 172475,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Coagulante no fijado; sulfato de calcio como referencia cercana."
+  },
+  "tempeh": {
+    "fdc_id": 174272,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "edamame": {
+    "fdc_id": 168411,
+    "type": "SR Legacy",
+    "comparison": "equivalent_generic",
+    "decision": "correct",
+    "note": "Preparado congelado sin vaina; proteína 12,1 no coincide con 11,91 ni su redondeo a un decimal.",
+    "fields": [
+      "protein_g"
+    ]
+  },
+  "blackBeans": {
+    "fdc_id": 2644285,
+    "type": "Foundation",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Foundation identificable; escurrido/enjuagado o grasa 2% explícitos. Genérico de catálogo no define todos estos atributos; conservar."
+  },
+  "redLentilsDry": {
+    "fdc_id": 174284,
+    "type": "SR Legacy",
+    "comparison": "equivalent_generic",
+    "decision": "correct",
+    "note": "Lenteja roja seca: tabla previa combina aproximaciones de lenteja genérica con hidratos del registro rojo.",
+    "fields": [
+      "kcal",
+      "protein_g",
+      "carbohydrates_g",
+      "fat_g"
+    ],
+    "alternative_fdc_ids": [
+      172420
+    ]
+  },
+  "soyProteinTextured": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Concentrado/aislado/harina de soja no equivalen automáticamente a soja texturizada seca; falta registro o etiqueta."
+  },
+  "porkTenderloin": {
+    "fdc_id": 168312,
+    "type": "SR Legacy",
+    "comparison": "equivalent_generic",
+    "decision": "correct",
+    "note": "Misma preparación y energía/grasa de 168312; proteína previa 22,2 no reproducible frente a 20,65.",
+    "fields": [
+      "protein_g"
+    ],
+    "alternative_fdc_ids": [
+      168249
+    ]
+  },
+  "beefSirloin": {
+    "fdc_id": 173053,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Forma genérica cercana; variedad/formulación/corte o base original no documentados. Conservar valores y contraste L1/L2 en archivos de historial."
+  },
+  "turkeyMince": {
+    "fdc_id": 172850,
+    "type": "SR Legacy",
+    "comparison": "equivalent_generic",
+    "decision": "correct",
+    "note": "Fuente declarada 93% magro; proteína/grasa previas reproducen otro registro (171505), no el 172850 declarado.",
+    "fields": [
+      "protein_g",
+      "fat_g"
+    ],
+    "alternative_fdc_ids": [
+      171505
+    ]
+  },
+  "eggplant": {
+    "fdc_id": 169228,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "cauliflower": {
+    "fdc_id": 169986,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "redCabbage": {
+    "fdc_id": 169977,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "leek": {
+    "fdc_id": 169246,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "celery": {
+    "fdc_id": 169988,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "cornCanned": {
+    "fdc_id": 169214,
+    "type": "SR Legacy",
+    "comparison": "equivalent_generic",
+    "decision": "correct",
+    "note": "Forma explícita conserva escurrida; 86 kcal/19 g no corresponden al registro de sólidos escurridos.",
+    "fields": [
+      "kcal",
+      "protein_g",
+      "carbohydrates_g",
+      "fat_g"
+    ]
+  },
+  "chiaSeeds": {
+    "fdc_id": 170554,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "pumpkinSeeds": {
+    "fdc_id": 170556,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "tahini": {
+    "fdc_id": 168604,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Semilla pelada/tostado no fijados."
+  },
+  "cottageCheese": {
+    "fdc_id": 328841,
+    "type": "Foundation",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Foundation identificable; escurrido/enjuagado o grasa 2% explícitos. Genérico de catálogo no define todos estos atributos; conservar. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "soySauce": {
+    "fdc_id": 174277,
+    "type": "SR Legacy",
+    "comparison": "not_comparable",
+    "decision": "retain",
+    "note": "Registro por masa; densidad y formulación desconocidas."
+  },
+  "garlic": {
+    "fdc_id": 169230,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "chickenWings": {
+    "fdc_id": 173630,
+    "type": "SR Legacy",
+    "comparison": "not_comparable",
+    "decision": "retain",
+    "note": "Referencia comestible cocinada; requiere verificar rendimiento de compra 0,34, no multiplicar dos veces."
+  },
+  "beetroot": {
+    "fdc_id": 169146,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "reference_supported",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual. Los cuatro valores actuales reproducen redondeos del registro declarado identificado; se añade trazabilidad sin cambiar cifras."
+  },
+  "cayenne": {
+    "fdc_id": 170932,
+    "type": "SR Legacy",
+    "comparison": "close",
+    "decision": "retain",
+    "note": "Referencia genérica cercana; forma, variedad, formulación y método de hidratos no garantizan identidad. Conservar estimación actual."
+  },
+  "curedCheese": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "BEDCA accesible solo como índice, sin ficha ni tabla comprobables; secundaria no prueba fuente original."
+  },
+  "freshMozzarella": {
+    "fdc_id": null,
+    "type": null,
+    "comparison": "unresolved",
+    "decision": "retain",
+    "note": "Etiqueta Galbani oficial consultada; coincide numéricamente, genérico sin marca."
+  },
+  "vinegar": {
+    "fdc_id": 172240,
+    "type": "SR Legacy",
+    "comparison": "not_comparable",
+    "decision": "retain",
+    "note": "Base actual ml frente a g; densidad aproximada, conservar."
+  }
+}

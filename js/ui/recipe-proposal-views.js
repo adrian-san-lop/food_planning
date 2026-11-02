@@ -1,0 +1,64 @@
+export function createRecipeProposalViews({
+ getState,
+ limits,
+ escapeAttribute,
+ escapeHTML,
+ formatDateTime,
+ icon=()=>''
+}) {
+ function mealTypeLabel(value) {
+  return {desayuno:'Desayuno',comida:'Comida',snack:'Snack',cena:'Cena'}[value]||'Receta';
+ }
+
+ function proposalForm(proposal) {
+  const state=getState(),draft=state.proposalEditingDraft,busy=state.proposalInboxBusy||state.proposalExporting;
+  const ingredients=draft.ingredients.map((value,index)=>'<div class="proposal-list-row"><label for="adminProposalIngredient'+index+'">Ingrediente '+(index+1)+'<input id="adminProposalIngredient'+index+'" data-index="'+index+'" name="ingredient" type="text" maxlength="'+limits.ingredient+'" value="'+escapeAttribute(value)+'" required '+(busy?'disabled':'')+'><small>Hasta '+limits.ingredient+' caracteres.</small></label>'+(draft.ingredients.length>1?'<button type="button" class="btn btn-quiet proposal-remove" data-action="admin-proposal-remove-ingredient" data-index="'+index+'" aria-label="Quitar ingrediente '+(index+1)+'" '+(busy?'disabled':'')+'>Quitar</button>':'')+'</div>').join('');
+  const steps=draft.steps.map((value,index)=>'<div class="proposal-list-row proposal-step-row"><label for="adminProposalStep'+index+'">Paso '+(index+1)+'<textarea id="adminProposalStep'+index+'" data-index="'+index+'" name="step" rows="2" maxlength="'+limits.step+'" required '+(busy?'disabled':'')+'>'+escapeHTML(value)+'</textarea><small>Hasta '+limits.step+' caracteres.</small></label>'+(draft.steps.length>1?'<button type="button" class="btn btn-quiet proposal-remove" data-action="admin-proposal-remove-step" data-index="'+index+'" aria-label="Quitar paso '+(index+1)+'" '+(busy?'disabled':'')+'>Quitar</button>':'')+'</div>').join('');
+  return '<form id="recipeProposalEditForm" class="recipe-proposal-form proposal-edit-form" data-id="'+escapeAttribute(proposal.id)+'"><p class="proposal-help">Los cambios se guardarán en el buzón y aparecerán en la próxima exportación.</p><label class="field" for="adminProposalMealType">Tipo de receta<select id="adminProposalMealType" name="mealType" required '+(busy?'disabled':'')+'>'+[['desayuno','Desayuno'],['comida','Comida'],['snack','Snack'],['cena','Cena']].map(([value,label])=>'<option value="'+value+'"'+(draft.mealType===value?' selected':'')+'>'+label+'</option>').join('')+'</select></label><label class="field" for="adminProposalName">Nombre de la receta<input id="adminProposalName" name="name" type="text" maxlength="'+limits.name+'" value="'+escapeAttribute(draft.name)+'" required '+(busy?'disabled':'')+'><small>Hasta '+limits.name+' caracteres.</small></label><fieldset class="proposal-fieldset"><legend>Ingredientes</legend>'+ingredients+'<button type="button" class="btn proposal-add" data-action="admin-proposal-add-ingredient" '+(draft.ingredients.length>=limits.items||busy?'disabled':'')+'>+ Añadir ingrediente</button></fieldset><fieldset class="proposal-fieldset"><legend>Preparación</legend>'+steps+'<button type="button" class="btn proposal-add" data-action="admin-proposal-add-step" '+(draft.steps.length>=limits.items||busy?'disabled':'')+'>+ Añadir paso</button></fieldset><div class="dialog-actions"><button class="btn btn-primary" type="submit" '+(busy?'disabled':'')+'>'+(busy?'Guardando…':'Guardar cambios')+'</button><button class="btn" type="button" data-action="admin-cancel-proposal-edit" '+(busy?'disabled':'')+'>Cancelar</button></div></form>';
+ }
+
+ function proposalHint(key,label,description,disabled) {
+  const id='proposalHint-'+key;
+  return '<span class="proposal-editor-help"><button type="button" class="proposal-editor-help-button" data-action="proposal-help-open" data-help="'+key+'" aria-label="'+escapeAttribute(label)+'" aria-haspopup="dialog" aria-describedby="'+id+'" '+disabled+'>'+icon('info')+'</button><span id="'+id+'" class="proposal-editor-tooltip" role="tooltip">'+escapeHTML(description)+'</span></span>';
+ }
+
+ function proposalView() {
+  const state=getState(),draft=state.recipeProposalDraft,busy=state.recipeProposalSubmitting,disabled=busy?'disabled':'';
+  const remove=(kind,index,label)=>'<button type="button" class="proposal-editor-remove" data-action="proposal-remove-'+kind+'" data-index="'+index+'" aria-label="Quitar '+label+' '+(index+1)+'" '+disabled+'>'+icon('trash')+'</button>';
+  const ingredients=draft.ingredients.map((value,index)=>{
+   const id='proposalIngredient'+index;
+   return '<div class="proposal-editor-ingredient"><label class="proposal-editor-sr-only" for="'+id+'">Ingrediente '+(index+1)+'</label><input id="'+id+'" data-index="'+index+'" name="ingredient" type="text" maxlength="'+limits.ingredient+'" value="'+escapeAttribute(value)+'" placeholder="Escribe un ingrediente" required '+disabled+'>'+(draft.ingredients.length>1?remove('ingredient',index,'ingrediente'):'')+'</div>';
+  }).join('');
+  const steps=draft.steps.map((value,index)=>{
+   const id='proposalStep'+index;
+   return '<div class="proposal-editor-step"><span class="proposal-editor-step-number" aria-hidden="true">'+(index+1)+'</span><div class="proposal-editor-step-content"><div class="proposal-editor-step-heading"><label for="'+id+'">Paso '+(index+1)+'</label><span class="proposal-editor-counter" id="'+id+'Count">'+value.length+' / '+limits.step+'</span>'+(draft.steps.length>1?remove('step',index,'paso'):'')+'</div><textarea id="'+id+'" data-index="'+index+'" name="step" rows="3" maxlength="'+limits.step+'" aria-describedby="'+id+'Count" placeholder="Describe qué hay que hacer" required '+disabled+'>'+escapeHTML(value)+'</textarea></div></div>';
+  }).join('');
+  const types=[['desayuno','Desayuno'],['comida','Comida'],['snack','Snack'],['cena','Cena']].map(([value,label])=>'<label class="proposal-editor-type-option"><input type="radio" name="mealType" value="'+value+'" '+(draft.mealType===value?'checked ':'')+'required '+disabled+'><span>'+label+'</span></label>').join('');
+  const nameHelp=proposalHint('name','Ayuda sobre el nombre','Pon un nombre claro. Hasta '+limits.name+' caracteres; no necesitas indicar cantidades ni datos nutricionales.',disabled);
+  const ingredientHelp=proposalHint('ingredients','Ayuda sobre los ingredientes','Un ingrediente por línea, sin cantidades. Hasta '+limits.items+' ingredientes de '+limits.ingredient+' caracteres cada uno.',disabled);
+  const stepHelp=proposalHint('steps','Ayuda sobre la preparación','Explica los pasos en orden. Hasta '+limits.items+' pasos de '+limits.step+' caracteres cada uno.',disabled);
+  const add=(kind,label,count)=>'<button type="button" class="btn proposal-editor-add" data-action="proposal-add-'+kind+'" '+(count>=limits.items||busy?'disabled':'')+'>'+icon('plus')+label+'</button>';
+  return '<div class="proposal-page"><header class="proposal-page-heading"><div class="eyebrow">RECETAS DE LA COMUNIDAD</div><h1>Proponer una receta</h1><p>Tu idea, sus ingredientes y cómo prepararla. Del resto nos encargamos.</p></header>'
+   +'<form id="recipeProposalForm" class="proposal-editor-form" aria-label="Proponer una receta" aria-busy="'+busy+'">'
+   +'<section class="panel proposal-editor-details" aria-label="Datos de la receta"><fieldset class="proposal-editor-type"><legend>Tipo de receta</legend><div class="proposal-editor-types">'+types+'</div></fieldset><div class="proposal-editor-name"><div class="proposal-editor-name-heading"><label for="proposalName">Nombre de la receta</label><span id="proposalNameCount" class="proposal-editor-counter">'+draft.name.length+' / '+limits.name+'</span>'+nameHelp+'</div><input id="proposalName" name="name" type="text" maxlength="'+limits.name+'" value="'+escapeAttribute(draft.name)+'" placeholder="Por ejemplo: Pasta con pavo y verduras" aria-describedby="proposalNameCount" required '+disabled+'></div></section>'
+   +'<div class="proposal-editor-columns"><section class="panel proposal-editor-section" aria-labelledby="proposalIngredientsTitle"><header class="proposal-editor-section-heading"><h2 id="proposalIngredientsTitle">Ingredientes</h2><span class="proposal-editor-count">'+draft.ingredients.length+'</span>'+ingredientHelp+'</header><div class="proposal-editor-list" data-proposal-list="ingredients">'+ingredients+'</div><footer class="proposal-editor-section-footer">'+add('ingredient','Añadir ingrediente',draft.ingredients.length)+'</footer></section>'
+   +'<section class="panel proposal-editor-section" aria-labelledby="proposalStepsTitle"><header class="proposal-editor-section-heading"><h2 id="proposalStepsTitle">Preparación</h2><span class="proposal-editor-count">'+draft.steps.length+' '+(draft.steps.length===1?'paso':'pasos')+'</span>'+stepHelp+'</header><div class="proposal-editor-list" data-proposal-list="steps">'+steps+'</div><footer class="proposal-editor-section-footer">'+add('step','Añadir paso',draft.steps.length)+'</footer></section></div>'
+   +'<footer class="panel proposal-editor-actions"><button type="button" class="proposal-editor-review" data-action="proposal-help-open" data-help="review" aria-haspopup="dialog" '+disabled+'>'+icon('info')+'¿Qué ocurre después de enviarla?</button><button class="btn btn-primary" type="submit" '+disabled+'>'+(busy?'Enviando…':'Enviar propuesta')+'</button></footer></form></div>';
+ }
+
+ function adminView() {
+  const state=getState();
+  if(!state.menukiAdmin)return '<div class="page-intro"><h1>Sin acceso</h1><p>Esta sección solo está disponible para el administrador.</p></div>';
+  const count=state.proposalInbox.length;
+  const rows=state.proposalInbox.map(proposal=>{
+   const editing=state.proposalEditingId===proposal.id,actionsDisabled=state.proposalInboxBusy||state.proposalExporting||state.proposalEditingId!==null;
+   const detail='<div class="proposal-card-columns"><section><h3>Ingredientes enviados</h3><ul>'+proposal.ingredients.map(item=>'<li>'+escapeHTML(item)+'</li>').join('')+'</ul></section><section><h3>Preparación enviada</h3><ol>'+proposal.steps.map(item=>'<li>'+escapeHTML(item)+'</li>').join('')+'</ol></section></div>';
+   const actions=editing?'':'<div class="proposal-card-actions"><button class="btn" type="button" data-action="admin-edit-proposal" data-id="'+escapeAttribute(proposal.id)+'" aria-label="Editar propuesta '+escapeAttribute(proposal.recipe_name)+'" '+(actionsDisabled?'disabled':'')+'>Editar</button><button class="btn btn-danger" type="button" data-action="admin-delete-proposal" data-id="'+escapeAttribute(proposal.id)+'" aria-label="Eliminar propuesta '+escapeAttribute(proposal.recipe_name)+'" '+(actionsDisabled?'disabled':'')+'>Eliminar</button></div>';
+   return '<article class="proposal-card"><header class="proposal-card-header"><div><div class="eyebrow">'+escapeHTML(mealTypeLabel(proposal.meal_type))+'</div><h2>'+escapeHTML(proposal.recipe_name)+'</h2></div><time datetime="'+escapeAttribute(proposal.created_at)+'">'+escapeHTML(formatDateTime(proposal.created_at,{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'})||'Fecha no disponible')+'</time></header>'+(editing?proposalForm(proposal):detail+actions)+'</article>';
+  }).join('');
+  const actionsDisabled=state.proposalInboxLoading||state.proposalInboxBusy||state.proposalExporting||state.proposalEditingId!==null;
+  return '<div class="page-intro"><div class="eyebrow">ADMINISTRACIÓN</div><h1>Propuestas de recetas</h1><p>Corrige o descarta propuestas aquí. Después descarga el JSON para adjuntarlo a un chat de Codex con acceso al repositorio.</p></div><section class="panel proposal-admin-panel"><div class="proposal-admin-heading"><div><h2>Buzón de propuestas</h2><p>'+count+' '+(count===1?'propuesta guardada':'propuestas guardadas')+'</p></div><div class="proposal-admin-actions"><button class="btn btn-primary" type="button" data-action="admin-export-proposals" '+(!state.proposalInboxLoaded||!count||actionsDisabled?'disabled':'')+'>'+(state.proposalExporting?'Preparando JSON…':'Descargar JSON para Codex')+'</button><button class="btn" type="button" data-action="admin-refresh-proposals" '+(actionsDisabled?'disabled':'')+'>Actualizar</button></div></div>'+(state.proposalInboxError?'<p class="proposal-error" role="alert">'+escapeHTML(state.proposalInboxError)+'</p>':'')+(state.proposalInboxLoading?'<p role="status">Cargando propuestas…</p>':count?'<div class="proposal-list">'+rows+'</div>':'<div class="empty proposal-empty"><span>🥣</span>Aún no hay propuestas pendientes.</div>')+'<div class="proposal-purge"><div><strong>Limpiar el buzón</strong><p>Cuando todas las recetas ya estén incorporadas y publicadas en los JSON, puedes eliminar las propuestas guardadas aquí.</p></div><button class="btn btn-danger" type="button" data-action="admin-clear-proposals" '+(!count||actionsDisabled?'disabled':'')+'>'+(state.proposalInboxBusy?'Eliminando…':'Eliminar todas las propuestas')+'</button></div></section>';
+ }
+
+ return { proposalView, adminView };
+}
